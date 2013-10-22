@@ -1,5 +1,6 @@
 package beans;
 
+// CAMBIO DE PRUEBA
 public class PhenomirBean {
 	
 	//phenomicid	pmid	disease	diseasesub_id	class	miRNA	accession	expression	foldchangemin	foldchangemax	id	name	method
