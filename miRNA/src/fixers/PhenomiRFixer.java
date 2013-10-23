@@ -13,14 +13,14 @@ public class PhenomiRFixer {
 	private String inputFile;
 	private String outputFile;
 	
-	private int numOfTokens = 13;
+	private int numOfTokens = 14;
 	
 	public PhenomiRFixer(String inputFile, String outputFile) {
 		this.inputFile = inputFile;
 		this.outputFile = outputFile;
 	}
 	
-	private boolean checkCorrectness(String file) throws IOException {
+	public boolean checkCorrectness(String file) throws IOException {
 		
 		boolean res = true;
 		
@@ -35,9 +35,10 @@ public class PhenomiRFixer {
 			String[] tokens = StringUtils.splitPreserveAllTokens(line, "\t");
 			countLine++;
 			
-			if (tokens.length!=numOfTokens) {
-				System.out.println("Linea número " + countLine + " con " + tokens.length + " tokens!");
+			if (tokens.length!=numOfTokens) { //Número de tokens diferente a la longitud que es la fijada, en este caso 14
+				System.out.println("Linea número " + countLine + " con " + tokens.length + " tokens!"); // Aviso del token con respecto al número de línea
 				for (int i=0; i<tokens.length; i++) {
+					
 					System.out.println(" token[" + i + "] = " + tokens[i]);
 				}
 				res = false;
@@ -70,16 +71,21 @@ public class PhenomiRFixer {
 				line1 = line1.trim();
 				line2 = line2.trim();
 				line1 = line1 + "\t\t" + line2;
+				line1 = line1.replaceAll(";", "\t");
 				pw.println(line1);
 				line1 = br.readLine();
 			} else {
+				
+				line1 = line1.replaceAll(";", "\t");
 				pw.println(line1);
 				line1 = line2;
 			}
 			
 		}
-		
+	
+		line1 = line1.replaceAll(";", "\t");
 		pw.println(line1);
+		
 		
 		pw.close();
 		br.close();
@@ -108,11 +114,13 @@ public class PhenomiRFixer {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		String inputFile = "C:/Users/usuario/Desktop/NewSearchingLine/phenomiR/phenomir2.0.txt";
-		String outputFile = "C:/Users/usuario/Desktop/NewSearchingLine/phenomiR/phenomir2.0_out.txt";
+		String inputFile = "C:/Users/usuario/Desktop/NewSearchingLine/phenomiR/phenomir1.0.txt";
+		String outputFile = "C:/Users/usuario/Desktop/NewSearchingLine/phenomiR/phenomir1.0_out.txt";
 		
 		PhenomiRFixer phenomiRFixer = new PhenomiRFixer(inputFile, outputFile);
-		phenomiRFixer.execute();
+		phenomiRFixer.fixBadSeparatedLines(inputFile, outputFile);
+//		phenomiRFixer.execute();
+		System.out.println(phenomiRFixer.checkCorrectness(outputFile));
 	}
 
 }
