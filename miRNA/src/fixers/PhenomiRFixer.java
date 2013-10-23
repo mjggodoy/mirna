@@ -10,14 +10,17 @@ import org.apache.commons.lang.StringUtils;
 
 public class PhenomiRFixer {
 	
-	private String inputFile;
-	private String outputFile;
+	private int numOfTokens;
+	private String separator;
 	
-	private int numOfTokens = 14;
+	public PhenomiRFixer(int numOfTokens, String separator) {
+		super();
+		this.numOfTokens = numOfTokens;
+		this.separator = separator;
+	}
 	
-	public PhenomiRFixer(String inputFile, String outputFile) {
-		this.inputFile = inputFile;
-		this.outputFile = outputFile;
+	public String getSeparator() {
+		return separator;
 	}
 	
 	public boolean checkCorrectness(String file) throws IOException {
@@ -32,7 +35,7 @@ public class PhenomiRFixer {
 		
 		while((line=br.readLine())!=null) {
 			
-			String[] tokens = StringUtils.splitPreserveAllTokens(line, "\t");
+			String[] tokens = StringUtils.splitPreserveAllTokens(line, separator);
 			countLine++;
 			
 			if (tokens.length!=numOfTokens) { //Número de tokens diferente a la longitud que es la fijada, en este caso 14
@@ -49,11 +52,15 @@ public class PhenomiRFixer {
 		br.close();
 		fr.close();
 		
+		if (res) {
+			System.out.println("Fichero " + file + " correcto.");
+		}
+		
 		return res;
 		
 	}
 	
-	private void fixBadSeparatedLines(String fileIn, String fileOut) throws IOException {
+	public void fixBadSeparatedLines(String fileIn, String fileOut) throws IOException {
 		
 		FileReader fr = new FileReader(fileIn);
 		BufferedReader br = new BufferedReader(fr);
@@ -70,22 +77,20 @@ public class PhenomiRFixer {
 				line2 = line2.substring(",,".length());
 				line1 = line1.trim();
 				line2 = line2.trim();
-				line1 = line1 + "\t\t" + line2;
-				line1 = line1.replaceAll(";", "\t");
+				line1 = line1 + separator + separator + line2;
+				//line1 = line1.replaceAll(";", "\t");
 				pw.println(line1);
 				line1 = br.readLine();
 			} else {
-				
-				line1 = line1.replaceAll(";", "\t");
+				//line1 = line1.replaceAll(";", "\t");
 				pw.println(line1);
 				line1 = line2;
 			}
 			
 		}
 	
-		line1 = line1.replaceAll(";", "\t");
+		//line1 = line1.replaceAll(";", "\t");
 		pw.println(line1);
-		
 		
 		pw.close();
 		br.close();
@@ -93,34 +98,53 @@ public class PhenomiRFixer {
 		
 	}
 	
-	public void execute() throws Exception {
+	public void replaceSeparator(String fileIn, String fileOut, String newSeparator) throws IOException {
 		
-		if (inputFile.equals(outputFile)) {
-			throw new Exception("Fichero de entrada igual que el de salida");
-		}
+		FileReader fr = new FileReader(fileIn);
+		BufferedReader br = new BufferedReader(fr);
 		
-		if (checkCorrectness(inputFile)) {
-			System.out.println("Fichero de entrada ya correcto.");
-		} else {
-			fixBadSeparatedLines(inputFile, outputFile);
-			if (checkCorrectness(outputFile)) {
-				System.out.println("Todo correcto!");
-			} else {
-				System.out.println("Después de la transformación.... sigue fallando. Vaya.....");
-			}
-			
+		PrintWriter pw = new PrintWriter(new File(fileOut));
+		
+		String line;
+		
+		while((line=br.readLine())!=null) {
+			line = line.replaceAll(this.separator, newSeparator);
+			pw.println(line);
 		}
+	
+		pw.close();
+		br.close();
+		fr.close();
+		
+		this.separator = newSeparator;
+		
 		
 	}
 	
 	public static void main(String[] args) throws Exception {
+		
+		// TROZO DE CODIGO PARA EL 2.0
+//		String inputFile = "C:/Users/usuario/Desktop/NewSearchingLine/phenomiR/phenomir2.0.txt";
+//		String outputFile = "C:/Users/usuario/Desktop/NewSearchingLine/phenomiR/phenomir2.0_out.txt";
+//		PhenomiRFixer phenomiRFixer = new PhenomiRFixer(13, "\t");
+//		boolean res = phenomiRFixer.checkCorrectness(inputFile);
+//		if (res==false) {
+//			System.out.println("VAMOS A ARREGLARLO!");
+//			phenomiRFixer.fixBadSeparatedLines(inputFile, outputFile);
+//			System.out.println("COMPROBAMOS?");
+//			phenomiRFixer.checkCorrectness(outputFile);
+//		}
+		
+		//TROZO DE CODIGO PARA EL 1.0
 		String inputFile = "C:/Users/usuario/Desktop/NewSearchingLine/phenomiR/phenomir1.0.txt";
 		String outputFile = "C:/Users/usuario/Desktop/NewSearchingLine/phenomiR/phenomir1.0_out.txt";
+		PhenomiRFixer phenomiRFixer = new PhenomiRFixer(14, ";");
+		phenomiRFixer.checkCorrectness(inputFile);
+		System.out.println("El separador que estamos usando es: " + phenomiRFixer.getSeparator());
+		phenomiRFixer.replaceSeparator(inputFile, outputFile, "\t");
+		System.out.println("El separador que estamos usando es: " + phenomiRFixer.getSeparator());
+		phenomiRFixer.checkCorrectness(outputFile);
 		
-		PhenomiRFixer phenomiRFixer = new PhenomiRFixer(inputFile, outputFile);
-		phenomiRFixer.fixBadSeparatedLines(inputFile, outputFile);
-//		phenomiRFixer.execute();
-		System.out.println(phenomiRFixer.checkCorrectness(outputFile));
 	}
 
 }
