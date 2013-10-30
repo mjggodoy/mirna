@@ -1,11 +1,16 @@
 import java.io.BufferedReader;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.StringTokenizer;
+
+import org.apache.commons.lang.StringUtils;
 
 import beans.BibliographyReference;
 import beans.DataExpression;
 import beans.Disease;
+import beans.Gene;
 import beans.MiRna;
 
 import com.hp.hpl.jena.rdf.model.Model;
@@ -15,9 +20,10 @@ import com.hp.hpl.jena.rdf.model.ResourceFactory;
 
 public class PhenomiR2RDF {
 	
-	public static void main(String[] args) throws IOException {
-		FileReader fr = new FileReader("C:/Users/Esteban/Dropbox/NewSearchingLine/phenomir2.0_out.txt");
+	public static void main(String[] args) throws Exception {
+		FileReader fr = new FileReader("/Users/mariajesus/Desktop/NewSearchingLine/phenomir2.0_out.txt");
 		BufferedReader br = new BufferedReader(fr);
+		OutputStream out= new FileOutputStream("/Users/mariajesus/Desktop/NewSearchingLine/RDF_Phenomizer.txt");
 		
 		int numLineas = 8;
 		
@@ -28,44 +34,81 @@ public class PhenomiR2RDF {
 		
 		for (int i=0; i<numLineas; i++) {
 			String line = br.readLine();
-			StringTokenizer st = new StringTokenizer(line, "\t");
+			//StringTokenizer st = new StringTokenizer(line, "\t");
+			String[] tokens = StringUtils.splitPreserveAllTokens(line, "\t");
 			if (i==0) {
-				System.out.println("NUMERO DE TOKENS: " + st.countTokens());
-				int j=1;
-				while (st.hasMoreTokens()) {
-					System.out.println(j + ":" + st.nextToken());
-					j++;
+				//System.out.println("NUMERO DE TOKENS: " + st.countTokens());
+				System.out.println("NUMERO DE TOKENS: " + tokens.length);
+				//int j=1;
+				//while (st.hasMoreTokens()) {
+				for (int j=1; j<=tokens.length; j++) {
+					//System.out.println(j + ":" + st.nextToken());
+					System.out.println(j + ":" + tokens[j-1]);
+					//j++;
 				}
 			} else {
-				
-				String field1=st.nextToken();
-				String field2=st.nextToken();
-				String field3=st.nextToken();
-				String field4=st.nextToken();
-				String field5=st.nextToken();
-				String field6=st.nextToken();
-				String field7=st.nextToken();
-				String field8=st.nextToken();
-				String field9=st.nextToken();
-//				String field10=st.nextToken();
-//				String field11=st.nextToken();
-//				String field12=st.nextToken();
-//				String field13=st.nextToken();
-				Disease disease = new Disease(field3, field4, field5, Integer.parseInt(field1));
-				//Gene gene = new Gene();
-				MiRna miRna = new MiRna(field6, field7);
-//				DataExpression dataExpression = new DataExpression(field8, Double.parseDouble(field9), Double.parseDouble(field10), field12, field13);
-				BibliographyReference bib = new BibliographyReference(field2);
+				try {
+//				String field1=st.nextToken();
+//				String field2=st.nextToken();
+//				String field3=st.nextToken();
+//				String field4=st.nextToken();
+//				String field5=st.nextToken();
+//				String field6=st.nextToken();			
+//				String field7=st.nextToken();
+//				String field8=st.nextToken();
+//				String field9=st.nextToken();
+////				String field10=st.nextToken();
+////				String field11=st.nextToken();
+////				String field12=st.nextToken();
+////				String field13=st.nextToken();
+				//Disease disease = new Disease(field3, field4, field5, Integer.parseInt(field1));
+				Disease disease = new Disease(tokens[2], tokens[3], tokens[4], tokens[0]);
+				//Gene gene = new Gene(tokens[12]);
+				//MiRna miRna = new MiRna(field6, field7);
+				MiRna miRna = new MiRna(tokens[5], tokens[6]);
+				DataExpression dataExpression = new DataExpression(tokens[7], (tokens[8]), tokens[9], tokens[10], tokens[11], tokens[12]);
+				//BibliographyReference bib = new BibliographyReference(field2);
+				BibliographyReference bib = new BibliographyReference(tokens[1]);
 //				Tissue tissue = new  Tissue();
 				
 				
 				Resource diseaseResource = model.createResource(resourceUri + "disease/" + disease.getPhenomicId())
 					.addProperty(ResourceFactory.createProperty(propertyUri + "phenomicid"), String.valueOf(disease.getPhenomicId()))
-					.addProperty(ResourceFactory.createProperty(propertyUri + "name"), disease.getName());
+					.addProperty(ResourceFactory.createProperty(propertyUri + "name"), disease.getName())
+					.addProperty(ResourceFactory.createProperty(propertyUri + "diseaseClass"), disease.getDiseaseClass());
+					
+				
+				//Resource geneResource = model.createResource(resourceUri + "gene/" + gene.getName());
+				
+				Resource bibliography = model.createResource(resourceUri + "bibliography/" + bib.getPubmedId());
+				
+				Resource dataexpression = model.createResource(resourceUri + "dataexpression/" + dataExpression.getExpression())
+						.addProperty(ResourceFactory.createProperty(propertyUri + "foldchangeMax"), dataExpression.getFoldchangeMin()) 
+						.addProperty(ResourceFactory.createProperty(propertyUri + "foldchangeMin"), dataExpression.getFoldchangeMax())
+						.addProperty(ResourceFactory.createProperty(propertyUri + "id"), dataExpression.getId())
+						.addProperty(ResourceFactory.createProperty(propertyUri + "studyDesign"), dataExpression.getStudyDesign())
+						.addProperty(ResourceFactory.createProperty(propertyUri + "method"), dataExpression.getMethod());
+						
+						
+				
 				
 				model.createResource(resourceUri + "mirna/" + miRna.getName())
 				.addProperty(ResourceFactory.createProperty(propertyUri + "name"), miRna.getName())
-				.addProperty(ResourceFactory.createProperty(propertyUri + "relatedWith"), diseaseResource);
+				.addProperty(ResourceFactory.createProperty(propertyUri + "accessionNumber"), miRna.getAccessionNumber())
+				.addProperty(ResourceFactory.createProperty(propertyUri + "relatedWith"), diseaseResource)
+				.addProperty(ResourceFactory.createProperty(propertyUri + "relatedReference"), bibliography)
+				.addProperty(ResourceFactory.createProperty(propertyUri + "presents"), dataexpression);
+				
+				
+				
+				} catch (Exception e) {
+					e.printStackTrace();
+					System.out.println(line);
+					for (int j=0; j<tokens.length; j++) {
+						System.out.println(j + ": " + tokens[j]);
+					}
+					throw e;
+				}
 				
 			}
 			
@@ -73,10 +116,11 @@ public class PhenomiR2RDF {
 			
 		}
 		
-		model.write(System.out);
+		model.write(out);
 		
 		br.close();
 		fr.close();
+		out.close();
 
 //		String line;
 //		int count;

@@ -7,7 +7,7 @@ public class PhenomiR {
 
 	public static void main(String args[]) throws FileNotFoundException {
 
-		FileReader fr = new FileReader("C:/Users/usuario/Desktop/NewSearchingLine/phenomiR/phenomir1.0.txt");
+		FileReader fr = new FileReader("/Users/mariajesus/Desktop/NewSearchingLine/phenomir1.0.txt");
 		BufferedReader br = new BufferedReader(fr);
 
 		PhenomirBean phenomir = new PhenomirBean();

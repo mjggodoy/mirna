@@ -5,9 +5,9 @@ public class Disease {
 	private String name;
 	private String diseaseSub;
 	private String diseaseClass;
-	private int phenomicId;
+	private String phenomicId;
 
-	public Disease(String name, String diseaseSub, String diseaseClass, int phenomicId) {
+	public Disease(String name, String diseaseSub, String diseaseClass, String phenomicId) {
 		super();
 		this.name = name;
 		this.diseaseSub = diseaseSub;
@@ -39,11 +39,11 @@ public class Disease {
 		this.diseaseClass = diseaseClass;
 	}
 
-	public int getPhenomicId() {
+	public String getPhenomicId() {
 		return phenomicId;
 	}
 
-	public void setPhenomicId(int phenomicId) {
+	public void setPhenomicId(String phenomicId) {
 		this.phenomicId = phenomicId;
 	}
 	
