@@ -21,14 +21,16 @@ import com.hp.hpl.jena.rdf.model.ResourceFactory;
 public class PhenomiR2RDF {
 	
 	public static void main(String[] args) throws Exception {
-		FileReader fr = new FileReader("/Users/mariajesus/Desktop/NewSearchingLine/phenomir2.0_out.txt");
+		FileReader fr = new FileReader("C:/Users/usuario/Desktop/NewSearchingLine/phenomiR/phenomir2.0_out.txt");
 		BufferedReader br = new BufferedReader(fr);
-		OutputStream out= new FileOutputStream("/Users/mariajesus/Desktop/NewSearchingLine/RDF_Phenomizer.txt");
+		OutputStream out= new FileOutputStream("C:/Users/usuario/Desktop/NewSearchingLine/phenomiR/RDF_Phenomizer.txt");
 		
 		int numLineas = 8;
 		
 		String resourceUri = "http://khaos.uma.es/mirna/resource/";
 		String propertyUri = "http://khaos.uma.es/mirna/property/";
+		
+		String namespace = "http://khaos.uma.es/RDF/miRna.owl";
 		
 		Model model = ModelFactory.createDefaultModel();
 		
@@ -72,32 +74,32 @@ public class PhenomiR2RDF {
 //				Tissue tissue = new  Tissue();
 				
 				
-				Resource diseaseResource = model.createResource(resourceUri + "disease/" + disease.getPhenomicId())
-					.addProperty(ResourceFactory.createProperty(propertyUri + "phenomicid"), String.valueOf(disease.getPhenomicId()))
-					.addProperty(ResourceFactory.createProperty(propertyUri + "name"), disease.getName())
-					.addProperty(ResourceFactory.createProperty(propertyUri + "diseaseClass"), disease.getDiseaseClass());
+				Resource diseaseResource = model.createResource(namespace + disease.getPhenomicId())
+						.addProperty(ResourceFactory.createProperty(namespace + "phenomicid"), disease.getPhenomicId())
+						.addProperty(ResourceFactory.createProperty(namespace + "name"), disease.getName())
+						.addProperty(ResourceFactory.createProperty(namespace + "diseaseClass"), disease.getDiseaseClass());
 					
 				
 				//Resource geneResource = model.createResource(resourceUri + "gene/" + gene.getName());
 				
-				Resource bibliography = model.createResource(resourceUri + "bibliography/" + bib.getPubmedId());
+				Resource bibliography = model.createResource(namespace + "bibliography/" + bib.getPubmedId());
 				
-				Resource dataexpression = model.createResource(resourceUri + "dataexpression/" + dataExpression.getExpression())
-						.addProperty(ResourceFactory.createProperty(propertyUri + "foldchangeMax"), dataExpression.getFoldchangeMin()) 
-						.addProperty(ResourceFactory.createProperty(propertyUri + "foldchangeMin"), dataExpression.getFoldchangeMax())
-						.addProperty(ResourceFactory.createProperty(propertyUri + "id"), dataExpression.getId())
-						.addProperty(ResourceFactory.createProperty(propertyUri + "studyDesign"), dataExpression.getStudyDesign())
-						.addProperty(ResourceFactory.createProperty(propertyUri + "method"), dataExpression.getMethod());
+				Resource dataexpression = model.createResource(namespace + "dataexpression/" + dataExpression.getExpression())
+						.addProperty(ResourceFactory.createProperty(namespace + "foldchangeMax"), dataExpression.getFoldchangeMin()) 
+						.addProperty(ResourceFactory.createProperty(namespace + "foldchangeMin"), dataExpression.getFoldchangeMax())
+						.addProperty(ResourceFactory.createProperty(namespace + "id"), dataExpression.getId())
+						.addProperty(ResourceFactory.createProperty(namespace + "studyDesign"), dataExpression.getStudyDesign())
+						.addProperty(ResourceFactory.createProperty(namespace + "method"), dataExpression.getMethod());
 						
 						
 				
 				
-				model.createResource(resourceUri + "mirna/" + miRna.getName())
-				.addProperty(ResourceFactory.createProperty(propertyUri + "name"), miRna.getName())
-				.addProperty(ResourceFactory.createProperty(propertyUri + "accessionNumber"), miRna.getAccessionNumber())
-				.addProperty(ResourceFactory.createProperty(propertyUri + "relatedWith"), diseaseResource)
-				.addProperty(ResourceFactory.createProperty(propertyUri + "relatedReference"), bibliography)
-				.addProperty(ResourceFactory.createProperty(propertyUri + "presents"), dataexpression);
+				model.createResource(namespace+ "mirna/" + miRna.getName())
+				.addProperty(ResourceFactory.createProperty(namespace + "name"), miRna.getName())
+				.addProperty(ResourceFactory.createProperty(namespace + "accessionNumber"), miRna.getAccessionNumber())
+				.addProperty(ResourceFactory.createProperty(namespace + "relatedWith"), diseaseResource)
+				.addProperty(ResourceFactory.createProperty(namespace + "relatedReference"), bibliography)
+				.addProperty(ResourceFactory.createProperty(namespace + "presents"), dataexpression);
 				
 				
 				
