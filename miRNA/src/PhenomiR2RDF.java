@@ -34,21 +34,31 @@ public class PhenomiR2RDF {
 		
 		Model model = ModelFactory.createDefaultModel();
 		
-		for (int i=0; i<numLineas; i++) {
+		int count = 0;
+		
+		
+//		while ((br.readLine() != null) && (count<numLineas)){
+		while (br.readLine() != null) {
+			
 			String line = br.readLine();
+			System.out.println("linea =");
+			System.out.println(line);
+			count ++;
 			//StringTokenizer st = new StringTokenizer(line, "\t");
 			String[] tokens = StringUtils.splitPreserveAllTokens(line, "\t");
-			if (i==0) {
-				//System.out.println("NUMERO DE TOKENS: " + st.countTokens());
-				System.out.println("NUMERO DE TOKENS: " + tokens.length);
-				//int j=1;
-				//while (st.hasMoreTokens()) {
-				for (int j=1; j<=tokens.length; j++) {
-					//System.out.println(j + ":" + st.nextToken());
-					System.out.println(j + ":" + tokens[j-1]);
-					//j++;
-				}
-			} else {
+			
+		
+//			if (count==0) {
+//				//System.out.println("NUMERO DE TOKENS: " + st.countTokens());
+//				System.out.println("NUMERO DE TOKENS: " + tokens.length);
+//				//int j=1;
+//				//while (st.hasMoreTokens()) {
+//				for (int j=1; j<=tokens.length; j++) {
+//					//System.out.println(j + ":" + st.nextToken());
+//					System.out.println(j + ":" + tokens[j-1]);
+//					//j++;
+//				}
+			if(line!=null){
 				try {
 //				String field1=st.nextToken();
 //				String field2=st.nextToken();
@@ -112,11 +122,18 @@ public class PhenomiR2RDF {
 					throw e;
 				}
 				
+			}else{
+				
+				
+			}
+				
+				
 			}
 			
-			
-			
-		}
+		
+		
+		
+
 		
 		model.write(out);
 		
