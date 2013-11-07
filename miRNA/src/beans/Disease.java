@@ -6,6 +6,13 @@ public class Disease {
 	private String diseaseSub;
 	private String diseaseClass;
 	private String phenomicId;
+	private String description;
+	private String pubmedId;
+	private String tissue;
+	
+	public Disease() {
+		
+	}
 
 	public Disease(String name, String diseaseSub, String diseaseClass, String phenomicId) {
 		super();
@@ -15,6 +22,30 @@ public class Disease {
 		this.phenomicId = phenomicId;
 	}
 	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getPubmedId() {
+		return pubmedId;
+	}
+
+	public void setPubmedId(String pubmedId) {
+		this.pubmedId = pubmedId;
+	}
+
+	public String getTissue() {
+		return tissue;
+	}
+
+	public void setTissue(String tissue) {
+		this.tissue = tissue;
+	}
+
 	public String getName() {
 		return name;
 	}
