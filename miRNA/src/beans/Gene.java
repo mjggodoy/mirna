@@ -7,9 +7,7 @@ public class Gene {
 	private String geneId;
 	private String description;
 
-	public Gene(String name) {
-
-	}
+	public Gene() {}
 
 	public String getChromosome() {
 		return chromosome;

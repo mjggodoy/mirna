@@ -1,8 +1,9 @@
 package beans;
 
 public class DataExpression {
-	
+
 	private String expression;
+	private String phenomicId;
 	private String foldchangeMin;
 	private String foldchangeMax;
 	private String id;
@@ -14,7 +15,32 @@ public class DataExpression {
 	private String pubmedId;
 	private String year;
 	private String description;
-	
+	private String cellularLine;
+	private String condition;
+
+	public String getCondition() {
+		return condition;
+	}
+
+	public void setCondition(String condition) {
+		this.condition = condition;
+	}
+
+	public String getCellularLine() {
+		return cellularLine;
+	}
+
+	public void setCellularLine(String cellularLine) {
+		this.cellularLine = cellularLine;
+	}
+
+	public void setPhenomicId(String phenomicId) {
+		this.phenomicId = phenomicId;
+	}
+
+	public DataExpression() {
+	}
+
 	public String getDescription() {
 		return description;
 	}
@@ -55,9 +81,6 @@ public class DataExpression {
 		this.pubmedId = pubmedId;
 	}
 
-	public DataExpression(){
-	}
-
 	public String getExpression() {
 		return expression;
 	}
@@ -81,10 +104,11 @@ public class DataExpression {
 	public void setFoldchangeMax(String foldchangeMax) {
 		this.foldchangeMax = foldchangeMax;
 	}
-	
+
 	public String getId() {
 		return id;
 	}
+
 	public void setId(String id) {
 		this.id = id;
 	}
@@ -104,13 +128,22 @@ public class DataExpression {
 	public void setMethod(String method) {
 		this.method = method;
 	}
+
+	public String getPhenomicId() {
+		return phenomicId;
+	}
+
+	public void setPhenomidId(String phenomicId) {
+		this.phenomicId = phenomicId;
+	}
+
 	public String getYear() {
 		return year;
 	}
 
 	public void setYear(String year) {
 		this.year = year;
+
 	}
 
-	
 }

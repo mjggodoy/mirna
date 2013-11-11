@@ -16,7 +16,7 @@ public class Target {
 	private String pubmedId;
 	private String year;
 
-	public Target(String name) {}
+	public Target() {}
 
 	public String getMethod() {
 		return method;

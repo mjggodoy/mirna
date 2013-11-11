@@ -12,6 +12,8 @@ public class MiRna{
 	private String sequence;
 	private String newName;
 	
+	public MiRna() {}
+	
 	public String getVersion() {
 		return version;
 	}
@@ -36,8 +38,6 @@ public class MiRna{
 		this.newName = newName;
 	}
 
-	public MiRna() {
-	}
 	
 	public String getName() {
 		return name;

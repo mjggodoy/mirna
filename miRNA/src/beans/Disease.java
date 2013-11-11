@@ -10,18 +10,9 @@ public class Disease {
 	private String pubmedId;
 	private String tissue;
 	
-	public Disease() {
-		
-	}
+	public Disease(){}
 
-	public Disease(String name, String diseaseSub, String diseaseClass, String phenomicId) {
-		super();
-		this.name = name;
-		this.diseaseSub = diseaseSub;
-		this.diseaseClass = diseaseClass;
-		this.phenomicId = phenomicId;
-	}
-	
+
 	public String getDescription() {
 		return description;
 	}
