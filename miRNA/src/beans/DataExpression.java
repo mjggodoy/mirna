@@ -11,7 +11,7 @@ public class DataExpression {
 	private String method;
 	private String treatment;
 	private String support;
-	private String type;
+	private String profile;
 	private String pubmedId;
 	private String year;
 	private String description;
@@ -65,12 +65,12 @@ public class DataExpression {
 		this.support = support;
 	}
 
-	public String getType() {
-		return type;
+	public String getProfile() {
+		return profile;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setProfile(String profile) {
+		this.profile = profile;
 	}
 
 	public String getPubmedId() {

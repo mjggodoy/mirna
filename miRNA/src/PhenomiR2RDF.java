@@ -79,7 +79,7 @@ public class PhenomiR2RDF {
 				dataExpression.setId(tokens[10]);
 				dataExpression.setMethod(tokens[11]);
 				dataExpression.setStudyDesign(tokens[12]);
-				dataExpression.setType(tokens[7]);
+				dataExpression.setProfile(tokens[7]);
 				
 				
 				
@@ -99,6 +99,7 @@ public class PhenomiR2RDF {
 				.addProperty(ResourceFactory.createProperty(namespace + "foldchangeMax"), dataExpression.getFoldchangeMin()) 
 				.addProperty(ResourceFactory.createProperty(namespace + "foldchangeMin"), dataExpression.getFoldchangeMax())
 				.addProperty(ResourceFactory.createProperty(namespace + "id"), dataExpression.getId())
+				.addProperty(ResourceFactory.createProperty(namespace + "profile"), dataExpression.getProfile())
 				.addProperty(ResourceFactory.createProperty(namespace + "studyDesign"), dataExpression.getStudyDesign())
 				.addProperty(ResourceFactory.createProperty(namespace + "method"), dataExpression.getMethod())	
 				.addProperty(ResourceFactory.createProperty(namespace + "involvesmiRNA"), miRNA)

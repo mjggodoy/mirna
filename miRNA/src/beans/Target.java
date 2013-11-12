@@ -15,6 +15,15 @@ public class Target {
 	private String transcriptId;
 	private String pubmedId;
 	private String year;
+	private String name;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 
 	public Target() {}
 
