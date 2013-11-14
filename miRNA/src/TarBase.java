@@ -10,6 +10,7 @@ import org.apache.commons.lang.StringUtils;
 
 import beans.DataExpression;
 import beans.Disease;
+import beans.Gene;
 import beans.MiRna;
 import beans.Organism;
 import beans.SmallMolecule;
@@ -23,7 +24,7 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
 import com.hp.hpl.jena.vocabulary.RDF;
 
-public class MicroCosm {
+public class TarBase {
 
 	public static void main(String[] args) throws Exception {
 
@@ -58,21 +59,19 @@ public class MicroCosm {
 				try {
 
 					MiRna miRna2 = new MiRna();
-					miRna2.setName(tokens[2]);
+					miRna2.setName(tokens[3]);
 
 					InteractionData interactionData = new InteractionData();
-					interactionData.setFeature(tokens[4]);
-					interactionData.setPhase(tokens[9]);
-					interactionData.setPvalue_log(tokens[10]);
-					interactionData.setMethod(tokens[3]);
-					interactionData.setScore(tokens[8]);
+					interactionData.setMiTG_score(tokens[4]);
 
 					Transcript transcript2 = new Transcript();
-					transcript2.setUTR5start(tokens[6]);
-					transcript2.setUTR3end(tokens[7]);
-					transcript2.setName(tokens[12]);
-					transcript2.setExternalName(tokens[13]);
-					transcript2.setChromosome(tokens[4]);
+					transcript2.setTranscriptID(tokens[1]);
+					
+					Gene gene2 = new Gene();
+					gene2.setName(tokens[2]);
+					
+					
+					
 
 					Resource miRNA = model
 							.createResource(
@@ -86,75 +85,60 @@ public class MicroCosm {
 									ResourceFactory.createResource(namespace
 											+ "miRNA"));
 
-					Resource Transcript = model
+					
+					Resource transcript = model
 							.createResource(
 									namespace + "Transcript/"
-											+ transcript2.getName())
-
-							.addProperty(
-									ResourceFactory.createProperty(namespace
-											+ "UTR5start"),
-									transcript2.getUTR5start())
-
-							.addProperty(
-									ResourceFactory.createProperty(namespace
-											+ "UTR3end"), transcript2.getUTR3end())
-
-							.addProperty(
-									ResourceFactory.createProperty(namespace
-											+ "ExternalName"),
-									transcript2.getExternalName())
-
-							.addProperty(
-									ResourceFactory.createProperty(namespace
-											+ "Chromosome"),
-									transcript2.getChromosome())
-
+											+ transcript2.getTranscriptID())
 							.addProperty(
 									RDF.type,
 									ResourceFactory.createResource(namespace
 											+ "Transcript"));
-
+					
+//					Resource gene = model
+//							.createResource(
+//									namespace +"Gene/" +
+//											gene2.getName());
+							
+	
 					model.createResource(
 							namespace + "InteractionData_"
 									+ interactiondataCount)
-							// dataExpression.getExpression())
+							
 							.addProperty(
 									ResourceFactory.createProperty(namespace
-											+ "feature"),
-									interactionData.getFeature())
-							.addProperty(
-									ResourceFactory.createProperty(namespace
-											+ "phase"),
-									interactionData.getPhase())
-							.addProperty(
-									ResourceFactory.createProperty(namespace
-											+ "Pvalue_log"),
-									interactionData.getPvalue_log())
-
-							.addProperty(
-									ResourceFactory.createProperty(namespace
-											+ "method"),
-									interactionData.getMethod())
-
-							.addProperty(
-									ResourceFactory.createProperty(namespace
-											+ "score"),
-									interactionData.getScore())
-
+											+ "MiTG_score"),
+											interactionData.getMiTG_score())
+											
 							.addProperty(
 									ResourceFactory.createProperty(namespace
 											+ "involvesInteraction"), miRNA)
-
+											
 							.addProperty(
 									ResourceFactory.createProperty(namespace
-											+ "involvesInteraction"),
-									Transcript)
-
+											+ "involvesInteraction"), transcript)				
+											
 							.addProperty(
 									RDF.type,
 									ResourceFactory.createResource(namespace
 											+ "InteractionData"));
+					
+					
+					model.createResource(
+							namespace + "Gene"
+									+ gene2.getName())
+							
+							.addProperty(
+									ResourceFactory.createProperty(namespace
+											+ "producesTranscript"), transcript)
+											
+							.addProperty(
+									RDF.type,
+									ResourceFactory.createResource(namespace
+											+ "Gene"));				
+					
+					
+					
 
 					interactiondataCount++;
 
