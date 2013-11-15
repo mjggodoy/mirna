@@ -25,7 +25,7 @@ public class miRcancer {
 	public static void main(String[] args) throws Exception {
 
 		FileReader fr = new FileReader(
-				"C:/Users/usuario/Desktop/NewSearchingLine/miRcancer/miRcancer2013.txt");
+				"C:/Users/usuario/Desktop/NewSearchingLine/miRcancer/miRCancerJune2013.txt");
 		BufferedReader br = new BufferedReader(fr);
 		OutputStream out = new FileOutputStream(
 				"C:/Users/usuario/Desktop/NewSearchingLine/miRcancer/RDF_miRcancer2013fizer.txt");
@@ -42,26 +42,26 @@ public class miRcancer {
 		int count = 0;
 		int dataExpressionCount = 1;
 
-		while (br.readLine() != null) {
+		String line;
+		
+		while ((line = br.readLine()) != null) {
 
-			String line = br.readLine();
-			System.out.println("linea =");
-			System.out.println(line);
 			count++;
 			System.out.println(count);
+			
 			String[] tokens = StringUtils.splitPreserveAllTokens(line, "\t");
 
 			if (line != null) {
 				try {
 
 					MiRna miRna2 = new MiRna();
-					miRna2.setName(tokens[1]);
+					miRna2.setName(tokens[0]);
 
 					Disease disease = new Disease();
-					disease.setName(tokens[2]);
+					disease.setName(tokens[1]);
 
 					DataExpression dataexpression = new DataExpression();
-					dataexpression.setDescription(tokens[4]);
+					dataexpression.setDescription(tokens[2]);
 					dataexpression.setProfile(tokens[3]);
 
 					Resource miRNA = model
@@ -119,13 +119,16 @@ public class miRcancer {
 
 			}
 
-			model.write(out);
+			
 
-			br.close();
-			fr.close();
-			out.close();
+			
+			model.write(out);
+		
 
 		}
+		out.close();
+		fr.close();
+		br.close();
 
 	}
 
