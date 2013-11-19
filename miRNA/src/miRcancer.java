@@ -61,8 +61,8 @@ public class miRcancer {
 					disease.setName(tokens[1]);
 
 					DataExpression dataexpression = new DataExpression();
-					dataexpression.setDescription(tokens[2]);
-					dataexpression.setProfile(tokens[3]);
+					dataexpression.setDescription(tokens[3]);
+					dataexpression.setProfile(tokens[2]);
 
 					Resource miRNA = model
 							.createResource(

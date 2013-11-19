@@ -40,10 +40,12 @@ public class miREnvironment {
 
 		int count = 0;
 		int dataExpressionCount = 1;
+		int smallMoleculeCount = 1;
+		String line;
 
-		while (br.readLine() != null) {
+		while ((line = br.readLine()) != null) {
 
-			String line = br.readLine();
+		
 			System.out.println("linea =");
 			System.out.println(line);
 			count++;
@@ -64,45 +66,67 @@ public class miREnvironment {
 				try {
 
 					Disease disease = new Disease();
-					disease.setName(tokens[5]);
+					disease.setName(tokens[4]);
 
 					MiRna miRna2 = new MiRna();
-					miRna2.setName(tokens[2]);
+					miRna2.setName(tokens[1]);
+					miRna2.setSubName(tokens[2]);
 					miRna2.setSubName(tokens[3]);
-					miRna2.setSubName(tokens[4]);
 
 					SmallMolecule smallmolecule = new SmallMolecule();
-					smallmolecule.setName(tokens[6]);
+					smallmolecule.setName(tokens[5]);
 
 					DataExpression dataexpression = new DataExpression();
-					dataexpression.setId(tokens[1]);
-					dataexpression.setTreatment(tokens[7]);
-					dataexpression.setPubmedId(tokens[11]);
-					dataexpression.setDescription(tokens[10]);
-					dataexpression.setCellularLine(tokens[8]);
+					dataexpression.setId(tokens[0]);
+					dataexpression.setTreatment(tokens[6]);
+					dataexpression.setPubmedId(tokens[10]);
+					dataexpression.setDescription(tokens[9]);
+					dataexpression.setCellularLine(tokens[7]);
+					
 
 					Organism organism = new Organism();
-					organism.setSpecie(tokens[9]);
+					organism.setSpecie(tokens[8]);
+					
+					Resource organism2 = model.createResource(
+							namespace + "Organism/" + organism.getSpecie())
+							
+							.addProperty(
+									RDF.type,
+									ResourceFactory.createResource(namespace
+											+ "Organism"));
+					
 
 					Resource diseaseResource = model
 							.createResource(
 									namespace + "Disease_"
-											+ disease.getPhenomicId())
+											+ disease.getName())
 							.addProperty(
 									ResourceFactory.createProperty(namespace
-											+ "name"), disease.getName())
+											+ "name"), disease.getName())			
+							.addProperty(
+									ResourceFactory.createProperty(namespace
+											+ "hasOrganism"), organism2)											
 							.addProperty(
 									RDF.type,
 									ResourceFactory.createResource(namespace
 											+ "Disease"));
+					
 
 					Resource smallmolecule2 = model.createResource(
-							namespace + "Smallmolecule"
-									+ smallmolecule.getName()).addProperty(
+							
+							namespace + "Smallmolecule_"
+									+ smallMoleculeCount)
+							
+							
+							.addProperty(
+									ResourceFactory.createProperty(namespace
+											+ "name"), smallmolecule.getName())		
+							.addProperty(
 							RDF.type,
 							ResourceFactory.createResource(namespace
 									+ "SmallMolecule"));
 
+					
 					Resource miRNA = model
 							.createResource(
 									namespace + "miRNA/" + miRna2.getName())
@@ -116,19 +140,17 @@ public class miREnvironment {
 									ResourceFactory.createProperty(namespace
 											+ "subname"), miRna2.getSubName())
 							.addProperty(
+									ResourceFactory.createProperty(namespace
+											+ "hasOrganism"), organism2)					
+							.addProperty(
 									RDF.type,
 									ResourceFactory.createResource(namespace
 											+ "miRNA"));
 
-					Resource organism2 = model.createResource(
-							namespace + "Organism/" + organism.getSpecie())
-							.addProperty(
-									RDF.type,
-									ResourceFactory.createResource(namespace
-											+ "Organism"));
+					
 
 					model.createResource(
-							namespace + "DataExpression_" + dataExpressionCount)
+							namespace + "DataExpression_" + tokens[0])
 							// dataExpression.getExpression())
 							.addProperty(
 									ResourceFactory.createProperty(namespace
@@ -167,8 +189,10 @@ public class miREnvironment {
 									RDF.type,
 									ResourceFactory.createResource(namespace
 											+ "DataExpression"));
-
+					smallMoleculeCount++;
 					dataExpressionCount++;
+					System.out.println();
+					
 
 					// create a bag
 
@@ -189,12 +213,14 @@ public class miREnvironment {
 			}
 
 			model.write(out);
+			
+		}
 
 			br.close();
 			fr.close();
 			out.close();
 
-		}
+		
 
 	}
 
