@@ -1,18 +1,16 @@
+package mirna.rdfconverters;
 
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.IOException;
 import java.io.OutputStream;
-import java.util.StringTokenizer;
+import java.net.URLEncoder;
 
 import org.apache.commons.lang.StringUtils;
 
 import beans.DataExpression;
 import beans.Disease;
 import beans.MiRna;
-import beans.Organism;
-import beans.SmallMolecule;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
@@ -20,20 +18,32 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
 import com.hp.hpl.jena.vocabulary.RDF;
 
+/**
+ * Código para transformar a RDF los datos de miRNA cancer
+ * http://mircancer.ecu.edu
+ * 
+ * @author María Jesús García Godoy
+ *
+ */
 public class miRcancer {
 
 	public static void main(String[] args) throws Exception {
+		
+		/*
+		 * Variables a editar
+		 */
+		String inputFile = "/Users/esteban/Softw/miRNA/miRCancerMarch2014.txt";
+		String outputFile = "/Users/esteban/Softw/miRNA/miRCancerMarch2014.rdf";
+		Integer maxLines = 5;
+		/*
+		 * Fin de variables a editar
+		 */
 
-		FileReader fr = new FileReader(
-				"C:/Users/usuario/Desktop/NewSearchingLine/miRcancer/miRCancerJune2013.txt");
+		FileReader fr = new FileReader(inputFile);
 		BufferedReader br = new BufferedReader(fr);
-		OutputStream out = new FileOutputStream(
-				"C:/Users/usuario/Desktop/NewSearchingLine/miRcancer/RDF_miRcancer2013fizer.txt");
+		OutputStream out = new FileOutputStream(outputFile);
 
 		// int numLineas = 8;
-
-		// String resourceUri = "http://khaos.uma.es/mirna/resource/";
-		// String propertyUri = "http://khaos.uma.es/mirna/property/";
 
 		String namespace = "http://khaos.uma.es/RDF/miRna.owl#";
 
@@ -43,8 +53,9 @@ public class miRcancer {
 		int dataExpressionCount = 1;
 
 		String line;
+		br.readLine();
 		
-		while ((line = br.readLine()) != null) {
+		while (((line = br.readLine()) != null) && ((maxLines==null) || (count<maxLines))) {
 
 			count++;
 			System.out.println(count);
@@ -65,8 +76,8 @@ public class miRcancer {
 					dataexpression.setProfile(tokens[2]);
 
 					Resource miRNA = model
-							.createResource(
-									namespace + "miRNA/" + miRna2.getName())
+							.createResource(namespace + URLEncoder.encode(
+									"miRNA/" + miRna2.getName(), "UTF-8"))
 							.addProperty(
 									ResourceFactory.createProperty(namespace
 											+ "name"), miRna2.getName())
@@ -76,7 +87,7 @@ public class miRcancer {
 											+ "miRNA"));
 
 					Resource disease2 = model.createResource(
-							namespace + "Disease/" + disease.getName())
+							namespace + URLEncoder.encode("Disease/" + disease.getName(), "UTF-8"))
 							.addProperty(
 									RDF.type,
 									ResourceFactory.createResource(namespace
@@ -112,18 +123,13 @@ public class miRcancer {
 					for (int j = 0; j < tokens.length; j++) {
 						System.out.println(j + ": " + tokens[j]);
 					}
-					throw e;
+					e.printStackTrace();
 				}
-
-			} else {
 
 			}
 
-			
-
-			
+			//model.write(out, "N-TRIPLES");
 			model.write(out);
-		
 
 		}
 		out.close();

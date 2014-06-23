@@ -1,15 +1,14 @@
+package mirna.rdfconverters;
+
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.IOException;
 import java.io.OutputStream;
-import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringUtils;
 
 import beans.DataExpression;
 import beans.Disease;
-import beans.Gene;
 import beans.MiRna;
 
 import com.hp.hpl.jena.rdf.model.Model;
@@ -18,6 +17,14 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
 import com.hp.hpl.jena.vocabulary.RDF;
 
+
+/**
+ * Código para transformar a RDF los datos de Phenomir 2.0
+ * http://mips.helmholtz-muenchen.de/phenomir/
+ * 
+ * @author María Jesús García Godoy
+ *
+ */
 public class PhenomiR2RDF {
 	
 	public static void main(String[] args) throws Exception {
@@ -27,24 +34,25 @@ public class PhenomiR2RDF {
 		
 		//int numLineas = 8;
 		
-		String resourceUri = "http://khaos.uma.es/mirna/resource/";
-		String propertyUri = "http://khaos.uma.es/mirna/property/";
+		//String resourceUri = "http://khaos.uma.es/mirna/resource/";
+		//String propertyUri = "http://khaos.uma.es/mirna/property/";
 		
 		String namespace = "http://khaos.uma.es/RDF/miRna.owl#";
 		
 		Model model = ModelFactory.createDefaultModel();
 		
 		int count = 0;
-		int dataExpressionCount = 1;
+		int dataExpressionCount = 2200;
 		
-		
+		br.readLine();
 //		while ((br.readLine() != null) && (count<numLineas)){
 		while (br.readLine() != null) {
 			
 			String line = br.readLine();
-			System.out.println("linea =");
-			System.out.println(line);
+			//System.out.println("linea =");
+			//System.out.println(line);
 			count ++;
+			System.out.println(count);
 			//StringTokenizer st = new StringTokenizer(line, "\t");
 			String[] tokens = StringUtils.splitPreserveAllTokens(line, "\t");
 			
@@ -125,21 +133,12 @@ public class PhenomiR2RDF {
 					for (int j=0; j<tokens.length; j++) {
 						System.out.println(j + ": " + tokens[j]);
 					}
-					throw e;
+					//throw e;
 				}
 				
-			}else{
-				
-				
 			}
 				
-				
-			}
-			
-		
-		
-		
-
+		}
 		
 		model.write(out);
 		
