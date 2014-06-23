@@ -5,6 +5,10 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.OutputStream;
 import java.net.URLEncoder;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -25,23 +29,101 @@ import com.hp.hpl.jena.vocabulary.RDF;
  * @author María Jesús García Godoy
  *
  */
-public class miRcancer {
-
-	public static void main(String[] args) throws Exception {
+public class MiRCancer {
+	
+	private String csvInputFile;
+	
+	
+	public MiRCancer(String csvInputFile) {
+		this.csvInputFile = csvInputFile;
+	}
+	
+	public void insertInTable(String tableName) throws Exception {
+		this.insertInTable(tableName, null);
+	}
+	
+	public void insertInTable(String tableName, Integer maxLines) throws Exception {
 		
-		/*
-		 * Variables a editar
-		 */
-		String inputFile = "/Users/esteban/Softw/miRNA/miRCancerMarch2014.txt";
-		String outputFile = "/Users/esteban/Softw/miRNA/miRCancerMarch2014.rdf";
-		Integer maxLines = 5;
-		/*
-		 * Fin de variables a editar
-		 */
+		// URL of Oracle database server
+		String url = "jdbc:mysql://localhost:3306/mirna";
+		
+		String user = "mirna";
+		String password = "mirna";
+		
+		Connection con = null;
+		String line = null;
+		String[] tokens = null;
+		
+		try {
+			con = DriverManager.getConnection(url, user, password);
+			Statement stmt = (Statement) con.createStatement(); 
+			
+			FileReader fr = new FileReader(csvInputFile);
+			BufferedReader br = new BufferedReader(fr);
+	
+			int count = 0;
+	
+			br.readLine();
+			
+			while (((line = br.readLine()) != null) && ((maxLines==null) || (count<maxLines))) {
+	
+				count++;
+				System.out.println(count);
+				
+				tokens = StringUtils.splitPreserveAllTokens(line, "\t");
+	
+				if (line != null) {
+					
+					MiRna miRna2 = new MiRna();
+					miRna2.setName(tokens[0]);
 
-		FileReader fr = new FileReader(inputFile);
+					Disease disease = new Disease();
+					disease.setName(tokens[1]);
+
+					DataExpression dataexpression = new DataExpression();
+					dataexpression.setDescription(tokens[3]);
+					dataexpression.setProfile(tokens[2]);
+					
+					String pubMedArticle = tokens[3].replaceAll("'", "\\\\'");
+					
+					String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
+							+ tokens[0] + "','"
+							+ tokens[1] + "','"
+							+ tokens[2] + "','"
+							+ pubMedArticle + "')";
+					
+					stmt.executeUpdate(query);
+	
+				}
+	
+			}
+			fr.close();
+			br.close();
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			if (line!=null) {
+				System.out.println(line);
+				for (int j = 0; j < tokens.length; j++) {
+					System.out.println(j + ": " + tokens[j]);
+				}
+			}
+			e.printStackTrace();
+		} finally {
+			if (con!=null) con.close();
+		}
+		
+	}
+	
+	public void buildRdf(String rdfOutputFile) throws Exception {
+		this.buildRdf(rdfOutputFile, null);
+	}
+
+	public void buildRdf(String rdfOutputFile, Integer maxLines) throws Exception {
+
+		FileReader fr = new FileReader(csvInputFile);
 		BufferedReader br = new BufferedReader(fr);
-		OutputStream out = new FileOutputStream(outputFile);
+		OutputStream out = new FileOutputStream(rdfOutputFile);
 
 		// int numLineas = 8;
 
@@ -136,6 +218,17 @@ public class miRcancer {
 		fr.close();
 		br.close();
 
+	}
+	
+	public static void main(String[] args) throws Exception {
+		
+		String inputFile = "/Users/esteban/Softw/miRNA/miRCancerMarch2014.txt";
+		String outputFile = "/Users/esteban/Softw/miRNA/miRCancerMarch2014.rdf";
+		Integer maxLines = 5;
+		
+		MiRCancer miRCancer = new MiRCancer(inputFile);
+		//miRCancer.buildRdf(outputFile, maxLines);
+		miRCancer.insertInTable("MiRnaCancer");
 	}
 
 }
