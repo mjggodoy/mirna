@@ -25,7 +25,13 @@ public class Hairpin extends MiRna {
 		this.newSequence = newSequence;
 	}
 	
-	
+	public String getStart_stand() {
+		return newSequence;
+	}
+
+	public void setStart_stand(String newSequence) {
+		this.newSequence = newSequence;
+	}
 	
 
 }
