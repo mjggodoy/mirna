@@ -25,7 +25,7 @@ import com.hp.hpl.jena.vocabulary.RDF;
  * @author María Jesús García Godoy
  *
  */
-public class miRcancer {
+public class MiRCancer {
 
 	public static void main(String[] args) throws Exception {
 		
