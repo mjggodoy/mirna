@@ -1,0 +1,222 @@
+package mirna.dao.mysql;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
+import beans.MiRna;
+import mirna.dao.MiRnaDAO;
+import mirna.db.DBConnection;
+import mirna.db.mysql.DBConnectionMySQLImpl;
+import mirna.exception.MiRnaException;
+
+public class MiRnaDAOMySQLImpl implements MiRnaDAO {
+	
+	@Override
+	public void create(MiRna newMiRna) throws MiRnaException {
+		System.out.println("MIRNA: create began-----------.");
+		DBConnection con = null;
+
+		try {
+			con = new DBConnectionMySQLImpl();
+			String queryTemplate = "insert into mirna ("
+					+ "name, accession_number, sub_name, provenance, chromosome,"
+					+ "version, sequence, new_name) values "
+					+ "('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')";
+			String queryString = String.format(queryTemplate, newMiRna.getName(), 
+					newMiRna.getAccessionNumber(), newMiRna.getSubName(),
+					newMiRna.getProvenance(), newMiRna.getChromosome(),
+					newMiRna.getVersion(), newMiRna.getSequence(),
+					newMiRna.getNewName());
+			con.update(queryString);
+		} catch (SQLException ex) {
+			throw new MiRnaException("SQLException:" + ex.getMessage());
+		} finally {
+			con.closeDBConnection();
+		}
+	}
+
+	@Override
+	public MiRna read(int id) throws MiRnaException {
+		System.out.println("MIRNA: readRec began-----------.");
+		MiRna miRna = null;
+		DBConnection con = null;
+
+		try {
+			con = new DBConnectionMySQLImpl();
+			List<Map<String, Object>> list = null;
+			String queryTemplate = "select * from mirna where id=%d";
+			String queryString = String.format(queryTemplate, id);
+			System.out.println(queryString);
+			list = con.query(queryString);
+			
+			if (list.size()==1) {
+				Map<String, Object> row = list.get(0);
+				miRna = new MiRna(
+						(Integer) row.get("id"),
+						(String) row.get("name"),
+						(String) row.get("accession_number"),
+						(String) row.get("sub_name"),
+						(String) row.get("provenance"),
+						(String) row.get("chromosome"),
+						(String) row.get("version"),
+						(String) row.get("sequence"),
+						(String) row.get("new_name"));
+			}
+		} catch (SQLException ex) {
+			throw new MiRnaException("SQLException:" + ex.getMessage());
+		} finally {
+			con.closeDBConnection();
+		}
+		return miRna;
+	}
+	
+	@Override
+	public List<MiRna> readAll() throws MiRnaException {
+		System.out.println("MIRNA: readRec began-----------.");
+		List<MiRna> miRnaList = null;
+		DBConnection con = null;
+
+		try {
+			con = new DBConnectionMySQLImpl();
+			List<Map<String, Object>> list = null;
+			String queryString = "select * from mirna";
+			list = con.query(queryString);
+			miRnaList = new ArrayList<MiRna>();
+			
+			for (Map<String, Object> row : list) {
+				MiRna miRna = new MiRna(
+						(Integer) row.get("id"),
+						(String) row.get("name"),
+						(String) row.get("accession_number"),
+						(String) row.get("sub_name"),
+						(String) row.get("provenance"),
+						(String) row.get("chromosome"),
+						(String) row.get("version"),
+						(String) row.get("sequence"),
+						(String) row.get("new_name"));
+
+				miRnaList.add(miRna);
+			}
+		} catch (SQLException ex) {
+			throw new MiRnaException("SQLException:" + ex.getMessage());
+		} finally {
+			con.closeDBConnection();
+		}
+		return miRnaList;
+	}
+
+	@Override
+	public void update(MiRna miRnaToUpdate) throws MiRnaException {
+		System.out.println("MIRNA: updateRec began-----------.");
+		DBConnection con = null;
+		try {
+			con = new DBConnectionMySQLImpl();
+			String queryTemplate = "update mirna set name=%s, accession_number=%s, "
+					+ "sub_name=%s, provenance=%s, chromosome=%s, "
+					+ "version=%s, sequence=%s, new_name=%s where id=%d";
+			String queryString = String.format(queryTemplate,
+					miRnaToUpdate.getName(), miRnaToUpdate.getAccessionNumber(),
+					miRnaToUpdate.getSubName(), miRnaToUpdate.getProvenance(),
+					miRnaToUpdate.getChromosome(), miRnaToUpdate.getVersion(),
+					miRnaToUpdate.getSequence(), miRnaToUpdate.getNewName(),
+					miRnaToUpdate.getId());
+			con.update(queryString);
+		} catch (SQLException ex) {
+			throw new MiRnaException("SQLException:" + ex.getMessage());
+		} finally {
+			con.closeDBConnection();
+		}
+	}
+
+	@Override
+	public void delete(int id) throws MiRnaException {
+		System.out.println("MIRNA: deleteRec began-----------.");
+		DBConnection con = null;
+		try {
+			con = new DBConnectionMySQLImpl();
+			String queryTemplate = "delete from mirna where id=%d";
+			String queryString = String.format(queryTemplate, id);
+			con.update(queryString);
+		} catch (SQLException ex) {
+			throw new MiRnaException("SQLException:" + ex.getMessage());
+		} finally {
+			con.closeDBConnection();
+		}
+	}
+
+	@Override
+	public boolean findByPrimaryKey(int id) throws MiRnaException {
+		System.out.println("MIRNA: findByPrimaryKey began-----------.");
+		boolean result = false;
+		DBConnection con = null;
+		try {
+			con = new DBConnectionMySQLImpl();
+			List<Map<String, Object>> list = null;
+			String queryTemplate = "select * from mirna where id=%d";
+			String queryString = String.format(queryTemplate, id);
+			list = con.query(queryString);
+			result = (list.size()>0);
+		} catch (SQLException ex) {
+			throw new MiRnaException("SQLException:" + ex.getMessage());
+		} finally {
+			con.closeDBConnection();
+		}
+		return result;
+	}
+
+	@Override
+	public Collection<MiRna> findByName(String name) throws MiRnaException {
+		System.out.println("ARSmsg: findByName began-----------.");
+		Collection<MiRna> miRnaList = new ArrayList<MiRna>();
+		DBConnection con = null;
+		try {
+			con = new DBConnectionMySQLImpl();
+			List<Map<String, Object>> list = null;
+			String queryTemplate = "select * from authors where name='%s'";
+			String queryString = String.format(queryTemplate, name);
+			System.out.println(queryString);
+			list = con.query(queryString);
+			for (Map<String, Object> row : list) {
+				MiRna miRna = new MiRna(
+						(Integer) row.get("id"),
+						(String) row.get("name"),
+						(String) row.get("accession_number"),
+						(String) row.get("sub_name"),
+						(String) row.get("provenance"),
+						(String) row.get("chromosome"),
+						(String) row.get("version"),
+						(String) row.get("sequence"),
+						(String) row.get("new_name"));
+				miRnaList.add(miRna);
+			}
+		} catch (SQLException ex) {
+			throw new MiRnaException("SQLException:" + ex.getMessage());
+		} finally {
+			con.closeDBConnection();
+		}
+		return miRnaList;
+	}
+
+	@Override
+	public int findTotalNumber() throws MiRnaException {
+		System.out.println("MIRNA: findTotalNumber began-----------.");
+		int total = -1;
+		DBConnection con = null;
+		try {
+			con = new DBConnectionMySQLImpl();
+			List<Map<String, Object>> list = null;
+			list = con.query("select count(id) from mirna");
+			Object o = list.get(0).get("C1");
+			total = ((Long)o).intValue();
+		} catch (SQLException ex) {
+			throw new MiRnaException("SQLException:" + ex.getMessage());
+		} finally {
+			con.closeDBConnection();
+		}
+		return total;
+	}
+
+}
