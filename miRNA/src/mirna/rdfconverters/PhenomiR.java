@@ -106,7 +106,7 @@ public class PhenomiR {
 					dataexpression5.setFoldchangeMax(tokens[9]);
 
 					DataExpression dataexpression6 = new DataExpression();
-					dataexpression6.setId(tokens[10]);
+					dataexpression6.setiddataexpression(tokens[10]);
 
 					DataExpression dataexpression7 = new DataExpression();
 					dataexpression7.setStudyDesign(tokens[11]);
@@ -207,7 +207,7 @@ public class PhenomiR {
 					dataExpression.setProfile(tokens[7]);
 					dataExpression.setFoldchangeMax(tokens[8]);
 					dataExpression.setFoldchangeMin(tokens[9]);
-					dataExpression.setId(tokens[10]);
+					dataExpression.setiddataexpression(tokens[10]);
 					dataExpression.setMethod(tokens[11]);
 					dataExpression.setStudyDesign(tokens[12]);
 
@@ -261,7 +261,7 @@ public class PhenomiR {
 									dataExpression.getFoldchangeMax())
 							.addProperty(
 									ResourceFactory.createProperty(namespace
-											+ "id"), dataExpression.getId())
+											+ "id"), dataExpression.getiddataexpression())
 							.addProperty(
 									ResourceFactory.createProperty(namespace
 											+ "profile"),

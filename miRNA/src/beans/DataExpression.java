@@ -6,7 +6,7 @@ public class DataExpression {
 	private String phenomicId;
 	private String foldchangeMin;
 	private String foldchangeMax;
-	private String id;
+	private String iddataexpression;
 	private String studyDesign;
 	private String method;
 	private String treatment;
@@ -105,12 +105,12 @@ public class DataExpression {
 		this.foldchangeMax = foldchangeMax;
 	}
 
-	public String getId() {
-		return id;
+	public String getiddataexpression() {
+		return iddataexpression;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setiddataexpression(String iddataexpression) {
+		this.iddataexpression = iddataexpression;
 	}
 
 	public String getStudyDesign() {
