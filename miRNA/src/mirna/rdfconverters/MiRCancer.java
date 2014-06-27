@@ -124,8 +124,6 @@ public class MiRCancer {
 		BufferedReader br = new BufferedReader(fr);
 		OutputStream out = new FileOutputStream(rdfOutputFile);
 
-		// int numLineas = 8;
-
 		String namespace = "http://khaos.uma.es/RDF/miRna.owl#";
 
 		Model model = ModelFactory.createDefaultModel();
