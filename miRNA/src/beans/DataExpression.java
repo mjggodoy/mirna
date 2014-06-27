@@ -4,6 +4,7 @@ public class DataExpression {
 
 	private String expression;
 	private String phenomicId;
+	private String mirenvironmentID;
 	private String foldchangeMin;
 	private String foldchangeMax;
 	private String iddataexpression;
@@ -145,5 +146,15 @@ public class DataExpression {
 		this.year = year;
 
 	}
+	
+	public String getmirenvironmentID() {
+		return mirenvironmentID;
+	}
+
+	public void setmirenvironmentID(String mirenvironmentID) {
+		this.mirenvironmentID = mirenvironmentID;
+	}
+	
+	
 
 }

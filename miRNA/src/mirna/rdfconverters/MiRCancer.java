@@ -226,7 +226,7 @@ public class MiRCancer {
 		Integer maxLines = 5;
 		
 		MiRCancer miRCancer = new MiRCancer(inputFile);
-		//miRCancer.buildRdf(outputFile, maxLines);
+		miRCancer.buildRdf(outputFile, maxLines);
 		miRCancer.insertInTable("MiRnaCancer");
 	}
 
