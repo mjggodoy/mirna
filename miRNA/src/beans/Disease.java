@@ -1,6 +1,6 @@
 package beans;
 
-public class Disease {
+public class Disease extends ModelClass {
 	
 	private String name;
 	private String diseaseSub;
@@ -10,8 +10,19 @@ public class Disease {
 	private String pubmedId;
 	private String tissue;
 	
-	public Disease(){}
-
+	public Disease() {}
+	
+	public Disease(int id, String name, String diseaseSub, String diseaseClass, String phenomicId,
+			String description, String pubmedId, String tissue) {
+		super(id);
+		this.name = name;
+		this.diseaseSub = diseaseSub;
+		this.diseaseClass = diseaseClass;
+		this.phenomicId = phenomicId;
+		this.description = description;
+		this.pubmedId = pubmedId;
+		this.tissue = tissue;
+	}
 
 	public String getDescription() {
 		return description;

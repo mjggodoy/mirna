@@ -1,12 +1,12 @@
 package beans;
 
-public class DataExpression {
+public class DataExpression extends ModelClass {
 
 	private String expression;
 	private String phenomicId;
 	private String foldchangeMin;
 	private String foldchangeMax;
-	private String iddataexpression;
+	private String id;
 	private String studyDesign;
 	private String method;
 	private String treatment;
@@ -17,6 +17,30 @@ public class DataExpression {
 	private String description;
 	private String cellularLine;
 	private String condition;
+	
+	public DataExpression(int pk, String expression, String phenomicId,
+			String foldchangeMin, String foldchangeMax,
+			String id, String studyDesign, String method,
+			String treatment, String support, String profile, String pubmedId,
+			String year, String description, String cellularLine,
+			String condition) {
+		super(pk);
+		this.expression = expression;
+		this.phenomicId = phenomicId;
+		this.foldchangeMin = foldchangeMin;
+		this.foldchangeMax = foldchangeMax;
+		this.id = id;
+		this.studyDesign = studyDesign;
+		this.method = method;
+		this.treatment = treatment;
+		this.support = support;
+		this.profile = profile;
+		this.pubmedId = pubmedId;
+		this.year = year;
+		this.description = description;
+		this.cellularLine = cellularLine;
+		this.condition = condition;
+	}
 
 	public String getCondition() {
 		return condition;
@@ -105,12 +129,12 @@ public class DataExpression {
 		this.foldchangeMax = foldchangeMax;
 	}
 
-	public String getiddataexpression() {
-		return iddataexpression;
+	public String getId() {
+		return id;
 	}
 
-	public void setiddataexpression(String iddataexpression) {
-		this.iddataexpression = iddataexpression;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getStudyDesign() {
@@ -143,7 +167,6 @@ public class DataExpression {
 
 	public void setYear(String year) {
 		this.year = year;
-
 	}
 
 }

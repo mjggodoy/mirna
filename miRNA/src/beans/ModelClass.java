@@ -2,20 +2,20 @@ package beans;
 
 public class ModelClass {
 	
-	protected int id;
+	protected int pk;
 	
 	public ModelClass() {}
 	
-	public ModelClass(int id) {
-		this.id = id;
+	public ModelClass(int pk) {
+		this.pk = pk;
 	}
 	
-	public int getId() {
-		return id;
+	public int getPk() {
+		return pk;
 	}
 	
-	public void setId(int id) {
-		this.id = id;
+	public void setPk(int pk) {
+		this.pk = pk;
 	}
 
 }
