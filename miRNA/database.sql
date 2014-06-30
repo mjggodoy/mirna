@@ -39,7 +39,7 @@ CREATE TABLE disease
 CREATE TABLE data_expression
 (
    pk               int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-   expression       varchar(20) NOT NULL,
+   expression       varchar(20),
    phenomic_id      varchar(20),
    foldchange_min   varchar(20),
    foldchange_max   varchar(20),
