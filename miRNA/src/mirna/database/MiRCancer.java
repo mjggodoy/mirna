@@ -11,6 +11,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import mirna.dao.DataExpressionDAO;
+import mirna.dao.DiseaseDAO;
+import mirna.dao.MiRnaDAO;
+import mirna.dao.mysql.DataExpressionDAOMySQLImpl;
+import mirna.dao.mysql.DiseaseDAOMySQLImpl;
+import mirna.dao.mysql.MiRnaDAOMySQLImpl;
+
 import org.apache.commons.lang.StringUtils;
 
 import beans.DataExpression;
@@ -30,7 +37,7 @@ import com.hp.hpl.jena.vocabulary.RDF;
  * @author María Jesús García Godoy
  *
  */
-public class MiRCancer {
+public class MiRCancer implements IMirnaDatabase {
 	
 	private String csvInputFile;
 	
@@ -115,7 +122,11 @@ public class MiRCancer {
 		
 	}
 	
-	public void csvTableToClassTables(String csvTableName) throws Exception {
+	public void insertIntoSQLModel(String originTable) throws Exception {
+		this.insertIntoSQLModel(originTable, null);
+	}
+	
+	public void insertIntoSQLModel(String originTable, Integer maxLines) throws Exception {
 		
 		// URL of Oracle database server
 		String url = "jdbc:mysql://localhost:3306/mirna";
@@ -133,26 +144,44 @@ public class MiRCancer {
 			
 			// our SQL SELECT query. 
 			// if you only need a few columns, specify them by name instead of using "*"
-			String query = "SELECT * FROM " + csvTableName;
+			String query = "SELECT * FROM " + originTable;
 			
 			// execute the query, and get a java resultset
 			ResultSet rs = stmt.executeQuery(query);
 			
+			MiRnaDAO miRnaDAO = new MiRnaDAOMySQLImpl();
+			DiseaseDAO diseaseDAO = new DiseaseDAOMySQLImpl();
+			DataExpressionDAO dataExpressionDAO = new DataExpressionDAOMySQLImpl();
+			
+			int count = 0;
+			
 			// iterate through the java resultset
-			while (rs.next()) {
+			while ((rs.next()) && ((maxLines==null) || (count<maxLines))) {
+				count++
 				int id = rs.getInt("id");
 				String cancer = rs.getString("cancer");
 				String mirId = rs.getString("mirId");
 				String profile = rs.getString("profile");
-				String pubmedArticle = rs.getString("pubmed_article");
+				String pubmedArticle = rs.getString("pubmed_article").replaceAll("'", "\\\\'");;
 				
 				MiRna miRna = new MiRna();
-				miRna.setName("mirId");
+				miRna.setName(mirId);
 				
 				Disease disease = new Disease();
 				disease.setName(cancer);
+				
+				DataExpression dataExpression = new DataExpression();
+				dataExpression.setDescription(pubmedArticle);
+				dataExpression.setProfile(profile);
+				
 				// print the results
 				System.out.format("%d, %s, %s, %s, %s\n", id, cancer, mirId, profile, pubmedArticle.substring(0,20));
+				
+				if (miRnaDAO.findByName(miRna.getName()).size()==0) miRnaDAO.create(miRna);
+				if (diseaseDAO.findByName(disease.getName()).size()==0) diseaseDAO.create(disease);
+				dataExpressionDAO.create(dataExpression);
+
+				
 			}
 			stmt.close();
 		} catch (SQLException e) {
@@ -284,7 +313,7 @@ public class MiRCancer {
 		MiRCancer miRCancer = new MiRCancer(inputFile);
 		//miRCancer.buildRdf(outputFile, maxLines);
 		//miRCancer.insertInTable("MiRnaCancer");
-		miRCancer.csvTableToClassTables("MiRnaCancer");
+		miRCancer.insertIntoSQLModel("MiRnaCancer", maxLines);
 	}
 
 }

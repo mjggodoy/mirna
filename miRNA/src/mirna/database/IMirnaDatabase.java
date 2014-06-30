@@ -16,5 +16,9 @@ public interface IMirnaDatabase {
 	 * @throws Exception
 	 */
 	public void insertInTable(String tableName, Integer maxLines) throws Exception;
-
+	
+	public void insertIntoSQLModel(String originTable) throws Exception;
+	
+	public void insertIntoSQLModel(String originTable, Integer maxLines) throws Exception;
+	
 }
