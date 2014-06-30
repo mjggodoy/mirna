@@ -6,30 +6,29 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import beans.MiRna;
-import mirna.dao.MiRnaDAO;
+import beans.Disease;
+import mirna.dao.DiseaseDAO;
 import mirna.db.DBConnection;
 import mirna.db.mysql.DBConnectionMySQLImpl;
 import mirna.exception.MiRnaException;
 
-public class MiRnaDAOMySQLImpl implements MiRnaDAO {
+public class DiseaseDAOMySQLImpl implements DiseaseDAO {
 	
 	@Override
-	public void create(MiRna newMiRna) throws MiRnaException {
+	public void create(Disease newDisease) throws MiRnaException {
 		System.out.println("MIRNA: create began-----------.");
 		DBConnection con = null;
 
 		try {
 			con = new DBConnectionMySQLImpl();
-			String queryTemplate = "insert into mirna ("
-					+ "name, accession_number, sub_name, provenance, chromosome,"
-					+ "version, sequence, new_name) values "
-					+ "('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')";
-			String queryString = String.format(queryTemplate, newMiRna.getName(), 
-					newMiRna.getAccessionNumber(), newMiRna.getSubName(),
-					newMiRna.getProvenance(), newMiRna.getChromosome(),
-					newMiRna.getVersion(), newMiRna.getSequence(),
-					newMiRna.getNewName());
+			String queryTemplate = "insert into disease ("
+					+ "name, disease_sub, disease_class, phenomic_id, description,"
+					+ "pubmed_id, tissue) values "
+					+ "('%s', '%s', '%s', '%s', '%s', '%s', '%s')";
+			String queryString = String.format(queryTemplate, newDisease.getName(), 
+					newDisease.getDiseaseSub(), newDisease.getDiseaseClass(),
+					newDisease.getPhenomicId(), newDisease.getDescription(),
+					newDisease.getPubmedId(), newDisease.getTissue());
 			con.update(queryString);
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
@@ -39,90 +38,87 @@ public class MiRnaDAOMySQLImpl implements MiRnaDAO {
 	}
 
 	@Override
-	public MiRna read(int id) throws MiRnaException {
+	public Disease read(int id) throws MiRnaException {
 		System.out.println("MIRNA: readRec began-----------.");
-		MiRna miRna = null;
+		Disease disease = null;
 		DBConnection con = null;
 
 		try {
 			con = new DBConnectionMySQLImpl();
 			List<Map<String, Object>> list = null;
-			String queryTemplate = "select * from mirna where pk=%d";
+			String queryTemplate = "select * from disease where pk=%d";
 			String queryString = String.format(queryTemplate, id);
 			System.out.println(queryString);
 			list = con.query(queryString);
 			
 			if (list.size()==1) {
 				Map<String, Object> row = list.get(0);
-				miRna = new MiRna(
+				disease = new Disease(
 						(Integer) row.get("pk"),
 						(String) row.get("name"),
-						(String) row.get("accession_number"),
-						(String) row.get("sub_name"),
-						(String) row.get("provenance"),
-						(String) row.get("chromosome"),
-						(String) row.get("version"),
-						(String) row.get("sequence"),
-						(String) row.get("new_name"));
+						(String) row.get("disease_sub"),
+						(String) row.get("disease_class"),
+						(String) row.get("phenomic_id"),
+						(String) row.get("description"),
+						(String) row.get("pubmed_id"),
+						(String) row.get("tissue"));
 			}
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
 		} finally {
 			con.closeDBConnection();
 		}
-		return miRna;
+		return disease;
 	}
 	
 	@Override
-	public List<MiRna> readAll() throws MiRnaException {
+	public List<Disease> readAll() throws MiRnaException {
 		System.out.println("MIRNA: readRec began-----------.");
-		List<MiRna> miRnaList = null;
+		List<Disease> diseaseList = null;
 		DBConnection con = null;
 
 		try {
 			con = new DBConnectionMySQLImpl();
 			List<Map<String, Object>> list = null;
-			String queryString = "select * from mirna";
+			String queryString = "select * from disease";
 			list = con.query(queryString);
-			miRnaList = new ArrayList<MiRna>();
+			diseaseList = new ArrayList<Disease>();
 			
 			for (Map<String, Object> row : list) {
-				MiRna miRna = new MiRna(
+				Disease disease = new Disease(
 						(Integer) row.get("pk"),
 						(String) row.get("name"),
-						(String) row.get("accession_number"),
-						(String) row.get("sub_name"),
-						(String) row.get("provenance"),
-						(String) row.get("chromosome"),
-						(String) row.get("version"),
-						(String) row.get("sequence"),
-						(String) row.get("new_name"));
+						(String) row.get("disease_sub"),
+						(String) row.get("disease_class"),
+						(String) row.get("phenomic_id"),
+						(String) row.get("description"),
+						(String) row.get("pubmed_id"),
+						(String) row.get("tissue"));
 
-				miRnaList.add(miRna);
+				diseaseList.add(disease);
 			}
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
 		} finally {
 			con.closeDBConnection();
 		}
-		return miRnaList;
+		return diseaseList;
 	}
 
 	@Override
-	public void update(MiRna miRnaToUpdate) throws MiRnaException {
+	public void update(Disease diseaseToUpdate) throws MiRnaException {
 		System.out.println("MIRNA: updateRec began-----------.");
 		DBConnection con = null;
 		try {
 			con = new DBConnectionMySQLImpl();
-			String queryTemplate = "update mirna set name=%s, accession_number=%s, "
-					+ "sub_name=%s, provenance=%s, chromosome=%s, "
-					+ "version=%s, sequence=%s, new_name=%s where pk=%d";
+			String queryTemplate = "update disease set name=%s, disease_sub=%s, "
+					+ "disease_class=%s, phenomic_id=%s, description=%s, "
+					+ "pubmed_id=%s, tissue=%s, where pk=%d";
 			String queryString = String.format(queryTemplate,
-					miRnaToUpdate.getName(), miRnaToUpdate.getAccessionNumber(),
-					miRnaToUpdate.getSubName(), miRnaToUpdate.getProvenance(),
-					miRnaToUpdate.getChromosome(), miRnaToUpdate.getVersion(),
-					miRnaToUpdate.getSequence(), miRnaToUpdate.getNewName(),
-					miRnaToUpdate.getPk());
+					diseaseToUpdate.getName(), diseaseToUpdate.getDiseaseSub(),
+					diseaseToUpdate.getDiseaseClass(), diseaseToUpdate.getPhenomicId(),
+					diseaseToUpdate.getDescription(), diseaseToUpdate.getPubmedId(),
+					diseaseToUpdate.getTissue(), diseaseToUpdate.getPk());
 			con.update(queryString);
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
@@ -137,7 +133,7 @@ public class MiRnaDAOMySQLImpl implements MiRnaDAO {
 		DBConnection con = null;
 		try {
 			con = new DBConnectionMySQLImpl();
-			String queryTemplate = "delete from mirna where pk=%d";
+			String queryTemplate = "delete from disease where pk=%d";
 			String queryString = String.format(queryTemplate, id);
 			con.update(queryString);
 		} catch (SQLException ex) {
@@ -155,7 +151,7 @@ public class MiRnaDAOMySQLImpl implements MiRnaDAO {
 		try {
 			con = new DBConnectionMySQLImpl();
 			List<Map<String, Object>> list = null;
-			String queryTemplate = "select * from mirna where pk=%d";
+			String queryTemplate = "select * from disease where pk=%d";
 			String queryString = String.format(queryTemplate, id);
 			list = con.query(queryString);
 			result = (list.size()>0);
@@ -168,36 +164,35 @@ public class MiRnaDAOMySQLImpl implements MiRnaDAO {
 	}
 
 	@Override
-	public Collection<MiRna> findByName(String name) throws MiRnaException {
+	public Collection<Disease> findByName(String name) throws MiRnaException {
 		System.out.println("MIRNA: findByName began-----------.");
-		Collection<MiRna> miRnaList = new ArrayList<MiRna>();
+		Collection<Disease> diseaseList = new ArrayList<Disease>();
 		DBConnection con = null;
 		try {
 			con = new DBConnectionMySQLImpl();
 			List<Map<String, Object>> list = null;
-			String queryTemplate = "select * from authors where name='%s'";
+			String queryTemplate = "select * from disease where name='%s'";
 			String queryString = String.format(queryTemplate, name);
 			System.out.println(queryString);
 			list = con.query(queryString);
 			for (Map<String, Object> row : list) {
-				MiRna miRna = new MiRna(
+				Disease disease = new Disease(
 						(Integer) row.get("pk"),
 						(String) row.get("name"),
-						(String) row.get("accession_number"),
-						(String) row.get("sub_name"),
-						(String) row.get("provenance"),
-						(String) row.get("chromosome"),
-						(String) row.get("version"),
-						(String) row.get("sequence"),
-						(String) row.get("new_name"));
-				miRnaList.add(miRna);
+						(String) row.get("disease_sub"),
+						(String) row.get("disease_class"),
+						(String) row.get("phenomic_id"),
+						(String) row.get("description"),
+						(String) row.get("pubmed_id"),
+						(String) row.get("tissue"));
+				diseaseList.add(disease);
 			}
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
 		} finally {
 			con.closeDBConnection();
 		}
-		return miRnaList;
+		return diseaseList;
 	}
 
 	@Override
@@ -208,7 +203,7 @@ public class MiRnaDAOMySQLImpl implements MiRnaDAO {
 		try {
 			con = new DBConnectionMySQLImpl();
 			List<Map<String, Object>> list = null;
-			list = con.query("select count(pk) from mirna");
+			list = con.query("select count(pk) from disease");
 			Object o = list.get(0).get("C1");
 			total = ((Long)o).intValue();
 		} catch (SQLException ex) {

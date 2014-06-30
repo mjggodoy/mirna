@@ -23,7 +23,7 @@ public class DBConnectionMySQLImpl implements DBConnection {
 
     // we dont want this garbage collected until we are done
     public DBConnectionMySQLImpl() throws MiRnaException {    // note more general exception
-    	System.out.println("MiRNA: getDBConnection began-----------.");
+    	System.out.println("MIRNA: getDBConnection began-----------.");
 		String driverClassName = "";
 		String db_file_name_prefix = "";
 
@@ -73,7 +73,7 @@ public class DBConnectionMySQLImpl implements DBConnection {
 
 	public synchronized void update(String expression) throws SQLException {
 		//for CREATE, DROP, INSERT and UPDATE
-		System.out.println("MiRNA: update began-----------.");
+		System.out.println("MIRNA: update began-----------.");
 		Statement st = null;
 
 		st = conn.createStatement(); // statements
@@ -88,7 +88,7 @@ public class DBConnectionMySQLImpl implements DBConnection {
 
 	public synchronized List<Map<String, Object>> query(String expression) throws SQLException {
 		//for SELECT
-		System.out.println("MiRNA: query began-----------.");
+		System.out.println("MIRNA: query began-----------.");
 		Statement st = null;
 		ResultSet rs = null;
 
@@ -104,7 +104,7 @@ public class DBConnectionMySQLImpl implements DBConnection {
 	}
 
 	private static void dump(ResultSet rs) throws SQLException {
-		System.out.println("MiRNA: dump began-----------.");
+		System.out.println("MIRNA: dump began-----------.");
 		ResultSetMetaData meta = rs.getMetaData();
 		int colmax = meta.getColumnCount();
 		int i;
@@ -135,7 +135,7 @@ public class DBConnectionMySQLImpl implements DBConnection {
 	}
 
 	public void shutdown() throws SQLException {
-		System.out.println("MiRNA: shutdown began-----------.");
+		System.out.println("MIRNA: shutdown began-----------.");
 		Statement st = conn.createStatement();
 
 		st.execute("SHUTDOWN"); //write out buffersand clean shut down
