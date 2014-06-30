@@ -24,15 +24,17 @@ public class DBConnectionMySQLImpl implements DBConnection {
     // we dont want this garbage collected until we are done
     public DBConnectionMySQLImpl() throws MiRnaException {    // note more general exception
     	System.out.println("MIRNA: getDBConnection began-----------.");
-		String driverClassName = "";
-		String db_file_name_prefix = "";
+
+    	String url = "";
+    	String user = "";
+		String password = "";
 
 		try {
 			Properties props = new Properties();
-			props.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("MiRna.properties"));	
-			driverClassName = props.getProperty("driverName");
-			System.out.println("driverClassName=" + driverClassName);
-			db_file_name_prefix = props.getProperty("dbFileNamePrefix");
+			props.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("MiRna-mysql.properties"));
+			url = props.getProperty("url");
+			user = props.getProperty("user");
+			password = props.getProperty("password");
 		} catch (FileNotFoundException e) {
 			throw new MiRnaException("FileNotFoundException:" + e.getMessage() + " " + e.toString());
 		} catch (java.io.IOException e) {
@@ -40,16 +42,9 @@ public class DBConnectionMySQLImpl implements DBConnection {
 		}
 
 		try {
-			Class.forName(driverClassName); //org.hsqldb.jdbcDriver
-			
-			conn = DriverManager.getConnection("jdbc:mysql:"
-				+ db_file_name_prefix, // filenames
-				"sa", // username
-				""); // password
+			conn = DriverManager.getConnection(url, user, password);
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage() + " " + ex.toString());
-		} catch (java.lang.ClassNotFoundException ex) {
-			throw new MiRnaException("ClassNotFoundException:" + ex.getMessage() + " " + ex.toString());
 		}
     }
 	

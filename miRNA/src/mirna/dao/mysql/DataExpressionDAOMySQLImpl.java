@@ -22,10 +22,10 @@ public class DataExpressionDAOMySQLImpl implements DataExpressionDAO {
 			con = new DBConnectionMySQLImpl();
 			String queryTemplate = "insert into data_expression ("
 					+ "expression, phenomic_id, foldchange_min, foldchange_max,"
-					+ "id_data_expression, study_design, method, treatment,"
+					+ "id, study_design, method, treatment,"
 					+ "support, profile, pubmed_id, year, description,"
 					+ "cellular_line, condition_) values "
-					+ "('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s'"
+					+ "('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s',"
 					+ "'%s', '%s', '%s', '%s', '%s', '%s', '%s')";
 			String queryString = String.format(queryTemplate, 
 					newDataExpression.getExpression(),
@@ -43,11 +43,14 @@ public class DataExpressionDAOMySQLImpl implements DataExpressionDAO {
 					newDataExpression.getDescription(),
 					newDataExpression.getCellularLine(),
 					newDataExpression.getCondition());
+			System.out.println(queryString);
+			queryString = queryString.replaceAll("'null'", "null");
+			System.out.println(queryString);
 			con.update(queryString);
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
 		} finally {
-			con.closeDBConnection();
+			if (con!=null) con.closeDBConnection();
 		}
 	}
 
@@ -73,7 +76,7 @@ public class DataExpressionDAOMySQLImpl implements DataExpressionDAO {
 						(String) row.get("phenomic_id"),
 						(String) row.get("foldchange_min"),
 						(String) row.get("foldchange_max"),
-						(String) row.get("id_data_expression"),
+						(String) row.get("id"),
 						(String) row.get("study_design"),
 						(String) row.get("method"),
 						(String) row.get("treatment"),
@@ -88,7 +91,7 @@ public class DataExpressionDAOMySQLImpl implements DataExpressionDAO {
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
 		} finally {
-			con.closeDBConnection();
+			if (con!=null) con.closeDBConnection();
 		}
 		return dataExpression;
 	}
@@ -113,7 +116,7 @@ public class DataExpressionDAOMySQLImpl implements DataExpressionDAO {
 						(String) row.get("phenomic_id"),
 						(String) row.get("foldchange_min"),
 						(String) row.get("foldchange_max"),
-						(String) row.get("id_data_expression"),
+						(String) row.get("id"),
 						(String) row.get("study_design"),
 						(String) row.get("method"),
 						(String) row.get("treatment"),
@@ -130,7 +133,7 @@ public class DataExpressionDAOMySQLImpl implements DataExpressionDAO {
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
 		} finally {
-			con.closeDBConnection();
+			if (con!=null) con.closeDBConnection();
 		}
 		return dataExpressionList;
 	}
@@ -144,7 +147,7 @@ public class DataExpressionDAOMySQLImpl implements DataExpressionDAO {
 			
 			String queryTemplate = "update data_expression set expression=%s,"
 					+ "phenomic_id=%s, foldchange_min=%s, foldchange_max=%s,"
-					+ "id_data_expression=%s, study_design=%s, method=%s, treatment=%s,"
+					+ "id=%s, study_design=%s, method=%s, treatment=%s,"
 					+ "support=%s, profile=%s, pubmed_id=%s, year=%s, description=%s,"
 					+ "cellular_line=%s, condition_=%s where pk=%d";
 			String queryString = String.format(queryTemplate, 
@@ -168,7 +171,7 @@ public class DataExpressionDAOMySQLImpl implements DataExpressionDAO {
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
 		} finally {
-			con.closeDBConnection();
+			if (con!=null) con.closeDBConnection();
 		}
 	}
 
@@ -184,7 +187,7 @@ public class DataExpressionDAOMySQLImpl implements DataExpressionDAO {
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
 		} finally {
-			con.closeDBConnection();
+			if (con!=null) con.closeDBConnection();
 		}
 	}
 
@@ -203,7 +206,7 @@ public class DataExpressionDAOMySQLImpl implements DataExpressionDAO {
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
 		} finally {
-			con.closeDBConnection();
+			if (con!=null) con.closeDBConnection();
 		}
 		return result;
 	}
@@ -222,7 +225,7 @@ public class DataExpressionDAOMySQLImpl implements DataExpressionDAO {
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
 		} finally {
-			con.closeDBConnection();
+			if (con!=null) con.closeDBConnection();
 		}
 		return total;
 	}

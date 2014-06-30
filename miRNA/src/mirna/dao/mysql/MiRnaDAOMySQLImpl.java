@@ -34,7 +34,7 @@ public class MiRnaDAOMySQLImpl implements MiRnaDAO {
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
 		} finally {
-			con.closeDBConnection();
+			if (con!=null) con.closeDBConnection();
 		}
 	}
 
@@ -68,7 +68,7 @@ public class MiRnaDAOMySQLImpl implements MiRnaDAO {
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
 		} finally {
-			con.closeDBConnection();
+			if (con!=null) con.closeDBConnection();
 		}
 		return miRna;
 	}
@@ -103,7 +103,7 @@ public class MiRnaDAOMySQLImpl implements MiRnaDAO {
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
 		} finally {
-			con.closeDBConnection();
+			if (con!=null) con.closeDBConnection();
 		}
 		return miRnaList;
 	}
@@ -127,7 +127,7 @@ public class MiRnaDAOMySQLImpl implements MiRnaDAO {
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
 		} finally {
-			con.closeDBConnection();
+			if (con!=null) con.closeDBConnection();
 		}
 	}
 
@@ -143,7 +143,7 @@ public class MiRnaDAOMySQLImpl implements MiRnaDAO {
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
 		} finally {
-			con.closeDBConnection();
+			if (con!=null) con.closeDBConnection();
 		}
 	}
 
@@ -162,7 +162,7 @@ public class MiRnaDAOMySQLImpl implements MiRnaDAO {
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
 		} finally {
-			con.closeDBConnection();
+			if (con!=null) con.closeDBConnection();
 		}
 		return result;
 	}
@@ -175,7 +175,7 @@ public class MiRnaDAOMySQLImpl implements MiRnaDAO {
 		try {
 			con = new DBConnectionMySQLImpl();
 			List<Map<String, Object>> list = null;
-			String queryTemplate = "select * from authors where name='%s'";
+			String queryTemplate = "select * from mirna where name='%s'";
 			String queryString = String.format(queryTemplate, name);
 			System.out.println(queryString);
 			list = con.query(queryString);
@@ -195,7 +195,7 @@ public class MiRnaDAOMySQLImpl implements MiRnaDAO {
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
 		} finally {
-			con.closeDBConnection();
+			if (con!=null) con.closeDBConnection();
 		}
 		return miRnaList;
 	}
@@ -214,7 +214,7 @@ public class MiRnaDAOMySQLImpl implements MiRnaDAO {
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
 		} finally {
-			con.closeDBConnection();
+			if (con!=null) con.closeDBConnection();
 		}
 		return total;
 	}

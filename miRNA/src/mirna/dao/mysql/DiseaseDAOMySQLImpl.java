@@ -33,7 +33,7 @@ public class DiseaseDAOMySQLImpl implements DiseaseDAO {
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
 		} finally {
-			con.closeDBConnection();
+			if (con!=null) con.closeDBConnection();
 		}
 	}
 
@@ -66,7 +66,7 @@ public class DiseaseDAOMySQLImpl implements DiseaseDAO {
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
 		} finally {
-			con.closeDBConnection();
+			if (con!=null) con.closeDBConnection();
 		}
 		return disease;
 	}
@@ -100,7 +100,7 @@ public class DiseaseDAOMySQLImpl implements DiseaseDAO {
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
 		} finally {
-			con.closeDBConnection();
+			if (con!=null) con.closeDBConnection();
 		}
 		return diseaseList;
 	}
@@ -123,7 +123,7 @@ public class DiseaseDAOMySQLImpl implements DiseaseDAO {
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
 		} finally {
-			con.closeDBConnection();
+			if (con!=null) con.closeDBConnection();
 		}
 	}
 
@@ -139,7 +139,7 @@ public class DiseaseDAOMySQLImpl implements DiseaseDAO {
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
 		} finally {
-			con.closeDBConnection();
+			if (con!=null) con.closeDBConnection();
 		}
 	}
 
@@ -158,7 +158,7 @@ public class DiseaseDAOMySQLImpl implements DiseaseDAO {
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
 		} finally {
-			con.closeDBConnection();
+			if (con!=null) con.closeDBConnection();
 		}
 		return result;
 	}
@@ -190,7 +190,7 @@ public class DiseaseDAOMySQLImpl implements DiseaseDAO {
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
 		} finally {
-			con.closeDBConnection();
+			if (con!=null) con.closeDBConnection();
 		}
 		return diseaseList;
 	}
@@ -209,7 +209,7 @@ public class DiseaseDAOMySQLImpl implements DiseaseDAO {
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
 		} finally {
-			con.closeDBConnection();
+			if (con!=null) con.closeDBConnection();
 		}
 		return total;
 	}
