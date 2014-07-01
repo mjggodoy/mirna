@@ -63,6 +63,7 @@ public class TarBase {
 
 					InteractionData interactionData = new InteractionData();
 					interactionData.setMiTG_score(tokens[4]);
+				
 
 					Transcript transcript2 = new Transcript();
 					transcript2.setTranscriptID(tokens[1]);
