@@ -157,7 +157,7 @@ public class MiRCancer implements IMirnaDatabase {
 			
 			// iterate through the java resultset
 			while ((rs.next()) && ((maxLines==null) || (count<maxLines))) {
-				count++
+				count++;
 				int id = rs.getInt("id");
 				String cancer = rs.getString("cancer");
 				String mirId = rs.getString("mirId");
@@ -177,10 +177,30 @@ public class MiRCancer implements IMirnaDatabase {
 				// print the results
 				System.out.format("%d, %s, %s, %s, %s\n", id, cancer, mirId, profile, pubmedArticle.substring(0,20));
 				
-				if (miRnaDAO.findByName(miRna.getName()).size()==0) miRnaDAO.create(miRna);
-				if (diseaseDAO.findByName(disease.getName()).size()==0) diseaseDAO.create(disease);
-				dataExpressionDAO.create(dataExpression);
+				// Inserta MiRna (o recupera su id. si ya existe)
+				MiRna oldMiRna = miRnaDAO.findByName(miRna.getName());
+				if (oldMiRna==null) {
+					int key = miRnaDAO.create(miRna);
+					miRna.setPk(key);
+				} else {
+					miRna.setPk(oldMiRna.getPk());
+				}
+				
+				// Inserta Disease (o recupera su id. si ya existe)
+				Disease oldDisease = diseaseDAO.findByName(disease.getName());
+				if (oldDisease==null) {
+					int key = diseaseDAO.create(disease);
+					disease.setPk(key);
+				} else {
+					disease.setPk(oldDisease.getPk());
+				}
+				
+				// Inserta nueva DataExpression
+				// (y la relaciona con el MiRna y Disease correspondiente)
 
+				int dataExpressionId = dataExpressionDAO.create(dataExpression);
+				dataExpressionDAO.newMiRnaInvolved(dataExpressionId, miRna.getPk());
+				dataExpressionDAO.newRelatedDisease(dataExpressionId, disease.getPk());
 				
 			}
 			stmt.close();
@@ -307,13 +327,13 @@ public class MiRCancer implements IMirnaDatabase {
 	public static void main(String[] args) throws Exception {
 		
 		String inputFile = "/Users/esteban/Softw/miRNA/miRCancerMarch2014.txt";
-		String outputFile = "/Users/esteban/Softw/miRNA/miRCancerMarch2014.rdf";
-		Integer maxLines = 5;
+		//String outputFile = "/Users/esteban/Softw/miRNA/miRCancerMarch2014.rdf";
+		//Integer maxLines = 5;
 		
 		MiRCancer miRCancer = new MiRCancer(inputFile);
 		//miRCancer.buildRdf(outputFile, maxLines);
-		//miRCancer.insertInTable("MiRnaCancer");
-		miRCancer.insertIntoSQLModel("MiRnaCancer", maxLines);
+		miRCancer.insertInTable("MiRnaCancer");
+		miRCancer.insertIntoSQLModel("MiRnaCancer");
 	}
 
 }

@@ -1,6 +1,5 @@
 package mirna.dao;
 
-import java.util.Collection;
 import java.util.List;
 
 import mirna.exception.MiRnaException;
@@ -8,7 +7,7 @@ import beans.Disease;
 
 public interface DiseaseDAO {
 	
-	public void create(Disease newDisease) throws MiRnaException;
+	public int create(Disease newDisease) throws MiRnaException;
 
 	public Disease read(int id) throws MiRnaException;
 	
@@ -20,7 +19,7 @@ public interface DiseaseDAO {
 
 	public boolean findByPrimaryKey(int id) throws MiRnaException;
 	
-	public Collection<Disease> findByName(String name) throws MiRnaException;
+	public Disease findByName(String name) throws MiRnaException;
 
 	public int findTotalNumber() throws MiRnaException;
 

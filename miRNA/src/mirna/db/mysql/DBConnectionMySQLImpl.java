@@ -65,6 +65,21 @@ public class DBConnectionMySQLImpl implements DBConnection {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
 		}
 	}
+	
+	public synchronized int insert(String expression) throws SQLException {
+		// for INSERT and returning new auto-increment key
+		System.out.println("MIRNA: insert began-----------.");
+
+		PreparedStatement pstmt = conn.prepareStatement(expression, Statement.RETURN_GENERATED_KEYS);  
+		pstmt.executeUpdate();  
+		
+		ResultSet keys = pstmt.getGeneratedKeys();    
+		keys.next();  
+		int key = keys.getInt(1);
+		
+		pstmt.close();
+		return key;
+	}
 
 	public synchronized void update(String expression) throws SQLException {
 		//for CREATE, DROP, INSERT and UPDATE

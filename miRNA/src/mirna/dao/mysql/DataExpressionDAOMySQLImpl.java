@@ -14,9 +14,10 @@ import beans.DataExpression;
 public class DataExpressionDAOMySQLImpl implements DataExpressionDAO {
 	
 	@Override
-	public void create(DataExpression newDataExpression) throws MiRnaException {
+	public int create(DataExpression newDataExpression) throws MiRnaException {
 		System.out.println("MIRNA: create began-----------.");
 		DBConnection con = null;
+		int res = -1;
 
 		try {
 			con = new DBConnectionMySQLImpl();
@@ -46,12 +47,14 @@ public class DataExpressionDAOMySQLImpl implements DataExpressionDAO {
 			System.out.println(queryString);
 			queryString = queryString.replaceAll("'null'", "null");
 			System.out.println(queryString);
-			con.update(queryString);
+			res = con.insert(queryString);
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
 		} finally {
 			if (con!=null) con.closeDBConnection();
 		}
+		
+		return res;
 	}
 
 	@Override
@@ -228,6 +231,42 @@ public class DataExpressionDAOMySQLImpl implements DataExpressionDAO {
 			if (con!=null) con.closeDBConnection();
 		}
 		return total;
+	}
+	
+	public void newRelatedDisease(int dataExpressionId, int diseaseId) throws MiRnaException {
+		System.out.println("MIRNA: insert began-----------.");
+		DBConnection con = null;
+		try {
+			con = new DBConnectionMySQLImpl();
+			String queryTemplate = "insert into data_expression_related_to_disease "
+					+ "values (%d, %d)";
+			String queryString = String.format(queryTemplate, 
+					dataExpressionId, diseaseId);
+			System.out.println(queryString);
+			con.update(queryString);
+		} catch (SQLException ex) {
+			throw new MiRnaException("SQLException:" + ex.getMessage());
+		} finally {
+			if (con!=null) con.closeDBConnection();
+		}
+	}
+	
+	public void newMiRnaInvolved(int dataExpressionId, int miRnaId) throws MiRnaException {
+		System.out.println("MIRNA: insert began-----------.");
+		DBConnection con = null;
+		try {
+			con = new DBConnectionMySQLImpl();
+			String queryTemplate = "insert into data_expression_involves_mirna "
+					+ "values (%d, %d)";
+			String queryString = String.format(queryTemplate, 
+					dataExpressionId, miRnaId);
+			System.out.println(queryString);
+			con.update(queryString);
+		} catch (SQLException ex) {
+			throw new MiRnaException("SQLException:" + ex.getMessage());
+		} finally {
+			if (con!=null) con.closeDBConnection();
+		}
 	}
 
 }

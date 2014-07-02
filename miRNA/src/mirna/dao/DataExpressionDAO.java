@@ -7,7 +7,7 @@ import beans.DataExpression;
 
 public interface DataExpressionDAO {
 	
-	public void create(DataExpression newDataExpression) throws MiRnaException;
+	public int create(DataExpression newDataExpression) throws MiRnaException;
 
 	public DataExpression read(int id) throws MiRnaException;
 	
@@ -22,5 +22,9 @@ public interface DataExpressionDAO {
 	//public Collection<DataExpression> findByName(String name) throws MiRnaException;
 
 	public int findTotalNumber() throws MiRnaException;
+	
+	public void newRelatedDisease(int dataExpressionId, int diseaseId) throws MiRnaException;
+	
+	public void newMiRnaInvolved(int dataExpressionId, int miRnaId) throws MiRnaException;
 
 }

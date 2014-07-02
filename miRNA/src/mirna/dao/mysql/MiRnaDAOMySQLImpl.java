@@ -2,22 +2,22 @@ package mirna.dao.mysql;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import beans.MiRna;
 import mirna.dao.MiRnaDAO;
 import mirna.db.DBConnection;
 import mirna.db.mysql.DBConnectionMySQLImpl;
 import mirna.exception.MiRnaException;
+import beans.MiRna;
 
 public class MiRnaDAOMySQLImpl implements MiRnaDAO {
 	
 	@Override
-	public void create(MiRna newMiRna) throws MiRnaException {
+	public int create(MiRna newMiRna) throws MiRnaException {
 		System.out.println("MIRNA: create began-----------.");
 		DBConnection con = null;
+		int res = -1;
 
 		try {
 			con = new DBConnectionMySQLImpl();
@@ -30,12 +30,14 @@ public class MiRnaDAOMySQLImpl implements MiRnaDAO {
 					newMiRna.getProvenance(), newMiRna.getChromosome(),
 					newMiRna.getVersion(), newMiRna.getSequence(),
 					newMiRna.getNewName());
-			con.update(queryString);
+			queryString = queryString.replaceAll("'null'", "null");
+			res = con.insert(queryString);
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
 		} finally {
 			if (con!=null) con.closeDBConnection();
 		}
+		return res;
 	}
 
 	@Override
@@ -168,9 +170,10 @@ public class MiRnaDAOMySQLImpl implements MiRnaDAO {
 	}
 
 	@Override
-	public Collection<MiRna> findByName(String name) throws MiRnaException {
+	public MiRna findByName(String name) throws MiRnaException {
 		System.out.println("MIRNA: findByName began-----------.");
-		Collection<MiRna> miRnaList = new ArrayList<MiRna>();
+		List<MiRna> miRnaList = new ArrayList<MiRna>();
+		MiRna res = null;
 		DBConnection con = null;
 		try {
 			con = new DBConnectionMySQLImpl();
@@ -180,7 +183,7 @@ public class MiRnaDAOMySQLImpl implements MiRnaDAO {
 			System.out.println(queryString);
 			list = con.query(queryString);
 			for (Map<String, Object> row : list) {
-				MiRna miRna = new MiRna(
+				res = new MiRna(
 						(Integer) row.get("pk"),
 						(String) row.get("name"),
 						(String) row.get("accession_number"),
@@ -190,14 +193,17 @@ public class MiRnaDAOMySQLImpl implements MiRnaDAO {
 						(String) row.get("version"),
 						(String) row.get("sequence"),
 						(String) row.get("new_name"));
-				miRnaList.add(miRna);
+				miRnaList.add(res);
+			}
+			if (miRnaList.size()>1) {
+				throw new MiRnaException("Found two MiRna with the same name (" + name + ")");
 			}
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
 		} finally {
 			if (con!=null) con.closeDBConnection();
 		}
-		return miRnaList;
+		return res;
 	}
 
 	@Override

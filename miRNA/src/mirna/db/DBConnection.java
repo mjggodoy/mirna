@@ -12,6 +12,8 @@ public interface DBConnection {
 	
 	//public void closeStatement(PreparedStatement stmt) throws MiRnaException;
 	
+	public int insert(String expression) throws SQLException;
+	
 	public void update(String expression) throws SQLException;
 	
 	public List<Map<String, Object>> query(String expression) throws SQLException;

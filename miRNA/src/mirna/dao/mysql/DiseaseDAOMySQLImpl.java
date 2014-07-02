@@ -2,22 +2,22 @@ package mirna.dao.mysql;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import beans.Disease;
 import mirna.dao.DiseaseDAO;
 import mirna.db.DBConnection;
 import mirna.db.mysql.DBConnectionMySQLImpl;
 import mirna.exception.MiRnaException;
+import beans.Disease;
 
 public class DiseaseDAOMySQLImpl implements DiseaseDAO {
 	
 	@Override
-	public void create(Disease newDisease) throws MiRnaException {
+	public int create(Disease newDisease) throws MiRnaException {
 		System.out.println("MIRNA: create began-----------.");
 		DBConnection con = null;
+		int res = -1;
 
 		try {
 			con = new DBConnectionMySQLImpl();
@@ -29,12 +29,15 @@ public class DiseaseDAOMySQLImpl implements DiseaseDAO {
 					newDisease.getDiseaseSub(), newDisease.getDiseaseClass(),
 					newDisease.getPhenomicId(), newDisease.getDescription(),
 					newDisease.getPubmedId(), newDisease.getTissue());
-			con.update(queryString);
+			queryString = queryString.replaceAll("'null'", "null");
+			res = con.insert(queryString);
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
 		} finally {
 			if (con!=null) con.closeDBConnection();
 		}
+		
+		return res;
 	}
 
 	@Override
@@ -164,9 +167,10 @@ public class DiseaseDAOMySQLImpl implements DiseaseDAO {
 	}
 
 	@Override
-	public Collection<Disease> findByName(String name) throws MiRnaException {
+	public Disease findByName(String name) throws MiRnaException {
 		System.out.println("MIRNA: findByName began-----------.");
-		Collection<Disease> diseaseList = new ArrayList<Disease>();
+		List<Disease> diseaseList = new ArrayList<Disease>();
+		Disease res = null;
 		DBConnection con = null;
 		try {
 			con = new DBConnectionMySQLImpl();
@@ -176,7 +180,7 @@ public class DiseaseDAOMySQLImpl implements DiseaseDAO {
 			System.out.println(queryString);
 			list = con.query(queryString);
 			for (Map<String, Object> row : list) {
-				Disease disease = new Disease(
+				res = new Disease(
 						(Integer) row.get("pk"),
 						(String) row.get("name"),
 						(String) row.get("disease_sub"),
@@ -185,14 +189,17 @@ public class DiseaseDAOMySQLImpl implements DiseaseDAO {
 						(String) row.get("description"),
 						(String) row.get("pubmed_id"),
 						(String) row.get("tissue"));
-				diseaseList.add(disease);
+				diseaseList.add(res);
+			}
+			if (diseaseList.size()>1) {
+				throw new MiRnaException("Found two Disease with the same name (" + name + ")");
 			}
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
 		} finally {
 			if (con!=null) con.closeDBConnection();
 		}
-		return diseaseList;
+		return res;
 	}
 
 	@Override
