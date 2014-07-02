@@ -1,3 +1,14 @@
+-- BORRADO DE TODO LO ANTERIOR
+
+DROP TABLE MiRnaCancer;
+
+DROP TABLE data_expression_involves_mirna;
+DROP TABLE data_expression_related_to_disease;
+DROP TABLE mirna;
+DROP TABLE disease;
+DROP TABLE data_expression;
+
+
 -- TABLAS CSV:
 
 CREATE TABLE MiRnaCancer
@@ -65,3 +76,14 @@ CREATE TABLE data_expression_involves_mirna
 
 ALTER TABLE data_expression_involves_mirna ADD CONSTRAINT `FK_data_expression_involves_mirna_1` FOREIGN KEY (data_expression) REFERENCES data_expression(pk);
 ALTER TABLE data_expression_involves_mirna ADD CONSTRAINT `FK_data_expression_involves_mirna_2` FOREIGN KEY (mirna) REFERENCES mirna(pk);
+
+CREATE TABLE data_expression_related_to_disease
+(
+   data_expression   INT(10),
+   disease           INT(10),
+   PRIMARY KEY(data_expression, disease)
+);
+
+ALTER TABLE data_expression_related_to_disease ADD CONSTRAINT `FK_data_expression_related_to_disease_1` FOREIGN KEY (data_expression) REFERENCES data_expression(pk);
+ALTER TABLE data_expression_related_to_disease ADD CONSTRAINT `FK_data_expression_related_to_disease_2` FOREIGN KEY (disease) REFERENCES disease(pk);
+
