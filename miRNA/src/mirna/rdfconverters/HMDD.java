@@ -93,6 +93,11 @@ public class HMDD {
 				}
 		
 			}
+			
+			fr.close();
+			br.close();
+			stmt.close();
+			
 		
 		
 			}catch (Exception e) {

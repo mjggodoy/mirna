@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
@@ -16,25 +17,28 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
 import com.hp.hpl.jena.vocabulary.RDF;
 
-import beans.DataExpression;
-import beans.Disease;
+import beans.Gene;
+import beans.InteractionData;
 import beans.MiRna;
+import beans.Transcript;
 
-public class MiR2Disease {
-
+public class microT_CDS_data {
+	
+	
 	private String csvInputFile;
-
-	public MiR2Disease(String csvInputFile) {
+	
+	public microT_CDS_data(String csvInputFile) {
 		this.csvInputFile = csvInputFile;
 	}
 
 	public void insertInTable(String tableName) throws Exception {
 		this.insertInTable(tableName, null);
 	}
-
+	
 	public void insertInTable(String tableName, Integer maxLines)
 			throws Exception {
-
+	
+	
 		String url = "jdbc:mysql://localhost:3306/mirna";
 		String user = "mirna";
 		String password = "mirna";
@@ -62,35 +66,37 @@ public class MiR2Disease {
 
 				System.out.println(count);
 
-				tokens = StringUtils.splitPreserveAllTokens(line, "\t");
+				tokens = StringUtils.splitPreserveAllTokens(line, ",");
 
 				if (line != null) {
 
-					Disease disease = new Disease();
-					disease.setName(tokens[1]);
-
 					MiRna miRna = new MiRna();
-					miRna.setName(tokens[0]);
+					miRna.setName(tokens[1]);
 
-					DataExpression dataexpression = new DataExpression();
-					dataexpression.setProfile(tokens[2]);
-					dataexpression.setMethod(tokens[3]);
-					dataexpression.setYear(tokens[4]);
-					dataexpression.setDescription(tokens[5]);
+					Transcript transcript = new Transcript();
+					transcript.setTranscriptID(tokens[0]);
+					transcript.setLocation(tokens[5]);
+
+					Gene gene = new Gene();
+					gene.setGeneId(tokens[2]);
+
+					InteractionData interactionData = new InteractionData();
+					interactionData.setMiTG_score(tokens[4]);
 
 					String query = "INSERT INTO " + tableName
 							+ " VALUES (NULL, '" + tokens[0] + "','"
 							+ tokens[1] + "','" + tokens[2] + "','" + tokens[3]
-							+ "','" + tokens[4] + "','" + tokens[5] + "',')";
+							+ "','" + tokens[4] + "',')";
 
 					stmt.executeUpdate(query);
 
 				}
 			}
 			
+			
 			fr.close();
 			br.close();
-			stmt.close();	
+			stmt.close();
 			
 
 		} catch (Exception e) {
@@ -103,83 +109,108 @@ public class MiR2Disease {
 			e.printStackTrace();
 
 		}
-
 	}
-
+	
 	public void buildRdf(String rdfOutputFile, Integer maxLines)
 			throws Exception {
-
+	
+	
 		FileReader fr = new FileReader(csvInputFile);
 		BufferedReader br = new BufferedReader(fr);
 		OutputStream out = new FileOutputStream(rdfOutputFile);
 
 		String namespace = "http://khaos.uma.es/RDF/miRna.owl#";
-
+		
+		
 		Model model = ModelFactory.createDefaultModel();
 
-		int count = 0;
+		int interactiondataCount = 0;
 		String line;
-
 		while ((line = br.readLine()) != null) {
-
+			
+			
 			System.out.println("linea =");
 			System.out.println(line);
-			count++;
-			System.out.println(count);
+			interactiondataCount++;
+			System.out.println(interactiondataCount);
 			String[] tokens = StringUtils.splitPreserveAllTokens(line, "\t");
 
-			if (line != null) {
-
-				try {
-
-					Disease disease = new Disease();
-					disease.setName(tokens[1]);
-
+			if (line!=null){
+				
+				try{
+					
 					MiRna miRna = new MiRna();
-					miRna.setName(tokens[0]);
+					miRna.setName(tokens[1]);
 
-					DataExpression dataexpression = new DataExpression();
-					dataexpression.setProfile(tokens[2]);
-					dataexpression.setMethod(tokens[3]);
-					dataexpression.setYear(tokens[4]);
-					dataexpression.setDescription(tokens[5]);
+					Transcript transcript = new Transcript();
+					transcript.setTranscriptID(tokens[0]);
+					transcript.setLocation(tokens[5]);
+					
+					InteractionData interactiondata = new InteractionData();
+					interactiondata.setMiTG_score(tokens[4]);
 
-					Resource diseaseResource = model
-							.createResource(
-									namespace + "Disease_" + disease.getName())
-							.addProperty(
-									ResourceFactory.createProperty(namespace
-											+ "name"), disease.getName())
-							.addProperty(
-									RDF.type,
-									ResourceFactory.createResource(namespace
-											+ "Disease"));
+
+					Gene gene = new Gene();
+					gene.setGeneId(tokens[2]);
+
 
 					Resource miRNA = model
 							.createResource(
 									namespace + "miRNA/" + miRna.getName())
 							.addProperty(
-									ResourceFactory.createProperty(namespace
-											+ "name"), miRna.getName())
-							.addProperty(
 									RDF.type,
 									ResourceFactory.createResource(namespace
 											+ "miRNA"));
 
-					model.createResource(namespace + "DataExpression_" + count)
+					Resource transcript2 = model.createResource(
+							namespace + "Transcript/" + transcript.getTranscriptID())
 							.addProperty(
 									ResourceFactory.createProperty(namespace
-											+ "involvesmiRNA"), miRNA)
-							.addProperty(
-									ResourceFactory.createProperty(namespace
-											+ "relatedDisease"),
-									diseaseResource)
+											+ "ID"), transcript.getLocation())
 							.addProperty(
 									RDF.type,
 									ResourceFactory.createResource(namespace
-											+ "DataExpression"));
+											+ "Transcript"));
 
-				} catch (Exception e) {
+					model.createResource(
+							namespace + "InteractionData_"
+									+ interactiondataCount)
+							
+							.addProperty(
+									ResourceFactory.createProperty(namespace
+											+ "MiTG_score"),
+											interactiondata.getMiTG_score())
+											
+							.addProperty(
+									ResourceFactory.createProperty(namespace
+											+ "involvesInteraction"), miRNA)
+											
+							.addProperty(
+									ResourceFactory.createProperty(namespace
+											+ "involvesInteraction"), transcript2)				
+											
+							.addProperty(
+									RDF.type,
+									ResourceFactory.createResource(namespace
+											+ "InteractionData"));
+				
+					model.createResource(
+							namespace + "Gene"
+									+ gene.getName())
+							
+							.addProperty(
+									ResourceFactory.createProperty(namespace
+											+ "producesTranscript"), transcript2)
+											
+							.addProperty(
+									RDF.type,
+									ResourceFactory.createResource(namespace
+											+ "Gene"));				
+					
+					
+					
+				
+				}catch(Exception e) {
 					e.printStackTrace();
 					System.out.println(line);
 					for (int j = 0; j < tokens.length; j++) {
@@ -187,29 +218,71 @@ public class MiR2Disease {
 					}
 					throw e;
 				}
-
+				
 				model.write(out);
 
-			}
+				
+				
+				}
+			
 
 			out.close();
 			fr.close();
 			br.close();
+			
+			
+			
+
+			
+		}
+	
+	}
+	
+	public static void main(String[] args) throws Exception {
+		
+		String inputFile = "/Users/esteban/Softw/miRNA/microT_CDS_data.csv";
+		String outputFile = "/Users/esteban/Softw/miRNA/microT_CDS_data.rdf";
+		String outputFile1 = "/Users/esteban/Softw/miRNA/microT_CDS_data_fixed.txt";
+		String tableName = "MicroT_CS_data";
+		int maxLines = 11000;
+
+		FileReader fr = new FileReader(inputFile);
+		BufferedReader br = new BufferedReader(fr);
+		PrintWriter pw = new PrintWriter(outputFile1);
+
+		String line;
+
+		int count = 0;
+		String line1 = null;
+
+		br.readLine();
+
+		while ((line = br.readLine()) != null) {
+
+			count++;
+			
+			System.out.println(count);
+
+			if (line.contains(":")) {
+
+				line1 = line;
+
+			}
+
+			pw.write(line + "," + line1 + "\n");
 
 		}
-	}
 
-	public static void main(String[] args) throws Exception {
+		br.close();
+		pw.close();
 
-		String inputFile = "/Users/esteban/Softw/miRNA/AllEntries.txt";
-		String outputFile = "/Users/esteban/Softw/miRNA/AllEntries.rdf";
-		String tableName = "mir2Disease";
-		int maxLines = 3000;
-
-		MiR2Disease mir2Disease = new MiR2Disease(inputFile);
-		mir2Disease.insertInTable(tableName, maxLines);
-		mir2Disease.buildRdf(outputFile, maxLines);
-
+		MicroTV4_data microTV4_data = new MicroTV4_data(outputFile1);
+		microTV4_data.insertInTable(tableName, maxLines);
+		microTV4_data.buildRdf(outputFile, maxLines);
+		
+		
+		
+		
 	}
 
 }

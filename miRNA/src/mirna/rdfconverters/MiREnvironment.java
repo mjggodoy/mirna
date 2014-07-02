@@ -97,6 +97,7 @@ public class MiREnvironment {
 				}
 			}
 
+			fr.close();
 			br.close();
 			stmt.close();
 
