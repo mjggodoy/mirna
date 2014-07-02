@@ -4,6 +4,7 @@ public class DataExpression extends ModelClass {
 
 	private String expression;
 	private String phenomicId;
+	private String mirenvironmentID;
 	private String foldchangeMin;
 	private String foldchangeMax;
 	private String id;
@@ -168,5 +169,15 @@ public class DataExpression extends ModelClass {
 	public void setYear(String year) {
 		this.year = year;
 	}
+	
+	public String getmirenvironmentID() {
+		return mirenvironmentID;
+	}
+
+	public void setmirenvironmentID(String mirenvironmentID) {
+		this.mirenvironmentID = mirenvironmentID;
+	}
+	
+	
 
 }

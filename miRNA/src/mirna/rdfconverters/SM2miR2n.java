@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.apache.commons.lang.StringUtils;
@@ -17,16 +18,15 @@ import com.hp.hpl.jena.rdf.model.ResourceFactory;
 import com.hp.hpl.jena.vocabulary.RDF;
 
 import beans.DataExpression;
-import beans.Disease;
 import beans.MiRna;
 import beans.Organism;
 import beans.SmallMolecule;
 
-public class MiREnvironment {
+public class SM2miR2n {
 
 	private String csvInputFile;
 
-	public MiREnvironment(String csvInputFile) {
+	public SM2miR2n(String csvInputFile) {
 		this.csvInputFile = csvInputFile;
 	}
 
@@ -37,15 +37,17 @@ public class MiREnvironment {
 	public void insertInTable(String tableName, Integer maxLines)
 			throws Exception {
 
+		// Connection to the mirna database
 		String url = "jdbc:mysql://localhost:3306/mirna";
+
 		String user = "mirna";
 		String password = "mirna";
 
 		Connection con = null;
 		String line = null;
 		String[] tokens = null;
-
 		try {
+
 			con = DriverManager.getConnection(url, user, password);
 			Statement stmt = (Statement) con.createStatement();
 
@@ -59,55 +61,58 @@ public class MiREnvironment {
 			while (((line = br.readLine()) != null)
 					&& ((maxLines == null) || (count < maxLines))) {
 
-				count++;
-
-				System.out.println(count);
-
 				tokens = StringUtils.splitPreserveAllTokens(line, "\t");
 
-				if (line != null) {
+				MiRna miRna = new MiRna();
+				miRna.setName(tokens[0]);
+				miRna.setAccessionNumber(tokens[1]);
 
-					Disease disease = new Disease();
-					disease.setName(tokens[4]);
+				SmallMolecule smallmolecule = new SmallMolecule();
+				smallmolecule.setName(tokens[2]);
+				smallmolecule.setFDA(tokens[3]);
+				smallmolecule.setDB(tokens[4]);
+				smallmolecule.setCID(tokens[5]);
 
-					MiRna miRna = new MiRna();
-					miRna.setName(tokens[1]);
-					miRna.setSubName(tokens[2]);
-					miRna.setSubName(tokens[3]);
+				Organism organism = new Organism();
+				organism.setSpecie(tokens[6]);
 
-					SmallMolecule smallmolecule = new SmallMolecule();
-					smallmolecule.setName(tokens[5]);
+				DataExpression dataexpression = new DataExpression();
+				dataexpression.setMethod(tokens[7]);
+				dataexpression.setCondition(tokens[8]);
+				dataexpression.setPubmedId(tokens[9]);
+				dataexpression.setYear(tokens[10]);
+				dataexpression.setDescription(tokens[11]);
+				dataexpression.setSupport(tokens[12]);
+				dataexpression.setProfile(tokens[13]);
 
-					DataExpression dataexpression = new DataExpression();
-					dataexpression.setmirenvironmentID(tokens[0]);
-					dataexpression.setTreatment(tokens[6]);
-					dataexpression.setPubmedId(tokens[10]);
-					dataexpression.setDescription(tokens[9]);
-					dataexpression.setCellularLine(tokens[7]);
+				String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
+						+ tokens[0] + "','" + tokens[1] + "','" + tokens[2]
+						+ "'," + tokens[3] + "','" + tokens[4] + "','"
+						+ tokens[5] + "','" + tokens[6] + "','" + tokens[7]
+						+ "','" + tokens[8] + "','" + tokens[9] + "','"
+						+ tokens[10] + "','" + tokens[11] + "','" + tokens[12]
+						+ "','" + tokens[13] + "',')";
 
-					String query = "INSERT INTO " + tableName
-							+ " VALUES (NULL, '" + tokens[0] + "','"
-							+ tokens[1] + "','" + tokens[2] + "','" + tokens[3]
-							+ "','" + tokens[4] + "','" + tokens[5] + "','"
-							+ tokens[6] + "','" + tokens[7] + "','" + tokens[8]
-							+ "','" + tokens[9] + "','" + tokens[10] + "',')";
+				stmt.executeUpdate(query);
 
-					stmt.executeUpdate(query);
-
-				}
 			}
 
 			fr.close();
 			br.close();
 			stmt.close();
 
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println(line);
-			for (int j = 0; j < tokens.length; j++) {
-				System.out.println(j + ": " + tokens[j]);
+			if (line != null) {
+				System.out.println(line);
+				for (int j = 0; j < tokens.length; j++) {
+					System.out.println(j + ": " + tokens[j]);
+				}
 			}
 			e.printStackTrace();
+		} finally {
+			if (con != null)
+				con.close();
 		}
 
 	}
@@ -124,134 +129,116 @@ public class MiREnvironment {
 		Model model = ModelFactory.createDefaultModel();
 
 		int count = 0;
-		String line;
+		int dataExpressionCount = 1;
 
-		while ((line = br.readLine()) != null) {
+		while (br.readLine() != null) {
 
-			System.out.println("linea =");
-			System.out.println(line);
-			count++;
-			System.out.println(count);
+			String line = br.readLine();
 			String[] tokens = StringUtils.splitPreserveAllTokens(line, "\t");
 
 			if (line != null) {
 				try {
 
-					Disease disease = new Disease();
-					disease.setName(tokens[4]);
-
-					MiRna miRna = new MiRna();
-					miRna.setName(tokens[1]);
-					miRna.setSubName(tokens[2]);
-					miRna.setSubName(tokens[3]);
+					MiRna miRna2 = new MiRna();
+					miRna2.setName(tokens[0]);
+					miRna2.setAccessionNumber(tokens[1]);
 
 					SmallMolecule smallmolecule = new SmallMolecule();
-					smallmolecule.setName(tokens[5]);
-
-					DataExpression dataexpression = new DataExpression();
-					dataexpression.setmirenvironmentID(tokens[0]);
-					dataexpression.setTreatment(tokens[6]);
-					dataexpression.setPubmedId(tokens[10]);
-					dataexpression.setDescription(tokens[9]);
-					dataexpression.setCellularLine(tokens[7]);
+					smallmolecule.setName(tokens[2]);
+					smallmolecule.setFDA(tokens[3]);
+					smallmolecule.setDB(tokens[4]);
+					smallmolecule.setCID(tokens[5]);
 
 					Organism organism = new Organism();
-					organism.setSpecie(tokens[8]);
+					organism.setSpecie(tokens[6]);
 
-					Resource organism2 = model.createResource(
-							namespace + "Organism/" + organism.getSpecie())
-
-					.addProperty(
-							RDF.type,
-							ResourceFactory.createResource(namespace
-									+ "Organism"));
-
-					Resource diseaseResource = model
-							.createResource(
-									namespace + "Disease_" + disease.getName())
-							.addProperty(
-									ResourceFactory.createProperty(namespace
-											+ "name"), disease.getName())
-							.addProperty(
-									ResourceFactory.createProperty(namespace
-											+ "hasOrganism"), organism2)
-							.addProperty(
-									RDF.type,
-									ResourceFactory.createResource(namespace
-											+ "Disease"));
-
-					Resource smallmolecule2 = model
-							.createResource(
-
-									namespace + "Smallmolecule_"
-											+ smallmolecule.getName())
-
-							.addProperty(
-									ResourceFactory.createProperty(namespace
-											+ "name"), smallmolecule.getName())
-							.addProperty(
-									RDF.type,
-									ResourceFactory.createResource(namespace
-											+ "SmallMolecule"));
+					DataExpression dataexpression = new DataExpression();
+					dataexpression.setMethod(tokens[7]);
+					dataexpression.setCondition(tokens[8]);
+					dataexpression.setPubmedId(tokens[9]);
+					dataexpression.setYear(tokens[10]);
+					dataexpression.setDescription(tokens[11]);
+					dataexpression.setSupport(tokens[12]);
+					dataexpression.setProfile(tokens[13]);
 
 					Resource miRNA = model
 							.createResource(
-									namespace + "miRNA/" + miRna.getName())
+									namespace + "miRNA/" + miRna2.getName())
 							.addProperty(
 									ResourceFactory.createProperty(namespace
-											+ "name"), miRna.getName())
-							.addProperty(
-									ResourceFactory.createProperty(namespace
-											+ "subname"), miRna.getSubName())
-							.addProperty(
-									ResourceFactory.createProperty(namespace
-											+ "hasOrganism"), organism2)
+											+ "name"), miRna2.getName())
+
 							.addProperty(
 									RDF.type,
 									ResourceFactory.createResource(namespace
 											+ "miRNA"));
 
+					Resource smallmolecule2 = model
+							.createResource(
+									namespace + "Smallmolecule"
+											+ smallmolecule.getName())
+							.addProperty(
+									ResourceFactory.createProperty(namespace
+											+ "FDA"), smallmolecule.getFDA())
+							.addProperty(
+									ResourceFactory.createProperty(namespace
+											+ "DB"), smallmolecule.getDB())
+							.addProperty(
+									ResourceFactory.createProperty(namespace
+											+ "CID"), smallmolecule.getCID())
+							.addProperty(
+									RDF.type,
+									ResourceFactory.createResource(namespace
+											+ "SmallMolecule"));
+
 					model.createResource(
-							namespace + "DataExpression_" + tokens[0])
+							namespace + "DataExpression_" + dataExpressionCount)
 							// dataExpression.getExpression())
 							.addProperty(
 									ResourceFactory.createProperty(namespace
-											+ "id"),
-									dataexpression.getmirenvironmentID())
+											+ "method"),
+									dataexpression.getMethod())
 							.addProperty(
 									ResourceFactory.createProperty(namespace
-											+ "treatment"),
-									dataexpression.getTreatment())
+											+ "condition"),
+									dataexpression.getCondition())
 							.addProperty(
 									ResourceFactory.createProperty(namespace
 											+ "pubmedId"),
 									dataexpression.getPubmedId())
 							.addProperty(
 									ResourceFactory.createProperty(namespace
+											+ "year"), dataexpression.getYear())
+							.addProperty(
+									ResourceFactory.createProperty(namespace
 											+ "description"),
 									dataexpression.getDescription())
 							.addProperty(
 									ResourceFactory.createProperty(namespace
-											+ "cellular_line"),
-									dataexpression.getCellularLine())
+											+ "support"),
+									dataexpression.getSupport())
+							.addProperty(
+									ResourceFactory.createProperty(namespace
+											+ "profile"),
+									dataexpression.getProfile())
 							.addProperty(
 									ResourceFactory.createProperty(namespace
 											+ "involvesmiRNA"), miRNA)
 							.addProperty(
 									ResourceFactory.createProperty(namespace
-											+ "relatedDisease"),
-									diseaseResource)
-							.addProperty(
-									ResourceFactory.createProperty(namespace
 											+ "involvesAmbientalFactor"),
 									smallmolecule2)
-							.addProperty(
-									ResourceFactory.createProperty(namespace
-											+ "hasOrganism"), organism2)
 							.addProperty(
 									RDF.type,
 									ResourceFactory.createResource(namespace
 											+ "DataExpression"));
+
+					dataExpressionCount++;
+
+					// create a bag
+
+					// select all the resources with a VCARD.FN property
+					// whose value ends with "Smith"
 
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -263,26 +250,25 @@ public class MiREnvironment {
 				}
 
 			}
-
 			model.write(out);
 
 		}
-
+		
 		out.close();
 		fr.close();
 		br.close();
-
 	}
 
 	public static void main(String[] args) throws Exception {
 
-		String inputFile = "/Users/esteban/Softw/miRNA/mirendata.txt";
-		String outputFile = "/Users/esteban/Softw/miRNA/mirendata.rdf";
-		Integer maxLines = 12000;
+		String inputFile = "/Users/esteban/Softw/miRNA/SM2miR2n.txt";
+		String outputFile = "/Users/esteban/Softw/miRNA/miRCancerMarch2014.rdf";
+		int maxLines = 5000;
 
-		MiREnvironment mirenvironment = new MiREnvironment(inputFile);
-		mirenvironment.buildRdf(outputFile, maxLines);
-		mirenvironment.insertInTable("miren");
+		SM2miR2n sm2mir2 = new SM2miR2n(inputFile);
+		sm2mir2.insertInTable(inputFile);
+		sm2mir2.buildRdf(outputFile, maxLines);
 
 	}
+
 }

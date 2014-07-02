@@ -77,7 +77,7 @@ public class miREnvironment {
 					smallmolecule.setName(tokens[5]);
 
 					DataExpression dataexpression = new DataExpression();
-					dataexpression.setId(tokens[0]);
+					dataexpression.setiddataexpression(tokens[0]);
 					dataexpression.setTreatment(tokens[6]);
 					dataexpression.setPubmedId(tokens[10]);
 					dataexpression.setDescription(tokens[9]);
@@ -154,7 +154,7 @@ public class miREnvironment {
 							// dataExpression.getExpression())
 							.addProperty(
 									ResourceFactory.createProperty(namespace
-											+ "id"), dataexpression.getId())
+											+ "id"), dataexpression.getiddataexpression())
 							.addProperty(
 									ResourceFactory.createProperty(namespace
 											+ "treatment"),

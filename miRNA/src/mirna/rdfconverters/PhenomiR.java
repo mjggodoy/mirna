@@ -153,11 +153,6 @@ public class PhenomiR {
 		BufferedReader br = new BufferedReader(fr);
 		OutputStream out = new FileOutputStream(rdfOutputFile);
 
-		// int numLineas = 8;
-
-		String resourceUri = "http://khaos.uma.es/mirna/resource/";
-		String propertyUri = "http://khaos.uma.es/mirna/property/";
-
 		String namespace = "http://khaos.uma.es/RDF/miRna.owl#";
 
 		Model model = ModelFactory.createDefaultModel();
@@ -174,18 +169,7 @@ public class PhenomiR {
 			System.out.println(count);
 
 			String[] tokens = StringUtils.splitPreserveAllTokens(line, "\t");
-			//
-			//
-			// // if (count==0) {
-			// // //System.out.println("NUMERO DE TOKENS: " + st.countTokens());
-			// // System.out.println("NUMERO DE TOKENS: " + tokens.length);
-			// // //int j=1;
-			// // //while (st.hasMoreTokens()) {
-			// // for (int j=1; j<=tokens.length; j++) {
-			// // //System.out.println(j + ":" + st.nextToken());
-			// // System.out.println(j + ":" + tokens[j-1]);
-			// // //j++;
-			// // }
+			
 			if (line != null) {
 
 				try {
@@ -318,13 +302,13 @@ public class PhenomiR {
 
 	public static void main(String[] args) throws Exception {
 
-		String inputFile = "/Users/esteban/Softw/miRNA/miRCancerMarch2014.txt";
-		String outputFile = "/Users/esteban/Softw/miRNA/miRCancerMarch2014.rdf";
+		String inputFile = "/Users/esteban/Softw/miRNA/phenomir2.0.txt";
+		String outputFile = "/Users/esteban/Softw/miRNA/phenomir.rdf";
 		Integer maxLines = 12000;
 
 		PhenomiR phenomir = new PhenomiR(inputFile);
-		phenomir.insertInTable("MiRnaCancer");
-		// phenomir.buildRdf(outputFile, maxLines);
+		phenomir.insertInTable("phenomir");
+		phenomir.buildRdf(outputFile, maxLines);
 
 	}
 
