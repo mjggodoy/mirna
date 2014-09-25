@@ -1,5 +1,5 @@
 package beans;
 
-public class MedioAmbientalFactor extends SmallMolecule {
+public class EnvironmentalFactor extends SmallMolecule {
 
 }

@@ -8,6 +8,11 @@ public class InteractionData {
 	private String method;
 	private String feature;
 	private String phase;
+	private String rank;
+	private String provenance;
+	
+	public InteractionData() {
+	}
 
 	public String getScore() {
 		return score;
@@ -19,6 +24,22 @@ public class InteractionData {
 
 	public String getPvalue_log() {
 		return pvalue_log;
+	}
+
+	public String getRank() {
+		return rank;
+	}
+
+	public void setRank(String rank) {
+		this.rank = rank;
+	}
+
+	public String getProvenance() {
+		return provenance;
+	}
+
+	public void setProvenance(String provenance) {
+		this.provenance = provenance;
 	}
 
 	public void setPvalue_log(String pvalue_log) {
@@ -57,8 +78,7 @@ public class InteractionData {
 		this.phase = phase;
 	}
 
-	public InteractionData() {
-	}
+	
 
 }
 

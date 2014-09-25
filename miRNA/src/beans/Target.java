@@ -11,6 +11,7 @@ public class Target {
 	private String phase;
 	private String pValue_OG;
 	private String targetScore;
+	private String score;
 	private String miTG_score;
 	private String transcriptId;
 	private String pubmedId;
@@ -129,6 +130,14 @@ public class Target {
 
 	public void setYear(String year) {
 		this.year = year;
+	}
+	
+	public String getScore() {
+		return score;
+	}
+
+	public void setScore(String score) {
+		this.score = score;
 	}
 
 	
