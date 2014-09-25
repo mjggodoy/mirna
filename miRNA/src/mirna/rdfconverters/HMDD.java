@@ -78,7 +78,7 @@ public class HMDD {
 					DataExpression dataexpression = new DataExpression();
 					dataexpression.setDescription(tokens[4]);
 					dataexpression.setPubmedId(tokens[3]);
-					dataexpression.setiddataexpression(tokens[0]);
+					//dataexpression.setiddataexpression(tokens[0]);
 					
 					
 					String query = "INSERT INTO " + tableName
@@ -155,7 +155,7 @@ public class HMDD {
 					DataExpression dataexpression = new DataExpression();
 					dataexpression.setDescription(tokens[5]);
 					dataexpression.setPubmedId(tokens[4]);
-					dataexpression.setiddataexpression(tokens[0]);
+					//dataexpression.setiddataexpression(tokens[0]);
 
 					Resource miRNA = model
 							.createResource(

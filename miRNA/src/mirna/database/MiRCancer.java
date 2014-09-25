@@ -52,7 +52,7 @@ public class MiRCancer implements IMirnaDatabase {
 	public void insertInTable(String tableName, Integer maxLines) throws Exception {
 		
 		// URL of Oracle database server
-		String url = "jdbc:mysql://localhost:3306/mirna";
+		String url = "jdbc:mysql://localhost:3306/mirna_raw";
 		
 		String user = "mirna";
 		String password = "mirna";
@@ -81,22 +81,15 @@ public class MiRCancer implements IMirnaDatabase {
 	
 				if (line != null) {
 					
-					MiRna miRna2 = new MiRna();
-					miRna2.setName(tokens[0]);
-
-					Disease disease = new Disease();
-					disease.setName(tokens[1]);
-
-					DataExpression dataexpression = new DataExpression();
-					dataexpression.setDescription(tokens[3]);
-					dataexpression.setProfile(tokens[2]);
-					
+					String mirId = tokens[0];
+					String cancer = tokens[1];
+					String profile = tokens[2];
 					String pubMedArticle = tokens[3].replaceAll("'", "\\\\'");
 					
 					String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
-							+ tokens[0] + "','"
-							+ tokens[1] + "','"
-							+ tokens[2] + "','"
+							+ mirId + "','"
+							+ cancer + "','"
+							+ profile + "','"
 							+ pubMedArticle + "')";
 					
 					stmt.executeUpdate(query);
@@ -327,6 +320,11 @@ public class MiRCancer implements IMirnaDatabase {
 	public static void main(String[] args) throws Exception {
 		
 		String inputFile = "/Users/esteban/Softw/miRNA/miRCancerMarch2014.txt";
+		MiRCancer miRCancer = new MiRCancer(inputFile);
+		miRCancer.insertInTable("miRCancer");
+		
+		/*
+		String inputFile = "/Users/esteban/Softw/miRNA/miRCancerMarch2014.txt";
 		//String outputFile = "/Users/esteban/Softw/miRNA/miRCancerMarch2014.rdf";
 		//Integer maxLines = 5;
 		
@@ -334,6 +332,7 @@ public class MiRCancer implements IMirnaDatabase {
 		//miRCancer.buildRdf(outputFile, maxLines);
 		miRCancer.insertInTable("MiRnaCancer");
 		miRCancer.insertIntoSQLModel("MiRnaCancer");
+		*/
 	}
 
 }
