@@ -13,16 +13,16 @@ import java.sql.Statement;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * Código para procesar los datos de Microcosm
+ * Código para procesar los datos de SM2miR2N
  * 
  * @author Esteban López Camacho
  *
  */
-public class Microcosm implements IMirnaDatabase {
+public class SM2miR2N implements IMirnaDatabase {
 	
 	private String csvInputFile;
 	
-	public Microcosm(String csvInputFile) {
+	public SM2miR2N(String csvInputFile) {
 		this.csvInputFile = csvInputFile;
 	}
 	
@@ -42,6 +42,8 @@ public class Microcosm implements IMirnaDatabase {
 		String line = null;
 		String[] tokens = null;
 		
+		String query = "";
+		
 		try {
 			con = DriverManager.getConnection(url, user, password);
 			Statement stmt = (Statement) con.createStatement(); 
@@ -50,65 +52,63 @@ public class Microcosm implements IMirnaDatabase {
 			BufferedReader br = new BufferedReader(fr);
 	
 			int count = 0;
+			
+			br.readLine();
 	
 			while (((line = br.readLine()) != null) && ((maxLines==null) || (count<maxLines))) {
 	
 				count++;
-				System.out.println(count);
+				System.out.println(count + " : " + line);
 				
 				tokens = StringUtils.splitPreserveAllTokens(line, "\t");
 	
-				if (line != null) {
-					
-					if ((!"".equals(line)) && (!line.startsWith("##"))) {
-						
-						String group = tokens[0];
-						String seq = tokens[1];
-						String method = tokens[2];
-						String feature = tokens[3];
-						String chr = tokens[4];
-						String start = tokens[5];
-						String end = tokens[6];
-						String strand = tokens[7];
-						String phase = tokens[8];
-						String score = tokens[9];
-						String pvalueOg = tokens[10];
-						String transcriptId = tokens[11];
-						String externalName = tokens[12];
+				String mirna = tokens[0];
+				String mirbase = tokens[1];
+				String smallMolecule = tokens[2].replaceAll("'", "\\\\'");
+				String fda = tokens[3];
+				String db = tokens[4];
+				String cid = tokens[5];
+				String method = tokens[6];
+				String species = tokens[7];
+				String condition = tokens[8].replaceAll("'", "\\\\'");
+				String pmid = tokens[9];
+				String year = tokens[10];
+				String reference = tokens[11].replaceAll("'", "\\\\'");
+				String support = tokens[12].replaceAll("'", "\\\\'");
+				String expression = tokens[13];
 
-						String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
-								+ group + "','"
-								+ seq + "','"
-								+ method + "','"
-								+ feature + "','"
-								+ chr + "','"
-								+ start + "','"
-								+ end + "','"
-								+ strand + "','"
-								+ phase + "','"
-								+ score + "','"
-								+ pvalueOg + "','"
-								+ transcriptId + "','"
-								+ externalName + "')";
+				query = "INSERT INTO " + tableName + " VALUES (NULL, '"
+						+ mirna + "','"
+						+ mirbase + "','"
+						+ smallMolecule + "','"
+						+ fda + "','"
+						+ db + "','"
+						+ cid + "','"
+						+ method + "','"
+						+ species + "','"
+						+ condition + "','"
+						+ pmid + "','"
+						+ year + "','"
+						+ reference + "','"
+						+ support + "','"
+						+ expression + "')";
+				
+				stmt.executeUpdate(query);
 						
-						stmt.executeUpdate(query);
-						
-					}
-						
-				}
 	
 			}
 			fr.close();
 			br.close();
 			stmt.close();
 		} catch (Exception e) {
-			e.printStackTrace();
 			if (line!=null) {
 				System.out.println(line);
 				for (int j = 0; j < tokens.length; j++) {
 					System.out.println(j + ": " + tokens[j]);
 				}
 			}
+			System.out.println("QUERY =");
+			System.out.println(query);
 			e.printStackTrace();
 		} finally {
 			if (con!=null) con.close();
@@ -131,9 +131,9 @@ public class Microcosm implements IMirnaDatabase {
 	
 	public static void main(String[] args) throws Exception {
 		
-		String inputFile = "/Users/esteban/Softw/miRNA/microcosm/v5.txt.homo_sapiens";
-		Microcosm microcosm = new Microcosm(inputFile);
-		microcosm.insertInTable("microcosm_homo_sapiens");
+		String inputFile = "/Users/esteban/Softw/miRNA/SM2miR2n.txt";
+		SM2miR2N sm2 = new SM2miR2N(inputFile);
+		sm2.insertInTable("sm2mir2n");
 		
 		/*
 		String inputFile = "/Users/esteban/Softw/miRNA/miRCancerMarch2014.txt";

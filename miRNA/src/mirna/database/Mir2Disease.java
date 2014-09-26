@@ -13,16 +13,16 @@ import java.sql.Statement;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * Código para procesar los datos de Microcosm
+ * Código para procesar los datos de Mir2Disease
  * 
  * @author Esteban López Camacho
  *
  */
-public class Microcosm implements IMirnaDatabase {
+public class Mir2Disease implements IMirnaDatabase {
 	
 	private String csvInputFile;
 	
-	public Microcosm(String csvInputFile) {
+	public Mir2Disease(String csvInputFile) {
 		this.csvInputFile = csvInputFile;
 	}
 	
@@ -42,6 +42,8 @@ public class Microcosm implements IMirnaDatabase {
 		String line = null;
 		String[] tokens = null;
 		
+		String query = "";
+		
 		try {
 			con = DriverManager.getConnection(url, user, password);
 			Statement stmt = (Statement) con.createStatement(); 
@@ -54,61 +56,41 @@ public class Microcosm implements IMirnaDatabase {
 			while (((line = br.readLine()) != null) && ((maxLines==null) || (count<maxLines))) {
 	
 				count++;
-				System.out.println(count);
+				System.out.println(count + " : " + line);
 				
 				tokens = StringUtils.splitPreserveAllTokens(line, "\t");
 	
-				if (line != null) {
-					
-					if ((!"".equals(line)) && (!line.startsWith("##"))) {
-						
-						String group = tokens[0];
-						String seq = tokens[1];
-						String method = tokens[2];
-						String feature = tokens[3];
-						String chr = tokens[4];
-						String start = tokens[5];
-						String end = tokens[6];
-						String strand = tokens[7];
-						String phase = tokens[8];
-						String score = tokens[9];
-						String pvalueOg = tokens[10];
-						String transcriptId = tokens[11];
-						String externalName = tokens[12];
+				String mirna = tokens[0];
+				String disease = tokens[1].replaceAll("'", "\\\\'");
+				String expression = tokens[2];
+				String method = tokens[3];
+				String date = tokens[4];
+				String reference = tokens[5].replaceAll("'", "\\\\'");
 
-						String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
-								+ group + "','"
-								+ seq + "','"
-								+ method + "','"
-								+ feature + "','"
-								+ chr + "','"
-								+ start + "','"
-								+ end + "','"
-								+ strand + "','"
-								+ phase + "','"
-								+ score + "','"
-								+ pvalueOg + "','"
-								+ transcriptId + "','"
-								+ externalName + "')";
+				query = "INSERT INTO " + tableName + " VALUES (NULL, '"
+						+ mirna + "','"
+						+ disease + "','"
+						+ expression + "','"
+						+ method + "','"
+						+ date + "','"
+						+ reference + "')";
+				
+				stmt.executeUpdate(query);
 						
-						stmt.executeUpdate(query);
-						
-					}
-						
-				}
 	
 			}
 			fr.close();
 			br.close();
 			stmt.close();
 		} catch (Exception e) {
-			e.printStackTrace();
 			if (line!=null) {
 				System.out.println(line);
 				for (int j = 0; j < tokens.length; j++) {
 					System.out.println(j + ": " + tokens[j]);
 				}
 			}
+			System.out.println("QUERY =");
+			System.out.println(query);
 			e.printStackTrace();
 		} finally {
 			if (con!=null) con.close();
@@ -129,11 +111,44 @@ public class Microcosm implements IMirnaDatabase {
 		
 	}
 	
+	public void specificFileFix() throws IOException {
+		
+		String newFile = csvInputFile + ".new";
+		PrintWriter pw = new PrintWriter(newFile);
+		
+		FileReader fr = new FileReader(csvInputFile);
+		BufferedReader br = new BufferedReader(fr);
+		String line0;
+		String line1;
+		
+		line0 = br.readLine();
+
+		while ( (line0!=null) && ((line1 = br.readLine()) != null) ) {
+			
+			if (!line1.startsWith("hsa")) {
+				line0 = line0 + " " + line1;
+				line1 = br.readLine();
+			}
+			
+			pw.println(line0);
+			line0 = line1;
+			
+		}
+		
+		if (line0!=null) pw.println(line0);
+		
+		br.close();
+		pw.close();
+		
+		this.csvInputFile = newFile;
+	}
+	
 	public static void main(String[] args) throws Exception {
 		
-		String inputFile = "/Users/esteban/Softw/miRNA/microcosm/v5.txt.homo_sapiens";
-		Microcosm microcosm = new Microcosm(inputFile);
-		microcosm.insertInTable("microcosm_homo_sapiens");
+		String inputFile = "/Users/esteban/Softw/miRNA/mir2disease_AllEntries.txt";
+		Mir2Disease mir2disease = new Mir2Disease(inputFile);
+		mir2disease.specificFileFix();
+		mir2disease.insertInTable("mir2disease");
 		
 		/*
 		String inputFile = "/Users/esteban/Softw/miRNA/miRCancerMarch2014.txt";
