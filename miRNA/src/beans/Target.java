@@ -16,17 +16,17 @@ public class Target {
 	private String transcriptId;
 	private String pubmedId;
 	private String year;
-	private String name;
+	private String refseq_name;
+	
+	public Target() {}
 
 	public String getName() {
-		return name;
+		return refseq_name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setName(String refseq_name) {
+		this.refseq_name = refseq_name;
 	}
-
-	public Target() {}
 
 	public String getMethod() {
 		return method;

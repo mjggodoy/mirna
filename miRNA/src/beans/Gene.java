@@ -6,6 +6,16 @@ public class Gene {
 	private String chromosome;
 	private String geneId;
 	private String description;
+	private String refseq_name;
+
+
+	public String getRefseq_name() {
+		return refseq_name;
+	}
+
+	public void setRefseq_name(String refseq_name) {
+		this.refseq_name = refseq_name;
+	}
 
 	public Gene() {}
 
