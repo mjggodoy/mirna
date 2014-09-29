@@ -33,8 +33,20 @@ public class miRdSNP {
 		
 	}
 	
-	public void insertInTable(String tableName, Integer maxLines) throws Exception {
-		this.insertInTable(tableName, null);
+	public void insertInTablemirdsnpFile1(String tableName, Integer maxLines) throws Exception {
+		this.insertInTablemirdsnpFile1(tableName, null);
+	}
+	
+	public void insertInTablemirdsnpFile2(String tableName, Integer maxLines) throws Exception {
+		this.insertInTablemirdsnpFile2(tableName, null);
+	}
+	
+	public void insertInTablemirdsnpFile3(String tableName, Integer maxLines) throws Exception {
+		this.insertInTablemirdsnpFile3(tableName, null);
+	}
+	
+	public void insertInTablemirdsnpFile4(String tableName, Integer maxLines) throws Exception {
+		this.insertInTablemirdsnpFile4(tableName, null);
 	}
 	
 	public void insertInTablemirdsnpFile1(String tableName) throws Exception {
@@ -325,17 +337,12 @@ public void insertInTablemirdsnpFile4(String tableName) throws Exception {
 		}	
 		
 	
-	@Override
 	public void insertIntoSQLModel(String originTable) throws Exception {
-		// TODO Auto-generated method stub
-		
+	this.insertIntoSQLModel(originTable, null);
 	}
 
-	@Override
-	public void insertIntoSQLModel(String originTable, Integer maxLines)
-			throws Exception {
-		// TODO Auto-generated method stub
-		
+	public void insertIntoSQLModel(String originTable, Integer maxLines) throws Exception {
+	
 	}
 	
 	public static void main(String[] args) throws Exception {
