@@ -47,3 +47,35 @@ CREATE TABLE miREnvironment(
  pubmedId		varchar(20) NOT NULL
  
 )
+
+
+
+CREATE TABLE miREnvironment(
+
+	mir			varchar(20) NOT NULL,
+	target      varchar(20) NOT NULL,
+	score varchar(20) NOT NULL
+
+ 
+)
+
+CREATE TABLE mirRDB(
+
+	mir varchar(20) NOT NULL,
+	target varchar(20) NOT NULL,
+	score int(10)
+
+
+)
+
+
+CREATE TABLE mirDip(
+
+	mir varchar(20) NOT NULL,
+	geneId varchar(20) NOT NULL,
+	provenance varchar(20) NOT NULL,
+	rank int(10) NOT NULL
+	
+
+
+)
