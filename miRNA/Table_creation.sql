@@ -69,13 +69,22 @@ CREATE TABLE mirRDB(
 )
 
 
-CREATE TABLE mirDip(
+CREATE TABLE mirDip1(
 
-	mir varchar(20) NOT NULL,
+	accessionumber varchar(20) NOT NULL,
 	geneId varchar(20) NOT NULL,
-	provenance varchar(20) NOT NULL,
 	rank int(10) NOT NULL
 	
 
+
+)
+
+
+CREATE TABLE mirDip2(
+
+	accesionnumber varchar(20) NOT NULL,
+	rank varchar(20) NOT NULL,
+	number_of_sources varchar(20) NOT NULL,
+	provenance int(10) NOT NULL
 
 )

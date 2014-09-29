@@ -18,11 +18,11 @@ import org.apache.commons.lang.StringUtils;
  * @author Esteban López Camacho
  *
  */
-public class mirDip implements IMirnaDatabase {
+public class mirDip1 implements IMirnaDatabase {
 	
 	private String csvInputFile;
 	
-	public mirDip(String csvInputFile) {
+	public mirDip1(String csvInputFile) {
 		this.csvInputFile = csvInputFile;
 	}
 	
@@ -53,7 +53,7 @@ public class mirDip implements IMirnaDatabase {
 	
 			br.readLine();
 			
-			while (((line = br.readLine()) != null) && ((maxLines==null) || (count<maxLines))) {
+			while (((line = br.readLine()) != null)) {
 	
 				count++;
 				System.out.println(count);
@@ -65,14 +65,12 @@ public class mirDip implements IMirnaDatabase {
 					
 					String accesionnumber = tokens[0];
 					String geneId = tokens[1];
-					String provenance = tokens[2];
-					String rank = tokens[3];
+					String rank = tokens[2];
 					
 
 					String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
 							+ accesionnumber + "','"
 							+ geneId + "','"
-							+ provenance + "','"
 							+ rank + "','" +  "')";
 					
 					stmt.executeUpdate(query);
@@ -115,9 +113,9 @@ public class mirDip implements IMirnaDatabase {
 	
 	public static void main(String[] args) throws Exception {
 		
-		String inputFile = "/Users/esteban/Softw/miRNA/mirDIP-All-Data-Version.txt";
-		mirDip phenomir = new mirDip(inputFile);
-		phenomir.insertInTable("phenomir");
+		String inputFile = "/Users/esteban/Softw/miRNA/MirTarget2_v4.0_prediction_result.txt";
+		mirDip1 mirDip1 = new mirDip1(inputFile);
+		mirDip1.insertInTable("phenomir");
 		
 		/*
 		String inputFile = "/Users/esteban/Softw/miRNA/miRCancerMarch2014.txt";
