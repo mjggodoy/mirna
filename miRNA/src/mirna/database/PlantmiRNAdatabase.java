@@ -24,7 +24,7 @@ public class PlantmiRNAdatabase {
 	
 	public void insertInTable(String tableName, Integer maxLines) throws Exception {
 		
-String url = "jdbc:mysql://localhost:3306/mirna_raw";
+		String url = "jdbc:mysql://localhost:3306/mirna_raw";
 		
 		String user = "mirna";
 		String password = "mirna";
@@ -71,9 +71,11 @@ String url = "jdbc:mysql://localhost:3306/mirna_raw";
 					
 					
 					String sequence = tokens[1];
+					String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
+							+ sequence + "')";
 					
-					
-					
+					stmt.executeUpdate(query);
+						
 					
 				}
 	
