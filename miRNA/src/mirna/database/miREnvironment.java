@@ -63,8 +63,7 @@ public class miREnvironment implements IMirnaDatabase {
 				
 					
 					String mir = tokens[0];
-					String accesionNumber = tokens[1];
-					String name = tokens[2];
+					String name = tokens[1];
 					String disease = tokens[3];
 					String enviromenentalFactor = tokens[4];
 					String treatment = tokens[5];
@@ -77,7 +76,6 @@ public class miREnvironment implements IMirnaDatabase {
 
 					String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
 							+ mir + "','"
-							+ accesionNumber + "','"
 							+ name + "','"
 							+ disease + "','"
 							+ enviromenentalFactor + "','"
