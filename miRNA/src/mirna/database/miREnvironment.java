@@ -13,7 +13,7 @@ import java.sql.Statement;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * Código para procesar los datos de HMDD
+ * Código para procesar los datos de miREnvironment
  * 
  * @author Esteban López Camacho
  *
@@ -64,19 +64,23 @@ public class miREnvironment implements IMirnaDatabase {
 					
 					String mir = tokens[0];
 					String name = tokens[1];
-					String disease = tokens[3];
-					String enviromenentalFactor = tokens[4];
-					String treatment = tokens[5];
-					String cellularLine = tokens[6];
-					String specie = tokens[7];
-					String description = tokens[8];
-					String pubmedId = tokens[9];
+					String name2 = tokens[2];
+					String name3 = tokens[3];
+					String disease = tokens[4].replaceAll("'", "\\\\'");
+					String enviromenentalFactor = tokens[5].replaceAll("'", "\\\\'");
+					String treatment = tokens[6].replaceAll("'", "\\\\'");
+					String cellularLine = tokens[7].replaceAll("'", "\\\\'");
+					String specie = tokens[8];
+					String description = tokens[9].replaceAll("'", "\\\\'");
+					String pubmedId = tokens[10];
 
 					
 
 					String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
 							+ mir + "','"
 							+ name + "','"
+							+ name2 + "','"
+							+ name3 + "','"
 							+ disease + "','"
 							+ enviromenentalFactor + "','"
 							+ treatment + "','"
@@ -122,7 +126,7 @@ public class miREnvironment implements IMirnaDatabase {
 	
 	public static void main(String[] args) throws Exception {
 		
-		String inputFile = "/Users/esteban/Softw/miRNA/mirEnvironment/mirEnvironment.txt";
+		String inputFile = "/Users/esteban/Softw/miRNA/mirendata.txt";
 		miREnvironment mirEnvironment = new miREnvironment(inputFile);
 		mirEnvironment.insertInTable("miREnvironment");
 		

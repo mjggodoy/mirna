@@ -13,16 +13,16 @@ import java.sql.Statement;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * Código para procesar los datos de RepTar
+ * Código para procesar los datos de mirDIP
  * 
  * @author Esteban López Camacho
  *
  */
-public class mirDip2 implements IMirnaDatabase {
+public class mirDIP implements IMirnaDatabase {
 	
 	private String csvInputFile;
 	
-	public mirDip2(String csvInputFile) {
+	public mirDIP(String csvInputFile) {
 		this.csvInputFile = csvInputFile;
 	}
 	
@@ -73,7 +73,7 @@ public class mirDip2 implements IMirnaDatabase {
 							+ accesionnumber + "','"
 							+ rank + "','"
 							+ number_of_sources + "','"
-							+ provenance + "','" +  "')";
+							+ provenance + "')";
 					
 					stmt.executeUpdate(query);
 	
@@ -115,9 +115,9 @@ public class mirDip2 implements IMirnaDatabase {
 	
 	public static void main(String[] args) throws Exception {
 		
-		String inputFile = "/Users/esteban/Softw/miRNA/mirDIP-Grouped-By-MIR-Rank-Version1.0.txt";
-		mirDip2 phenomir = new mirDip2(inputFile);
-		phenomir.insertInTable("phenomir");
+		String inputFile = "/Users/esteban/Softw/miRNA/mirDIP/mirDIP-Grouped-By-MIR-Rank-Version1.0.txt";
+		mirDIP phenomir = new mirDIP(inputFile);
+		phenomir.insertInTable("mirDIP");
 		
 		/*
 		String inputFile = "/Users/esteban/Softw/miRNA/miRCancerMarch2014.txt";

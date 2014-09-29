@@ -79,3 +79,36 @@ CREATE TABLE sm2mir2n
    support          varchar(500) NOT NULL,
    expression       varchar(20) NOT NULL
 );
+
+CREATE TABLE miREnvironment
+(
+   pk              int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+   mir             varchar(20) NOT NULL,
+   name            varchar(20) NOT NULL,
+   name2           varchar(20) NOT NULL,
+   name3           varchar(20) NOT NULL,
+   disease         varchar(200) NOT NULL,
+   enviromentalFactor      varchar(200) NOT NULL,
+   treatment       varchar(400) NOT NULL,
+   cellularLine    varchar(400) NOT NULL,
+   specie          varchar(40) NOT NULL,
+   description     varchar(1400) NOT NULL,
+   pubmedId        varchar(20) NOT NULL
+)
+
+CREATE TABLE miRDB
+(
+   pk              int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+   mir             varchar(20) NOT NULL,
+   target          varchar(20) NOT NULL,
+   score           varchar(20) NOT NULL
+)
+
+CREATE TABLE mirDIP
+(
+   pk              int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+   accesionnumber  varchar(20) NOT NULL,
+   rank            varchar(20) NOT NULL,
+   number_of_sources       varchar(20) NOT NULL,
+   provenance      varchar(400) NOT NULL
+)

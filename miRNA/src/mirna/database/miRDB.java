@@ -13,7 +13,7 @@ import java.sql.Statement;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * Código para procesar los datos de HMDD
+ * Código para procesar los datos de miRDB
  * 
  * @author Esteban López Camacho
  *
@@ -72,7 +72,7 @@ public class miRDB implements IMirnaDatabase {
 					String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
 							+ accesionNumber + "','"
 							+ target + "','"
-							+ score + "','"+"')";
+							+ score + "')";
 					
 					stmt.executeUpdate(query);
 		
@@ -111,9 +111,9 @@ public class miRDB implements IMirnaDatabase {
 	
 	public static void main(String[] args) throws Exception {
 		
-		String inputFile = "/Users/esteban/Softw/miRNA/mirEnvironment/mirEnvironment.txt";
+		String inputFile = "/Users/esteban/Softw/miRNA/MirTarget2_v4.0_prediction_result.txt";
 		miRDB mirdb = new miRDB(inputFile);
-		mirdb.insertInTable("miREnvironment");
+		mirdb.insertInTable("miRDB");
 		
 	}
 
