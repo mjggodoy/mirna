@@ -94,7 +94,7 @@ CREATE TABLE miREnvironment
    specie          varchar(40) NOT NULL,
    description     varchar(1400) NOT NULL,
    pubmedId        varchar(20) NOT NULL
-)
+);
 
 CREATE TABLE miRDB
 (
@@ -102,7 +102,7 @@ CREATE TABLE miRDB
    mir             varchar(20) NOT NULL,
    target          varchar(20) NOT NULL,
    score           varchar(20) NOT NULL
-)
+);
 
 CREATE TABLE mirDIP
 (
@@ -111,4 +111,42 @@ CREATE TABLE mirDIP
    rank            varchar(20) NOT NULL,
    number_of_sources       varchar(20) NOT NULL,
    provenance      varchar(400) NOT NULL
-)
+);
+
+CREATE TABLE tarBase
+(
+ 	pk     int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	id varchar(20) NOT NULL,
+	id_v4 varchar(20) NOT NULL,
+	data_type varchar(20) NOT NULL,
+	support_type varchar(20) NOT NULL,
+	organism varchar(20) NOT NULL,
+	miRNA varchar(20) NOT NULL,
+	hgnc_symbol varchar(20) NOT NULL,
+	gene varchar(40) NOT NULL,
+	isoform varchar(20) NOT NULL,
+	ensembl varchar(20) NOT NULL,
+	chr_loc varchar(40) NOT NULL,
+	mre varchar(20) NOT NULL,
+	s_s_s varchar(20) NOT NULL,
+	i_s varchar(200) NOT NULL,
+	d_s varchar(200) NOT NULL,
+	validation varchar(20) NOT NULL,
+	paper varchar(200) NOT NULL,
+	target_seq varchar(200) NOT NULL,
+	mirna_seq varchar(40) NOT NULL,
+	seq_location varchar(40) NOT NULL,
+	pmid varchar(20) NOT NULL,
+	kegg varchar(20) NOT NULL,
+	protein_type varchar(80) NOT NULL,
+	dif_expr_in varchar(80) NOT NULL,
+	pathology_or_event varchar(80) NOT NULL,
+	mis_regulation varchar(20) NOT NULL,
+	gene_expression varchar(200) NOT NULL,
+	tumour_involv varchar(200) NOT NULL,
+	bib varchar(800) NOT NULL,
+	cell_line_used varchar(80) NOT NULL,
+	hgnc_id varchar(20) NOT NULL,
+	swiss_prot varchar(40) NOT NULL,
+	aux varchar(80) NOT NULL
+);
