@@ -150,3 +150,19 @@ CREATE TABLE tarBase
 	swiss_prot varchar(40) NOT NULL,
 	aux varchar(80) NOT NULL
 );
+
+CREATE TABLE plant_mirna_mature_mirna
+(
+ 	pk     int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	specie varchar(20) NOT NULL,
+	mirna_id varchar(20) NOT NULL,
+	sequence varchar(40) NOT NULL
+);
+
+CREATE TABLE plant_mirna_stem_loop
+(
+ 	pk     int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	specie varchar(20) NOT NULL,
+	mirna_id varchar(20) NOT NULL,
+	sequence varchar(1000) NOT NULL
+);
