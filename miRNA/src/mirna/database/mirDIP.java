@@ -18,11 +18,11 @@ import org.apache.commons.lang.StringUtils;
  * @author Esteban López Camacho
  *
  */
-public class mirDip2 implements IMirnaDatabase {
+public class mirDIP implements IMirnaDatabase {
 	
 	private String csvInputFile;
 	
-	public mirDip2(String csvInputFile) {
+	public mirDIP(String csvInputFile) {
 		this.csvInputFile = csvInputFile;
 	}
 	
@@ -116,8 +116,8 @@ public class mirDip2 implements IMirnaDatabase {
 	public static void main(String[] args) throws Exception {
 		
 		String inputFile = "/Users/esteban/Softw/miRNA/mirDIP/mirDIP-Grouped-By-MIR-Rank-Version1.0.txt";
-		mirDip2 mirDip2 = new mirDip2(inputFile);
-		mirDip2.insertInTable("miRDip2");
+		mirDIP phenomir = new mirDIP(inputFile);
+		phenomir.insertInTable("mirDIP");
 		
 		/*
 		String inputFile = "/Users/esteban/Softw/miRNA/miRCancerMarch2014.txt";
