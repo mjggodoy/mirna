@@ -116,8 +116,8 @@ public class mirDip2 implements IMirnaDatabase {
 	public static void main(String[] args) throws Exception {
 		
 		String inputFile = "/Users/esteban/Softw/miRNA/mirDIP/mirDIP-Grouped-By-MIR-Rank-Version1.0.txt";
-		mirDip2 mirDip = new mirDip2(inputFile);
-		mirDip.insertInTable("miRDip2");
+		mirDip2 mirDip2 = new mirDip2(inputFile);
+		mirDip2.insertInTable("miRDip2");
 		
 		/*
 		String inputFile = "/Users/esteban/Softw/miRNA/miRCancerMarch2014.txt";
