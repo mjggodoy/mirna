@@ -104,7 +104,19 @@ CREATE TABLE miRDB
    score           varchar(20) NOT NULL
 );
 
-CREATE TABLE mirDIP
+
+CREATE TABLE mirDIP1
+(
+
+   pk		int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+   accesionnumber		varchar(20) NOT NULL,
+   target		varchar(20) NOT NULL,
+   scrore		varchar(20) NOT NULL
+
+
+)
+
+CREATE TABLE mirDIP2
 (
    pk              int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
    accesionnumber  varchar(20) NOT NULL,

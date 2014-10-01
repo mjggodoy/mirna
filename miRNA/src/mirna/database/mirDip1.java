@@ -65,13 +65,13 @@ public class mirDip1 implements IMirnaDatabase {
 					
 					String accesionnumber = tokens[0];
 					String geneId = tokens[1];
-					String rank = tokens[2];
+					String score = tokens[2];
 					
 
 					String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
 							+ accesionnumber + "','"
 							+ geneId + "','"
-							+ rank + "','" +  "')";
+							+ score + "','" +  "')";
 					
 					stmt.executeUpdate(query);
 	
@@ -115,7 +115,7 @@ public class mirDip1 implements IMirnaDatabase {
 		
 		String inputFile = "/Users/esteban/Softw/miRNA/MirTarget2_v4.0_prediction_result.txt";
 		mirDip1 mirDip1 = new mirDip1(inputFile);
-		mirDip1.insertInTable("phenomir");
+		mirDip1.insertInTable("miRDip1");
 		
 		/*
 		String inputFile = "/Users/esteban/Softw/miRNA/miRCancerMarch2014.txt";
