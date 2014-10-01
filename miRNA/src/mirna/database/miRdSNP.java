@@ -77,7 +77,7 @@ public class miRdSNP {
 				count++;
 				System.out.println(count);
 				
-				tokens = StringUtils.splitPreserveAllTokens(line, ",");
+				tokens = StringUtils.splitPreserveAllTokens(line, "\t");
 	
 				
 					String pubmedid = tokens[0];
