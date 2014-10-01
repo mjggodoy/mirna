@@ -166,3 +166,17 @@ CREATE TABLE plant_mirna_stem_loop
 	mirna_id varchar(20) NOT NULL,
 	sequence varchar(1000) NOT NULL
 );
+
+CREATE TABLE miRdSNP1
+(
+ 	pk     int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	pubmed_id varchar(20) NOT NULL,
+	year varchar(20) NOT NULL,
+	month varchar(20) NOT NULL,
+	article_date varchar(20) NOT NULL,
+	journal varchar(200) NOT NULL,
+	title varchar(400) NOT NULL,
+	snp_id varchar(120) NOT NULL,
+	disease varchar(80) NOT NULL,
+	link varchar(80) NOT NULL
+);

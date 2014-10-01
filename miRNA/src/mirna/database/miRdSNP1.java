@@ -6,8 +6,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 
-import org.apache.commons.lang.StringUtils;
-
 /**
  * Código para procesar los datos de Phenomir
  * 
@@ -48,16 +46,26 @@ public class miRdSNP1 extends miRdSNP {
 				count++;
 				System.out.println(count);
 				
-				tokens = StringUtils.splitPreserveAllTokens(line, "\t");
+				//tokens = StringUtils.splitPreserveAllTokens(line, ",");
+				tokens = line.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
+				for (int i=0; i<tokens.length; i++) {
+					tokens[i] = quitarComillas(tokens[i]);
+				}
+				
 				String pubmedid = tokens[0];
 				String year = tokens[1];
 				String month = tokens[2];
 				String article_date = tokens[3];
-				String journal = tokens[4];
-				String title = tokens[5];
+				String journal = tokens[4].replaceAll("'", "\\\\'");
+				String title = tokens[5].replaceAll("'", "\\\\'");
 				String snpId = tokens[6];
-				String disease = tokens[7];
+				String disease = tokens[7].replaceAll("'", "\\\\'");
 				String link = tokens[8];
+				
+				if (tokens.length>9) {
+					br.close();
+					throw new Exception(tokens.length + " tokens found!");
+				}
 				
 				String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
 						+ pubmedid + "','"
