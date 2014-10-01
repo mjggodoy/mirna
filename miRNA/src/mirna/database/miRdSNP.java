@@ -37,7 +37,7 @@ public abstract class miRdSNP implements IMirnaDatabase {
 		mirdsnp.insertInTable("mirdsnp4");
 		
 		inputFile = "/Users/esteban/Softw/miRNA/mirdsnp-snp.txt";
-		mirdsnp = new miRdSNP4(inputFile);
+		mirdsnp = new miRdSNP5(inputFile);
 		mirdsnp.insertInTable("mirdsnp5");
 
 	}

@@ -4,28 +4,31 @@ public class VirmiRNA {
 	
 	
 	
-	private String csvInputFile1;
+protected String csvInputFile;
 	
-	
-	public VirmiRNA(String csvInputFile1) {
-		this.csvInputFile1 = csvInputFile1;
-		
-		
+	public void insertInTable(String tableName) throws Exception {
+		this.insertInTable(tableName, null);
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		
-	}
+		String inputFile;
+		VirmiRNA1 virmirRNA;
+		
+		inputFile = "/Users/esteban/Softw/miRNA/vmr.tsv";
+		virmirRNA = new VirmiRNA1(inputFile);
+		virmirRNA.insertInTable("virmirRNA_1");
 
+		inputFile = "/Users/esteban/Softw/miRNA/avm.tsv";
+		virmirRNA = new VirmiRNA2(inputFile);
+		virmirRNA.insertInTable("virmirRNA_2");
+		
+		inputFile = "/Users/esteban/Softw/miRNA/vmt.tsv";
+		virmirRNA = new VirmirRNA3(inputFile);
+		virmirRNA.insertInTable("virmirRNA_3");
+
+		
+	}
+	
+	
 }
