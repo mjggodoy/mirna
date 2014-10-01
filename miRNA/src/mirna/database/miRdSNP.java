@@ -42,7 +42,11 @@ public abstract class miRdSNP implements IMirnaDatabase {
 //		inputFile = "/Users/esteban/Softw/miRNA/mirdsnp-snp-mir-distance-v11.03.txt";
 //		mirdsnp = new miRdSNP4(inputFile);
 //		mirdsnp.insertInTable("mirdsnp4");
+		
+//		inputFile = "/Users/esteban/Softw/miRNA/mirdsnp-snp.txt";
+//		mirdsnp = new miRdSNP5(inputFile);
+//		mirdsnp.insertInTable("mirdsnp5");
 
 	}
-
+	
 }
