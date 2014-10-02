@@ -53,24 +53,22 @@ public class miRdSNP5 extends miRdSNP {
 				
 				tokens = StringUtils.splitPreserveAllTokens(line, "\t");
 	
+				String chromosome = tokens[0];
+				String start_sequence = tokens[1];
+				String end_sequence = tokens[2];
+				String disease_SNP = tokens[3];
+				tokens2 = StringUtils.splitPreserveAllTokens(disease_SNP, ":");
+				String SNP = tokens2[0];
+				String disease = tokens2[1].replaceAll("'", "\\\\'");
+			
+				String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
+						+ chromosome + "','"
+						+ start_sequence + "','"
+						+ end_sequence + "','"
+						+ SNP + "','"
+						+ disease + "')";
 				
-					String chromosome = tokens[0];
-					String start_sequence = tokens[1];
-					String end_sequence = tokens[2];
-					String disease_SNP = tokens[3];
-					tokens2 = StringUtils.splitPreserveAllTokens(disease_SNP, ":");
-					String SNP = tokens2[0];
-					String disease = tokens2[1];
-					
-				
-					String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
-							+ chromosome + "','"
-							+ start_sequence + "','"
-							+ end_sequence + "','"
-							+ SNP + "','"
-							+ disease + "')";
-					
-					stmt.executeUpdate(query);
+				stmt.executeUpdate(query);
 			}
 			fr.close();
 			br.close();

@@ -48,23 +48,30 @@ public class miRdSNP2 extends miRdSNP {
 				System.out.println(count);
 				
 				tokens = StringUtils.splitPreserveAllTokens(line, ",");
+				
+				for (int i=0; i<tokens.length; i++) {
+					tokens[i] = quitarComillas(tokens[i]);
+				}
 	
+				String gene = tokens[0];
+				String refseq_name = tokens[1];
+				String name_miRNA = tokens[2];
+				String SNPid = tokens[3];
+				String disease_name = tokens[4].replaceAll("'", "\\\\'");;
 				
-					String gene = tokens[0];
-					String refseq_name = tokens[1];
-					String name_miRNA = tokens[2];
-					String SNPid = tokens[3];
-					String disease_name = tokens[4];
-					
+				if (tokens.length>5) {
+					br.close();
+					throw new Exception(tokens.length + " tokens found!");
+				}
+			
+				String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
+						+ gene + "','"
+						+ refseq_name + "','"
+						+ name_miRNA + "','"
+						+ SNPid + "','"
+						+ disease_name + "')";
 				
-					String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
-							+ gene + "','"
-							+ refseq_name + "','"
-							+ name_miRNA + "','"
-							+ SNPid + "','"
-							+ disease_name + "')";
-					
-					stmt.executeUpdate(query);
+				stmt.executeUpdate(query);
 	
 			}
 			fr.close();

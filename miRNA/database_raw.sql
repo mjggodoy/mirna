@@ -180,3 +180,47 @@ CREATE TABLE miRdSNP1
 	disease varchar(80) NOT NULL,
 	link varchar(80) NOT NULL
 );
+
+CREATE TABLE miRdSNP2
+(
+   pk           int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+   gene      	varchar(20) NOT NULL,
+   refseq       varchar(20) NOT NULL,
+   mirna        varchar(10000) NOT NULL,
+   snp_id   	varchar(2000) NOT NULL,
+   disease      varchar(200) NOT NULL
+);
+
+CREATE TABLE miRdSNP3
+(
+   pk           int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+   gene      	varchar(20) NOT NULL,
+   refseq       	varchar(20) NOT NULL,
+   miR       	varchar(20) NOT NULL,
+   snp   		varchar(20) NOT NULL,
+   diseases      varchar(200) NOT NULL,
+   distance varchar(20) NOT NULL,
+   expConf varchar(20) NOT NULL
+);
+
+CREATE TABLE miRdSNP4
+(
+   pk           int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+   gene      	varchar(20) NOT NULL,
+   refseq       	varchar(20) NOT NULL,
+   miR       	varchar(20) NOT NULL,
+   snp   		varchar(20) NOT NULL,
+   diseases      varchar(200) NOT NULL,
+   distance varchar(20) NOT NULL,
+   expConf varchar(20) NOT NULL
+);
+
+CREATE TABLE miRdSNP5
+(
+   pk           int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+   chromosome   varchar(20) NOT NULL,
+   start       	varchar(20) NOT NULL,
+   end       	varchar(20) NOT NULL,
+   snp   		varchar(20) NOT NULL,
+   disease      varchar(200) NOT NULL
+);

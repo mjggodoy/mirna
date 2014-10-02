@@ -2,7 +2,7 @@ package mirna.database;
 
 
 /**
- * Código para procesar los datos de Phenomir
+ * Código para procesar los datos de miRdSNP
  * 
  * @author Esteban López Camacho
  *
@@ -31,21 +31,22 @@ public abstract class miRdSNP implements IMirnaDatabase {
 		mirdsnp = new miRdSNP1(inputFile);
 		mirdsnp.insertInTable("mirdsnp1");
 
-//		inputFile = "/Users/esteban/Softw/miRNA/mirdsnp-dsnp-generated-mir-targets-v11.03.txt";
-//		mirdsnp = new miRdSNP2(inputFile);
-//		mirdsnp.insertInTable("mirdsnp2");
-//		
-//		inputFile = "/Users/esteban/Softw/miRNA/mirdsnp-by-gene-v11.03.txt";
-//		mirdsnp = new miRdSNP3(inputFile);
-//		mirdsnp.insertInTable("mirdsnp3");
-//
-//		inputFile = "/Users/esteban/Softw/miRNA/mirdsnp-snp-mir-distance-v11.03.txt";
-//		mirdsnp = new miRdSNP4(inputFile);
-//		mirdsnp.insertInTable("mirdsnp4");
+		inputFile = "/Users/esteban/Softw/miRNA/miRdSNP/mirdsnp-by-gene-v11.03.csv";
+		mirdsnp = new miRdSNP2(inputFile);
+		mirdsnp.insertInTable("mirdsnp2");
 		
-//		inputFile = "/Users/esteban/Softw/miRNA/mirdsnp-snp.txt";
-//		mirdsnp = new miRdSNP5(inputFile);
-//		mirdsnp.insertInTable("mirdsnp5");
+		
+		inputFile = "/Users/esteban/Softw/miRNA/miRdSNP/mirdsnp-snp-mir-distance-v11.03.csv";
+		mirdsnp = new miRdSNP3(inputFile);
+		mirdsnp.insertInTable("mirdsnp3");
+
+		inputFile = "/Users/esteban/Softw/miRNA/miRdSNP/mirdsnp-dsnp-generated-mir-targets-v11.03.csv";
+		mirdsnp = new miRdSNP4(inputFile);
+		mirdsnp.insertInTable("mirdsnp4");
+		
+		inputFile = "/Users/esteban/Softw/miRNA/miRdSNP/mirdsnp-dsnps.bed";
+		mirdsnp = new miRdSNP5(inputFile);
+		mirdsnp.insertInTable("mirdsnp5");
 
 	}
 	

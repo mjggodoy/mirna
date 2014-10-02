@@ -6,8 +6,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 
-import org.apache.commons.lang.StringUtils;
-
 /**
  * Código para procesar los datos de Phenomir
  * 
@@ -47,25 +45,40 @@ public class miRdSNP4 extends miRdSNP {
 				count++;
 				System.out.println(count);
 				
-				tokens = StringUtils.splitPreserveAllTokens(line, ",");
-	
+				//tokens = StringUtils.splitPreserveAllTokens(line, ",");
+				tokens = line.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
 				
-					String gene_name = tokens[0];
-					String refseq_name = tokens[1];
-					String miRNA = tokens[2];
-					String snp = tokens[3];
-					String disease = tokens[4];
-					String distance = tokens[5];
-					String expertimental_confirmation = tokens[6];
+				for (int i=0; i<tokens.length; i++) {
+					tokens[i] = quitarComillas(tokens[i]);
+				}
 				
-					String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
-							+ gene_name + "','"
-							+ refseq_name + "','"
-							+ miRNA + "','"
-							+ snp + "','"
-							+ disease + "')";
+				String gene_name = tokens[0];
+				String refseq_name = tokens[1];
+				String miRNA = tokens[2];
+				String snp = tokens[3];
+				String disease = tokens[4].replaceAll("'", "\\\\'");
+				String distance = tokens[5];
+				String expConf = "";//tokens[6];
+				
+				if (tokens.length==7) {
+					expConf = tokens[6];
 					
-					stmt.executeUpdate(query);
+					if (!"Yes".equals(expConf)) {
+						br.close();
+						throw new Exception(tokens.length + " tokens found!");
+					}
+				}
+			
+				String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
+						+ gene_name + "','"
+						+ refseq_name + "','"
+						+ miRNA + "','"
+						+ snp + "','"
+						+ disease + "','"
+						+ distance + "','"
+						+ expConf + "')";
+				
+				stmt.executeUpdate(query);
 			}
 			fr.close();
 			br.close();
