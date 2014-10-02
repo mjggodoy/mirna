@@ -8,11 +8,11 @@ import java.sql.Statement;
 
 import org.apache.commons.lang.StringUtils;
 
-public class VirmiRNA1 {
+public class VirmiRNA2 {
 	
 	private String csvInputFile;
 	
-	public VirmiRNA1(String csvInputFile) {
+	public VirmiRNA2(String csvInputFile) {
 		this.csvInputFile = csvInputFile;
 	}
 	
@@ -44,35 +44,47 @@ public class VirmiRNA1 {
 				System.out.println(count);
 				
 				tokens = StringUtils.splitPreserveAllTokens(line, "\t");
-				String id_virus = tokens[0];
-				String virus_full_name = tokens[1];
-				String link_virus = tokens[2];
-				String miRNA = tokens[3];
-				String miRNA_sequence = tokens[4];
-				String length = tokens[5];
-				String GC_proportion = tokens[6];
-				String arm = tokens[7];
-				String pre_miRNA = tokens[8];
-				String pre_miRNA_sequence = tokens[9];
+				String AVM_id = tokens[0];
+				String miRNA = tokens[1];
+				String miRNA_sequence = tokens[2];
+				String miRBase_id = tokens[3];
+				String specie = tokens[4];
+				String virus = tokens[5];
+				String virus_full_name = tokens[6];
+				String target = tokens[7];
+				String Uniprot_target = tokens[8];
+				String Method = tokens[9];
 				String cell_line = tokens[10];
-				String method = tokens[11];
-				String pubmed_id = tokens[12];
+				String target_sequence = tokens[11];
+				String target_region = tokens[12];
+				String target_coordinates = tokens[13];
+				String seed_match = tokens[14];
+				String target_reference = tokens[15];
+				String Pubmed_id = tokens[16];
+				
+				int index1 = Pubmed_id.indexOf("\">");
+				int index2 = Pubmed_id.indexOf("</");
+				Pubmed_id = Pubmed_id.substring(index1+2, index2-2);
 
 				
 				String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
-						+ id_virus + "','"
-						+ virus_full_name + "','"
-						+ link_virus + "','"
+						+ AVM_id + "','"
 						+ miRNA + "','"
 						+ miRNA_sequence + "','"
-						+ length + "','"
-						+ GC_proportion + "','"
-						+ arm + "','"
-						+ pre_miRNA + "','"
-						+ pre_miRNA_sequence + "','"
+						+ miRBase_id + "','"
+						+ specie + "','"
+						+ virus + "','"
+						+ virus_full_name + "','"
+						+ target + "','"
+						+ Uniprot_target + "','"
+						+ Method + "','"
 						+ cell_line  + "','"
-						+ method  + "','"
-						+ pubmed_id + "')";
+						+ target_sequence  + "','"
+						+ target_region  + "','"
+						+ target_coordinates  + "','"
+						+ seed_match  + "','"
+						+ target_reference + "','"
+						+ Pubmed_id + "')";
 				stmt.executeUpdate(query);
 			}
 			fr.close();
