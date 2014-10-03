@@ -1,10 +1,8 @@
 package mirna.database;
 
-public class VirmiRNA {
+public abstract class VirmiRNA implements IMirnaDatabase {
 	
-	
-	
-protected String csvInputFile;
+	protected String csvInputFile;
 	
 	public void insertInTable(String tableName) throws Exception {
 		this.insertInTable(tableName, null);
@@ -13,7 +11,7 @@ protected String csvInputFile;
 	public static void main(String[] args) throws Exception {
 		
 		String inputFile;
-		VirmiRNA1 virmirRNA;
+		VirmiRNA virmirRNA;
 		
 		inputFile = "/Users/esteban/Softw/miRNA/vmr.tsv";
 		virmirRNA = new VirmiRNA1(inputFile);
@@ -23,9 +21,9 @@ protected String csvInputFile;
 		virmirRNA = new VirmiRNA2(inputFile);
 		virmirRNA.insertInTable("virmirRNA_2");
 		
-		inputFile = "/Users/esteban/Softw/miRNA/vmt.tsv";
-		virmirRNA = new VirmirRNA3(inputFile);
-		virmirRNA.insertInTable("virmirRNA_3");
+		//inputFile = "/Users/esteban/Softw/miRNA/vmt.tsv";
+		//virmirRNA = new VirmirRNA3(inputFile);
+		//virmirRNA.insertInTable("virmirRNA_3");
 
 		
 	}

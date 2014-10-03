@@ -8,15 +8,15 @@ import java.sql.Statement;
 
 import org.apache.commons.lang.StringUtils;
 
-public class VirmiRNA1 {
+public class VirmiRNA1 extends VirmiRNA{
 	
-	private String csvInputFile;
+
 	
 	public VirmiRNA1(String csvInputFile) {
 		this.csvInputFile = csvInputFile;
 	}
 	
-	public void insertInTable(String tableName) throws Exception {
+	public void insertInTable(String tableName, Integer numlines) throws Exception {
 		
 		String url = "jdbc:mysql://localhost:3306/mirna_raw";
 		

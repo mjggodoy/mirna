@@ -8,7 +8,7 @@ import java.sql.Statement;
 
 import org.apache.commons.lang.StringUtils;
 
-public class VirmiRNA2 {
+public class VirmiRNA2 extends VirmiRNA {
 	
 	private String csvInputFile;
 	
@@ -16,7 +16,7 @@ public class VirmiRNA2 {
 		this.csvInputFile = csvInputFile;
 	}
 	
-	public void insertInTable(String tableName) throws Exception {
+	public void insertInTable(String tableName, Integer numlines) throws Exception {
 		
 		String url = "jdbc:mysql://localhost:3306/mirna_raw";
 		
@@ -51,16 +51,18 @@ public class VirmiRNA2 {
 				String specie = tokens[4];
 				String virus = tokens[5];
 				String virus_full_name = tokens[6];
-				String target = tokens[7];
-				String Uniprot_target = tokens[8];
-				String Method = tokens[9];
-				String cell_line = tokens[10];
-				String target_sequence = tokens[11];
-				String target_region = tokens[12];
-				String target_coordinates = tokens[13];
-				String seed_match = tokens[14];
-				String target_reference = tokens[15];
-				String Pubmed_id = tokens[16];
+				String taxonomy = tokens[7];
+				String target = tokens[8];
+				String Uniprot = tokens[9];
+				String Target_Process = tokens[10];
+				String Method = tokens[11];
+				String cell_line = tokens[12];
+				String target_sequence = tokens[13];
+				String target_region = tokens[14];
+				String target_coordinates = tokens[15];
+				String seed_match = tokens[16];
+				String target_reference = tokens[17];
+				String Pubmed_id = tokens[18];
 				
 				int index1 = Pubmed_id.indexOf("\">");
 				int index2 = Pubmed_id.indexOf("</");
@@ -75,8 +77,10 @@ public class VirmiRNA2 {
 						+ specie + "','"
 						+ virus + "','"
 						+ virus_full_name + "','"
+						+ taxonomy + "','"
 						+ target + "','"
-						+ Uniprot_target + "','"
+						+ Uniprot + "','"
+						+ Target_Process + "','"
 						+ Method + "','"
 						+ cell_line  + "','"
 						+ target_sequence  + "','"
@@ -85,6 +89,8 @@ public class VirmiRNA2 {
 						+ seed_match  + "','"
 						+ target_reference + "','"
 						+ Pubmed_id + "')";
+				
+				
 				stmt.executeUpdate(query);
 			}
 			fr.close();
