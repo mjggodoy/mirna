@@ -45,6 +45,7 @@ public class VirmiRNA1 extends VirmiRNA{
 				
 				tokens = StringUtils.splitPreserveAllTokens(line, "\t");
 				String id_virus = tokens[0];
+				String virus_name = tokens[0];
 				String virus_full_name = tokens[1];
 				String link_virus = tokens[2];
 				String miRNA = tokens[3];
@@ -61,6 +62,7 @@ public class VirmiRNA1 extends VirmiRNA{
 				
 				String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
 						+ id_virus + "','"
+						+ virus_name + "','"
 						+ virus_full_name + "','"
 						+ link_virus + "','"
 						+ miRNA + "','"
