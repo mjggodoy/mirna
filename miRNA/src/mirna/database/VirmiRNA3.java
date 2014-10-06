@@ -8,11 +8,11 @@ import java.sql.Statement;
 
 import org.apache.commons.lang.StringUtils;
 
-public class VirmiRNA2 extends VirmiRNA {
+public class VirmiRNA3 extends VirmiRNA {
 	
 	private String csvInputFile;
 	
-	public VirmiRNA2(String csvInputFile) {
+	public VirmiRNA3(String csvInputFile) {
 		this.csvInputFile = csvInputFile;
 	}
 	
@@ -44,50 +44,40 @@ public class VirmiRNA2 extends VirmiRNA {
 				System.out.println(count);
 				
 				tokens = StringUtils.splitPreserveAllTokens(line, "\t");
-				String AVM_id = tokens[0];
-				String miRNA = tokens[1];
-				String miRNA_sequence = tokens[2];
-				String miRBase_id = tokens[3];
-				String specie = tokens[4];
-				String virus = tokens[5];
-				String virus_full_name = tokens[6];
-				String taxonomy = tokens[7];
-				String target = tokens[8];
-				String Uniprot = tokens[9];
-				String target_process = tokens[10];
-				String method = tokens[11];
-				String cell_line = tokens[12];
-				String target_sequence = tokens[13];
-				String target_region = tokens[14];
-				String target_coordinates = tokens[15];
-				String seed_match = tokens[16];
-				String target_reference = tokens[17];
-				String pubmed_id = tokens[18];
-				
-				int index1 = pubmed_id.indexOf("\">");
-				int index2 = pubmed_id.indexOf("</");
-				pubmed_id = pubmed_id.substring(index1+2, index2-2);
+				String VMT_id = tokens[0];
+				String virus = tokens[1];
+				String virus_full_name = tokens[2];
+				String taxonomy = tokens[3];
+				String miRNA = tokens[4];
+				String gene = tokens[5];
+				String Uniprot = tokens[6];
+				String organism  = tokens[7];
+				String cell_line = tokens[8];
+				String method = tokens[9];
+				String sequence_target = tokens[10];
+				String start_target = tokens[11];
+				String end_target = tokens[12];
+				String region_target = tokens[13];
+				String target_reference = tokens[14];
+				String pubmed_id = tokens[15];				
 
 				
 				String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
-						+ AVM_id + "','"
-						+ miRNA + "','"
-						+ miRNA_sequence + "','"
-						+ miRBase_id + "','"
-						+ specie + "','"
+						+ VMT_id + "','"
 						+ virus + "','"
 						+ virus_full_name + "','"
 						+ taxonomy + "','"
-						+ target + "','"
+						+ miRNA + "','"
+						+ gene + "','"
 						+ Uniprot + "','"
-						+ target_process + "','"
+						+ organism + "','"
+						+ cell_line + "','"
 						+ method + "','"
-						+ cell_line  + "','"
-						+ target_sequence  + "','"
-						+ target_region  + "','"
-						+ target_coordinates  + "','"
-						+ seed_match  + "','"
-						+ target_reference + "','"
+						+ sequence_target + "','"
+						+ start_target + "','"
+						+ end_target + "','"
+						+ region_target  + "','"
+						+ target_reference  + "','"
 						+ pubmed_id + "')";
 				
 				

@@ -21,9 +21,9 @@ public abstract class VirmiRNA implements IMirnaDatabase {
 		virmirRNA = new VirmiRNA2(inputFile);
 		virmirRNA.insertInTable("virmirRNA_2");
 		
-		//inputFile = "/Users/esteban/Softw/miRNA/vmt.tsv";
-		//virmirRNA = new VirmirRNA3(inputFile);
-		//virmirRNA.insertInTable("virmirRNA_3");
+		inputFile = "/Users/esteban/Softw/miRNA/vmt.tsv";
+		virmirRNA = new VirmiRNA3(inputFile);
+		virmirRNA.insertInTable("virmirRNA_3");
 
 		
 	}
