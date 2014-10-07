@@ -268,3 +268,24 @@ CREATE TABLE virmirna2
    pubmed_id   varchar(200) NOT NULL
 );
 
+CREATE TABLE virmirna3
+(
+   pk           int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+   vmt_id   varchar(20) NOT NULL,
+   virus   varchar(20) NOT NULL,
+   virus_full_name   varchar(80) NOT NULL,
+   taxonomy   varchar(80) NOT NULL,
+   mirna   varchar(20) NOT NULL,
+   gene   varchar(20) NOT NULL,
+   uniprot   varchar(20) NOT NULL,
+   organism   varchar(20) NOT NULL,
+   cell_line   varchar(40) NOT NULL,
+   method   varchar(80) NOT NULL,
+   sequence_target   varchar(200) NOT NULL,
+   start_target   varchar(20) NOT NULL,
+   end_target   varchar(20) NOT NULL,
+   region_target   varchar(20) NOT NULL,
+   target_reference   varchar(20) NOT NULL,
+   pubmed_id   varchar(20) NOT NULL
+);
+

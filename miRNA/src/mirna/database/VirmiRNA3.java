@@ -59,7 +59,12 @@ public class VirmiRNA3 extends VirmiRNA {
 				String end_target = tokens[12];
 				String region_target = tokens[13];
 				String target_reference = tokens[14];
-				String pubmed_id = tokens[15];				
+				String pubmed_id = tokens[15];
+				
+				if (tokens.length>16) { //|| ((tokens.length==20) && (!"".equals(tokens[19])))) {
+					br.close();
+					throw new Exception(tokens.length + " tokens found!");
+				}
 
 				
 				String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
