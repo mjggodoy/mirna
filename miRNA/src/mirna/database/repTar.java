@@ -111,8 +111,7 @@ public class repTar {
 					repeated_motifs	= tokens11[1];
 							
 					String algorithm = tokens[12];
-					tokens12 = StringUtils.splitPreserveAllTokens(algorithm, ":");
-					algorithm	= tokens12[1];
+					
 					
 						String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
 								+ gene_symbol + "','"
