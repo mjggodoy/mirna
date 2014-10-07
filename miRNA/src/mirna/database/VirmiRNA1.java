@@ -45,22 +45,24 @@ public class VirmiRNA1 extends VirmiRNA{
 				
 				tokens = StringUtils.splitPreserveAllTokens(line, "\t");
 				String id_virus = tokens[0];
-				String virus_full_name = tokens[1];
-				String link_virus = tokens[2];
-				String miRNA = tokens[3];
-				String miRNA_sequence = tokens[4];
-				String length = tokens[5];
-				String GC_proportion = tokens[6];
-				String arm = tokens[7];
-				String pre_miRNA = tokens[8];
-				String pre_miRNA_sequence = tokens[9];
-				String cell_line = tokens[10];
-				String method = tokens[11];
-				String pubmed_id = tokens[12];
+				String virus_name = tokens[1];
+				String virus_full_name = tokens[2];
+				String link_virus = tokens[3];
+				String miRNA = tokens[4];
+				String miRNA_sequence = tokens[5];
+				String length = tokens[6];
+				String GC_proportion = tokens[7];
+				String arm = tokens[8];
+				String pre_miRNA = tokens[9];
+				String pre_miRNA_sequence = tokens[10];
+				String cell_line = tokens[11];
+				String method = tokens[12];
+				String pubmed_id = tokens[13];
 
 				
 				String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
 						+ id_virus + "','"
+						+ virus_name + "','"
 						+ virus_full_name + "','"
 						+ link_virus + "','"
 						+ miRNA + "','"

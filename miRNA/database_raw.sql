@@ -224,3 +224,47 @@ CREATE TABLE miRdSNP5
    snp   		varchar(20) NOT NULL,
    disease      varchar(200) NOT NULL
 );
+
+CREATE TABLE virmirna1
+(
+   pk           int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+   id_virus   varchar(20) NOT NULL,
+   virus_name   varchar(20) NOT NULL,
+   virus_full_name       	varchar(80) NOT NULL,
+   link_virus       	varchar(80) NOT NULL,
+   mirna   		varchar(20) NOT NULL,
+   mirna_seq   		varchar(40) NOT NULL,
+   length   		varchar(20) NOT NULL,
+      gc_proportion   		varchar(20) NOT NULL,
+      arm   		varchar(20) NOT NULL,
+      pre_mirna   		varchar(20) NOT NULL,
+      pre_mirna_seq   		varchar(200) NOT NULL,
+      cell_line   		varchar(80) NOT NULL,
+      method   		varchar(80) NOT NULL,
+      pubmed   		varchar(80) NOT NULL
+);
+
+CREATE TABLE virmirna2
+(
+   pk           int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+   avm_id   varchar(20) NOT NULL,
+   mirna   varchar(20) NOT NULL,
+   mirna_sequence   varchar(40) NOT NULL,
+   mirbase_id   varchar(80) NOT NULL,
+   specie   varchar(40) NOT NULL,
+   virus   varchar(20) NOT NULL,
+   virus_full_name   varchar(80) NOT NULL,
+   taxonomy   varchar(80) NOT NULL,
+   target   varchar(20) NOT NULL,
+   uniprot   varchar(20) NOT NULL,
+   target_process   varchar(40) NOT NULL,
+   method   varchar(80) NOT NULL,
+   cell_line   varchar(40) NOT NULL,
+   target_sequence   varchar(40) NOT NULL,
+   target_region   varchar(20) NOT NULL,
+   target_coords   varchar(40) NOT NULL,
+   seed_match   varchar(20) NOT NULL,
+   target_ref   varchar(20) NOT NULL,
+   pubmed_id   varchar(200) NOT NULL
+);
+

@@ -52,21 +52,26 @@ public class VirmiRNA2 extends VirmiRNA {
 				String virus = tokens[5];
 				String virus_full_name = tokens[6];
 				String taxonomy = tokens[7];
-				String target = tokens[8];
+				String target = tokens[8].replaceAll("'", "\\\\'");;
 				String Uniprot = tokens[9];
 				String target_process = tokens[10];
-				String method = tokens[11];
+				String method = tokens[11].replaceAll("'", "\\\\'");;
 				String cell_line = tokens[12];
 				String target_sequence = tokens[13];
-				String target_region = tokens[14];
+				String target_region = tokens[14].replaceAll("'", "\\\\'");
 				String target_coordinates = tokens[15];
 				String seed_match = tokens[16];
 				String target_reference = tokens[17];
 				String pubmed_id = tokens[18];
 				
-				int index1 = pubmed_id.indexOf("\">");
-				int index2 = pubmed_id.indexOf("</");
-				pubmed_id = pubmed_id.substring(index1+2, index2-2);
+				if ((tokens.length>20) || ((tokens.length==20) && (!"".equals(tokens[19])))) {
+					br.close();
+					throw new Exception(tokens.length + " tokens found!");
+				}
+				
+//				int index1 = pubmed_id.indexOf("\">");
+//				int index2 = pubmed_id.indexOf("</");
+//				pubmed_id = pubmed_id.substring(index1+2, index2-2);
 
 				
 				String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
