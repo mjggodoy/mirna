@@ -1,4 +1,4 @@
-package beans;
+package mirna.beans;
 
 public class Hairpin extends MiRna {
 	

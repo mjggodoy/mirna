@@ -1,3 +1,5 @@
+package old;
+
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -5,13 +7,17 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.StringTokenizer;
 
-import org.apache.commons.lang.StringUtils;
+import mirna.beans.DataExpression;
+import mirna.beans.Disease;
+import mirna.beans.Gene;
+import mirna.beans.InteractionData;
+import mirna.beans.MiRna;
+import mirna.beans.Organism;
+import mirna.beans.SmallMolecule;
+import mirna.beans.Target;
+import mirna.beans.Transcript;
 
-import beans.DataExpression;
-import beans.Disease;
-import beans.MiRna;
-import beans.Organism;
-import beans.SmallMolecule;
+import org.apache.commons.lang.StringUtils;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
@@ -19,7 +25,7 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
 import com.hp.hpl.jena.vocabulary.RDF;
 
-public class HMDD {
+public class TarBase {
 
 	public static void main(String[] args) throws Exception {
 
@@ -39,7 +45,7 @@ public class HMDD {
 		Model model = ModelFactory.createDefaultModel();
 
 		int count = 0;
-		int dataExpressionCount = 1;
+		int interactiondataCount = 1;
 
 		while (br.readLine() != null) {
 
@@ -54,52 +60,89 @@ public class HMDD {
 				try {
 
 					MiRna miRna2 = new MiRna();
-					miRna2.setName(tokens[2]);
+					miRna2.setName(tokens[3]);
+
+					InteractionData interactionData = new InteractionData();
+					interactionData.setMiTG_score(tokens[4]);
+				
+
+					Transcript transcript2 = new Transcript();
+					transcript2.setTranscriptID(tokens[1]);
 					
-
-					Disease disease = new Disease();
-					disease.setName(tokens[3]);
-
-					DataExpression dataexpression = new DataExpression();
-					dataexpression.setDescription(tokens[5]);
-					dataexpression.setPubmedId(tokens[4]);
+					Gene gene2 = new Gene();
+					gene2.setName(tokens[2]);
+					
+					
+					
 
 					Resource miRNA = model
 							.createResource(
 									namespace + "miRNA/" + miRna2.getName())
 							.addProperty(
+									
+									ResourceFactory.createProperty(namespace
+											+ "name"), miRna2.getName())
+							.addProperty(
 									RDF.type,
 									ResourceFactory.createResource(namespace
 											+ "miRNA"));
 
-					Resource disease2 = model.createResource(
-							namespace + "Disease/" + disease.getName())
+					
+					Resource transcript = model
+							.createResource(
+									namespace + "Transcript/"
+											+ transcript2.getTranscriptID())
 							.addProperty(
 									RDF.type,
 									ResourceFactory.createResource(namespace
-											+ "Disease"));
-
-					model.createResource(
-							namespace + "DataExpression_" + dataExpressionCount)
+											+ "Transcript"));
+					
+//					Resource gene = model
+//							.createResource(
+//									namespace +"Gene/" +
+//											gene2.getName());
 							
-								.addProperty(
-									ResourceFactory.createProperty(namespace
-											+ "Description"), dataexpression.getDescription())
+	
+					model.createResource(
+							namespace + "InteractionData_"
+									+ interactiondataCount)
+							
 							.addProperty(
 									ResourceFactory.createProperty(namespace
-											+ "PubmedId"), dataexpression.getPubmedId())
+											+ "MiTG_score"),
+											interactionData.getMiTG_score())
+											
 							.addProperty(
 									ResourceFactory.createProperty(namespace
-											+ "involvesmiRNA"), miRNA)
+											+ "involvesInteraction"), miRNA)
+											
 							.addProperty(
 									ResourceFactory.createProperty(namespace
-											+ "relatedDisease"), disease2)
+											+ "involvesInteraction"), transcript)				
+											
 							.addProperty(
 									RDF.type,
 									ResourceFactory.createResource(namespace
-											+ "DataExpression"));
+											+ "InteractionData"));
+					
+					
+					model.createResource(
+							namespace + "Gene"
+									+ gene2.getName())
+							
+							.addProperty(
+									ResourceFactory.createProperty(namespace
+											+ "producesTranscript"), transcript)
+											
+							.addProperty(
+									RDF.type,
+									ResourceFactory.createResource(namespace
+											+ "Gene"));				
+					
+					
+					
 
-					dataExpressionCount++;
+					interactiondataCount++;
 
 				} catch (Exception e) {
 					e.printStackTrace();

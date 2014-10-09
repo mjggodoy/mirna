@@ -1,3 +1,4 @@
+package old;
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -5,14 +6,13 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.StringTokenizer;
 
-import org.apache.commons.lang.StringUtils;
+import mirna.beans.DataExpression;
+import mirna.beans.Disease;
+import mirna.beans.MiRna;
+import mirna.beans.Organism;
+import mirna.beans.SmallMolecule;
 
-import beans.DataExpression;
-import beans.Disease;
-import beans.MiRna;
-import beans.Organism;
-import beans.SmallMolecule;
-import beans.Target;
+import org.apache.commons.lang.StringUtils;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
@@ -20,7 +20,7 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
 import com.hp.hpl.jena.vocabulary.RDF;
 
-public class HMDD_target {
+public class HMDD {
 
 	public static void main(String[] args) throws Exception {
 
@@ -41,7 +41,6 @@ public class HMDD_target {
 
 		int count = 0;
 		int dataExpressionCount = 1;
-		int dataTarget = 1;
 
 		while (br.readLine() != null) {
 
@@ -58,16 +57,13 @@ public class HMDD_target {
 					MiRna miRna2 = new MiRna();
 					miRna2.setName(tokens[2]);
 					
-					Target target2 = new Target();
-					target2.setName(tokens[3]);
-					
-					
+
 					Disease disease = new Disease();
-					disease.setName(tokens[4]);
+					disease.setName(tokens[3]);
 
 					DataExpression dataexpression = new DataExpression();
-					dataexpression.setDescription(tokens[6]);
-					dataexpression.setPubmedId(tokens[5]);
+					dataexpression.setDescription(tokens[5]);
+					dataexpression.setPubmedId(tokens[4]);
 
 					Resource miRNA = model
 							.createResource(
@@ -84,8 +80,6 @@ public class HMDD_target {
 									ResourceFactory.createResource(namespace
 											+ "Disease"));
 
-					
-					
 					model.createResource(
 							namespace + "DataExpression_" + dataExpressionCount)
 							
@@ -100,30 +94,11 @@ public class HMDD_target {
 											+ "involvesmiRNA"), miRNA)
 							.addProperty(
 									ResourceFactory.createProperty(namespace
-											+ "relatedDisease"), disease2)	
-							.addProperty(
-									RDF.type,
-									ResourceFactory.createResource(namespace
-											+ "DataExpression"));
-					
-					model.createResource(
-							namespace + "Target_" + dataTarget)
-							
-								.addProperty(
-									ResourceFactory.createProperty(namespace
-											+ "Target"), target2.getName())
-								.addProperty(
-									ResourceFactory.createProperty(namespace
-											+ "microRNAtarget"), miRNA)
-							.addProperty(
-									ResourceFactory.createProperty(namespace
 											+ "relatedDisease"), disease2)
 							.addProperty(
 									RDF.type,
 									ResourceFactory.createResource(namespace
 											+ "DataExpression"));
-
-					
 
 					dataExpressionCount++;
 

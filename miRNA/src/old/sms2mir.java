@@ -1,3 +1,4 @@
+package old;
 
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
@@ -6,13 +7,13 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.StringTokenizer;
 
-import org.apache.commons.lang.StringUtils;
+import mirna.beans.DataExpression;
+import mirna.beans.Disease;
+import mirna.beans.MiRna;
+import mirna.beans.Organism;
+import mirna.beans.SmallMolecule;
 
-import beans.DataExpression;
-import beans.Disease;
-import beans.MiRna;
-import beans.Organism;
-import beans.SmallMolecule;
+import org.apache.commons.lang.StringUtils;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;

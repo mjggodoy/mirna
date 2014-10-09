@@ -1,7 +1,8 @@
+package old;
 import java.io.*;
 import java.util.StringTokenizer;
 
-import beans.PhenomirBean;
+import mirna.beans.PhenomirBean;
 
 public class PhenomiR {
 
