@@ -5,17 +5,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import mirna.beans.DataExpression;
 import mirna.dao.DataExpressionDAO;
 import mirna.db.DBConnection;
 import mirna.db.mysql.DBConnectionMySQLImpl;
 import mirna.exception.MiRnaException;
-import beans.DataExpression;
 
 public class DataExpressionDAOMySQLImpl implements DataExpressionDAO {
 	
 	@Override
 	public int create(DataExpression newDataExpression) throws MiRnaException {
-		System.out.println("MIRNA: create began-----------.");
 		DBConnection con = null;
 		int res = -1;
 
@@ -58,50 +57,7 @@ public class DataExpressionDAOMySQLImpl implements DataExpressionDAO {
 	}
 
 	@Override
-	public DataExpression read(int id) throws MiRnaException {
-		System.out.println("MIRNA: readRec began-----------.");
-		DataExpression dataExpression = null;
-		DBConnection con = null;
-
-		try {
-			con = new DBConnectionMySQLImpl();
-			List<Map<String, Object>> list = null;
-			String queryTemplate = "select * from data_expression where pk=%d";
-			String queryString = String.format(queryTemplate, id);
-			System.out.println(queryString);
-			list = con.query(queryString);
-			
-			if (list.size()==1) {
-				Map<String, Object> row = list.get(0);
-				dataExpression = new DataExpression(
-						(Integer) row.get("pk"),
-						(String) row.get("expression"),
-						(String) row.get("phenomic_id"),
-						(String) row.get("foldchange_min"),
-						(String) row.get("foldchange_max"),
-						(String) row.get("id"),
-						(String) row.get("study_design"),
-						(String) row.get("method"),
-						(String) row.get("treatment"),
-						(String) row.get("suuport"),
-						(String) row.get("profile"),
-						(String) row.get("pubmed_id"),
-						(String) row.get("year"),
-						(String) row.get("description"),
-						(String) row.get("cellular_line"),
-						(String) row.get("condition_"));
-			}
-		} catch (SQLException ex) {
-			throw new MiRnaException("SQLException:" + ex.getMessage());
-		} finally {
-			if (con!=null) con.closeDBConnection();
-		}
-		return dataExpression;
-	}
-	
-	@Override
 	public List<DataExpression> readAll() throws MiRnaException {
-		System.out.println("MIRNA: readRec began-----------.");
 		List<DataExpression> dataExpressionList = null;
 		DBConnection con = null;
 
@@ -143,7 +99,6 @@ public class DataExpressionDAOMySQLImpl implements DataExpressionDAO {
 
 	@Override
 	public void update(DataExpression dataExpressionToUpdate) throws MiRnaException {
-		System.out.println("MIRNA: updateRec began-----------.");
 		DBConnection con = null;
 		try {
 			con = new DBConnectionMySQLImpl();
@@ -195,28 +150,48 @@ public class DataExpressionDAOMySQLImpl implements DataExpressionDAO {
 	}
 
 	@Override
-	public boolean findByPrimaryKey(int id) throws MiRnaException {
-		System.out.println("MIRNA: findByPrimaryKey began-----------.");
-		boolean result = false;
+	public DataExpression findByPrimaryKey(int id) throws MiRnaException {
+		DataExpression dataExpression = null;
 		DBConnection con = null;
+
 		try {
 			con = new DBConnectionMySQLImpl();
 			List<Map<String, Object>> list = null;
 			String queryTemplate = "select * from data_expression where pk=%d";
 			String queryString = String.format(queryTemplate, id);
+			System.out.println(queryString);
 			list = con.query(queryString);
-			result = (list.size()>0);
+			
+			if (list.size()==1) {
+				Map<String, Object> row = list.get(0);
+				dataExpression = new DataExpression(
+						(Integer) row.get("pk"),
+						(String) row.get("expression"),
+						(String) row.get("phenomic_id"),
+						(String) row.get("foldchange_min"),
+						(String) row.get("foldchange_max"),
+						(String) row.get("id"),
+						(String) row.get("study_design"),
+						(String) row.get("method"),
+						(String) row.get("treatment"),
+						(String) row.get("suuport"),
+						(String) row.get("profile"),
+						(String) row.get("pubmed_id"),
+						(String) row.get("year"),
+						(String) row.get("description"),
+						(String) row.get("cellular_line"),
+						(String) row.get("condition_"));
+			}
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
 		} finally {
 			if (con!=null) con.closeDBConnection();
 		}
-		return result;
+		return dataExpression;
 	}
 
 	@Override
 	public int findTotalNumber() throws MiRnaException {
-		System.out.println("MIRNA: findTotalNumber began-----------.");
 		int total = -1;
 		DBConnection con = null;
 		try {
@@ -234,7 +209,6 @@ public class DataExpressionDAOMySQLImpl implements DataExpressionDAO {
 	}
 	
 	public void newRelatedDisease(int dataExpressionId, int diseaseId) throws MiRnaException {
-		System.out.println("MIRNA: insert began-----------.");
 		DBConnection con = null;
 		try {
 			con = new DBConnectionMySQLImpl();
@@ -252,7 +226,6 @@ public class DataExpressionDAOMySQLImpl implements DataExpressionDAO {
 	}
 	
 	public void newMiRnaInvolved(int dataExpressionId, int miRnaId) throws MiRnaException {
-		System.out.println("MIRNA: insert began-----------.");
 		DBConnection con = null;
 		try {
 			con = new DBConnectionMySQLImpl();

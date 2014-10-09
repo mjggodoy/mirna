@@ -5,17 +5,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import mirna.beans.Disease;
 import mirna.dao.DiseaseDAO;
 import mirna.db.DBConnection;
 import mirna.db.mysql.DBConnectionMySQLImpl;
 import mirna.exception.MiRnaException;
-import beans.Disease;
 
 public class DiseaseDAOMySQLImpl implements DiseaseDAO {
 	
 	@Override
 	public int create(Disease newDisease) throws MiRnaException {
-		System.out.println("MIRNA: create began-----------.");
 		DBConnection con = null;
 		int res = -1;
 
@@ -41,42 +40,7 @@ public class DiseaseDAOMySQLImpl implements DiseaseDAO {
 	}
 
 	@Override
-	public Disease read(int id) throws MiRnaException {
-		System.out.println("MIRNA: readRec began-----------.");
-		Disease disease = null;
-		DBConnection con = null;
-
-		try {
-			con = new DBConnectionMySQLImpl();
-			List<Map<String, Object>> list = null;
-			String queryTemplate = "select * from disease where pk=%d";
-			String queryString = String.format(queryTemplate, id);
-			System.out.println(queryString);
-			list = con.query(queryString);
-			
-			if (list.size()==1) {
-				Map<String, Object> row = list.get(0);
-				disease = new Disease(
-						(Integer) row.get("pk"),
-						(String) row.get("name"),
-						(String) row.get("disease_sub"),
-						(String) row.get("disease_class"),
-						(String) row.get("phenomic_id"),
-						(String) row.get("description"),
-						(String) row.get("pubmed_id"),
-						(String) row.get("tissue"));
-			}
-		} catch (SQLException ex) {
-			throw new MiRnaException("SQLException:" + ex.getMessage());
-		} finally {
-			if (con!=null) con.closeDBConnection();
-		}
-		return disease;
-	}
-	
-	@Override
 	public List<Disease> readAll() throws MiRnaException {
-		System.out.println("MIRNA: readRec began-----------.");
 		List<Disease> diseaseList = null;
 		DBConnection con = null;
 
@@ -110,7 +74,6 @@ public class DiseaseDAOMySQLImpl implements DiseaseDAO {
 
 	@Override
 	public void update(Disease diseaseToUpdate) throws MiRnaException {
-		System.out.println("MIRNA: updateRec began-----------.");
 		DBConnection con = null;
 		try {
 			con = new DBConnectionMySQLImpl();
@@ -132,7 +95,6 @@ public class DiseaseDAOMySQLImpl implements DiseaseDAO {
 
 	@Override
 	public void delete(int id) throws MiRnaException {
-		System.out.println("MIRNA: deleteRec began-----------.");
 		DBConnection con = null;
 		try {
 			con = new DBConnectionMySQLImpl();
@@ -147,28 +109,40 @@ public class DiseaseDAOMySQLImpl implements DiseaseDAO {
 	}
 
 	@Override
-	public boolean findByPrimaryKey(int id) throws MiRnaException {
-		System.out.println("MIRNA: findByPrimaryKey began-----------.");
-		boolean result = false;
+	public Disease findByPrimaryKey(int id) throws MiRnaException {
+		Disease disease = null;
 		DBConnection con = null;
+
 		try {
 			con = new DBConnectionMySQLImpl();
 			List<Map<String, Object>> list = null;
 			String queryTemplate = "select * from disease where pk=%d";
 			String queryString = String.format(queryTemplate, id);
+			System.out.println(queryString);
 			list = con.query(queryString);
-			result = (list.size()>0);
+			
+			if (list.size()==1) {
+				Map<String, Object> row = list.get(0);
+				disease = new Disease(
+						(Integer) row.get("pk"),
+						(String) row.get("name"),
+						(String) row.get("disease_sub"),
+						(String) row.get("disease_class"),
+						(String) row.get("phenomic_id"),
+						(String) row.get("description"),
+						(String) row.get("pubmed_id"),
+						(String) row.get("tissue"));
+			}
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
 		} finally {
 			if (con!=null) con.closeDBConnection();
 		}
-		return result;
+		return disease;
 	}
 
 	@Override
 	public Disease findByName(String name) throws MiRnaException {
-		System.out.println("MIRNA: findByName began-----------.");
 		List<Disease> diseaseList = new ArrayList<Disease>();
 		Disease res = null;
 		DBConnection con = null;
@@ -204,7 +178,6 @@ public class DiseaseDAOMySQLImpl implements DiseaseDAO {
 
 	@Override
 	public int findTotalNumber() throws MiRnaException {
-		System.out.println("MIRNA: findTotalNumber began-----------.");
 		int total = -1;
 		DBConnection con = null;
 		try {

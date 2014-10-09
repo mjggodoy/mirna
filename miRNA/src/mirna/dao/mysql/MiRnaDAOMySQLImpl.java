@@ -5,17 +5,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import mirna.beans.MiRna;
 import mirna.dao.MiRnaDAO;
 import mirna.db.DBConnection;
 import mirna.db.mysql.DBConnectionMySQLImpl;
 import mirna.exception.MiRnaException;
-import beans.MiRna;
 
 public class MiRnaDAOMySQLImpl implements MiRnaDAO {
 	
 	@Override
 	public int create(MiRna newMiRna) throws MiRnaException {
-		System.out.println("MIRNA: create began-----------.");
 		DBConnection con = null;
 		int res = -1;
 
@@ -41,43 +40,7 @@ public class MiRnaDAOMySQLImpl implements MiRnaDAO {
 	}
 
 	@Override
-	public MiRna read(int id) throws MiRnaException {
-		System.out.println("MIRNA: readRec began-----------.");
-		MiRna miRna = null;
-		DBConnection con = null;
-
-		try {
-			con = new DBConnectionMySQLImpl();
-			List<Map<String, Object>> list = null;
-			String queryTemplate = "select * from mirna where pk=%d";
-			String queryString = String.format(queryTemplate, id);
-			System.out.println(queryString);
-			list = con.query(queryString);
-			
-			if (list.size()==1) {
-				Map<String, Object> row = list.get(0);
-				miRna = new MiRna(
-						(Integer) row.get("pk"),
-						(String) row.get("name"),
-						(String) row.get("accession_number"),
-						(String) row.get("sub_name"),
-						(String) row.get("provenance"),
-						(String) row.get("chromosome"),
-						(String) row.get("version"),
-						(String) row.get("sequence"),
-						(String) row.get("new_name"));
-			}
-		} catch (SQLException ex) {
-			throw new MiRnaException("SQLException:" + ex.getMessage());
-		} finally {
-			if (con!=null) con.closeDBConnection();
-		}
-		return miRna;
-	}
-	
-	@Override
 	public List<MiRna> readAll() throws MiRnaException {
-		System.out.println("MIRNA: readRec began-----------.");
 		List<MiRna> miRnaList = null;
 		DBConnection con = null;
 
@@ -112,7 +75,6 @@ public class MiRnaDAOMySQLImpl implements MiRnaDAO {
 
 	@Override
 	public void update(MiRna miRnaToUpdate) throws MiRnaException {
-		System.out.println("MIRNA: updateRec began-----------.");
 		DBConnection con = null;
 		try {
 			con = new DBConnectionMySQLImpl();
@@ -135,7 +97,6 @@ public class MiRnaDAOMySQLImpl implements MiRnaDAO {
 
 	@Override
 	public void delete(int id) throws MiRnaException {
-		System.out.println("MIRNA: deleteRec began-----------.");
 		DBConnection con = null;
 		try {
 			con = new DBConnectionMySQLImpl();
@@ -150,28 +111,41 @@ public class MiRnaDAOMySQLImpl implements MiRnaDAO {
 	}
 
 	@Override
-	public boolean findByPrimaryKey(int id) throws MiRnaException {
-		System.out.println("MIRNA: findByPrimaryKey began-----------.");
-		boolean result = false;
+	public MiRna findByPrimaryKey(int id) throws MiRnaException {
+		MiRna miRna = null;
 		DBConnection con = null;
+
 		try {
 			con = new DBConnectionMySQLImpl();
 			List<Map<String, Object>> list = null;
 			String queryTemplate = "select * from mirna where pk=%d";
 			String queryString = String.format(queryTemplate, id);
+			System.out.println(queryString);
 			list = con.query(queryString);
-			result = (list.size()>0);
+			
+			if (list.size()==1) {
+				Map<String, Object> row = list.get(0);
+				miRna = new MiRna(
+						(Integer) row.get("pk"),
+						(String) row.get("name"),
+						(String) row.get("accession_number"),
+						(String) row.get("sub_name"),
+						(String) row.get("provenance"),
+						(String) row.get("chromosome"),
+						(String) row.get("version"),
+						(String) row.get("sequence"),
+						(String) row.get("new_name"));
+			}
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
 		} finally {
 			if (con!=null) con.closeDBConnection();
 		}
-		return result;
+		return miRna;
 	}
 
 	@Override
 	public MiRna findByName(String name) throws MiRnaException {
-		System.out.println("MIRNA: findByName began-----------.");
 		List<MiRna> miRnaList = new ArrayList<MiRna>();
 		MiRna res = null;
 		DBConnection con = null;
@@ -208,7 +182,6 @@ public class MiRnaDAOMySQLImpl implements MiRnaDAO {
 
 	@Override
 	public int findTotalNumber() throws MiRnaException {
-		System.out.println("MIRNA: findTotalNumber began-----------.");
 		int total = -1;
 		DBConnection con = null;
 		try {
