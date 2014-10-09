@@ -34,6 +34,7 @@ private String csvInputFile;
 		String[] tokens = null;
 		String[] tokens2 = null;
 
+		String  query = "";
 		
 		try {
 			
@@ -52,7 +53,7 @@ private String csvInputFile;
 			String miRNA = null;
 			String miTG_score = null;
 			String region = null;
-			String location = null;
+			//String location = null;
 			String chromosome = null;
 			String coordinates = null;
 			
@@ -66,24 +67,24 @@ private String csvInputFile;
 				if (line != null && !line.startsWith("UTR3") && !line.startsWith("CDS")) {
 					
 					
-					transcript_id = tokens[0];
-					gene_id = tokens[1];
-					miRNA = tokens[2];
-					miTG_score = tokens[3];
+					transcript_id = tokens[0].replaceAll("'", "\\\\'");
+					gene_id = tokens[1].replaceAll("'", "\\\\'");
+					miRNA = tokens[2].replaceAll("'", "\\\\'");
+					miTG_score = tokens[3].replaceAll("'", "\\\\'");
 					
 			
 	
 				}else{
 					
-					region = tokens[0];
-					location = tokens[1];
+					region = tokens[0].replaceAll("'", "\\\\'");
+					//location = tokens[1];
 					
 					tokens2 = StringUtils.splitPreserveAllTokens(tokens[1], ":");
-					chromosome = tokens2[0];
-					coordinates = tokens2[1];
+					chromosome = tokens2[0].replaceAll("'", "\\\\'");
+					coordinates = tokens2[1].replaceAll("'", "\\\\'");
 					
 					
-					String  query = "INSERT INTO " + tableName + " VALUES (NULL, '"
+					query = "INSERT INTO " + tableName + " VALUES (NULL, '"
 							+ transcript_id + "','"
 							+ gene_id + "','"
 							+ miRNA + "','"
@@ -94,6 +95,9 @@ private String csvInputFile;
 					
 					stmt.executeUpdate(query);
 					
+					chromosome = null;
+					coordinates = null;
+					
 					
 				}
 	
@@ -103,6 +107,7 @@ private String csvInputFile;
 			stmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
+			System.out.println(query);
 			if (line!=null) {
 				System.out.println(line);
 				for (int j = 0; j < tokens.length; j++) {
@@ -131,9 +136,9 @@ private String csvInputFile;
 	
 	public static void main(String[] args) throws Exception {
 		
-		String inputFile = "/Users/esteban/Softw/miRNA/microT_CDS.csv";
+		String inputFile = "/Users/esteban/Softw/miRNA/microalgo/microT_CDS_data.csv";
 		microT_CDS_data microT_CDS_data = new microT_CDS_data(inputFile);
-		microT_CDS_data.insertInTable("microT_CDS_data");
+		microT_CDS_data.insertInTable("microt_cds");
 		
 	}
 	
