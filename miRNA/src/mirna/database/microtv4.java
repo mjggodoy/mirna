@@ -32,6 +32,8 @@ private String csvInputFile;
 		String line = null;
 		String[] tokens = null;
 		String[] tokens2 = null;
+		
+		String  query = "";
 
 		
 		try {
@@ -51,7 +53,7 @@ private String csvInputFile;
 			String miRNA = null;
 			String miTG_score = null;
 			String region = null;
-			String location = null;
+			//String location = null;
 			String chromosome = null;
 			String coordinates = null;
 			
@@ -65,24 +67,24 @@ private String csvInputFile;
 				if (line != null && !line.startsWith("UTR3") && !line.startsWith("CDS")) {
 					
 					
-					transcript_id = tokens[0];
-					gene_id = tokens[1];
-					miRNA = tokens[2];
-					miTG_score = tokens[3];
+					transcript_id = tokens[0].replaceAll("'", "\\\\'");
+					gene_id = tokens[1].replaceAll("'", "\\\\'");;
+					miRNA = tokens[2].replaceAll("'", "\\\\'");;
+					miTG_score = tokens[3].replaceAll("'", "\\\\'");;
 					
 			
 	
 				}else{
 					
 					region = tokens[0];
-					location = tokens[1];
+					//location = tokens[1];
 					
 					tokens2 = StringUtils.splitPreserveAllTokens(tokens[1], ":");
-					chromosome = tokens2[0];
-					coordinates = tokens2[1];
+					chromosome = tokens2[0].replaceAll("'", "\\\\'");;
+					coordinates = tokens2[1].replaceAll("'", "\\\\'");;
 					
 					
-					String  query = "INSERT INTO " + tableName + " VALUES (NULL, '"
+					query = "INSERT INTO " + tableName + " VALUES (NULL, '"
 							+ transcript_id + "','"
 							+ gene_id + "','"
 							+ miRNA + "','"
@@ -104,6 +106,7 @@ private String csvInputFile;
 			e.printStackTrace();
 			if (line!=null) {
 				System.out.println(line);
+				System.out.println(query);
 				for (int j = 0; j < tokens.length; j++) {
 					System.out.println(j + ": " + tokens[j]);
 				}
@@ -130,9 +133,9 @@ private String csvInputFile;
 	
 	public static void main(String[] args) throws Exception {
 		
-		String inputFile = "/Users/esteban/Softw/miRNA/microtv4_data.csv";
+		String inputFile = "/Users/esteban/Softw/miRNA/microalgo/microtv4_data.csv";
 		microtv4 microtv4 = new microtv4(inputFile);
-		microtv4.insertInTable("microtv4_data");
+		microtv4.insertInTable("microtv4");
 		
 	}
 

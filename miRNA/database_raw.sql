@@ -289,3 +289,26 @@ CREATE TABLE virmirna3
    pubmed_id   varchar(20) NOT NULL
 );
 
+CREATE TABLE microt_cds
+(
+   pk              int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+   transcript_id   varchar(20) NOT NULL,
+   gene_id         varchar(100) NOT NULL,
+   mirna           varchar(80) NOT NULL,
+   mitg_score      varchar(20) NOT NULL,
+   region          varchar(20) NOT NULL,
+   chromosome      varchar(20) NOT NULL,
+   coordinates     varchar(100) NOT NULL
+);
+
+CREATE TABLE microtv4
+(
+   pk              int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+   transcript_id   varchar(20) NOT NULL,
+   gene_id         varchar(100) NOT NULL,
+   mirna           varchar(80) NOT NULL,
+   mitg_score      varchar(20) NOT NULL,
+   region          varchar(20) NOT NULL,
+   chromosome      varchar(20) NOT NULL,
+   coordinates     varchar(100) NOT NULL
+);
