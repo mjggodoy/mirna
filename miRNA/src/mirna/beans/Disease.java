@@ -80,4 +80,43 @@ public class Disease extends ModelClass {
 		this.phenomicId = phenomicId;
 	}
 	
+	public boolean checkConflict(Disease disease) {
+		if ((disease.getName() != null)
+				&& (this.name != null)
+				&& (!this.name.equals(disease.getName()))) {
+			return false;
+		}
+		if ((disease.getDiseaseSub() != null)
+				&& (this.diseaseSub != null)
+				&& (!this.diseaseSub.equals(disease.getDiseaseSub()))) {
+			return false;
+		}
+		if ((disease.getDiseaseClass() != null)
+				&& (this.diseaseClass != null)
+				&& (!this.diseaseClass.equals(disease.getDiseaseClass()))) {
+			return false;
+		}
+		if ((disease.getPhenomicId() != null)
+				&& (this.phenomicId != null)
+				&& (!this.phenomicId.equals(disease.getPhenomicId()))) {
+			return false;
+		}
+		if ((disease.getDescription() != null)
+				&& (this.description != null)
+				&& (!this.description.equals(disease.getDescription()))) {
+			return false;
+		}
+		if ((disease.getPubmedId() != null)
+				&& (this.pubmedId != null)
+				&& (!this.pubmedId.equals(disease.getPubmedId()))) {
+			return false;
+		}
+		if ((disease.getTissue() != null)
+				&& (this.tissue != null)
+				&& (!this.tissue.equals(disease.getTissue()))) {
+			return false;
+		}
+		return true;
+	}
+	
 }

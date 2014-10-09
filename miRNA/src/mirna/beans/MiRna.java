@@ -92,6 +92,50 @@ public class MiRna extends ModelClass {
 		this.provenance = provenance;
 	}
 	
+	public boolean checkConflict(MiRna mirna) {
+		if ((mirna.getName() != null)
+				&& (this.name != null)
+				&& (!this.name.equals(mirna.getName()))) {
+			return false;
+		}
+		if ((mirna.getAccessionNumber() != null)
+				&& (this.accessionNumber != null)
+				&& (!this.accessionNumber.equals(mirna.getAccessionNumber()))) {
+			return false;
+		}
+		if ((mirna.getSubName() != null)
+				&& (this.subName != null)
+				&& (!this.subName.equals(mirna.getSubName()))) {
+			return false;
+		}
+		if ((mirna.getProvenance() != null)
+				&& (this.provenance != null)
+				&& (!this.provenance.equals(mirna.getProvenance()))) {
+			return false;
+		}
+		if ((mirna.getChromosome() != null)
+				&& (this.chromosome != null)
+				&& (!this.chromosome.equals(mirna.getChromosome()))) {
+			return false;
+		}
+		if ((mirna.getVersion() != null)
+				&& (this.version != null)
+				&& (!this.version.equals(mirna.getVersion()))) {
+			return false;
+		}
+		if ((mirna.getSequence() != null)
+				&& (this.sequence != null)
+				&& (!this.sequence.equals(mirna.getSequence()))) {
+			return false;
+		}
+		if ((mirna.getNewName() != null)
+				&& (this.newName != null)
+				&& (!this.newName.equals(mirna.getNewName()))) {
+			return false;
+		}
+		return true;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -115,6 +159,14 @@ public class MiRna extends ModelClass {
 		} else if (!name.equals(other.name))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "MiRna [name=" + name + ", accessionNumber=" + accessionNumber
+				+ ", subName=" + subName + ", provenance=" + provenance
+				+ ", chromosome=" + chromosome + ", version=" + version
+				+ ", sequence=" + sequence + ", newName=" + newName + "]";
 	}
 	
 }

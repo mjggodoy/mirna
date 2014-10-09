@@ -20,6 +20,7 @@ import mirna.dao.MiRnaDAO;
 import mirna.dao.mysql.DataExpressionDAOMySQLImpl;
 import mirna.dao.mysql.DiseaseDAOMySQLImpl;
 import mirna.dao.mysql.MiRnaDAOMySQLImpl;
+import mirna.exception.MiRnaException;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -175,7 +176,16 @@ public class MiRCancer implements IMirnaDatabase {
 					int key = miRnaDAO.create(miRna);
 					miRna.setPk(key);
 				} else {
-					miRna.setPk(oldMiRna.getPk());
+					if (miRna.checkConflict(oldMiRna)) {
+						miRna.setPk(oldMiRna.getPk());
+						miRna.setName(oldMiRna.getName());
+					} else {
+						
+						String msg = "Conflicto detectado!"
+								+ "\nEntrada en BD: " + oldMiRna
+								+ "\nEntrada nueva: " + miRna;
+						throw new MiRnaException(msg);
+					}
 				}
 				
 				// Inserta Disease (o recupera su id. si ya existe)
@@ -184,7 +194,17 @@ public class MiRCancer implements IMirnaDatabase {
 					int key = diseaseDAO.create(disease);
 					disease.setPk(key);
 				} else {
-					disease.setPk(oldDisease.getPk());
+					if (disease.checkConflict(oldDisease)) {
+						disease.setPk(oldDisease.getPk());
+						disease.setName(oldDisease.getName());
+					} else {
+						
+						String msg = "Conflicto detectado!"
+								+ "\nEntrada en BD: " + oldDisease
+								+ "\nEntrada nueva: " + disease;
+						throw new MiRnaException(msg);
+					}
+					
 				}
 				
 				// Inserta nueva DataExpression
@@ -193,6 +213,8 @@ public class MiRCancer implements IMirnaDatabase {
 				int dataExpressionId = dataExpressionDAO.create(dataExpression);
 				dataExpressionDAO.newMiRnaInvolved(dataExpressionId, miRna.getPk());
 				dataExpressionDAO.newRelatedDisease(dataExpressionId, disease.getPk());
+				
+				//TODO: DataExpression igual????
 				
 			}
 			stmt.close();
