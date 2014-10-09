@@ -9,6 +9,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 
+import mirna.beans.Gene;
+import mirna.beans.InteractionData;
+import mirna.beans.MiRna;
+import mirna.beans.Transcript;
+
 import org.apache.commons.lang.StringUtils;
 
 import com.hp.hpl.jena.rdf.model.Model;
@@ -16,11 +21,6 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
 import com.hp.hpl.jena.vocabulary.RDF;
-
-import beans.Gene;
-import beans.InteractionData;
-import beans.MiRna;
-import beans.Transcript;
 
 public class MicroTV4_data {
 

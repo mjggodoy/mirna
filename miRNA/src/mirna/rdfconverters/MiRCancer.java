@@ -10,11 +10,11 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.apache.commons.lang.StringUtils;
+import mirna.beans.DataExpression;
+import mirna.beans.Disease;
+import mirna.beans.MiRna;
 
-import beans.DataExpression;
-import beans.Disease;
-import beans.MiRna;
+import org.apache.commons.lang.StringUtils;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;

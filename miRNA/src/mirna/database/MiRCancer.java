@@ -11,6 +11,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import mirna.beans.DataExpression;
+import mirna.beans.Disease;
+import mirna.beans.MiRna;
 import mirna.dao.DataExpressionDAO;
 import mirna.dao.DiseaseDAO;
 import mirna.dao.MiRnaDAO;
@@ -19,10 +22,6 @@ import mirna.dao.mysql.DiseaseDAOMySQLImpl;
 import mirna.dao.mysql.MiRnaDAOMySQLImpl;
 
 import org.apache.commons.lang.StringUtils;
-
-import beans.DataExpression;
-import beans.Disease;
-import beans.MiRna;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;

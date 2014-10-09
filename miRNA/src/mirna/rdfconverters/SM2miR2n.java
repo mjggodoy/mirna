@@ -9,6 +9,11 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import mirna.beans.DataExpression;
+import mirna.beans.MiRna;
+import mirna.beans.Organism;
+import mirna.beans.SmallMolecule;
+
 import org.apache.commons.lang.StringUtils;
 
 import com.hp.hpl.jena.rdf.model.Model;
@@ -16,11 +21,6 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
 import com.hp.hpl.jena.vocabulary.RDF;
-
-import beans.DataExpression;
-import beans.MiRna;
-import beans.Organism;
-import beans.SmallMolecule;
 
 public class SM2miR2n {
 

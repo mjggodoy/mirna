@@ -126,8 +126,8 @@ public class PlantmiRNAdatabase implements IMirnaDatabase {
 		String inputFile2 = "/Users/esteban/Softw/miRNA/plant_mirna/all_mature.txt";
 		PlantmiRNAdatabase plant1 = new PlantmiRNAdatabase(inputFile1);
 		plant1.insertInTable("plant_mirna_stem_loop");
-//		PlantmiRNAdatabase plant2 = new PlantmiRNAdatabase(inputFile2);
-//		plant2.insertInTable("plant_mirna_mature_mirna");
+		PlantmiRNAdatabase plant2 = new PlantmiRNAdatabase(inputFile2);
+		plant2.insertInTable("plant_mirna_mature_mirna");
 	
 	}
 	
