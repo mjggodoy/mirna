@@ -28,8 +28,11 @@ CREATE TABLE phenomir
 CREATE TABLE hmdd
 (
    pk              int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+   id              varchar(10) NOT NULL,
    mir             varchar(20) NOT NULL,
-   disease         varchar(80) NOT NULL
+   disease         varchar(80) NOT NULL,
+   pubmedid        varchar(20) NOT NULL,
+   description     varchar(1600) NOT NULL    
 );
 
 CREATE TABLE microcosm_homo_sapiens

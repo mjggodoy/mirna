@@ -47,8 +47,6 @@ public class HMDD implements IMirnaDatabase {
 	
 			int count = 0;
 	
-			br.readLine();
-			
 			while (((line = br.readLine()) != null) && ((maxLines==null) || (count<maxLines))) {
 	
 				count++;
@@ -62,7 +60,7 @@ public class HMDD implements IMirnaDatabase {
 					String mir = tokens[1];
 					String disease = tokens[2].replaceAll("'", "\\\\'");
 					String pubmedid = tokens[3];
-					String description = tokens[4];
+					String description = tokens[4].replaceAll("'", "\\\\'");
 
 					String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
 							+ id + "','"
@@ -109,7 +107,7 @@ public class HMDD implements IMirnaDatabase {
 	
 	public static void main(String[] args) throws Exception {
 		
-		String inputFile = "/Users/esteban/Softw/miRNA/hmdd/hmdd2012-09-09.txt";
+		String inputFile = "/Users/esteban/Softw/miRNA/hmdd/alldata.txt";
 		HMDD hmdd = new HMDD(inputFile);
 		hmdd.insertInTable("hmdd");
 		
