@@ -58,12 +58,18 @@ public class HMDD implements IMirnaDatabase {
 	
 				if (line != null) {
 					
-					String mir = tokens[0];
-					String disease = tokens[1].replaceAll("'", "\\\\'");
+					String id = tokens[0];
+					String mir = tokens[1];
+					String disease = tokens[2].replaceAll("'", "\\\\'");
+					String pubmedid = tokens[3];
+					String description = tokens[4];
 
 					String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
+							+ id + "','"
 							+ mir + "','"
-							+ disease + "')";
+							+ disease + "','" 
+							+ pubmedid + "','"
+							+ description + "')";
 					
 					stmt.executeUpdate(query);
 	
