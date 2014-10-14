@@ -315,3 +315,39 @@ CREATE TABLE microtv4
    chromosome      varchar(20) NOT NULL,
    coordinates     varchar(100) NOT NULL
 );
+
+CREATE TABLE `repTar_human`
+(
+   pk                         int(10) NOT NULL AUTO_INCREMENT,
+   gene_symbol                varchar(20) NOT NULL,
+   gene_accesion              varchar(10) NOT NULL,
+   mirna                      varchar(20) NOT NULL,
+   sequence_start             varchar(10) NOT NULL,
+   sequence_end               varchar(10) NOT NULL,
+   minimal_free_energy        varchar(10) NOT NULL,
+   normalized_free_energy     varchar(10) NOT NULL,
+   gu_proportion              varchar(10) NOT NULL,
+   binding_site_pattern       varchar(180) NOT NULL,
+   site_conservation_score    varchar(10) NOT NULL,
+   `UTR_conservation_score`   varchar(10) NOT NULL,
+   repeated_motifs            varchar(80) NOT NULL,
+   algorithm                  varchar(10) NOT NULL
+);
+
+CREATE TABLE repTar_mouse
+(
+   pk                         int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+   gene_symbol                varchar(20) NOT NULL,
+   gene_accesion              varchar(10) NOT NULL,
+   mirna                      varchar(20) NOT NULL,
+   sequence_start             varchar(10) NOT NULL,
+   sequence_end               varchar(10) NOT NULL,
+   minimal_free_energy        varchar(10) NOT NULL,
+   normalized_free_energy     varchar(10) NOT NULL,
+   gu_proportion              varchar(10) NOT NULL,
+   binding_site_pattern       varchar(180) NOT NULL,
+   site_conservation_score    varchar(10) NOT NULL,
+   UTR_conservation_score     varchar(10) NOT NULL,
+   repeated_motifs            varchar(80) NOT NULL,
+   algorithm                  varchar(10) NOT NULL
+);

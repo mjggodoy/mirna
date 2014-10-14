@@ -42,8 +42,8 @@ public class repTar implements IMirnaDatabase {
 		
 		Connection con = null;
 		String line = null;
-		String[] tokens = null, tokens2 = null, tokens3 = null, tokens4 = null, tokens5= null, tokens6 = null, tokens7 = null, tokens8 = null, tokens9 = null, tokens10 = null, tokens11 = null, tokens12= null;
-		String specie = "";
+		String[] tokens = null, tokens2 = null, tokens3 = null, tokens4 = null, tokens5= null, tokens6 = null, tokens7 = null, tokens8 = null, tokens9 = null, tokens10 = null, tokens11 = null;
+//		String specie = "";
 		
 		try {
 			con = DriverManager.getConnection(url, user, password);
@@ -54,8 +54,6 @@ public class repTar implements IMirnaDatabase {
 	
 			int count = 0;
 	
-			br.readLine();
-			
 			while (((line = br.readLine()) != null)) {
 	
 				count++;
@@ -71,18 +69,18 @@ public class repTar implements IMirnaDatabase {
 				
 				String mirna = tokens[1];
 				
-				if(tokens[1].contains("hsa")){
-					
-					specie = "Homo sapiens (human)";
-					
-					
-				}else if (tokens[1].contains("hsa")){
-					
-					specie = "Mus musculus (mouse)";
-
-					
-					
-				}
+//				if(tokens[1].contains("hsa")){
+//					
+//					specie = "Homo sapiens (human)";
+//					
+//					
+//				}else if (tokens[1].contains("hsa")){ //TODO:cambiar
+//					
+//					specie = "Mus musculus (mouse)";
+//
+//					
+//					
+//				}
 				
 				String sequence_start = tokens[2];
 				tokens3 = StringUtils.splitPreserveAllTokens(sequence_start, ":");
@@ -98,13 +96,13 @@ public class repTar implements IMirnaDatabase {
 				
 				String normalized_free_energy = tokens[5];
 				tokens6 = StringUtils.splitPreserveAllTokens(normalized_free_energy, ":");	
-				normalized_free_energy = tokens[1];
+				normalized_free_energy = tokens6[1];
 				
 				String gu_proportion = tokens[6];	
 				tokens7 = StringUtils.splitPreserveAllTokens(gu_proportion, ":");	
 				gu_proportion = tokens7[1];		
 				
-				String binding_site_pattern = tokens[8];	
+				String binding_site_pattern = tokens[8].replaceAll("'", "\\\\'");	
 				tokens8 = StringUtils.splitPreserveAllTokens(binding_site_pattern, ":");
 				binding_site_pattern = tokens8[1];	
 				
@@ -123,23 +121,22 @@ public class repTar implements IMirnaDatabase {
 				String algorithm = tokens[12];
 				
 				
-					String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
-							+ gene_symbol + "','"
-							+ gene_accesion + "','"
-							+ mirna + "','"
-							+ sequence_start + "','"
-							+ sequence_end + "','"
-							+ minimal_free_energy + "','"
-							+ normalized_free_energy + "','"
-							+ gu_proportion + "','"
-							+ binding_site_pattern + "','"
-							+ site_conservation_score + "','"
-							+ UTR_conservation_score + "','"
-							+ repeated_motifs + "','"
-							+ algorithm + "','"
-							+ specie +"')";
-					
-					stmt.executeUpdate(query);
+				String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
+						+ gene_symbol + "','"
+						+ gene_accesion + "','"
+						+ mirna + "','"
+						+ sequence_start + "','"
+						+ sequence_end + "','"
+						+ minimal_free_energy + "','"
+						+ normalized_free_energy + "','"
+						+ gu_proportion + "','"
+						+ binding_site_pattern + "','"
+						+ site_conservation_score + "','"
+						+ UTR_conservation_score + "','"
+						+ repeated_motifs + "','"
+						+ algorithm + "')";
+				
+				stmt.executeUpdate(query);
 	
 				
 	
@@ -167,14 +164,14 @@ public class repTar implements IMirnaDatabase {
 		
 		
 		
-		public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws Exception {
 		
-		String inputFile1 = "/Users/esteban/Softw/miRNA/human_pred.txt";
-		repTar reptar1 = new repTar(inputFile1);
-		reptar1.insertInTable("repTar_human");
-		//String inputFile2 = "/Users/esteban/Softw/miRNA/mouse_pred.txt";
-		//repTar reptar2 = new repTar(inputFile2);
-		//reptar2.insertInTable("repTar_mouse");
+//		String inputFile1 = "/Users/esteban/Softw/miRNA/repTar/human_pred.txt";
+//		repTar reptar1 = new repTar(inputFile1);
+//		reptar1.insertInTable("repTar_human");
+		String inputFile2 = "/Users/esteban/Softw/miRNA/repTar/mouse_pred.txt";
+		repTar reptar2 = new repTar(inputFile2);
+		reptar2.insertInTable("repTar_mouse");
 
 		
 		
