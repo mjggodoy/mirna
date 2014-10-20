@@ -1,0 +1,1820 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE Ontology [
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY xml "http://www.w3.org/XML/1998/namespace" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+]>
+
+
+<Ontology xmlns="http://www.w3.org/2002/07/owl#"
+     xml:base="http://www.semanticweb.org/ontologies/2013/9/Ontology1383149692901.owl"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     ontologyIRI="http://www.semanticweb.org/ontologies/2013/9/Ontology1383149692901.owl">
+    <Prefix name="" IRI="http://www.w3.org/2002/07/owl#"/>
+    <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#"/>
+    <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#"/>
+    <Prefix name="xsp" IRI="http://www.owl-ontologies.com/2005/08/07/xsp.owl#"/>
+    <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#"/>
+    <Prefix name="swrl" IRI="http://www.w3.org/2003/11/swrl#"/>
+    <Prefix name="mirna" IRI="http://khaos.uma.es/RDF/miRna.owl#"/>
+    <Prefix name="swrlb" IRI="http://www.w3.org/2003/11/swrlb#"/>
+    <Prefix name="protege" IRI="http://protege.stanford.edu/plugins/owl/protege#"/>
+    <Prefix name="Ontology1383149692901" IRI="http://www.semanticweb.org/ontologies/2013/9/Ontology1383149692901.owl#"/>
+    <Declaration>
+        <Class abbreviatedIRI="mirna:Disease"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="mirna:ExpressionData"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="mirna:miRNA"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Biological_process"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#ChangeParentHairpins"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#ChangeProducedMature"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Complex"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#ExternalResource"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Gene"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Hairpin"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#HairpinDeleteChange"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#HairpinFowardChange"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#HairpinNameChange"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#HairpinNameSequenceChange"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#HairpinNewChange"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#HairpinSequenceChange"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#InteractionData"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Mature"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#MatureDeleteChange"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#MatureNameChange"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#MatureNameSequenceChange"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#MatureNewChange"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#MatureSequenceChange"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#MedioambientalFactor"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Mutation"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Organism"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Pathway"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Protein"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#SNP"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#SmallMolecule"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Target"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Transcript"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#TranscriptionFactor"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#miRNAChanges"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="mirna:involvesmiRNA"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="mirna:relatedDisease"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#addHairpin"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#addMature"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#changeDelete"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#changeFoward"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#changeName"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#changeNameSequence"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#changeNew"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#changeParentHairpin"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#changeProducedMature"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#changeSequence"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#forms"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#foward"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#fowardTo"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasMutation"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasOrganism"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#involvesAmbientalFactors"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#involvesInteraction"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#involvesProcess"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#microRNAtarget"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#nextVersionHairpin"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#nextVersionMature"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#prevVersionHairpin"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#prevVersionMature"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#producedByHairpin"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#producesMature"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#producesTranscript"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#regulatedBy"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#relatedHairpin"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#relatedKegg"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#remHairpin"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#remMature"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#sameAs"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#transcripts"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#translatedBy"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty abbreviatedIRI="mirna:accessionNumber"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty abbreviatedIRI="mirna:diseaseClass"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty abbreviatedIRI="mirna:foldChangeMax"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty abbreviatedIRI="mirna:foldChangeMin"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty abbreviatedIRI="mirna:id"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty abbreviatedIRI="mirna:method"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty abbreviatedIRI="mirna:name"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty abbreviatedIRI="mirna:phenomicid"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty abbreviatedIRI="mirna:pubmedId"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty abbreviatedIRI="mirna:studyDesign"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#3UTRconservation_score"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#3UTRend"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#3UTRstart"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#CID"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#DB"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#FDA"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#GC_proportion"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#Uniprot_id"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#arm"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#binding_site_end"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#binding_site_pattern"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#binding_site_start"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#biotype"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#cdsEnd"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#cdsSequence"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#cdsStart"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#cellularLine"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#chromosome"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#condition"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#conservation_score"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#description"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#distance"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#end_strand"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#evidence"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#expression_site"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#feature"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#geneID"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#hgnc_symbol"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#isoform"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#journal"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#kegg_id"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#label"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#length"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#location"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#miTG-score"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#mimat"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#minimal_free_energy"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#newName"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#newSequence"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#normalized_minimal_free_energy"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#pValue_OG"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#phase"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#polarity"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#postion"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#provenance"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#rank"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#reference"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#region"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#repeated_motifs"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#resource"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#score"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#seed_match"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#sequence"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#specie"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#start_strand"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#subname"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#support"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#swissProt"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#targetScore"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#tissue"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#title_reference"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#transcriptID"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#treatment"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#type"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#version"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#year"/>
+    </Declaration>
+    <SubClassOf>
+        <Class IRI="#ChangeParentHairpins"/>
+        <Class IRI="#miRNAChanges"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#ChangeProducedMature"/>
+        <Class IRI="#miRNAChanges"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Hairpin"/>
+        <Class abbreviatedIRI="mirna:miRNA"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#HairpinDeleteChange"/>
+        <Class IRI="#miRNAChanges"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#HairpinFowardChange"/>
+        <Class IRI="#miRNAChanges"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#HairpinNameChange"/>
+        <Class IRI="#miRNAChanges"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#HairpinNameSequenceChange"/>
+        <Class IRI="#miRNAChanges"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#HairpinNewChange"/>
+        <Class IRI="#miRNAChanges"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#HairpinSequenceChange"/>
+        <Class IRI="#miRNAChanges"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Mature"/>
+        <Class abbreviatedIRI="mirna:miRNA"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MatureDeleteChange"/>
+        <Class IRI="#miRNAChanges"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MatureNameChange"/>
+        <Class IRI="#miRNAChanges"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MatureNameSequenceChange"/>
+        <Class IRI="#miRNAChanges"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MatureNewChange"/>
+        <Class IRI="#miRNAChanges"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MatureSequenceChange"/>
+        <Class IRI="#miRNAChanges"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#SNP"/>
+        <Class IRI="#Mutation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#SmallMolecule"/>
+        <Class IRI="#MedioambientalFactor"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Target"/>
+        <Class IRI="#Transcript"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#TranscriptionFactor"/>
+        <Class abbreviatedIRI="owl:Thing"/>
+    </SubClassOf>
+    <ClassAssertion>
+        <Class abbreviatedIRI="mirna:Disease"/>
+        <NamedIndividual abbreviatedIRI="mirna:16365291"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="mirna:Disease"/>
+        <NamedIndividual abbreviatedIRI="mirna:17149698"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="mirna:ExpressionData"/>
+        <NamedIndividual abbreviatedIRI="mirna:DataExpression_1"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="mirna:ExpressionData"/>
+        <NamedIndividual abbreviatedIRI="mirna:DataExpression_2"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="mirna:ExpressionData"/>
+        <NamedIndividual abbreviatedIRI="mirna:DataExpression_8"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="mirna:miRNA"/>
+        <NamedIndividual abbreviatedIRI="mirna:hsa-mir-181c"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="mirna:miRNA"/>
+        <NamedIndividual abbreviatedIRI="mirna:hsa-mir-221"/>
+    </ClassAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty abbreviatedIRI="mirna:involvesmiRNA"/>
+        <NamedIndividual abbreviatedIRI="mirna:DataExpression_1"/>
+        <NamedIndividual abbreviatedIRI="mirna:hsa-mir-221"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty abbreviatedIRI="mirna:relatedDisease"/>
+        <NamedIndividual abbreviatedIRI="mirna:DataExpression_1"/>
+        <NamedIndividual abbreviatedIRI="mirna:16365291"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty abbreviatedIRI="mirna:involvesmiRNA"/>
+        <NamedIndividual abbreviatedIRI="mirna:DataExpression_2"/>
+        <NamedIndividual abbreviatedIRI="mirna:hsa-mir-181c"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty abbreviatedIRI="mirna:relatedDisease"/>
+        <NamedIndividual abbreviatedIRI="mirna:DataExpression_2"/>
+        <NamedIndividual abbreviatedIRI="mirna:16365291"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty abbreviatedIRI="mirna:involvesmiRNA"/>
+        <NamedIndividual abbreviatedIRI="mirna:DataExpression_8"/>
+        <NamedIndividual abbreviatedIRI="mirna:hsa-mir-221"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty abbreviatedIRI="mirna:relatedDisease"/>
+        <NamedIndividual abbreviatedIRI="mirna:DataExpression_8"/>
+        <NamedIndividual abbreviatedIRI="mirna:17149698"/>
+    </ObjectPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty abbreviatedIRI="mirna:diseaseClass"/>
+        <NamedIndividual abbreviatedIRI="mirna:16365291"/>
+        <Literal datatypeIRI="&xsd;string">Cancer</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty abbreviatedIRI="mirna:name"/>
+        <NamedIndividual abbreviatedIRI="mirna:16365291"/>
+        <Literal datatypeIRI="&xsd;string">Thyroid carcinoma, papillary</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty abbreviatedIRI="mirna:phenomicid"/>
+        <NamedIndividual abbreviatedIRI="mirna:16365291"/>
+        <Literal datatypeIRI="&xsd;string">1</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty abbreviatedIRI="mirna:pubmedId"/>
+        <NamedIndividual abbreviatedIRI="mirna:16365291"/>
+        <Literal datatypeIRI="&xsd;string">16365291</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty abbreviatedIRI="mirna:diseaseClass"/>
+        <NamedIndividual abbreviatedIRI="mirna:17149698"/>
+        <Literal datatypeIRI="&xsd;string">cancer</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty abbreviatedIRI="mirna:name"/>
+        <NamedIndividual abbreviatedIRI="mirna:17149698"/>
+        <Literal datatypeIRI="&xsd;string">Pancreatic cancer</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty abbreviatedIRI="mirna:phenomicid"/>
+        <NamedIndividual abbreviatedIRI="mirna:17149698"/>
+        <Literal datatypeIRI="&xsd;string">2</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty abbreviatedIRI="mirna:pubmedId"/>
+        <NamedIndividual abbreviatedIRI="mirna:17149698"/>
+        <Literal datatypeIRI="&xsd;string">17149698</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty abbreviatedIRI="mirna:foldChangeMin"/>
+        <NamedIndividual abbreviatedIRI="mirna:DataExpression_1"/>
+        <Literal datatypeIRI="&xsd;string">12.3</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty abbreviatedIRI="mirna:id"/>
+        <NamedIndividual abbreviatedIRI="mirna:DataExpression_1"/>
+        <Literal datatypeIRI="&xsd;string">1</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty abbreviatedIRI="mirna:method"/>
+        <NamedIndividual abbreviatedIRI="mirna:DataExpression_1"/>
+        <Literal datatypeIRI="&xsd;string">miRNA microarray</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty abbreviatedIRI="mirna:studyDesign"/>
+        <NamedIndividual abbreviatedIRI="mirna:DataExpression_1"/>
+        <Literal datatypeIRI="&xsd;string">Patient study phenotype-control</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty abbreviatedIRI="mirna:foldChangeMin"/>
+        <NamedIndividual abbreviatedIRI="mirna:DataExpression_2"/>
+        <Literal datatypeIRI="&xsd;string">2.4</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty abbreviatedIRI="mirna:id"/>
+        <NamedIndividual abbreviatedIRI="mirna:DataExpression_2"/>
+        <Literal datatypeIRI="&xsd;string">1</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty abbreviatedIRI="mirna:method"/>
+        <NamedIndividual abbreviatedIRI="mirna:DataExpression_2"/>
+        <Literal datatypeIRI="&xsd;string">miRNA microarray</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty abbreviatedIRI="mirna:studyDesign"/>
+        <NamedIndividual abbreviatedIRI="mirna:DataExpression_2"/>
+        <Literal datatypeIRI="&xsd;string">Patient study phenotype-control</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty abbreviatedIRI="mirna:foldChangeMin"/>
+        <NamedIndividual abbreviatedIRI="mirna:DataExpression_8"/>
+        <Literal datatypeIRI="&xsd;string">26.2</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty abbreviatedIRI="mirna:id"/>
+        <NamedIndividual abbreviatedIRI="mirna:DataExpression_8"/>
+        <Literal datatypeIRI="&xsd;string">1</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty abbreviatedIRI="mirna:method"/>
+        <NamedIndividual abbreviatedIRI="mirna:DataExpression_8"/>
+        <Literal datatypeIRI="&xsd;string">miRNA microarray</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty abbreviatedIRI="mirna:studyDesign"/>
+        <NamedIndividual abbreviatedIRI="mirna:DataExpression_8"/>
+        <Literal datatypeIRI="&xsd;string">Patient study phenotype-control</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty abbreviatedIRI="mirna:accessionNumber"/>
+        <NamedIndividual abbreviatedIRI="mirna:hsa-mir-181c"/>
+        <Literal datatypeIRI="&xsd;string"></Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty abbreviatedIRI="mirna:name"/>
+        <NamedIndividual abbreviatedIRI="mirna:hsa-mir-181c"/>
+        <Literal datatypeIRI="&xsd;string"></Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty abbreviatedIRI="mirna:accessionNumber"/>
+        <NamedIndividual abbreviatedIRI="mirna:hsa-mir-221"/>
+        <Literal datatypeIRI="&xsd;string">MI0000298</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty abbreviatedIRI="mirna:name"/>
+        <NamedIndividual abbreviatedIRI="mirna:hsa-mir-221"/>
+        <Literal datatypeIRI="&xsd;string">hsa-mir-221</Literal>
+    </DataPropertyAssertion>
+    <ObjectPropertyDomain>
+        <ObjectProperty abbreviatedIRI="mirna:involvesmiRNA"/>
+        <Class abbreviatedIRI="mirna:ExpressionData"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty abbreviatedIRI="mirna:relatedDisease"/>
+        <ObjectUnionOf>
+            <Class abbreviatedIRI="mirna:ExpressionData"/>
+            <Class IRI="#InteractionData"/>
+            <Class IRI="#Mutation"/>
+            <Class IRI="#Transcript"/>
+        </ObjectUnionOf>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#addHairpin"/>
+        <Class IRI="#ChangeParentHairpins"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#addMature"/>
+        <Class IRI="#ChangeProducedMature"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#changeDelete"/>
+        <Class abbreviatedIRI="mirna:miRNA"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#changeFoward"/>
+        <Class IRI="#Hairpin"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#changeName"/>
+        <Class abbreviatedIRI="mirna:miRNA"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#changeNameSequence"/>
+        <Class abbreviatedIRI="mirna:miRNA"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#changeNew"/>
+        <Class abbreviatedIRI="mirna:miRNA"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#changeParentHairpin"/>
+        <Class IRI="#Mature"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#changeProducedMature"/>
+        <Class IRI="#Hairpin"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#changeSequence"/>
+        <Class abbreviatedIRI="mirna:miRNA"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#forms"/>
+        <ObjectIntersectionOf>
+            <Class abbreviatedIRI="mirna:miRNA"/>
+            <Class IRI="#Transcript"/>
+        </ObjectIntersectionOf>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#foward"/>
+        <Class IRI="#Hairpin"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#fowardTo"/>
+        <Class IRI="#Hairpin"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#hasMutation"/>
+        <Class IRI="#Gene"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#hasOrganism"/>
+        <ObjectUnionOf>
+            <Class abbreviatedIRI="mirna:Disease"/>
+            <Class abbreviatedIRI="mirna:ExpressionData"/>
+            <Class abbreviatedIRI="mirna:miRNA"/>
+            <Class IRI="#Mutation"/>
+            <Class IRI="#Pathway"/>
+            <Class IRI="#Transcript"/>
+        </ObjectUnionOf>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#involvesAmbientalFactors"/>
+        <Class abbreviatedIRI="mirna:ExpressionData"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#involvesInteraction"/>
+        <ObjectUnionOf>
+            <Class IRI="#Complex"/>
+            <Class IRI="#InteractionData"/>
+        </ObjectUnionOf>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#involvesProcess"/>
+        <ObjectUnionOf>
+            <Class abbreviatedIRI="mirna:miRNA"/>
+            <Class IRI="#Biological_process"/>
+        </ObjectUnionOf>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#microRNAtarget"/>
+        <Class IRI="#Transcript"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#nextVersionHairpin"/>
+        <Class IRI="#Hairpin"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#nextVersionMature"/>
+        <Class IRI="#Mature"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#prevVersionHairpin"/>
+        <Class IRI="#Hairpin"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#prevVersionMature"/>
+        <Class IRI="#Mature"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#producedByHairpin"/>
+        <Class IRI="#ChangeParentHairpins"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#producesMature"/>
+        <ObjectUnionOf>
+            <Class IRI="#ChangeProducedMature"/>
+            <Class IRI="#Hairpin"/>
+        </ObjectUnionOf>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#producesTranscript"/>
+        <Class IRI="#Gene"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#regulatedBy"/>
+        <ObjectUnionOf>
+            <Class abbreviatedIRI="mirna:miRNA"/>
+            <Class IRI="#Gene"/>
+        </ObjectUnionOf>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#relatedHairpin"/>
+        <Class IRI="#Mature"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#relatedKegg"/>
+        <Class IRI="#Mature"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#remHairpin"/>
+        <Class IRI="#ChangeParentHairpins"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#remMature"/>
+        <Class IRI="#ChangeProducedMature"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#sameAs"/>
+        <ObjectUnionOf>
+            <Class IRI="#Pathway"/>
+            <Class IRI="#Transcript"/>
+        </ObjectUnionOf>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#transcripts"/>
+        <Class IRI="#Gene"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#translatedBy"/>
+        <Class IRI="#Protein"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyRange>
+        <ObjectProperty abbreviatedIRI="mirna:involvesmiRNA"/>
+        <Class abbreviatedIRI="mirna:miRNA"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty abbreviatedIRI="mirna:relatedDisease"/>
+        <Class abbreviatedIRI="mirna:Disease"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#addHairpin"/>
+        <Class IRI="#Hairpin"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#addMature"/>
+        <Class IRI="#Mature"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#changeDelete"/>
+        <ObjectUnionOf>
+            <Class IRI="#HairpinDeleteChange"/>
+            <Class IRI="#MatureDeleteChange"/>
+        </ObjectUnionOf>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#changeFoward"/>
+        <Class IRI="#HairpinFowardChange"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#changeName"/>
+        <ObjectUnionOf>
+            <Class IRI="#HairpinNameChange"/>
+            <Class IRI="#MatureNameChange"/>
+        </ObjectUnionOf>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#changeNameSequence"/>
+        <ObjectUnionOf>
+            <Class IRI="#HairpinNameSequenceChange"/>
+            <Class IRI="#MatureNameSequenceChange"/>
+        </ObjectUnionOf>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#changeNew"/>
+        <ObjectUnionOf>
+            <Class IRI="#HairpinNewChange"/>
+            <Class IRI="#MatureNewChange"/>
+        </ObjectUnionOf>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#changeParentHairpin"/>
+        <Class IRI="#ChangeParentHairpins"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#changeProducedMature"/>
+        <Class IRI="#ChangeProducedMature"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#changeSequence"/>
+        <ObjectUnionOf>
+            <Class IRI="#HairpinSequenceChange"/>
+            <Class IRI="#MatureSequenceChange"/>
+        </ObjectUnionOf>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#forms"/>
+        <Class IRI="#Complex"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#foward"/>
+        <Class IRI="#HairpinFowardChange"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#fowardTo"/>
+        <Class IRI="#Hairpin"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#hasMutation"/>
+        <Class IRI="#Mutation"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#hasOrganism"/>
+        <Class IRI="#Organism"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#involvesAmbientalFactors"/>
+        <Class IRI="#MedioambientalFactor"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#involvesInteraction"/>
+        <ObjectIntersectionOf>
+            <Class abbreviatedIRI="mirna:miRNA"/>
+            <Class IRI="#Target"/>
+        </ObjectIntersectionOf>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#involvesProcess"/>
+        <Class IRI="#Biological_process"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#microRNAtarget"/>
+        <Class abbreviatedIRI="mirna:miRNA"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#nextVersionHairpin"/>
+        <Class IRI="#Hairpin"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#nextVersionMature"/>
+        <Class IRI="#Mature"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#prevVersionHairpin"/>
+        <Class IRI="#Hairpin"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#prevVersionMature"/>
+        <Class IRI="#Mature"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#producedByHairpin"/>
+        <Class IRI="#Hairpin"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#producesMature"/>
+        <Class IRI="#Mature"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#producesTranscript"/>
+        <Class IRI="#Transcript"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#regulatedBy"/>
+        <Class IRI="#TranscriptionFactor"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#relatedHairpin"/>
+        <Class IRI="#Hairpin"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#relatedKegg"/>
+        <Class IRI="#Pathway"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#remHairpin"/>
+        <Class IRI="#Hairpin"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#remMature"/>
+        <Class IRI="#Mature"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#sameAs"/>
+        <Class IRI="#ExternalResource"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#transcripts"/>
+        <Class IRI="#Transcript"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#translatedBy"/>
+        <Class IRI="#Transcript"/>
+    </ObjectPropertyRange>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#arm"/>
+        <DataProperty IRI="#chromosome"/>
+    </SubDataPropertyOf>
+    <DataPropertyDomain>
+        <DataProperty abbreviatedIRI="mirna:accessionNumber"/>
+        <ObjectUnionOf>
+            <Class abbreviatedIRI="mirna:miRNA"/>
+            <Class IRI="#Gene"/>
+        </ObjectUnionOf>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty abbreviatedIRI="mirna:diseaseClass"/>
+        <Class abbreviatedIRI="mirna:Disease"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty abbreviatedIRI="mirna:foldChangeMax"/>
+        <Class abbreviatedIRI="mirna:ExpressionData"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty abbreviatedIRI="mirna:foldChangeMin"/>
+        <Class abbreviatedIRI="mirna:ExpressionData"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty abbreviatedIRI="mirna:id"/>
+        <ObjectUnionOf>
+            <Class abbreviatedIRI="mirna:Disease"/>
+            <Class abbreviatedIRI="mirna:ExpressionData"/>
+            <Class abbreviatedIRI="mirna:miRNA"/>
+            <Class IRI="#Gene"/>
+            <Class IRI="#InteractionData"/>
+            <Class IRI="#Mutation"/>
+            <Class IRI="#Pathway"/>
+            <Class IRI="#Transcript"/>
+        </ObjectUnionOf>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty abbreviatedIRI="mirna:method"/>
+        <ObjectUnionOf>
+            <Class abbreviatedIRI="mirna:ExpressionData"/>
+            <Class IRI="#InteractionData"/>
+        </ObjectUnionOf>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty abbreviatedIRI="mirna:name"/>
+        <ObjectUnionOf>
+            <Class abbreviatedIRI="mirna:Disease"/>
+            <Class abbreviatedIRI="mirna:miRNA"/>
+            <Class IRI="#Biological_process"/>
+            <Class IRI="#Gene"/>
+            <Class IRI="#MedioambientalFactor"/>
+            <Class IRI="#Organism"/>
+            <Class IRI="#Transcript"/>
+        </ObjectUnionOf>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty abbreviatedIRI="mirna:phenomicid"/>
+        <Class abbreviatedIRI="mirna:ExpressionData"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty abbreviatedIRI="mirna:pubmedId"/>
+        <ObjectUnionOf>
+            <Class abbreviatedIRI="mirna:ExpressionData"/>
+            <Class abbreviatedIRI="mirna:miRNA"/>
+            <Class IRI="#Gene"/>
+            <Class IRI="#InteractionData"/>
+            <Class IRI="#Mutation"/>
+            <Class IRI="#Transcript"/>
+        </ObjectUnionOf>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty abbreviatedIRI="mirna:studyDesign"/>
+        <Class abbreviatedIRI="mirna:ExpressionData"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#3UTRconservation_score"/>
+        <Class IRI="#Transcript"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#3UTRend"/>
+        <Class IRI="#Transcript"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#3UTRstart"/>
+        <Class IRI="#Transcript"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#CID"/>
+        <Class IRI="#SmallMolecule"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#DB"/>
+        <Class IRI="#SmallMolecule"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#FDA"/>
+        <Class IRI="#SmallMolecule"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#GC_proportion"/>
+        <ObjectUnionOf>
+            <Class abbreviatedIRI="mirna:miRNA"/>
+            <Class IRI="#Gene"/>
+            <Class IRI="#Transcript"/>
+        </ObjectUnionOf>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#Uniprot_id"/>
+        <Class IRI="#Protein"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#arm"/>
+        <ObjectUnionOf>
+            <Class abbreviatedIRI="mirna:miRNA"/>
+            <Class IRI="#Gene"/>
+            <Class IRI="#Transcript"/>
+        </ObjectUnionOf>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#binding_site_end"/>
+        <Class IRI="#Transcript"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#binding_site_pattern"/>
+        <ObjectUnionOf>
+            <Class IRI="#Complex"/>
+            <ObjectIntersectionOf>
+                <Class abbreviatedIRI="mirna:miRNA"/>
+                <Class IRI="#Transcript"/>
+            </ObjectIntersectionOf>
+        </ObjectUnionOf>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#binding_site_start"/>
+        <Class IRI="#Transcript"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#biotype"/>
+        <Class IRI="#Transcript"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#cdsEnd"/>
+        <Class IRI="#Transcript"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#cdsSequence"/>
+        <Class IRI="#Transcript"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#cdsStart"/>
+        <Class IRI="#Transcript"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#cellularLine"/>
+        <ObjectUnionOf>
+            <Class abbreviatedIRI="mirna:ExpressionData"/>
+            <Class IRI="#InteractionData"/>
+        </ObjectUnionOf>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#chromosome"/>
+        <ObjectUnionOf>
+            <Class abbreviatedIRI="mirna:miRNA"/>
+            <Class IRI="#Gene"/>
+            <Class IRI="#Mutation"/>
+            <Class IRI="#Transcript"/>
+        </ObjectUnionOf>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#condition"/>
+        <Class abbreviatedIRI="mirna:ExpressionData"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#conservation_score"/>
+        <Class IRI="#Transcript"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#description"/>
+        <ObjectUnionOf>
+            <Class abbreviatedIRI="mirna:Disease"/>
+            <Class abbreviatedIRI="mirna:ExpressionData"/>
+            <Class IRI="#Gene"/>
+            <Class IRI="#InteractionData"/>
+        </ObjectUnionOf>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#distance"/>
+        <Class IRI="#Gene"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#end_strand"/>
+        <ObjectUnionOf>
+            <Class IRI="#Gene"/>
+            <Class IRI="#Transcript"/>
+        </ObjectUnionOf>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#evidence"/>
+        <ObjectUnionOf>
+            <Class abbreviatedIRI="mirna:ExpressionData"/>
+            <Class IRI="#Transcript"/>
+        </ObjectUnionOf>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#expression_site"/>
+        <ObjectUnionOf>
+            <Class IRI="#Gene"/>
+            <Class IRI="#Target"/>
+        </ObjectUnionOf>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#feature"/>
+        <Class IRI="#InteractionData"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#geneID"/>
+        <ObjectUnionOf>
+            <Class IRI="#Gene"/>
+            <Class IRI="#Transcript"/>
+        </ObjectUnionOf>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#hgnc_symbol"/>
+        <ObjectUnionOf>
+            <Class IRI="#Gene"/>
+            <Class IRI="#Transcript"/>
+        </ObjectUnionOf>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#isoform"/>
+        <ObjectUnionOf>
+            <Class IRI="#Gene"/>
+            <Class IRI="#Transcript"/>
+        </ObjectUnionOf>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#journal"/>
+        <ObjectUnionOf>
+            <Class abbreviatedIRI="mirna:ExpressionData"/>
+            <Class abbreviatedIRI="mirna:miRNA"/>
+            <Class IRI="#Gene"/>
+            <Class IRI="#InteractionData"/>
+            <Class IRI="#Mutation"/>
+            <Class IRI="#Transcript"/>
+        </ObjectUnionOf>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#kegg_id"/>
+        <ObjectUnionOf>
+            <Class IRI="#Gene"/>
+            <Class IRI="#Transcript"/>
+        </ObjectUnionOf>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#label"/>
+        <Class IRI="#Hairpin"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#length"/>
+        <ObjectUnionOf>
+            <Class abbreviatedIRI="mirna:miRNA"/>
+            <Class IRI="#Gene"/>
+            <Class IRI="#Transcript"/>
+        </ObjectUnionOf>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#location"/>
+        <ObjectUnionOf>
+            <Class IRI="#Gene"/>
+            <Class IRI="#Transcript"/>
+        </ObjectUnionOf>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#miTG-score"/>
+        <Class IRI="#InteractionData"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#mimat"/>
+        <Class IRI="#Mature"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#minimal_free_energy"/>
+        <ObjectUnionOf>
+            <Class IRI="#Complex"/>
+            <ObjectIntersectionOf>
+                <Class abbreviatedIRI="mirna:miRNA"/>
+                <Class IRI="#Transcript"/>
+            </ObjectIntersectionOf>
+        </ObjectUnionOf>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#newName"/>
+        <Class abbreviatedIRI="mirna:miRNA"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#newSequence"/>
+        <Class IRI="#Hairpin"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#normalized_minimal_free_energy"/>
+        <ObjectUnionOf>
+            <Class IRI="#Complex"/>
+            <ObjectIntersectionOf>
+                <Class abbreviatedIRI="mirna:miRNA"/>
+                <Class IRI="#Transcript"/>
+            </ObjectIntersectionOf>
+        </ObjectUnionOf>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#pValue_OG"/>
+        <Class IRI="#InteractionData"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#phase"/>
+        <Class IRI="#InteractionData"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#polarity"/>
+        <ObjectUnionOf>
+            <Class abbreviatedIRI="mirna:miRNA"/>
+            <Class IRI="#Gene"/>
+            <Class IRI="#Transcript"/>
+        </ObjectUnionOf>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#postion"/>
+        <Class IRI="#SNP"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#provenance"/>
+        <ObjectUnionOf>
+            <Class abbreviatedIRI="mirna:miRNA"/>
+            <Class IRI="#InteractionData"/>
+        </ObjectUnionOf>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#rank"/>
+        <Class IRI="#InteractionData"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#reference"/>
+        <ObjectUnionOf>
+            <Class abbreviatedIRI="mirna:ExpressionData"/>
+            <Class IRI="#InteractionData"/>
+        </ObjectUnionOf>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#region"/>
+        <Class IRI="#Transcript"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#repeated_motifs"/>
+        <Class IRI="#Transcript"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#resource"/>
+        <ObjectUnionOf>
+            <Class abbreviatedIRI="mirna:ExpressionData"/>
+            <Class abbreviatedIRI="mirna:miRNA"/>
+            <Class IRI="#Gene"/>
+            <Class IRI="#InteractionData"/>
+            <Class IRI="#Mutation"/>
+            <Class IRI="#Organism"/>
+            <Class IRI="#Transcript"/>
+        </ObjectUnionOf>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#score"/>
+        <Class IRI="#InteractionData"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#seed_match"/>
+        <Class IRI="#Transcript"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#sequence"/>
+        <ObjectUnionOf>
+            <Class abbreviatedIRI="mirna:miRNA"/>
+            <Class IRI="#Gene"/>
+            <Class IRI="#Transcript"/>
+        </ObjectUnionOf>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#specie"/>
+        <Class IRI="#Organism"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#start_strand"/>
+        <ObjectUnionOf>
+            <Class abbreviatedIRI="mirna:miRNA"/>
+            <Class IRI="#Transcript"/>
+        </ObjectUnionOf>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#subname"/>
+        <Class abbreviatedIRI="mirna:miRNA"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#support"/>
+        <Class abbreviatedIRI="mirna:ExpressionData"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#swissProt"/>
+        <Class IRI="#Protein"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#targetScore"/>
+        <Class IRI="#Transcript"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#tissue"/>
+        <ObjectUnionOf>
+            <Class abbreviatedIRI="mirna:Disease"/>
+            <Class IRI="#Organism"/>
+        </ObjectUnionOf>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#title_reference"/>
+        <ObjectUnionOf>
+            <Class abbreviatedIRI="mirna:ExpressionData"/>
+            <Class abbreviatedIRI="mirna:miRNA"/>
+            <Class IRI="#Gene"/>
+            <Class IRI="#InteractionData"/>
+            <Class IRI="#Mutation"/>
+            <Class IRI="#Transcript"/>
+        </ObjectUnionOf>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#transcriptID"/>
+        <Class IRI="#Transcript"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#treatment"/>
+        <Class abbreviatedIRI="mirna:ExpressionData"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#type"/>
+        <ObjectUnionOf>
+            <Class IRI="#InteractionData"/>
+            <Class IRI="#Protein"/>
+        </ObjectUnionOf>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#version"/>
+        <Class abbreviatedIRI="mirna:miRNA"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#year"/>
+        <ObjectUnionOf>
+            <Class abbreviatedIRI="mirna:ExpressionData"/>
+            <Class abbreviatedIRI="mirna:miRNA"/>
+            <Class IRI="#Gene"/>
+            <Class IRI="#InteractionData"/>
+            <Class IRI="#Mutation"/>
+            <Class IRI="#Transcript"/>
+        </ObjectUnionOf>
+    </DataPropertyDomain>
+    <DataPropertyRange>
+        <DataProperty abbreviatedIRI="mirna:accessionNumber"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty abbreviatedIRI="mirna:diseaseClass"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty abbreviatedIRI="mirna:foldChangeMax"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty abbreviatedIRI="mirna:foldChangeMin"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty abbreviatedIRI="mirna:id"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty abbreviatedIRI="mirna:method"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty abbreviatedIRI="mirna:name"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty abbreviatedIRI="mirna:phenomicid"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty abbreviatedIRI="mirna:pubmedId"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty abbreviatedIRI="mirna:studyDesign"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#3UTRconservation_score"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#3UTRend"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#3UTRstart"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#CID"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#DB"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#FDA"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#GC_proportion"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#Uniprot_id"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#arm"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#binding_site_end"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#binding_site_pattern"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#binding_site_start"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#biotype"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#cdsEnd"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#cdsSequence"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#cdsStart"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#cellularLine"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#chromosome"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#condition"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#conservation_score"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#description"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#distance"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#end_strand"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#evidence"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#expression_site"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#feature"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#geneID"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#hgnc_symbol"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#isoform"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#journal"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#kegg_id"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#label"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#length"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#location"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#miTG-score"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#mimat"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#minimal_free_energy"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#newName"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#newSequence"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#normalized_minimal_free_energy"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#pValue_OG"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#phase"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#polarity"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#postion"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#provenance"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#rank"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#reference"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#region"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#repeated_motifs"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#score"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#seed_match"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#sequence"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#specie"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#start_strand"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#subname"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#support"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#swissProt"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#targetScore"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#tissue"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#title_reference"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#transcriptID"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#treatment"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#type"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#version"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#year"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+</Ontology>
+
+
+
+<!-- Generated by the OWL API (version 3.4.2) http://owlapi.sourceforge.net -->
+

@@ -60,16 +60,16 @@ public class mirDIP implements IMirnaDatabase {
 					
 					
 					String accesionnumber = tokens[0];
-					String rank = tokens[1];
-					String number_of_sources = tokens[2];
-					String provenance = tokens[3];
+					String gene = tokens[1];
+					String source = tokens[2];
+					String rank = tokens[3];
 					
 
 					String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
 							+ accesionnumber + "','"
-							+ rank + "','"
-							+ number_of_sources + "','"
-							+ provenance + "')";
+							+ gene + "','"
+							+ source + "','"
+							+ rank + "')";
 					
 					stmt.executeUpdate(query);
 	
@@ -111,7 +111,7 @@ public class mirDIP implements IMirnaDatabase {
 	
 	public static void main(String[] args) throws Exception {
 		
-		String inputFile = "/Users/esteban/Softw/miRNA/mirDIP/mirDIP-Grouped-By-MIR-Rank-Version1.0.txt";
+		String inputFile = "/Users/esteban/Softw/miRNA/mirDIP/mirDIP-All-Data-Version1.0.txt";
 		mirDIP phenomir = new mirDIP(inputFile);
 		phenomir.insertInTable("mirDIP");
 		
