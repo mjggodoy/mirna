@@ -1,0 +1,319 @@
+MiRNA cancer database 
+
+mirId -> miRNA.name
+Cancer	-> Disease.name
+Profile	-> ExpressionData.evidence
+PubMed Article -> ExpressionData.description
+
+HMDD database 
+
+id (HMDD) -> ExpressionData.id
+mir -> miRNA.name
+disease  -> Disease.name
+pubmedid -> ExpressionData.pubmedId
+description -> ExpressionData.description
+
+Microcosm database
+
+group -> no correspondence
+seq -> miRNA.name
+method -> InteractionData.method
+feature -> InteractionData.feature
+chr -> Target.chromosome
+start -> Target.start_strand
+end -> Target.end_start
+strand -> Target.polarity
+phase -> InteractionData.phase
+score -> InteractionData.score
+pvalueOg -> InteractionData.PVALUE_OG.score
+transcriptId -> Transcript.TranscriptId
+externalName -> Transcript.name
+
+Mir2Disease database
+
+mirna -> miRNA.name
+disease  -> Disease.name
+expression	-> ExpressionData.evidence
+method -> ExpressionData.method
+date -> ExpressionData.year
+description -> ExpressionData.description
+
+PhenoMir database
+
+phenomicid -> ExpressionData.phenomicid
+pmid -> ExpressionData.pubmedId
+disease -> disease.name
+diseasesubId -> 
+class_ -> disease.diseaseClass
+miRNA -> miRNA.name
+accession -> miRNA.accesionNumber
+expression -> ExpressionData.evidence
+foldchangemin -> ExpressionData.foldChangeMin
+foldchangemax -> ExpressionData.foldChangeMax
+id -> no correspondence (the meaning is not biologically useful)
+name -> ExpressionData.studyDesign
+method -> ExpressionData.method
+
+miRDB database 
+
+accesionNumber -> miRNA.name
+target -> target.name
+score -> interactionData.score
+
+mirDip database
+
+accesionnnumber -> miRNA.name
+gene -> Gene.name
+source -> interactionData.provenance
+rank -> InteractionData.rank
+
+microtv4 database
+
+transcript_id -> Transcript.TrancriptID
+gene_id -> Gene.geneID
+miRNA -> miRNA.name
+miTG_score -> InteractionData.miTG-score
+region -> InteractionData.Target
+chromosome -> target.chromosome
+coordinates -> target.3UTRstart/target.3UTRend 
+
+microT_CDS database
+
+transcript_id -> Transcript.TrancriptID
+gene_id -> Gene.geneID
+miRNA -> miRNA.name
+miTG_score -> InteractionData.miTG-score
+region -> InteractionData.Target
+chromosome -> target.chromosome
+coordinates -> target.3UTRstart/target.3UTRend or target.cdsStart/target.cdsEnd
+
+miRdSNP1 database
+
+pubmedid -> Gene.pubmedId 
+year -> Gene.year 
+No usar month, no usar article_date
+journal -> Gene.journal
+title -> Gene.description
+SNP -> SNP.id
+disease -> disease.name
+resource -> Gene.resource
+
+miRdSNP2 database
+
+gene -> Gene.name
+refseq_name -> Gene.id
+name_miRNA -> miRNA.name
+SNPid -> SNPid.name
+disease_name -> disease.name
+
+miRdSNP3 database 
+
+geneName -> Gene.name
+refseqId -> Gene.id
+miR -> miRNA.name
+SNP -> 	SNP.id
+disease -> disease.name
+distance -> distance.gene
+No usar expConf 
+
+miRdSNP4 database 
+
+geneName -> Gene.name
+refseqId -> Gene.id
+miR -> miRNA.name
+SNP -> 	SNP.id
+disease -> disease.name
+distance -> distance.gene
+No usar expConf 
+
+miRdSNP5 database 
+
+chromosome -> Gene.chromosome
+start_sequence -> Gene.start_strand
+end_sequence -> Gene.end_strand
+SNP -> SNP.id
+disease -> disease.name
+
+mirEnvironment database
+
+mir -> ExpressionData.Id
+name -> miRNA.name
+name2 -> no use
+name3 -> no use
+disease -> disease.name
+enviromenentalFactor -> MedioAmbientalFactor.name
+treatment -> ExpressionData.treatment
+cellularLine -> ExpressionData.CellularLine
+specie -> Organism.specie
+description -> ExpressionData.description
+pubmedId -> ExpressionData.pubmedId
+
+phenomir database
+
+phenomicid -> ExpressionData.phenomicid
+pmid -> ExpressionData.pubmedId
+disease -> Disease.name
+diseasesubId -> Disease.Id
+class_ -> Disease.diseaseClass
+miRNA -> miRNA.name
+accession -> miRNA.accesionNumber
+expression -> ExpressionData.evidence
+foldchangemin -> ExpressionData.foldChangeMin
+foldchangemax -> ExpressionData.foldChangeMax
+id -> No use
+name -> No use
+method -> ExpressionData.method
+
+plantmiRNA database (plant_mirna_stem_loop)
+
+specie -> Organism.specie
+mirnaid -> Hairpin.name
+sequence -> Hairpin.sequence
+
+plantmiRNA database (plant_mirna_mature_mirna)
+
+specie -> Organism.specie
+mirnaid -> Mature.name
+sequence -> Mature.sequence
+
+repTar database (repTar_human)
+
+gene_symbol -> Gene.name
+gene_accesion -> Gene.accessionNumber
+mirna -> mirna.name
+sequence_start -> Target.binding_site_start
+sequence_end -> Target.binding_site_end
+minimal_free_energy -> Complex.minimal_free_energy
+normalized_free_energy -> Complex.normalized_minimal_free_energy 
+gu_proportion -> Target.GC_proportion
+binding_site_pattern -> Complex.binding_site_pattern
+UTR_conservation_score -> Target.3UTRconservation_score
+repeated_motifs ->  Target.repeated_motifs
+algorithm -> InteractionData.method
+specie -> Organism.specie
+
+repTar database (repTar_mouse)
+
+gene_symbol -> Gene.name
+gene_accesion -> Gene.accessionNumber
+mirna -> mirna.name
+sequence_start -> Target.binding_site_start
+sequence_end -> Target.binding_site_end
+minimal_free_energy -> Complex.minimal_free_energy
+normalized_free_energy -> Complex.normalized_minimal_free_energy 
+gu_proportion -> Target.GC_proportion
+binding_site_pattern -> Complex.binding_site_pattern
+UTR_conservation_score -> Target.3UTRconservation_score
+repeated_motifs ->  Target.repeated_motifs
+algorithm -> InteractionData.method
+specie -> Organism.specie
+
+SM2miR2N database (sm2mir2n)
+
+mirna -> mirna.name
+mirbase -> mirna.accessionNumber
+smallMolecule -> smallMolecule.name
+fda -> smallMolecule.FDA 
+db -> smallMolecule.ID
+cid -> smallMolecule.CID
+method -> ExpressionData.method
+species -> Organism.specie
+condition -> ExpressionData.condition
+pmid -> ExpressionData.pubmedId
+year -> ExpressionData.year
+reference -> ExpressionData.title_reference
+support -> ExpressionData.description
+expression -> ExpressionData.evidence
+
+TarBase database
+
+id -> No usar
+idV4 -> InteractionData.id
+dataType -> InteractionData.type
+organism -> Organism.specie
+miRna -> mirna.name 
+hgncSymbol -> Gene.hgnc_symbol
+gene -> Gene.name
+isoform -> transcript.isoform
+ensembl -> transcript.id
+chrLoc -> Gene.location
+mre -> No use
+sss -> No use
+is -> ExpressionData.method
+ds -> ExpressionData.method
+validation -> No use
+paper -> InteractionData.reference
+targetSeq -> Target.sequence
+mirnaSeq -> mirna.sequence
+seqLocation -> Gene.location
+pmid -> InteractionData.pubmedId
+kegg -> Gene.Kegg_id
+proteinType -> protein.type
+difExprIn -> No use
+pathologyOrEvent -> Disease.name
+misRegulation -> Transcript.evidence
+geneExpression -> Gene.expression_site
+tumourInvolv -> No use
+bib -> InteractionData.description
+cellLineUsed -> InteractionData.cellularLine
+hgncId -> Gene.hgnc_symbol
+swissProt -> Protein.swissProt
+
+VirmiRNA1 database
+
+id_virus -> No use
+virus_name -> No use
+virus_full_name -> Organism.name
+link_virus -> Organism.resource
+miRNA -> Mature.name
+miRNA_sequence ->  Mature.sequence
+length -> Mature.length
+GC_proportion -> Mature.GC_proportion
+arm -> Gene.miRNA
+pre_miRNA -> Hairpin.name
+pre_miRNA_sequence -> Hairpin.sequence
+cell_line -> ExpressionData.cellularLine
+method -> ExpressionData.method
+pubmed_id -> miRNA.pubmedId
+
+VirmiRNA2 database
+
+AVM_id -> No use
+miRNA -> mirna.name
+miRNA_sequence -> mirna.sequence
+miRBase_id -> mirna.resource
+specie -> Organism.specie
+virus -> No use
+virus_full_name -> Organism.name
+taxonomy -> Organism.resource
+target -> No use 
+Uniprot -> Protein.Uniprot_id
+target_process -> BiologicalProcess.name
+method -> ExpressionData.method
+cell_line -> ExpressionData.cellularLine
+target_sequence -> target.sequence
+target_region -> target.region
+target_coordinates -> target.coordinates
+seed_match -> target.seed_match
+target_reference -> Target.name
+pubmed_id -> ExpressionData.pubmedId
+
+VirmiRNA3 database
+
+VMT_id -> No use
+virus -> No use
+virus_full_name -> Organism.name
+taxonomy -> Organism.resource
+miRNA -> miRNA.name
+gene -> No use
+Uniprot -> Protein.Uniprot_id
+organism -> Organism.specie
+cell_line -> ExpressionData.cellularLine
+method -> ExpressionData.method
+sequence_target -> target.sequence
+start_target -> target.start_strand
+end_target -> target.end_strand
+region_target -> target.region
+target_reference -> Target.name
+pubmed_id -> ExpressionData.pubmedId
+
