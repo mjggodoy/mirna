@@ -10,7 +10,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import mirna.beans.DataExpression;
+import mirna.beans.ExpressionData;
 import mirna.beans.Disease;
 import mirna.beans.MiRna;
 
@@ -79,7 +79,7 @@ public class MiRCancer {
 					Disease disease = new Disease();
 					disease.setName(tokens[1]);
 
-					DataExpression dataexpression = new DataExpression();
+					ExpressionData dataexpression = new ExpressionData();
 					dataexpression.setDescription(tokens[3]);
 					dataexpression.setProfile(tokens[2]);
 					
@@ -150,7 +150,7 @@ public class MiRCancer {
 					Disease disease = new Disease();
 					disease.setName(tokens[1]);
 
-					DataExpression dataexpression = new DataExpression();
+					ExpressionData dataexpression = new ExpressionData();
 					dataexpression.setDescription(tokens[3]);
 					dataexpression.setProfile(tokens[2]);
 

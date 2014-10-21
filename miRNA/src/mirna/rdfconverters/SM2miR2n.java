@@ -9,7 +9,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import mirna.beans.DataExpression;
+import mirna.beans.ExpressionData;
 import mirna.beans.MiRna;
 import mirna.beans.Organism;
 import mirna.beans.SmallMolecule;
@@ -76,7 +76,7 @@ public class SM2miR2n {
 				Organism organism = new Organism();
 				organism.setSpecie(tokens[6]);
 
-				DataExpression dataexpression = new DataExpression();
+				ExpressionData dataexpression = new ExpressionData();
 				dataexpression.setMethod(tokens[7]);
 				dataexpression.setCondition(tokens[8]);
 				dataexpression.setPubmedId(tokens[9]);
@@ -152,7 +152,7 @@ public class SM2miR2n {
 					Organism organism = new Organism();
 					organism.setSpecie(tokens[6]);
 
-					DataExpression dataexpression = new DataExpression();
+					ExpressionData dataexpression = new ExpressionData();
 					dataexpression.setMethod(tokens[7]);
 					dataexpression.setCondition(tokens[8]);
 					dataexpression.setPubmedId(tokens[9]);

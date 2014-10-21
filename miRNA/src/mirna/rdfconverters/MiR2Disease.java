@@ -8,7 +8,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 
-import mirna.beans.DataExpression;
+import mirna.beans.ExpressionData;
 import mirna.beans.Disease;
 import mirna.beans.MiRna;
 
@@ -72,7 +72,7 @@ public class MiR2Disease {
 					MiRna miRna = new MiRna();
 					miRna.setName(tokens[0]);
 
-					DataExpression dataexpression = new DataExpression();
+					ExpressionData dataexpression = new ExpressionData();
 					dataexpression.setProfile(tokens[2]);
 					dataexpression.setMethod(tokens[3]);
 					dataexpression.setYear(tokens[4]);
@@ -138,7 +138,7 @@ public class MiR2Disease {
 					MiRna miRna = new MiRna();
 					miRna.setName(tokens[0]);
 
-					DataExpression dataexpression = new DataExpression();
+					ExpressionData dataexpression = new ExpressionData();
 					dataexpression.setProfile(tokens[2]);
 					dataexpression.setMethod(tokens[3]);
 					dataexpression.setYear(tokens[4]);

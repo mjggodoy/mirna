@@ -11,7 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import mirna.beans.DataExpression;
+import mirna.beans.ExpressionData;
 import mirna.beans.Disease;
 import mirna.beans.MiRna;
 import mirna.dao.DataExpressionDAO;
@@ -154,7 +154,7 @@ public class MiRCancer implements IMirnaDatabase {
 				int id = rs.getInt("id");
 				String cancer = rs.getString("cancer");
 				String mirId = rs.getString("mirId");
-				String profile = rs.getString("profile");
+				String evidence = rs.getString("evidence");
 				String pubmedArticle = rs.getString("pubmed_article").replaceAll("'", "\\\\'");;
 				
 				MiRna miRna = new MiRna();
@@ -163,12 +163,12 @@ public class MiRCancer implements IMirnaDatabase {
 				Disease disease = new Disease();
 				disease.setName(cancer);
 				
-				DataExpression dataExpression = new DataExpression();
+				ExpressionData dataExpression = new ExpressionData();
 				dataExpression.setDescription(pubmedArticle);
-				dataExpression.setProfile(profile);
+				dataExpression.setEvidence(evidence);
 				
 				// print the results
-				System.out.format("%d, %s, %s, %s, %s\n", id, cancer, mirId, profile, pubmedArticle.substring(0,20));
+				System.out.format("%d, %s, %s, %s, %s\n", id, cancer, mirId, evidence, pubmedArticle.substring(0,20));
 				
 				// Inserta MiRna (o recupera su id. si ya existe)
 				MiRna oldMiRna = miRnaDAO.findByName(miRna.getName());
@@ -271,9 +271,9 @@ public class MiRCancer implements IMirnaDatabase {
 					Disease disease = new Disease();
 					disease.setName(tokens[1]);
 
-					DataExpression dataexpression = new DataExpression();
+					ExpressionData dataexpression = new ExpressionData();
 					dataexpression.setDescription(tokens[3]);
-					dataexpression.setProfile(tokens[2]);
+					dataexpression.setEvidence(tokens[2]);
 
 					Resource miRNA = model
 							.createResource(namespace + URLEncoder.encode(
@@ -303,7 +303,7 @@ public class MiRCancer implements IMirnaDatabase {
 							.addProperty(
 									ResourceFactory.createProperty(namespace
 											+ "profile"),
-									dataexpression.getProfile())
+									dataexpression.getEvidence())
 							.addProperty(
 									ResourceFactory.createProperty(namespace
 											+ "involvesmiRNA"), miRNA)

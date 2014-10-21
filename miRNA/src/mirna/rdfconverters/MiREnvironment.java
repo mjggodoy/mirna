@@ -8,7 +8,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 
-import mirna.beans.DataExpression;
+import mirna.beans.ExpressionData;
 import mirna.beans.Disease;
 import mirna.beans.MiRna;
 import mirna.beans.Organism;
@@ -78,7 +78,7 @@ public class MiREnvironment {
 					SmallMolecule smallmolecule = new SmallMolecule();
 					smallmolecule.setName(tokens[5]);
 
-					DataExpression dataexpression = new DataExpression();
+					ExpressionData dataexpression = new ExpressionData();
 					dataexpression.setmirenvironmentID(tokens[0]);
 					dataexpression.setTreatment(tokens[6]);
 					dataexpression.setPubmedId(tokens[10]);
@@ -148,7 +148,7 @@ public class MiREnvironment {
 					SmallMolecule smallmolecule = new SmallMolecule();
 					smallmolecule.setName(tokens[5]);
 
-					DataExpression dataexpression = new DataExpression();
+					ExpressionData dataexpression = new ExpressionData();
 					dataexpression.setmirenvironmentID(tokens[0]);
 					dataexpression.setTreatment(tokens[6]);
 					dataexpression.setPubmedId(tokens[10]);
