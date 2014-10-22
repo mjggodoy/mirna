@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import mirna.beans.DataExpression;
+import mirna.beans.ExpressionData;
 import mirna.dao.DataExpressionDAO;
 import mirna.db.DBConnection;
 import mirna.db.mysql.DBConnectionMySQLImpl;
@@ -14,7 +14,7 @@ import mirna.exception.MiRnaException;
 public class DataExpressionDAOMySQLImpl implements DataExpressionDAO {
 	
 	@Override
-	public int create(DataExpression newDataExpression) throws MiRnaException {
+	public int create(ExpressionData newDataExpression) throws MiRnaException {
 		DBConnection con = null;
 		int res = -1;
 
@@ -57,8 +57,8 @@ public class DataExpressionDAOMySQLImpl implements DataExpressionDAO {
 	}
 
 	@Override
-	public List<DataExpression> readAll() throws MiRnaException {
-		List<DataExpression> dataExpressionList = null;
+	public List<ExpressionData> readAll() throws MiRnaException {
+		List<ExpressionData> dataExpressionList = null;
 		DBConnection con = null;
 
 		try {
@@ -66,10 +66,10 @@ public class DataExpressionDAOMySQLImpl implements DataExpressionDAO {
 			List<Map<String, Object>> list = null;
 			String queryString = "select * from data_expression";
 			list = con.query(queryString);
-			dataExpressionList = new ArrayList<DataExpression>();
+			dataExpressionList = new ArrayList<ExpressionData>();
 			
 			for (Map<String, Object> row : list) {
-				DataExpression dataExpression = new DataExpression(
+				ExpressionData dataExpression = new ExpressionData(
 						(Integer) row.get("pk"),
 						(String) row.get("expression"),
 						(String) row.get("phenomic_id"),
@@ -98,7 +98,7 @@ public class DataExpressionDAOMySQLImpl implements DataExpressionDAO {
 	}
 
 	@Override
-	public void update(DataExpression dataExpressionToUpdate) throws MiRnaException {
+	public void update(ExpressionData dataExpressionToUpdate) throws MiRnaException {
 		DBConnection con = null;
 		try {
 			con = new DBConnectionMySQLImpl();
@@ -150,8 +150,8 @@ public class DataExpressionDAOMySQLImpl implements DataExpressionDAO {
 	}
 
 	@Override
-	public DataExpression findByPrimaryKey(int id) throws MiRnaException {
-		DataExpression dataExpression = null;
+	public ExpressionData findByPrimaryKey(int id) throws MiRnaException {
+		ExpressionData dataExpression = null;
 		DBConnection con = null;
 
 		try {
@@ -164,7 +164,7 @@ public class DataExpressionDAOMySQLImpl implements DataExpressionDAO {
 			
 			if (list.size()==1) {
 				Map<String, Object> row = list.get(0);
-				dataExpression = new DataExpression(
+				dataExpression = new ExpressionData(
 						(Integer) row.get("pk"),
 						(String) row.get("expression"),
 						(String) row.get("phenomic_id"),

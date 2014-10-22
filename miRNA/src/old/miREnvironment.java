@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.StringTokenizer;
 
-import mirna.beans.DataExpression;
+import mirna.beans.ExpressionData;
 import mirna.beans.Disease;
 import mirna.beans.MiRna;
 import mirna.beans.Organism;
@@ -77,7 +77,7 @@ public class miREnvironment {
 					SmallMolecule smallmolecule = new SmallMolecule();
 					smallmolecule.setName(tokens[5]);
 
-					DataExpression dataexpression = new DataExpression();
+					ExpressionData dataexpression = new ExpressionData();
 					dataexpression.setId(tokens[0]);
 					dataexpression.setTreatment(tokens[6]);
 					dataexpression.setPubmedId(tokens[10]);

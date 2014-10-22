@@ -2,20 +2,36 @@ package mirna.beans;
 
 public class MiRna extends ModelClass {
 	
-	private String name;
-	private String accessionNumber;
-	private String subName;
-	private String provenance;
-	private String chromosome;
-	private String version;
-	private String sequence;
-	private String newName;
+	private String name; //ok
+	private String id; //ok
+	private String journal;//ok
+	private String accessionNumber; //ok
+	private String subName; //ok
+	private String provenance; //ok
+	private String length;//ok
+	private String binding_site_pattern;//ok
+	private String GC_proportion; //ok
+	private String chromosome; //ok
+	private String version; //ok 
+	private String sequence; //ok
+	private String newName; //ok
+	private String minimal_free_energy;//ok
+	private String normalized_minimal_free_energy;//ok
+	private String polarity;//ok
+	private String pubmedId ;//ok
+	private String resource;//ok
+	private String start_strand;//ok
+	private String title_reference;//ok
+	private String year;
+	
 	
 	public MiRna() {}
 	
 	public MiRna(int id, String name, String accessionNumber, String subName,
 			String provenance, String chromosome, String version,
-			String sequence, String newName) {
+			String sequence, String newName, String binding_site_pattern, String GC_proportion, String journal, String length,
+			String minimal_free_energy, String normalized_minimal_free_energy, String polarity, String pubmedId, String resource, 
+			String start_strand, String title_reference, String year) {
 		super(id);
 		this.name = name;
 		this.accessionNumber = accessionNumber;
@@ -25,6 +41,125 @@ public class MiRna extends ModelClass {
 		this.version = version;
 		this.sequence = sequence;
 		this.newName = newName;
+		this.binding_site_pattern = binding_site_pattern;
+		this.GC_proportion = GC_proportion;
+		this.journal = journal;
+		this.length = length;
+		this.minimal_free_energy = minimal_free_energy;
+		this.normalized_minimal_free_energy = normalized_minimal_free_energy;
+		this.polarity = polarity;
+		this.pubmedId = pubmedId;
+		this.resource = resource;
+		this.start_strand = start_strand;
+		this.title_reference = title_reference;
+		this.year = year;
+	}
+	
+	
+
+	public String getYear() {
+		return year;
+	}
+
+	public void setYear(String year) {
+		this.year = year;
+	}
+
+	public String getTitle_reference() {
+		return title_reference;
+	}
+
+	public void setTitle_reference(String title_reference) {
+		this.title_reference = title_reference;
+	}
+
+	public String getStart_strand() {
+		return start_strand;
+	}
+
+	public void setStart_strand(String start_strand) {
+		this.start_strand = start_strand;
+	}
+
+	public String getResource() {
+		return resource;
+	}
+
+	public void setResource(String resource) {
+		this.resource = resource;
+	}
+
+	public String getPubmedId() {
+		return pubmedId;
+	}
+
+	public void setPubmedId(String pubmedId) {
+		this.pubmedId = pubmedId;
+	}
+
+	public String getPolarity() {
+		return polarity;
+	}
+
+	public void setPolarity(String polarity) {
+		this.polarity = polarity;
+	}
+
+	public String getNormalized_minimal_free_energy() {
+		return normalized_minimal_free_energy;
+	}
+
+	public void setNormalized_minimal_free_energy(
+			String normalized_minimal_free_energy) {
+		this.normalized_minimal_free_energy = normalized_minimal_free_energy;
+	}
+
+	public String getMinimal_free_energy() {
+		return minimal_free_energy;
+	}
+
+	public void setMinimal_free_energy(String minimal_free_energy) {
+		this.minimal_free_energy = minimal_free_energy;
+	}
+
+	public String getLength() {
+		return length;
+	}
+
+	public void setLength(String length) {
+		this.length = length;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getJournal() {
+		return journal;
+	}
+
+	public void setJournal(String journal) {
+		this.journal = journal;
+	}
+
+	public String getGC_proportion() {
+		return GC_proportion;
+	}
+
+	public void setGC_proportion(String GC_proportion) {
+		this.GC_proportion = GC_proportion;
+	}
+
+	public String getBinding_site_pattern() {
+		return binding_site_pattern;
+	}
+
+	public void setBinding_site_pattern(String binding_site_pattern) {
+		this.binding_site_pattern = binding_site_pattern;
 	}
 
 	public String getVersion() {

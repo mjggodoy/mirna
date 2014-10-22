@@ -8,7 +8,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 
-import mirna.beans.DataExpression;
+import mirna.beans.ExpressionData;
 import mirna.beans.Disease;
 import mirna.beans.MiRna;
 
@@ -75,7 +75,7 @@ public class HMDD {
 					Disease disease = new Disease();
 					disease.setName(tokens[2]);
 					
-					DataExpression dataexpression = new DataExpression();
+					ExpressionData dataexpression = new ExpressionData();
 					dataexpression.setDescription(tokens[4]);
 					dataexpression.setPubmedId(tokens[3]);
 					//dataexpression.setiddataexpression(tokens[0]);
@@ -152,7 +152,7 @@ public class HMDD {
 					Disease disease = new Disease();
 					disease.setName(tokens[2]);
 
-					DataExpression dataexpression = new DataExpression();
+					ExpressionData dataexpression = new ExpressionData();
 					dataexpression.setDescription(tokens[5]);
 					dataexpression.setPubmedId(tokens[4]);
 					//dataexpression.setiddataexpression(tokens[0]);

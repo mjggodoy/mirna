@@ -10,7 +10,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import mirna.beans.DataExpression;
+import mirna.beans.ExpressionData;
 import mirna.beans.Disease;
 import mirna.beans.MiRna;
 
@@ -75,10 +75,10 @@ public class PhenomiR {
 
 				if (line != null) {
 
-					DataExpression dataexpression = new DataExpression();
+					ExpressionData dataexpression = new ExpressionData();
 					dataexpression.setPhenomicId(tokens[0]);
 
-					DataExpression dataexpression2 = new DataExpression();
+					ExpressionData dataexpression2 = new ExpressionData();
 					dataexpression2.setPubmedId(tokens[1]);
 
 					Disease disease1 = new Disease();
@@ -96,22 +96,22 @@ public class PhenomiR {
 					MiRna miRna2 = new MiRna();
 					miRna2.setAccessionNumber(tokens[6]);
 
-					DataExpression dataexpression3 = new DataExpression();
+					ExpressionData dataexpression3 = new ExpressionData();
 					dataexpression3.setExpression(tokens[7]);
 
-					DataExpression dataexpression4 = new DataExpression();
+					ExpressionData dataexpression4 = new ExpressionData();
 					dataexpression4.setFoldchangeMin(tokens[8]);
 
-					DataExpression dataexpression5 = new DataExpression();
+					ExpressionData dataexpression5 = new ExpressionData();
 					dataexpression5.setFoldchangeMax(tokens[9]);
 
-					DataExpression dataexpression6 = new DataExpression();
+					ExpressionData dataexpression6 = new ExpressionData();
 					dataexpression6.setId(tokens[10]);
 
-					DataExpression dataexpression7 = new DataExpression();
+					ExpressionData dataexpression7 = new ExpressionData();
 					dataexpression7.setStudyDesign(tokens[11]);
 
-					DataExpression dataexpression8 = new DataExpression();
+					ExpressionData dataexpression8 = new ExpressionData();
 					dataexpression8.setMethod(tokens[12]);
 
 					String query = "INSERT INTO " + tableName
@@ -183,7 +183,7 @@ public class PhenomiR {
 					miRna.setName(tokens[5]);
 					miRna.setAccessionNumber(tokens[6]);
 
-					DataExpression dataExpression = new DataExpression();
+					ExpressionData dataExpression = new ExpressionData();
 
 					dataExpression.setPhenomidId(tokens[0]);
 					dataExpression.setPubmedId(tokens[1]);

@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.StringTokenizer;
 
-import mirna.beans.DataExpression;
+import mirna.beans.ExpressionData;
 import mirna.beans.Disease;
 import mirna.beans.MiRna;
 import mirna.beans.Organism;
@@ -78,7 +78,7 @@ public class sms2mir {
 					Organism organism = new Organism();
 					organism.setSpecie(tokens[8]);
 
-					DataExpression dataexpression = new DataExpression();
+					ExpressionData dataexpression = new ExpressionData();
 					dataexpression.setMethod(tokens[7]);
 					dataexpression.setCondition(tokens[9]);
 					dataexpression.setPubmedId(tokens[10]);

@@ -1,32 +1,34 @@
 package mirna.beans;
 
-public class DataExpression extends ModelClass {
+public class ExpressionData extends ModelClass {
 
-	private String expression;
-	private String phenomicId;
+	private String title_reference;//ok
+	private String phenomicId;//ok
 	private String mirenvironmentID;
-	private String foldchangeMin;
-	private String foldchangeMax;
-	private String id;
-	private String studyDesign;
-	private String method;
-	private String treatment;
-	private String support;
-	private String profile;
-	private String pubmedId;
-	private String year;
-	private String description;
-	private String cellularLine;
-	private String condition;
-	
-	public DataExpression(int pk, String expression, String phenomicId,
+	private String foldchangeMin; //ok
+	private String foldchangeMax; //ok
+	private String id; //ok
+	private String studyDesign;//ok
+	private String method; //ok
+	private String treatment; //ok
+	private String support;//ok
+	private String evidence;// ok
+	private String pubmedId;//ok
+	private String year;//ok
+	private String description; //ok
+	private String cellularLine; //ok
+	private String condition; //ok
+	private String journal; //ok
+	private String reference; //ok
+	private String resource; //ok
+
+	public ExpressionData(int pk, String phenomicId,
 			String foldchangeMin, String foldchangeMax,
 			String id, String studyDesign, String method,
 			String treatment, String support, String profile, String pubmedId,
 			String year, String description, String cellularLine,
-			String condition) {
+			String condition, String journal, String reference, String resource, String title_reference) {
 		super(pk);
-		this.expression = expression;
 		this.phenomicId = phenomicId;
 		this.foldchangeMin = foldchangeMin;
 		this.foldchangeMax = foldchangeMax;
@@ -35,12 +37,58 @@ public class DataExpression extends ModelClass {
 		this.method = method;
 		this.treatment = treatment;
 		this.support = support;
-		this.profile = profile;
+		this.evidence = profile;
 		this.pubmedId = pubmedId;
 		this.year = year;
 		this.description = description;
 		this.cellularLine = cellularLine;
 		this.condition = condition;
+		this.journal = journal;
+		this.reference = reference;
+		this.resource = resource;
+		this.title_reference = title_reference;
+	}
+	
+	
+	
+	
+	
+	public String getTitle_reference() {
+		return title_reference;
+	}
+
+
+	public void setTitle_reference(String title_reference) {
+		this.title_reference = title_reference;
+	}
+
+
+	public String getResource() {
+		return resource;
+	}
+
+
+	public void setResource(String resource) {
+		this.resource = resource;
+	}
+
+
+	public String getReference() {
+		return reference;
+	}
+
+
+	public void setReference(String reference) {
+		this.reference = reference;
+	}
+
+
+	public String getJournal() {
+		return journal;
+	}
+
+	public void setJournal(String journal) {
+		this.journal = journal;
 	}
 
 	public String getCondition() {
@@ -63,7 +111,7 @@ public class DataExpression extends ModelClass {
 		this.phenomicId = phenomicId;
 	}
 
-	public DataExpression() {
+	public ExpressionData() {
 	}
 
 	public String getDescription() {
@@ -90,12 +138,12 @@ public class DataExpression extends ModelClass {
 		this.support = support;
 	}
 
-	public String getProfile() {
-		return profile;
+	public String getEvidence() {
+		return evidence;
 	}
 
-	public void setProfile(String profile) {
-		this.profile = profile;
+	public void setEvidence(String evidence) {
+		this.evidence = evidence;
 	}
 
 	public String getPubmedId() {
@@ -106,13 +154,6 @@ public class DataExpression extends ModelClass {
 		this.pubmedId = pubmedId;
 	}
 
-	public String getExpression() {
-		return expression;
-	}
-
-	public void setExpression(String expression) {
-		this.expression = expression;
-	}
 
 	public String getFoldchangeMin() {
 		return foldchangeMin;

@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.StringTokenizer;
 
-import mirna.beans.DataExpression;
+import mirna.beans.ExpressionData;
 import mirna.beans.Disease;
 import mirna.beans.MiRna;
 import mirna.beans.Organism;
@@ -66,7 +66,7 @@ public class HMDD_target {
 					Disease disease = new Disease();
 					disease.setName(tokens[4]);
 
-					DataExpression dataexpression = new DataExpression();
+					ExpressionData dataexpression = new ExpressionData();
 					dataexpression.setDescription(tokens[6]);
 					dataexpression.setPubmedId(tokens[5]);
 

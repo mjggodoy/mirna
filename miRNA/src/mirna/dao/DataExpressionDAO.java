@@ -2,20 +2,20 @@ package mirna.dao;
 
 import java.util.List;
 
-import mirna.beans.DataExpression;
+import mirna.beans.ExpressionData;
 import mirna.exception.MiRnaException;
 
 public interface DataExpressionDAO {
 	
-	public int create(DataExpression newDataExpression) throws MiRnaException;
+	public int create(ExpressionData newDataExpression) throws MiRnaException;
 
-	public List<DataExpression> readAll() throws MiRnaException;
+	public List<ExpressionData> readAll() throws MiRnaException;
 
-	public void update(DataExpression dataExpressionToUpdate) throws MiRnaException;
+	public void update(ExpressionData dataExpressionToUpdate) throws MiRnaException;
 
 	public void delete(int id) throws MiRnaException;
 
-	public DataExpression findByPrimaryKey(int id) throws MiRnaException;
+	public ExpressionData findByPrimaryKey(int id) throws MiRnaException;
 	
 	//public Collection<DataExpression> findByName(String name) throws MiRnaException;
 
