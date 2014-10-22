@@ -1,24 +1,11 @@
 -- BORRADO DE TODO LO ANTERIOR
 
-DROP TABLE MiRnaCancer;
-
 DROP TABLE data_expression_involves_mirna;
 DROP TABLE data_expression_related_to_disease;
 DROP TABLE mirna;
 DROP TABLE disease;
 DROP TABLE data_expression;
 
-
--- TABLAS CSV:
-
-CREATE TABLE MiRnaCancer
-(
-   id               int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-   mirId            varchar(20) NOT NULL,
-   cancer           varchar(40) NOT NULL,
-   profile          varchar(20) NOT NULL,
-   pubmed_article   varchar(200) NOT NULL
-);
 
 -- TABLAS DEL MODELO:
 
