@@ -20,15 +20,12 @@ public class MiRnaDAOMySQLImpl implements MiRnaDAO {
 
 		try {
 			con = new DBConnectionMySQLImpl();
-			String queryTemplate = "insert into mirna ("
-					+ "name, accession_number, sub_name, provenance, chromosome,"
-					+ "version, sequence, new_name) values "
-					+ "('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')";
+			String queryTemplate = "insert into mirna.mirna ("
+					+ "name, accession_number, sequence, resource) values "
+					+ "('%s', '%s', '%s', '%s')";
 			String queryString = String.format(queryTemplate, newMiRna.getName(), 
-					newMiRna.getAccessionNumber(), newMiRna.getSubName(),
-					newMiRna.getProvenance(), newMiRna.getChromosome(),
-					newMiRna.getVersion(), newMiRna.getSequence(),
-					newMiRna.getNewName());
+					newMiRna.getAccessionNumber(), newMiRna.getSequence(),
+					newMiRna.getResource());
 			queryString = queryString.replaceAll("'null'", "null");
 			res = con.insert(queryString);
 		} catch (SQLException ex) {
@@ -47,7 +44,7 @@ public class MiRnaDAOMySQLImpl implements MiRnaDAO {
 		try {
 			con = new DBConnectionMySQLImpl();
 			List<Map<String, Object>> list = null;
-			String queryString = "select * from mirna";
+			String queryString = "select * from mirna.mirna";
 			list = con.query(queryString);
 			miRnaList = new ArrayList<MiRna>();
 			
@@ -56,12 +53,8 @@ public class MiRnaDAOMySQLImpl implements MiRnaDAO {
 						(Integer) row.get("pk"),
 						(String) row.get("name"),
 						(String) row.get("accession_number"),
-						(String) row.get("sub_name"),
-						(String) row.get("provenance"),
-						(String) row.get("chromosome"),
-						(String) row.get("version"),
 						(String) row.get("sequence"),
-						(String) row.get("new_name"));
+						(String) row.get("resource"));
 
 				miRnaList.add(miRna);
 			}
@@ -78,14 +71,11 @@ public class MiRnaDAOMySQLImpl implements MiRnaDAO {
 		DBConnection con = null;
 		try {
 			con = new DBConnectionMySQLImpl();
-			String queryTemplate = "update mirna set name=%s, accession_number=%s, "
-					+ "sub_name=%s, provenance=%s, chromosome=%s, "
-					+ "version=%s, sequence=%s, new_name=%s where pk=%d";
+			String queryTemplate = "update mirna.mirna set name=%s, accession_number=%s, "
+					+ "sequence=%s, resource=%s where pk=%d";
 			String queryString = String.format(queryTemplate,
 					miRnaToUpdate.getName(), miRnaToUpdate.getAccessionNumber(),
-					miRnaToUpdate.getSubName(), miRnaToUpdate.getProvenance(),
-					miRnaToUpdate.getChromosome(), miRnaToUpdate.getVersion(),
-					miRnaToUpdate.getSequence(), miRnaToUpdate.getNewName(),
+					miRnaToUpdate.getSequence(), miRnaToUpdate.getResource(),
 					miRnaToUpdate.getPk());
 			con.update(queryString);
 		} catch (SQLException ex) {
@@ -100,7 +90,7 @@ public class MiRnaDAOMySQLImpl implements MiRnaDAO {
 		DBConnection con = null;
 		try {
 			con = new DBConnectionMySQLImpl();
-			String queryTemplate = "delete from mirna where pk=%d";
+			String queryTemplate = "delete from mirna.mirna where pk=%d";
 			String queryString = String.format(queryTemplate, id);
 			con.update(queryString);
 		} catch (SQLException ex) {
@@ -118,7 +108,7 @@ public class MiRnaDAOMySQLImpl implements MiRnaDAO {
 		try {
 			con = new DBConnectionMySQLImpl();
 			List<Map<String, Object>> list = null;
-			String queryTemplate = "select * from mirna where pk=%d";
+			String queryTemplate = "select * from mirna.mirna where pk=%d";
 			String queryString = String.format(queryTemplate, id);
 			System.out.println(queryString);
 			list = con.query(queryString);
@@ -129,12 +119,8 @@ public class MiRnaDAOMySQLImpl implements MiRnaDAO {
 						(Integer) row.get("pk"),
 						(String) row.get("name"),
 						(String) row.get("accession_number"),
-						(String) row.get("sub_name"),
-						(String) row.get("provenance"),
-						(String) row.get("chromosome"),
-						(String) row.get("version"),
 						(String) row.get("sequence"),
-						(String) row.get("new_name"));
+						(String) row.get("resource"));
 			}
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
@@ -152,7 +138,7 @@ public class MiRnaDAOMySQLImpl implements MiRnaDAO {
 		try {
 			con = new DBConnectionMySQLImpl();
 			List<Map<String, Object>> list = null;
-			String queryTemplate = "select * from mirna where name='%s'";
+			String queryTemplate = "select * from mirna.mirna where name='%s'";
 			String queryString = String.format(queryTemplate, name);
 			System.out.println(queryString);
 			list = con.query(queryString);
@@ -161,12 +147,8 @@ public class MiRnaDAOMySQLImpl implements MiRnaDAO {
 						(Integer) row.get("pk"),
 						(String) row.get("name"),
 						(String) row.get("accession_number"),
-						(String) row.get("sub_name"),
-						(String) row.get("provenance"),
-						(String) row.get("chromosome"),
-						(String) row.get("version"),
 						(String) row.get("sequence"),
-						(String) row.get("new_name"));
+						(String) row.get("resource"));
 				miRnaList.add(res);
 			}
 			if (miRnaList.size()>1) {
@@ -187,7 +169,7 @@ public class MiRnaDAOMySQLImpl implements MiRnaDAO {
 		try {
 			con = new DBConnectionMySQLImpl();
 			List<Map<String, Object>> list = null;
-			list = con.query("select count(pk) from mirna");
+			list = con.query("select count(pk) from mirna.mirna");
 			Object o = list.get(0).get("C1");
 			total = ((Long)o).intValue();
 		} catch (SQLException ex) {

@@ -8,7 +8,7 @@ import java.sql.Statement;
 
 import org.apache.commons.lang.StringUtils;
 
-public class microT_CDS_data implements IMirnaDatabase {
+public class microT_CDS_data implements IMirnaDatabaseLegacy {
 	
 	
 private String csvInputFile;

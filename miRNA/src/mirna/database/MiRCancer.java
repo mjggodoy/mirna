@@ -1,34 +1,25 @@
 package mirna.database;
 
 import java.io.BufferedReader;
-import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.OutputStream;
-import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import mirna.beans.ExpressionData;
 import mirna.beans.Disease;
+import mirna.beans.ExpressionData;
 import mirna.beans.MiRna;
-import mirna.dao.DataExpressionDAO;
 import mirna.dao.DiseaseDAO;
+import mirna.dao.ExpressionDataDAO;
 import mirna.dao.MiRnaDAO;
-import mirna.dao.mysql.DataExpressionDAOMySQLImpl;
 import mirna.dao.mysql.DiseaseDAOMySQLImpl;
+import mirna.dao.mysql.ExpressionDataDAOMySQLImpl;
 import mirna.dao.mysql.MiRnaDAOMySQLImpl;
 import mirna.exception.MiRnaException;
 
 import org.apache.commons.lang.StringUtils;
-
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.ResourceFactory;
-import com.hp.hpl.jena.vocabulary.RDF;
 
 /**
  * Código para procesar los datos de miRNA cancer
@@ -39,17 +30,15 @@ import com.hp.hpl.jena.vocabulary.RDF;
  */
 public class MiRCancer implements IMirnaDatabase {
 	
-	private String csvInputFile;
+	private final String tableName = "miRCancer";
 	
-	public MiRCancer(String csvInputFile) {
-		this.csvInputFile = csvInputFile;
+	public MiRCancer() { }
+	
+	public void insertInTable(String csvInputFile) throws Exception {
+		this.insertInTable(csvInputFile, null);
 	}
 	
-	public void insertInTable(String tableName) throws Exception {
-		this.insertInTable(tableName, null);
-	}
-	
-	public void insertInTable(String tableName, Integer maxLines) throws Exception {
+	public void insertInTable(String csvInputFile, Integer maxLines) throws Exception {
 		
 		// URL of Oracle database server
 		String url = "jdbc:mysql://localhost:3306/mirna_raw";
@@ -115,11 +104,11 @@ public class MiRCancer implements IMirnaDatabase {
 		
 	}
 	
-	public void insertIntoSQLModel(String originTable) throws Exception {
-		this.insertIntoSQLModel(originTable, null);
+	public void insertIntoSQLModel() throws Exception {
+		this.insertIntoSQLModel(null);
 	}
 	
-	public void insertIntoSQLModel(String originTable, Integer maxLines) throws Exception {
+	public void insertIntoSQLModel(Integer maxLines) throws Exception {
 		
 		// URL of Oracle database server
 		String url = "jdbc:mysql://localhost:3306/mirna";
@@ -137,14 +126,14 @@ public class MiRCancer implements IMirnaDatabase {
 			
 			// our SQL SELECT query. 
 			// if you only need a few columns, specify them by name instead of using "*"
-			String query = "SELECT * FROM " + originTable;
+			String query = "SELECT * FROM " + tableName;
 			
 			// execute the query, and get a java resultset
 			ResultSet rs = stmt.executeQuery(query);
 			
 			MiRnaDAO miRnaDAO = new MiRnaDAOMySQLImpl();
 			DiseaseDAO diseaseDAO = new DiseaseDAOMySQLImpl();
-			DataExpressionDAO dataExpressionDAO = new DataExpressionDAOMySQLImpl();
+			ExpressionDataDAO dataExpressionDAO = new ExpressionDataDAOMySQLImpl();
 			
 			int count = 0;
 			
@@ -166,6 +155,7 @@ public class MiRCancer implements IMirnaDatabase {
 				ExpressionData dataExpression = new ExpressionData();
 				dataExpression.setDescription(pubmedArticle);
 				dataExpression.setEvidence(evidence);
+				dataExpression.setProvenance("miRCancer");
 				
 				// print the results
 				System.out.format("%d, %s, %s, %s, %s\n", id, cancer, mirId, evidence, pubmedArticle.substring(0,20));
@@ -209,12 +199,10 @@ public class MiRCancer implements IMirnaDatabase {
 				
 				// Inserta nueva DataExpression
 				// (y la relaciona con el MiRna y Disease correspondiente)
-
 				int dataExpressionId = dataExpressionDAO.create(dataExpression);
 				dataExpressionDAO.newMiRnaInvolved(dataExpressionId, miRna.getPk());
 				dataExpressionDAO.newRelatedDisease(dataExpressionId, disease.getPk());
-				
-				//TODO: DataExpression igual????
+				// DataExpression igual (?)
 				
 			}
 			stmt.close();
@@ -233,6 +221,7 @@ public class MiRCancer implements IMirnaDatabase {
 		
 	}
 	
+	/*
 	public void buildRdf(String rdfOutputFile) throws Exception {
 		this.buildRdf(rdfOutputFile, null);
 	}
@@ -338,22 +327,16 @@ public class MiRCancer implements IMirnaDatabase {
 
 	}
 	
+	*/
+	
 	public static void main(String[] args) throws Exception {
 		
-		String inputFile = "/Users/esteban/Softw/miRNA/miRCancerMarch2014.txt";
-		MiRCancer miRCancer = new MiRCancer(inputFile);
-		miRCancer.insertInTable("miRCancer");
+		MiRCancer miRCancer = new MiRCancer();
 		
-		/*
-		String inputFile = "/Users/esteban/Softw/miRNA/miRCancerMarch2014.txt";
-		//String outputFile = "/Users/esteban/Softw/miRNA/miRCancerMarch2014.rdf";
-		//Integer maxLines = 5;
+		// String inputFile = "/Users/esteban/Softw/miRNA/miRCancerMarch2014.txt";
+		// miRCancer.insertInTable(inputFile);
 		
-		MiRCancer miRCancer = new MiRCancer(inputFile);
-		//miRCancer.buildRdf(outputFile, maxLines);
-		miRCancer.insertInTable("MiRnaCancer");
-		miRCancer.insertIntoSQLModel("MiRnaCancer");
-		*/
+		miRCancer.insertIntoSQLModel();
 	}
 
 }

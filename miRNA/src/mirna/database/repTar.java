@@ -8,7 +8,7 @@ import java.sql.Statement;
 
 import org.apache.commons.lang.StringUtils;
 
-public class repTar implements IMirnaDatabase {
+public class repTar implements IMirnaDatabaseLegacy {
 	
 	private String csvInputFile1;
 	

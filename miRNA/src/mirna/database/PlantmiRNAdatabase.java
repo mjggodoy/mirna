@@ -9,7 +9,7 @@ import java.sql.Statement;
 
 import org.apache.commons.lang.StringUtils;
 
-public class PlantmiRNAdatabase implements IMirnaDatabase {
+public class PlantmiRNAdatabase implements IMirnaDatabaseLegacy {
 
 	private String csvInputFile;
 

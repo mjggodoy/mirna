@@ -16,7 +16,7 @@ import org.apache.commons.lang.StringUtils;
  * @author Esteban López Camacho
  *
  */
-public class Phenomir implements IMirnaDatabase {
+public class Phenomir implements IMirnaDatabaseLegacy {
 	
 	private String csvInputFile;
 	

@@ -20,14 +20,10 @@ public class DiseaseDAOMySQLImpl implements DiseaseDAO {
 
 		try {
 			con = new DBConnectionMySQLImpl();
-			String queryTemplate = "insert into disease ("
-					+ "name, disease_sub, disease_class, phenomic_id, description,"
-					+ "pubmed_id, tissue) values "
-					+ "('%s', '%s', '%s', '%s', '%s', '%s', '%s')";
+			String queryTemplate = "insert into mirna.disease ("
+					+ "name, disease_class) values ('%s', '%s')";
 			String queryString = String.format(queryTemplate, newDisease.getName(), 
-					newDisease.getDiseaseSub(), newDisease.getDiseaseClass(),
-					newDisease.getPhenomicId(), newDisease.getDescription(),
-					newDisease.getPubmedId(), newDisease.getTissue());
+					newDisease.getDiseaseClass());
 			queryString = queryString.replaceAll("'null'", "null");
 			res = con.insert(queryString);
 		} catch (SQLException ex) {
@@ -47,7 +43,7 @@ public class DiseaseDAOMySQLImpl implements DiseaseDAO {
 		try {
 			con = new DBConnectionMySQLImpl();
 			List<Map<String, Object>> list = null;
-			String queryString = "select * from disease";
+			String queryString = "select * from mirna.disease";
 			list = con.query(queryString);
 			diseaseList = new ArrayList<Disease>();
 			
@@ -55,12 +51,7 @@ public class DiseaseDAOMySQLImpl implements DiseaseDAO {
 				Disease disease = new Disease(
 						(Integer) row.get("pk"),
 						(String) row.get("name"),
-						(String) row.get("disease_sub"),
-						(String) row.get("disease_class"),
-						(String) row.get("phenomic_id"),
-						(String) row.get("description"),
-						(String) row.get("pubmed_id"),
-						(String) row.get("tissue"));
+						(String) row.get("disease_class"));
 
 				diseaseList.add(disease);
 			}
@@ -77,14 +68,11 @@ public class DiseaseDAOMySQLImpl implements DiseaseDAO {
 		DBConnection con = null;
 		try {
 			con = new DBConnectionMySQLImpl();
-			String queryTemplate = "update disease set name=%s, disease_sub=%s, "
-					+ "disease_class=%s, phenomic_id=%s, description=%s, "
-					+ "pubmed_id=%s, tissue=%s, where pk=%d";
+			String queryTemplate = "update mirna.disease set name=%s, "
+					+ "disease_class=%s where pk=%d";
 			String queryString = String.format(queryTemplate,
-					diseaseToUpdate.getName(), diseaseToUpdate.getDiseaseSub(),
-					diseaseToUpdate.getDiseaseClass(), diseaseToUpdate.getPhenomicId(),
-					diseaseToUpdate.getDescription(), diseaseToUpdate.getPubmedId(),
-					diseaseToUpdate.getTissue(), diseaseToUpdate.getPk());
+					diseaseToUpdate.getName(), diseaseToUpdate.getDiseaseClass(),
+					diseaseToUpdate.getPk());
 			con.update(queryString);
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
@@ -98,7 +86,7 @@ public class DiseaseDAOMySQLImpl implements DiseaseDAO {
 		DBConnection con = null;
 		try {
 			con = new DBConnectionMySQLImpl();
-			String queryTemplate = "delete from disease where pk=%d";
+			String queryTemplate = "delete from mirna.disease where pk=%d";
 			String queryString = String.format(queryTemplate, id);
 			con.update(queryString);
 		} catch (SQLException ex) {
@@ -116,7 +104,7 @@ public class DiseaseDAOMySQLImpl implements DiseaseDAO {
 		try {
 			con = new DBConnectionMySQLImpl();
 			List<Map<String, Object>> list = null;
-			String queryTemplate = "select * from disease where pk=%d";
+			String queryTemplate = "select * from mirna.disease where pk=%d";
 			String queryString = String.format(queryTemplate, id);
 			System.out.println(queryString);
 			list = con.query(queryString);
@@ -126,12 +114,7 @@ public class DiseaseDAOMySQLImpl implements DiseaseDAO {
 				disease = new Disease(
 						(Integer) row.get("pk"),
 						(String) row.get("name"),
-						(String) row.get("disease_sub"),
-						(String) row.get("disease_class"),
-						(String) row.get("phenomic_id"),
-						(String) row.get("description"),
-						(String) row.get("pubmed_id"),
-						(String) row.get("tissue"));
+						(String) row.get("disease_class"));
 			}
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
@@ -149,7 +132,7 @@ public class DiseaseDAOMySQLImpl implements DiseaseDAO {
 		try {
 			con = new DBConnectionMySQLImpl();
 			List<Map<String, Object>> list = null;
-			String queryTemplate = "select * from disease where name='%s'";
+			String queryTemplate = "select * from mirna.disease where name='%s'";
 			String queryString = String.format(queryTemplate, name);
 			System.out.println(queryString);
 			list = con.query(queryString);
@@ -157,12 +140,7 @@ public class DiseaseDAOMySQLImpl implements DiseaseDAO {
 				res = new Disease(
 						(Integer) row.get("pk"),
 						(String) row.get("name"),
-						(String) row.get("disease_sub"),
-						(String) row.get("disease_class"),
-						(String) row.get("phenomic_id"),
-						(String) row.get("description"),
-						(String) row.get("pubmed_id"),
-						(String) row.get("tissue"));
+						(String) row.get("disease_class"));
 				diseaseList.add(res);
 			}
 			if (diseaseList.size()>1) {
@@ -183,7 +161,7 @@ public class DiseaseDAOMySQLImpl implements DiseaseDAO {
 		try {
 			con = new DBConnectionMySQLImpl();
 			List<Map<String, Object>> list = null;
-			list = con.query("select count(pk) from disease");
+			list = con.query("select count(pk) from mirna.disease");
 			Object o = list.get(0).get("C1");
 			total = ((Long)o).intValue();
 		} catch (SQLException ex) {

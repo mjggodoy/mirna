@@ -14,7 +14,7 @@ import org.apache.commons.lang.StringUtils;
  * @author Esteban López Camacho
  *
  */
-public class TarBase implements IMirnaDatabase {
+public class TarBase implements IMirnaDatabaseLegacy {
 	
 	private String csvInputFile;
 	

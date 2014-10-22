@@ -16,7 +16,7 @@ import org.apache.commons.lang.StringUtils;
  * @author Esteban López Camacho
  *
  */
-public class Mir2Disease implements IMirnaDatabase {
+public class Mir2Disease implements IMirnaDatabaseLegacy {
 	
 	private String csvInputFile;
 	

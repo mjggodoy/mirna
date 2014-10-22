@@ -7,7 +7,7 @@ package mirna.database;
  * @author Esteban López Camacho
  *
  */
-public abstract class miRdSNP implements IMirnaDatabase {
+public abstract class miRdSNP implements IMirnaDatabaseLegacy {
 	
 	protected String csvInputFile;
 	

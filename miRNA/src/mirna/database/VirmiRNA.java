@@ -1,6 +1,6 @@
 package mirna.database;
 
-public abstract class VirmiRNA implements IMirnaDatabase {
+public abstract class VirmiRNA implements IMirnaDatabaseLegacy {
 	
 	protected String csvInputFile;
 	

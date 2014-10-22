@@ -6,12 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 import mirna.beans.ExpressionData;
-import mirna.dao.DataExpressionDAO;
+import mirna.dao.ExpressionDataDAO;
 import mirna.db.DBConnection;
 import mirna.db.mysql.DBConnectionMySQLImpl;
 import mirna.exception.MiRnaException;
 
-public class DataExpressionDAOMySQLImpl implements DataExpressionDAO {
+public class ExpressionDataDAOMySQLImpl implements ExpressionDataDAO {
 	
 	@Override
 	public int create(ExpressionData newDataExpression) throws MiRnaException {
@@ -19,33 +19,31 @@ public class DataExpressionDAOMySQLImpl implements DataExpressionDAO {
 		int res = -1;
 
 		try {
+			
 			con = new DBConnectionMySQLImpl();
-			String queryTemplate = "insert into data_expression ("
-					+ "expression, phenomic_id, foldchange_min, foldchange_max,"
-					+ "id, study_design, method, treatment,"
-					+ "support, profile, pubmed_id, year, description,"
+			String queryTemplate = "insert into mirna.expression_data ("
+					+ "title_reference, foldchange_min, foldchange_max,"
+					+ "provenance_id, provenance, study_design, method,"
+					+ "treatment, evidence, pubmed_id, year, description,"
 					+ "cellular_line, condition_) values "
 					+ "('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s',"
-					+ "'%s', '%s', '%s', '%s', '%s', '%s', '%s')";
+					+ "'%s', '%s', '%s', '%s', '%s', '%s')";
 			String queryString = String.format(queryTemplate, 
-					newDataExpression.getExpression(),
-					newDataExpression.getPhenomicId(),
+					newDataExpression.getTitleReference(),
 					newDataExpression.getFoldchangeMin(),
 					newDataExpression.getFoldchangeMax(),
-					newDataExpression.getId(),
+					newDataExpression.getProvenanceId(),
+					newDataExpression.getProvenance(),
 					newDataExpression.getStudyDesign(),
 					newDataExpression.getMethod(),
 					newDataExpression.getTreatment(),
-					newDataExpression.getSupport(),
-					newDataExpression.getProfile(),
+					newDataExpression.getEvidence(),
 					newDataExpression.getPubmedId(),
 					newDataExpression.getYear(),
 					newDataExpression.getDescription(),
 					newDataExpression.getCellularLine(),
 					newDataExpression.getCondition());
-			System.out.println(queryString);
 			queryString = queryString.replaceAll("'null'", "null");
-			System.out.println(queryString);
 			res = con.insert(queryString);
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
@@ -64,23 +62,22 @@ public class DataExpressionDAOMySQLImpl implements DataExpressionDAO {
 		try {
 			con = new DBConnectionMySQLImpl();
 			List<Map<String, Object>> list = null;
-			String queryString = "select * from data_expression";
+			String queryString = "select * from mirna.expression_data";
 			list = con.query(queryString);
 			dataExpressionList = new ArrayList<ExpressionData>();
 			
 			for (Map<String, Object> row : list) {
 				ExpressionData dataExpression = new ExpressionData(
 						(Integer) row.get("pk"),
-						(String) row.get("expression"),
-						(String) row.get("phenomic_id"),
+						(String) row.get("title_reference"),
 						(String) row.get("foldchange_min"),
 						(String) row.get("foldchange_max"),
-						(String) row.get("id"),
+						(String) row.get("provenance_id"),
+						(String) row.get("provenance"),
 						(String) row.get("study_design"),
 						(String) row.get("method"),
 						(String) row.get("treatment"),
-						(String) row.get("suuport"),
-						(String) row.get("profile"),
+						(String) row.get("evidence"),
 						(String) row.get("pubmed_id"),
 						(String) row.get("year"),
 						(String) row.get("description"),
@@ -103,28 +100,27 @@ public class DataExpressionDAOMySQLImpl implements DataExpressionDAO {
 		try {
 			con = new DBConnectionMySQLImpl();
 			
-			String queryTemplate = "update data_expression set expression=%s,"
-					+ "phenomic_id=%s, foldchange_min=%s, foldchange_max=%s,"
-					+ "id=%s, study_design=%s, method=%s, treatment=%s,"
-					+ "support=%s, profile=%s, pubmed_id=%s, year=%s, description=%s,"
+			String queryTemplate = "update mirna.expression_data set title_reference=%s, "
+					+ "foldchange_min=%s, foldchange_max=%s, provenance_id=%s, "
+					+ "provenance=%s, study_design=%s, method=%s, treatment=%s,"
+					+ "evidence=%s, pubmed_id=%s, year=%s, description=%s,"
 					+ "cellular_line=%s, condition_=%s where pk=%d";
 			String queryString = String.format(queryTemplate, 
-					dataExpressionToUpdate.getExpression(),
-					dataExpressionToUpdate.getPhenomicId(),
+					dataExpressionToUpdate.getTitleReference(),
 					dataExpressionToUpdate.getFoldchangeMin(),
 					dataExpressionToUpdate.getFoldchangeMax(),
-					dataExpressionToUpdate.getId(),
+					dataExpressionToUpdate.getProvenanceId(),
+					dataExpressionToUpdate.getProvenance(),
 					dataExpressionToUpdate.getStudyDesign(),
 					dataExpressionToUpdate.getMethod(),
 					dataExpressionToUpdate.getTreatment(),
-					dataExpressionToUpdate.getSupport(),
-					dataExpressionToUpdate.getProfile(),
+					dataExpressionToUpdate.getEvidence(),
 					dataExpressionToUpdate.getPubmedId(),
 					dataExpressionToUpdate.getYear(),
 					dataExpressionToUpdate.getDescription(),
 					dataExpressionToUpdate.getCellularLine(),
 					dataExpressionToUpdate.getCondition(),
-					dataExpressionToUpdate.getId());
+					dataExpressionToUpdate.getPk());
 			con.update(queryString);
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
@@ -139,7 +135,7 @@ public class DataExpressionDAOMySQLImpl implements DataExpressionDAO {
 		DBConnection con = null;
 		try {
 			con = new DBConnectionMySQLImpl();
-			String queryTemplate = "delete from data_expression where pk=%d";
+			String queryTemplate = "delete from mirna.expression_data where pk=%d";
 			String queryString = String.format(queryTemplate, id);
 			con.update(queryString);
 		} catch (SQLException ex) {
@@ -157,7 +153,7 @@ public class DataExpressionDAOMySQLImpl implements DataExpressionDAO {
 		try {
 			con = new DBConnectionMySQLImpl();
 			List<Map<String, Object>> list = null;
-			String queryTemplate = "select * from data_expression where pk=%d";
+			String queryTemplate = "select * from mirna.expression_data where pk=%d";
 			String queryString = String.format(queryTemplate, id);
 			System.out.println(queryString);
 			list = con.query(queryString);
@@ -166,16 +162,15 @@ public class DataExpressionDAOMySQLImpl implements DataExpressionDAO {
 				Map<String, Object> row = list.get(0);
 				dataExpression = new ExpressionData(
 						(Integer) row.get("pk"),
-						(String) row.get("expression"),
-						(String) row.get("phenomic_id"),
+						(String) row.get("title_reference"),
 						(String) row.get("foldchange_min"),
 						(String) row.get("foldchange_max"),
-						(String) row.get("id"),
+						(String) row.get("provenance_id"),
+						(String) row.get("provenance"),
 						(String) row.get("study_design"),
 						(String) row.get("method"),
 						(String) row.get("treatment"),
-						(String) row.get("suuport"),
-						(String) row.get("profile"),
+						(String) row.get("evidence"),
 						(String) row.get("pubmed_id"),
 						(String) row.get("year"),
 						(String) row.get("description"),
@@ -197,7 +192,7 @@ public class DataExpressionDAOMySQLImpl implements DataExpressionDAO {
 		try {
 			con = new DBConnectionMySQLImpl();
 			List<Map<String, Object>> list = null;
-			list = con.query("select count(pk) from data_expression");
+			list = con.query("select count(pk) from mirna.expression_data");
 			Object o = list.get(0).get("C1");
 			total = ((Long)o).intValue();
 		} catch (SQLException ex) {
@@ -212,7 +207,7 @@ public class DataExpressionDAOMySQLImpl implements DataExpressionDAO {
 		DBConnection con = null;
 		try {
 			con = new DBConnectionMySQLImpl();
-			String queryTemplate = "insert into data_expression_related_to_disease "
+			String queryTemplate = "insert into mirna.expression_data_related_to_disease "
 					+ "values (%d, %d)";
 			String queryString = String.format(queryTemplate, 
 					dataExpressionId, diseaseId);
@@ -229,7 +224,7 @@ public class DataExpressionDAOMySQLImpl implements DataExpressionDAO {
 		DBConnection con = null;
 		try {
 			con = new DBConnectionMySQLImpl();
-			String queryTemplate = "insert into data_expression_involves_mirna "
+			String queryTemplate = "insert into mirna.expression_data_involves_mirna "
 					+ "values (%d, %d)";
 			String queryString = String.format(queryTemplate, 
 					dataExpressionId, miRnaId);

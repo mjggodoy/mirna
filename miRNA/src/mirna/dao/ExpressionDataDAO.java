@@ -5,7 +5,7 @@ import java.util.List;
 import mirna.beans.ExpressionData;
 import mirna.exception.MiRnaException;
 
-public interface DataExpressionDAO {
+public interface ExpressionDataDAO {
 	
 	public int create(ExpressionData newDataExpression) throws MiRnaException;
 

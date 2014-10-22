@@ -14,7 +14,7 @@ import org.apache.commons.lang.StringUtils;
  * @author Esteban López Camacho
  *
  */
-public class Microcosm implements IMirnaDatabase {
+public class Microcosm implements IMirnaDatabaseLegacy {
 	
 	private String csvInputFile;
 	

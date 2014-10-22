@@ -14,7 +14,7 @@ import org.apache.commons.lang.StringUtils;
  * @author Esteban López Camacho
  *
  */
-public class HMDD implements IMirnaDatabase {
+public class HMDD implements IMirnaDatabaseLegacy {
 	
 	private String csvInputFile;
 	

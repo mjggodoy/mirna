@@ -8,7 +8,7 @@ import java.sql.Statement;
 
 import org.apache.commons.lang.StringUtils;
 
-public class microtv4 implements IMirnaDatabase {
+public class microtv4 implements IMirnaDatabaseLegacy {
 	
 private String csvInputFile;
 	

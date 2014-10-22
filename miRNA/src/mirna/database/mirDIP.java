@@ -14,7 +14,7 @@ import org.apache.commons.lang.StringUtils;
  * @author Esteban López Camacho
  *
  */
-public class mirDIP implements IMirnaDatabase {
+public class mirDIP implements IMirnaDatabaseLegacy {
 	
 	private String csvInputFile;
 	
