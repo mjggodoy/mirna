@@ -131,7 +131,6 @@ public class ExpressionDataDAOMySQLImpl implements ExpressionDataDAO {
 
 	@Override
 	public void delete(int id) throws MiRnaException {
-		System.out.println("MIRNA: deleteRec began-----------.");
 		DBConnection con = null;
 		try {
 			con = new DBConnectionMySQLImpl();
@@ -155,7 +154,6 @@ public class ExpressionDataDAOMySQLImpl implements ExpressionDataDAO {
 			List<Map<String, Object>> list = null;
 			String queryTemplate = "select * from mirna.expression_data where pk=%d";
 			String queryString = String.format(queryTemplate, id);
-			System.out.println(queryString);
 			list = con.query(queryString);
 			
 			if (list.size()==1) {
@@ -211,7 +209,6 @@ public class ExpressionDataDAOMySQLImpl implements ExpressionDataDAO {
 					+ "values (%d, %d)";
 			String queryString = String.format(queryTemplate, 
 					dataExpressionId, diseaseId);
-			System.out.println(queryString);
 			con.update(queryString);
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
@@ -228,7 +225,6 @@ public class ExpressionDataDAOMySQLImpl implements ExpressionDataDAO {
 					+ "values (%d, %d)";
 			String queryString = String.format(queryTemplate, 
 					dataExpressionId, miRnaId);
-			System.out.println(queryString);
 			con.update(queryString);
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());

@@ -14,7 +14,8 @@ CREATE TABLE mirna.mirna
    pk               int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
    name             varchar(20) NOT NULL,
    accession_number varchar(20),
-   sequence         varchar(20)
+   sequence         varchar(20),
+   resource         varchar(20)
 );
 
 CREATE TABLE mirna.disease

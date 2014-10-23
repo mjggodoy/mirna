@@ -23,7 +23,7 @@ public class DBConnectionMySQLImpl implements DBConnection {
 
     // we dont want this garbage collected until we are done
     public DBConnectionMySQLImpl() throws MiRnaException {    // note more general exception
-    	System.out.println("MIRNA: getDBConnection began-----------.");
+    	//System.out.println("MIRNA: getDBConnection began-----------.");
 
     	String url = "";
     	String user = "";
@@ -68,7 +68,7 @@ public class DBConnectionMySQLImpl implements DBConnection {
 	
 	public synchronized int insert(String expression) throws SQLException {
 		// for INSERT and returning new auto-increment key
-		System.out.println("MIRNA: insert began-----------.");
+		//System.out.println("MIRNA: insert began-----------.");
 
 		PreparedStatement pstmt = conn.prepareStatement(expression, Statement.RETURN_GENERATED_KEYS);  
 		pstmt.executeUpdate();  
@@ -83,7 +83,7 @@ public class DBConnectionMySQLImpl implements DBConnection {
 
 	public synchronized void update(String expression) throws SQLException {
 		//for CREATE, DROP, INSERT and UPDATE
-		System.out.println("MIRNA: update began-----------.");
+		//System.out.println("MIRNA: update began-----------.");
 		Statement st = null;
 
 		st = conn.createStatement(); // statements
@@ -98,7 +98,7 @@ public class DBConnectionMySQLImpl implements DBConnection {
 
 	public synchronized List<Map<String, Object>> query(String expression) throws SQLException {
 		//for SELECT
-		System.out.println("MIRNA: query began-----------.");
+		//System.out.println("MIRNA: query began-----------.");
 		Statement st = null;
 		ResultSet rs = null;
 
@@ -107,14 +107,15 @@ public class DBConnectionMySQLImpl implements DBConnection {
 		
 		List<Map<String, Object>> list = resultSetToArrayList(rs);
 
-		dump(rs);
+		//dump(rs);
 		st.close();
 		
 		return list;
 	}
 
+	/*
 	private static void dump(ResultSet rs) throws SQLException {
-		System.out.println("MIRNA: dump began-----------.");
+		//System.out.println("MIRNA: dump began-----------.");
 		ResultSetMetaData meta = rs.getMetaData();
 		int colmax = meta.getColumnCount();
 		int i;
@@ -129,6 +130,7 @@ public class DBConnectionMySQLImpl implements DBConnection {
 		}
 		System.out.println();
 	}
+	*/
 	
 	private List<Map<String, Object>> resultSetToArrayList(ResultSet rs) throws SQLException{
 		ResultSetMetaData md = rs.getMetaData();
@@ -145,7 +147,7 @@ public class DBConnectionMySQLImpl implements DBConnection {
 	}
 
 	public void shutdown() throws SQLException {
-		System.out.println("MIRNA: shutdown began-----------.");
+		//System.out.println("MIRNA: shutdown began-----------.");
 		Statement st = conn.createStatement();
 
 		st.execute("SHUTDOWN"); //write out buffersand clean shut down

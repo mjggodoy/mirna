@@ -111,7 +111,7 @@ public class MiRCancer implements IMirnaDatabase {
 	public void insertIntoSQLModel(Integer maxLines) throws Exception {
 		
 		// URL of Oracle database server
-		String url = "jdbc:mysql://localhost:3306/mirna";
+		String url = "jdbc:mysql://localhost:3306/mirna_raw";
 
 		String user = "mirna";
 		String password = "mirna";
@@ -127,6 +127,7 @@ public class MiRCancer implements IMirnaDatabase {
 			// our SQL SELECT query. 
 			// if you only need a few columns, specify them by name instead of using "*"
 			String query = "SELECT * FROM " + tableName;
+			System.out.println("STARTING: " + query);
 			
 			// execute the query, and get a java resultset
 			ResultSet rs = stmt.executeQuery(query);
@@ -140,10 +141,10 @@ public class MiRCancer implements IMirnaDatabase {
 			// iterate through the java resultset
 			while ((rs.next()) && ((maxLines==null) || (count<maxLines))) {
 				count++;
-				int id = rs.getInt("id");
+				int id = rs.getInt("pk");
 				String cancer = rs.getString("cancer");
 				String mirId = rs.getString("mirId");
-				String evidence = rs.getString("evidence");
+				String evidence = rs.getString("profile");
 				String pubmedArticle = rs.getString("pubmed_article").replaceAll("'", "\\\\'");;
 				
 				MiRna miRna = new MiRna();

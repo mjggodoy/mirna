@@ -110,7 +110,6 @@ public class MiRnaDAOMySQLImpl implements MiRnaDAO {
 			List<Map<String, Object>> list = null;
 			String queryTemplate = "select * from mirna.mirna where pk=%d";
 			String queryString = String.format(queryTemplate, id);
-			System.out.println(queryString);
 			list = con.query(queryString);
 			
 			if (list.size()==1) {
@@ -140,7 +139,6 @@ public class MiRnaDAOMySQLImpl implements MiRnaDAO {
 			List<Map<String, Object>> list = null;
 			String queryTemplate = "select * from mirna.mirna where name='%s'";
 			String queryString = String.format(queryTemplate, name);
-			System.out.println(queryString);
 			list = con.query(queryString);
 			for (Map<String, Object> row : list) {
 				res = new MiRna(
