@@ -2,15 +2,42 @@ package mirna.beans;
 
 public class InteractionData {
 
-	private String score;
-	private String pvalue_log;
-	private String miTG_score;
-	private String method;
-	private String feature;
-	private String phase;
-	private String rank;
-	private String provenance;
+	private String score;//ok
+	private String pvalue_log;//ok
+	private String miTG_score; //ok
+	private String method; //ok
+	private String feature; //ok
+	private String phase; //ok
+	private String rank;//ok
+	private String provenance;//ok
+	private String reference;
+	private String pubmedId;
+	private String cellularLine;
 	
+	public String getCellularLine() {
+		return cellularLine;
+	}
+
+	public void setCellularLine(String cellularLine) {
+		this.cellularLine = cellularLine;
+	}
+
+	public String getPubmedId() {
+		return pubmedId;
+	}
+
+	public void setPubmedId(String pubmedId) {
+		this.pubmedId = pubmedId;
+	}
+
+	public String getReference() {
+		return reference;
+	}
+
+	public void setReference(String reference) {
+		this.reference = reference;
+	}
+
 	public InteractionData() {
 	}
 

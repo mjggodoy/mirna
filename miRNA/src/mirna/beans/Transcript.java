@@ -1,6 +1,6 @@
 package mirna.beans;
 
-public class Transcript extends Target {
+public class Transcript {
 
 	private String cdsStart;
 	private String cdsEnd;
@@ -8,20 +8,47 @@ public class Transcript extends Target {
 	private String UTR3end;
 	private String biotype;
 	private String sequence;
-	private String transcriptID;
-	private String name;
+	private String transcriptID;//ok
+	private String name;//ok
+	private String isoform; //ok
+	private String evidence;
+	
+
+	public Transcript() {
+	}
+	
+	
+	
+	public String getEvidence() {
+		return evidence;
+	}
+
+
+
+	public void setEvidence(String evidence) {
+		this.evidence = evidence;
+	}
+
+
+
+	public String getIsoform() {
+		return isoform;
+	}
+
+	public void setIsoform(String isoform) {
+		this.isoform = isoform;
+	}
+
 	private String ExternalName;
 	
 
+	
 	public String getExternalName() {
 		return ExternalName;
 	}
 
 	public void setExternalName(String externalName) {
 		ExternalName = externalName;
-	}
-
-	public Transcript() {
 	}
 
 	public String getCdsStart() {

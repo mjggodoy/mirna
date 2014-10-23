@@ -2,11 +2,131 @@ package mirna.beans;
 
 public class Gene {
 
-	private String name;
-	private String chromosome;
-	private String geneId;
-	private String description;
+	private String name;//ok
+	private String chromosome;//ok
+	private String accessionumber;//ok
+	private String geneId;//ok
+	private String description;//ok
 	private String refseq_name;
+	private String year;//ok
+	private String resource;//ok
+	private String start_strand;//ok
+	private String end_strand;//ok
+	private String hgnc_symbol;
+	private String location;//ok
+	private String expression_site;
+	private String kegg_id;
+	
+	public Gene() {}
+
+	
+	
+
+	public String getKegg_id() {
+		return kegg_id;
+	}
+
+
+
+
+	public void setKegg_id(String kegg_id) {
+		this.kegg_id = kegg_id;
+	}
+
+
+
+
+	public String getExpression_site() {
+		return expression_site;
+	}
+
+
+
+
+	public void setExpression_site(String expression_site) {
+		this.expression_site = expression_site;
+	}
+
+
+
+
+	public String getHgnc_symbol() {
+		return hgnc_symbol;
+	}
+
+
+
+
+	public void setHgnc_symbol(String hgnc_symbol) {
+		this.hgnc_symbol = hgnc_symbol;
+	}
+
+
+
+
+	public String getLocation() {
+		return location;
+	}
+
+
+
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+
+
+
+	public String getAccessionumber() {
+		return accessionumber;
+	}
+
+
+
+	public void setAccessionumber(String accessionumber) {
+		this.accessionumber = accessionumber;
+	}
+
+
+
+	public String getStart_strand() {
+		return start_strand;
+	}
+
+
+
+	public void setStart_strand(String start_strand) {
+		this.start_strand = start_strand;
+	}
+
+
+
+	public String getEnd_strand() {
+		return end_strand;
+	}
+
+
+
+	public void setEnd_strand(String end_strand) {
+		this.end_strand = end_strand;
+	}
+
+
+
+	
+	
+	
+	public String getResource() {
+		return resource;
+	}
+
+
+
+	public void setResource(String resource) {
+		this.resource = resource;
+	}
+
 
 
 	public String getRefseq_name() {
@@ -17,7 +137,13 @@ public class Gene {
 		this.refseq_name = refseq_name;
 	}
 
-	public Gene() {}
+	public String getYear() {
+		return year;
+	}
+
+	public void setYear(String year) {
+		this.year = year;
+	}
 
 	public String getChromosome() {
 		return chromosome;

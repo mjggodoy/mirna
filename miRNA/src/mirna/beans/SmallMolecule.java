@@ -1,6 +1,6 @@
 package mirna.beans;
 
-public class SmallMolecule {
+public class SmallMolecule extends EnvironmentalFactor {
 
 	private String FDA;
 	private String DB;
