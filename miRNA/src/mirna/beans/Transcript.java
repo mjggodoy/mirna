@@ -1,6 +1,6 @@
 package mirna.beans;
 
-public class Transcript {
+public class Transcript extends ModelClass {
 
 	private String cdsStart;
 	private String cdsEnd;
@@ -11,23 +11,57 @@ public class Transcript {
 	private String transcriptID;//ok
 	private String name;//ok
 	private String isoform; //ok
-	private String evidence;
+	//private String evidence;//ok
+	private String id;//ok
 	
 
 	public Transcript() {
+		super();
 	}
 	
 	
 	
-	public String getEvidence() {
-		return evidence;
+	public Transcript(int pk,String cdsStart, String cdsEnd, String uTR5start,
+			String uTR3end, String biotype, String sequence,
+			String transcriptID, String name, String isoform, String id,
+			String externalName) {
+		super(pk);
+		this.cdsStart = cdsStart;
+		this.cdsEnd = cdsEnd;
+		UTR5start = uTR5start;
+		UTR3end = uTR3end;
+		this.biotype = biotype;
+		this.sequence = sequence;
+		this.transcriptID = transcriptID;
+		this.name = name;
+		this.isoform = isoform;
+		this.id = id;
+		ExternalName = externalName;
 	}
 
 
 
-	public void setEvidence(String evidence) {
-		this.evidence = evidence;
+	public String getId() {
+		return id;
 	}
+
+
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+
+
+	//public String getEvidence() {
+		//return evidence;
+	//}
+
+
+
+	//public void setEvidence(String evidence) {
+		//this.evidence = evidence;
+	//}
 
 
 

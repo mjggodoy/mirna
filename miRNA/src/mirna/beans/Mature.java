@@ -7,7 +7,26 @@ public class Mature extends MiRna {
 	private String length; //ok
 	private String GC_proportion; //ok
 	
-	public Mature() {}
+	public Mature() {
+		super();
+		}
+	
+	
+	
+	
+
+	public Mature(int pk, String name, String sequence, String length,
+			String gC_proportion) {
+		super(pk);
+		this.name = name;
+		this.sequence = sequence;
+		this.length = length;
+		GC_proportion = gC_proportion;
+	}
+
+
+
+
 
 	public String getName() {
 		return name;
