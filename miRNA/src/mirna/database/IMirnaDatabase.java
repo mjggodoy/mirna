@@ -19,6 +19,4 @@ public interface IMirnaDatabase {
 	
 	public void insertIntoSQLModel() throws Exception;
 	
-	public void insertIntoSQLModel(Integer maxLines) throws Exception;
-	
 }

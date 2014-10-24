@@ -11,13 +11,13 @@ import mirna.db.DBConnection;
 import mirna.db.mysql.DBConnectionMySQLImpl;
 import mirna.exception.MiRnaException;
 
-public class ExpressionDataDAOMySQLImpl implements ExpressionDataDAO {
+public class ExpressionDataDAOMySQLImpl extends ModelDAOMySQLImpl implements ExpressionDataDAO {
 	
 	@Override
 	public int create(ExpressionData newDataExpression) throws MiRnaException {
 		DBConnection con = null;
 		int res = -1;
-
+		String queryString = "";
 		try {
 			
 			con = new DBConnectionMySQLImpl();
@@ -28,7 +28,7 @@ public class ExpressionDataDAOMySQLImpl implements ExpressionDataDAO {
 					+ "cellular_line, condition_) values "
 					+ "('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s',"
 					+ "'%s', '%s', '%s', '%s', '%s', '%s')";
-			String queryString = String.format(queryTemplate, 
+			queryString = String.format(queryTemplate, 
 					newDataExpression.getTitleReference(),
 					newDataExpression.getFoldchangeMin(),
 					newDataExpression.getFoldchangeMax(),
@@ -40,12 +40,13 @@ public class ExpressionDataDAOMySQLImpl implements ExpressionDataDAO {
 					newDataExpression.getEvidence(),
 					newDataExpression.getPubmedId(),
 					newDataExpression.getYear(),
-					newDataExpression.getDescription(),
+					safe(newDataExpression.getDescription()),
 					newDataExpression.getCellularLine(),
 					newDataExpression.getCondition());
 			queryString = queryString.replaceAll("'null'", "null");
 			res = con.insert(queryString);
 		} catch (SQLException ex) {
+			System.err.println(queryString);
 			throw new MiRnaException("SQLException:" + ex.getMessage());
 		} finally {
 			if (con!=null) con.closeDBConnection();
@@ -117,7 +118,7 @@ public class ExpressionDataDAOMySQLImpl implements ExpressionDataDAO {
 					dataExpressionToUpdate.getEvidence(),
 					dataExpressionToUpdate.getPubmedId(),
 					dataExpressionToUpdate.getYear(),
-					dataExpressionToUpdate.getDescription(),
+					safe(dataExpressionToUpdate.getDescription()),
 					dataExpressionToUpdate.getCellularLine(),
 					dataExpressionToUpdate.getCondition(),
 					dataExpressionToUpdate.getPk());
@@ -203,14 +204,16 @@ public class ExpressionDataDAOMySQLImpl implements ExpressionDataDAO {
 	
 	public void newRelatedDisease(int dataExpressionId, int diseaseId) throws MiRnaException {
 		DBConnection con = null;
+		String queryString = "";
 		try {
 			con = new DBConnectionMySQLImpl();
 			String queryTemplate = "insert into mirna.expression_data_related_to_disease "
 					+ "values (%d, %d)";
-			String queryString = String.format(queryTemplate, 
+			queryString = String.format(queryTemplate, 
 					dataExpressionId, diseaseId);
 			con.update(queryString);
 		} catch (SQLException ex) {
+			System.err.println(queryString);
 			throw new MiRnaException("SQLException:" + ex.getMessage());
 		} finally {
 			if (con!=null) con.closeDBConnection();
@@ -219,14 +222,16 @@ public class ExpressionDataDAOMySQLImpl implements ExpressionDataDAO {
 	
 	public void newMiRnaInvolved(int dataExpressionId, int miRnaId) throws MiRnaException {
 		DBConnection con = null;
+		String queryString = "";
 		try {
 			con = new DBConnectionMySQLImpl();
 			String queryTemplate = "insert into mirna.expression_data_involves_mirna "
 					+ "values (%d, %d)";
-			String queryString = String.format(queryTemplate, 
+			queryString = String.format(queryTemplate, 
 					dataExpressionId, miRnaId);
 			con.update(queryString);
 		} catch (SQLException ex) {
+			System.err.println(queryString);
 			throw new MiRnaException("SQLException:" + ex.getMessage());
 		} finally {
 			if (con!=null) con.closeDBConnection();

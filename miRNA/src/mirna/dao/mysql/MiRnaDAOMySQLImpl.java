@@ -11,7 +11,7 @@ import mirna.db.DBConnection;
 import mirna.db.mysql.DBConnectionMySQLImpl;
 import mirna.exception.MiRnaException;
 
-public class MiRnaDAOMySQLImpl implements MiRnaDAO {
+public class MiRnaDAOMySQLImpl extends ModelDAOMySQLImpl implements MiRnaDAO {
 	
 	@Override
 	public int create(MiRna newMiRna) throws MiRnaException {
@@ -23,8 +23,10 @@ public class MiRnaDAOMySQLImpl implements MiRnaDAO {
 			String queryTemplate = "insert into mirna.mirna ("
 					+ "name, accession_number, sequence, resource) values "
 					+ "('%s', '%s', '%s', '%s')";
-			String queryString = String.format(queryTemplate, newMiRna.getName(), 
-					newMiRna.getAccessionNumber(), newMiRna.getSequence(),
+			String queryString = String.format(queryTemplate,
+					safe(newMiRna.getName()), 
+					newMiRna.getAccessionNumber(),
+					newMiRna.getSequence(),
 					newMiRna.getResource());
 			queryString = queryString.replaceAll("'null'", "null");
 			res = con.insert(queryString);
@@ -74,8 +76,10 @@ public class MiRnaDAOMySQLImpl implements MiRnaDAO {
 			String queryTemplate = "update mirna.mirna set name=%s, accession_number=%s, "
 					+ "sequence=%s, resource=%s where pk=%d";
 			String queryString = String.format(queryTemplate,
-					miRnaToUpdate.getName(), miRnaToUpdate.getAccessionNumber(),
-					miRnaToUpdate.getSequence(), miRnaToUpdate.getResource(),
+					safe(miRnaToUpdate.getName()),
+					miRnaToUpdate.getAccessionNumber(),
+					miRnaToUpdate.getSequence(),
+					miRnaToUpdate.getResource(),
 					miRnaToUpdate.getPk());
 			con.update(queryString);
 		} catch (SQLException ex) {

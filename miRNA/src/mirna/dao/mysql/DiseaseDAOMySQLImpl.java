@@ -11,7 +11,7 @@ import mirna.db.DBConnection;
 import mirna.db.mysql.DBConnectionMySQLImpl;
 import mirna.exception.MiRnaException;
 
-public class DiseaseDAOMySQLImpl implements DiseaseDAO {
+public class DiseaseDAOMySQLImpl extends ModelDAOMySQLImpl implements DiseaseDAO {
 	
 	@Override
 	public int create(Disease newDisease) throws MiRnaException {
@@ -22,8 +22,9 @@ public class DiseaseDAOMySQLImpl implements DiseaseDAO {
 			con = new DBConnectionMySQLImpl();
 			String queryTemplate = "insert into mirna.disease ("
 					+ "name, disease_class) values ('%s', '%s')";
-			String queryString = String.format(queryTemplate, newDisease.getName(), 
-					newDisease.getDiseaseClass());
+			String queryString = String.format(queryTemplate,
+					safe(newDisease.getName()), 
+					safe(newDisease.getDiseaseClass()));
 			queryString = queryString.replaceAll("'null'", "null");
 			res = con.insert(queryString);
 		} catch (SQLException ex) {
@@ -71,7 +72,8 @@ public class DiseaseDAOMySQLImpl implements DiseaseDAO {
 			String queryTemplate = "update mirna.disease set name=%s, "
 					+ "disease_class=%s where pk=%d";
 			String queryString = String.format(queryTemplate,
-					diseaseToUpdate.getName(), diseaseToUpdate.getDiseaseClass(),
+					safe(diseaseToUpdate.getName()),
+					safe(diseaseToUpdate.getDiseaseClass()),
 					diseaseToUpdate.getPk());
 			con.update(queryString);
 		} catch (SQLException ex) {
@@ -128,11 +130,12 @@ public class DiseaseDAOMySQLImpl implements DiseaseDAO {
 		List<Disease> diseaseList = new ArrayList<Disease>();
 		Disease res = null;
 		DBConnection con = null;
+		String queryString = "";
 		try {
 			con = new DBConnectionMySQLImpl();
 			List<Map<String, Object>> list = null;
 			String queryTemplate = "select * from mirna.disease where name='%s'";
-			String queryString = String.format(queryTemplate, name);
+			queryString = String.format(queryTemplate, safe(name));
 			list = con.query(queryString);
 			for (Map<String, Object> row : list) {
 				res = new Disease(
@@ -145,6 +148,7 @@ public class DiseaseDAOMySQLImpl implements DiseaseDAO {
 				throw new MiRnaException("Found two Disease with the same name (" + name + ")");
 			}
 		} catch (SQLException ex) {
+			System.err.println(queryString);
 			throw new MiRnaException("SQLException:" + ex.getMessage());
 		} finally {
 			if (con!=null) con.closeDBConnection();
