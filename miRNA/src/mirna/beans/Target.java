@@ -8,11 +8,11 @@ public class Target extends Transcript {
 	private String UTR3end;//ok
 	private String start_strand;//ok
 	private String end_strand;//ok
-	private String biotype;
+	//private String biotype;
 	private String sequence;//ok
-	private String transcriptID;
+	//private String transcriptID;
 	private String name;//ok
-	private String ExternalName;
+	//private String ExternalName;
 	private String chromosome;//ok
 	private String polarity;//ok
 	private String binding_site_start;//ok
@@ -49,11 +49,11 @@ public class Target extends Transcript {
 		UTR3end = uTR3end;
 		this.start_strand = start_strand;
 		this.end_strand = end_strand;
-		this.biotype = biotype;
+		//this.biotype = biotype;
 		this.sequence = sequence;
-		this.transcriptID = transcriptID;
+		//this.transcriptID = transcriptID;
 		this.name = name;
-		ExternalName = externalName;
+		//this.ExternalName = externalName;
 		this.chromosome = chromosome;
 		this.polarity = polarity;
 		this.binding_site_start = binding_site_start;
@@ -204,13 +204,13 @@ public class Target extends Transcript {
 
 
 
-	public String getExternalName() {
-		return ExternalName;
-	}
+	//public String getExternalName() {
+		//return ExternalName;
+	//}
 
-	public void setExternalName(String externalName) {
-		ExternalName = externalName;
-	}
+	//public void setExternalName(String externalName) {
+		//ExternalName = externalName;
+	//}
 
 	
 
@@ -246,13 +246,13 @@ public class Target extends Transcript {
 		UTR3end = uTR3end;
 	}
 
-	public String getBiotype() {
-		return biotype;
-	}
+	//public String getBiotype() {
+		//return biotype;
+	//}
 
-	public void setBiotype(String biotype) {
-		this.biotype = biotype;
-	}
+	//public void setBiotype(String biotype) {
+		//this.biotype = biotype;
+	//}
 
 	public String getSequence() {
 		return sequence;
@@ -262,13 +262,13 @@ public class Target extends Transcript {
 		this.sequence = sequence;
 	}
 
-	public String getTranscriptID() {
-		return transcriptID;
-	}
+	//public String getTranscriptID() {
+		//return transcriptID;
+	//}
 
-	public void setTranscriptID(String transcriptID) {
-		this.transcriptID = transcriptID;
-	}
+	//public void setTranscriptID(String transcriptID) {
+		//this.transcriptID = transcriptID;
+	//}
 
 	public String getName() {
 		return name;
