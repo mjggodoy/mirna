@@ -1,20 +1,14 @@
-package old;
+package mirna.utils;
 
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.IOException;
 import java.io.OutputStream;
-import java.util.StringTokenizer;
 
-import mirna.beans.ExpressionData;
 import mirna.beans.Disease;
-import mirna.beans.InteractionData;
+import mirna.beans.ExpressionData;
 import mirna.beans.MiRna;
-import mirna.beans.Organism;
-import mirna.beans.SmallMolecule;
 import mirna.beans.Target;
-import mirna.beans.Transcript;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -24,7 +18,7 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
 import com.hp.hpl.jena.vocabulary.RDF;
 
-public class MicroCosm {
+public class HMDD_target {
 
 	public static void main(String[] args) throws Exception {
 
@@ -44,7 +38,8 @@ public class MicroCosm {
 		Model model = ModelFactory.createDefaultModel();
 
 		int count = 0;
-		int interactiondataCount = 1;
+		int dataExpressionCount = 1;
+		int dataTarget = 1;
 
 		while (br.readLine() != null) {
 
@@ -60,104 +55,75 @@ public class MicroCosm {
 
 					MiRna miRna2 = new MiRna();
 					miRna2.setName(tokens[2]);
+					
+					Target target2 = new Target();
+					target2.setName(tokens[3]);
+					
+					
+					Disease disease = new Disease();
+					disease.setName(tokens[4]);
 
-					InteractionData interactionData = new InteractionData();
-					interactionData.setFeature(tokens[4]);
-					interactionData.setPhase(tokens[9]);
-					interactionData.setPvalue_log(tokens[10]);
-					interactionData.setMethod(tokens[3]);
-					interactionData.setScore(tokens[8]);
-
-					Transcript transcript2 = new Transcript();
-					transcript2.setUTR5start(tokens[6]);
-					transcript2.setUTR3end(tokens[7]);
-					transcript2.setName(tokens[12]);
-					transcript2.setExternalName(tokens[13]);
-					transcript2.setChromosome(tokens[4]);
+					ExpressionData dataexpression = new ExpressionData();
+					dataexpression.setDescription(tokens[6]);
+					dataexpression.setPubmedId(tokens[5]);
 
 					Resource miRNA = model
 							.createResource(
 									namespace + "miRNA/" + miRna2.getName())
 							.addProperty(
-									
-									ResourceFactory.createProperty(namespace
-											+ "name"), miRna2.getName())
-							.addProperty(
 									RDF.type,
 									ResourceFactory.createResource(namespace
 											+ "miRNA"));
 
-					Resource Transcript = model
-							.createResource(
-									namespace + "Transcript/"
-											+ transcript2.getName())
-
-							.addProperty(
-									ResourceFactory.createProperty(namespace
-											+ "UTR5start"),
-									transcript2.getUTR5start())
-
-							.addProperty(
-									ResourceFactory.createProperty(namespace
-											+ "UTR3end"), transcript2.getUTR3end())
-
-							.addProperty(
-									ResourceFactory.createProperty(namespace
-											+ "ExternalName"),
-									transcript2.getExternalName())
-
-							.addProperty(
-									ResourceFactory.createProperty(namespace
-											+ "Chromosome"),
-									transcript2.getChromosome())
-
+					Resource disease2 = model.createResource(
+							namespace + "Disease/" + disease.getName())
 							.addProperty(
 									RDF.type,
 									ResourceFactory.createResource(namespace
-											+ "Transcript"));
+											+ "Disease"));
 
+					
+					
 					model.createResource(
-							namespace + "InteractionData_"
-									+ interactiondataCount)
-							// dataExpression.getExpression())
+							namespace + "DataExpression_" + dataExpressionCount)
+							
+								.addProperty(
+									ResourceFactory.createProperty(namespace
+											+ "Description"), dataexpression.getDescription())
 							.addProperty(
 									ResourceFactory.createProperty(namespace
-											+ "feature"),
-									interactionData.getFeature())
+											+ "PubmedId"), dataexpression.getPubmedId())
 							.addProperty(
 									ResourceFactory.createProperty(namespace
-											+ "phase"),
-									interactionData.getPhase())
+											+ "involvesmiRNA"), miRNA)
 							.addProperty(
 									ResourceFactory.createProperty(namespace
-											+ "Pvalue_log"),
-									interactionData.getPvalue_log())
-
-							.addProperty(
-									ResourceFactory.createProperty(namespace
-											+ "method"),
-									interactionData.getMethod())
-
-							.addProperty(
-									ResourceFactory.createProperty(namespace
-											+ "score"),
-									interactionData.getScore())
-
-							.addProperty(
-									ResourceFactory.createProperty(namespace
-											+ "involvesInteraction"), miRNA)
-
-							.addProperty(
-									ResourceFactory.createProperty(namespace
-											+ "involvesInteraction"),
-									Transcript)
-
+											+ "relatedDisease"), disease2)	
 							.addProperty(
 									RDF.type,
 									ResourceFactory.createResource(namespace
-											+ "InteractionData"));
+											+ "DataExpression"));
+					
+					model.createResource(
+							namespace + "Target_" + dataTarget)
+							
+								.addProperty(
+									ResourceFactory.createProperty(namespace
+											+ "Target"), target2.getName())
+								.addProperty(
+									ResourceFactory.createProperty(namespace
+											+ "microRNAtarget"), miRNA)
+							.addProperty(
+									ResourceFactory.createProperty(namespace
+											+ "relatedDisease"), disease2)
+							.addProperty(
+									RDF.type,
+									ResourceFactory.createResource(namespace
+											+ "DataExpression"));
 
-					interactiondataCount++;
+					
+
+					dataExpressionCount++;
 
 				} catch (Exception e) {
 					e.printStackTrace();

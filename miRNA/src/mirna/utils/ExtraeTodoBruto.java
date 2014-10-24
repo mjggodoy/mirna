@@ -1,4 +1,5 @@
-package old;
+package mirna.utils;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -11,7 +12,7 @@ import com.hp.hpl.jena.query.Syntax;
 import com.hp.hpl.jena.rdf.model.Model;
 
 /**
- * @author Esteban López Camacho
+ * @author Esteban Lï¿½pez Camacho
  * 
  */
 public class ExtraeTodoBruto {

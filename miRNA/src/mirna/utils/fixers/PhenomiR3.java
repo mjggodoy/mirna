@@ -1,6 +1,6 @@
-package fixers;
+package mirna.utils.fixers;
 
-import fixers.PhenomiRFixer;
+import mirna.utils.fixers.PhenomiRFixer;
 
 public class PhenomiR3 {
 

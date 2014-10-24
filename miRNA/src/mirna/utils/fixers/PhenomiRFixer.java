@@ -1,4 +1,4 @@
-package fixers;
+package mirna.utils.fixers;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -38,8 +38,8 @@ public class PhenomiRFixer {
 			String[] tokens = StringUtils.splitPreserveAllTokens(line, separator);
 			countLine++;
 			
-			if (tokens.length!=numOfTokens) { //Número de tokens diferente a la longitud que es la fijada, en este caso 14
-				System.out.println("Linea número " + countLine + " con " + tokens.length + " tokens!"); // Aviso del token con respecto al número de línea
+			if (tokens.length!=numOfTokens) { //Nï¿½mero de tokens diferente a la longitud que es la fijada, en este caso 14
+				System.out.println("Linea nï¿½mero " + countLine + " con " + tokens.length + " tokens!"); // Aviso del token con respecto al nï¿½mero de lï¿½nea
 				for (int i=0; i<tokens.length; i++) {
 					
 					System.out.println(" token[" + i + "] = " + tokens[i]);
@@ -67,7 +67,7 @@ public class PhenomiRFixer {
 		
 		PrintWriter pw = new PrintWriter(new File(fileOut));
 		
-		String line1, line2; // Trabajamos con dos líneas seguidas a la vez.
+		String line1, line2; // Trabajamos con dos lï¿½neas seguidas a la vez.
 		
 		line1 = br.readLine();
 		
