@@ -105,10 +105,6 @@ public class MiRCancer implements IMirnaDatabase {
 	}
 	
 	public void insertIntoSQLModel() throws Exception {
-		this.insertIntoSQLModel(null);
-	}
-	
-	public void insertIntoSQLModel(Integer maxLines) throws Exception {
 		
 		// URL of Oracle database server
 		String url = "jdbc:mysql://localhost:3306/mirna_raw";
@@ -136,16 +132,18 @@ public class MiRCancer implements IMirnaDatabase {
 			DiseaseDAO diseaseDAO = new DiseaseDAOMySQLImpl();
 			ExpressionDataDAO dataExpressionDAO = new ExpressionDataDAOMySQLImpl();
 			
-			int count = 0;
-			
 			// iterate through the java resultset
-			while ((rs.next()) && ((maxLines==null) || (count<maxLines))) {
+			int count = 0;
+			while (rs.next()) {
+				
 				count++;
-				int id = rs.getInt("pk");
+				if (count%100==0) System.out.println(count);
+				
+				//int id = rs.getInt("pk");
 				String cancer = rs.getString("cancer");
 				String mirId = rs.getString("mirId");
 				String evidence = rs.getString("profile");
-				String pubmedArticle = rs.getString("pubmed_article").replaceAll("'", "\\\\'");;
+				String pubmedArticle = rs.getString("pubmed_article");
 				
 				MiRna miRna = new MiRna();
 				miRna.setName(mirId);
@@ -158,20 +156,19 @@ public class MiRCancer implements IMirnaDatabase {
 				dataExpression.setEvidence(evidence);
 				dataExpression.setProvenance("miRCancer");
 				
-				// print the results
-				System.out.format("%d, %s, %s, %s, %s\n", id, cancer, mirId, evidence, pubmedArticle.substring(0,20));
-				
 				// Inserta MiRna (o recupera su id. si ya existe)
 				MiRna oldMiRna = miRnaDAO.findByName(miRna.getName());
 				if (oldMiRna==null) {
 					int key = miRnaDAO.create(miRna);
 					miRna.setPk(key);
 				} else {
-					if (miRna.checkConflict(oldMiRna)) {
-						miRna.setPk(oldMiRna.getPk());
-						miRna.setName(oldMiRna.getName());
-					} else {
-						
+					miRna.setPk(oldMiRna.getPk());
+					int conflict = miRna.checkConflict(oldMiRna);
+					if (conflict > 0) {
+						//System.out.println(miRna);
+						//System.out.println(oldMiRna);
+						miRnaDAO.update(miRna);
+					} else if (conflict == -1){
 						String msg = "Conflicto detectado!"
 								+ "\nEntrada en BD: " + oldMiRna
 								+ "\nEntrada nueva: " + miRna;
@@ -185,11 +182,11 @@ public class MiRCancer implements IMirnaDatabase {
 					int key = diseaseDAO.create(disease);
 					disease.setPk(key);
 				} else {
-					if (disease.checkConflict(oldDisease)) {
-						disease.setPk(oldDisease.getPk());
-						disease.setName(oldDisease.getName());
-					} else {
-						
+					disease.setPk(oldDisease.getPk());
+					int conflict = disease.checkConflict(oldDisease);
+					if (conflict > 0) {
+						diseaseDAO.update(disease);
+					} else if (conflict == -1){
 						String msg = "Conflicto detectado!"
 								+ "\nEntrada en BD: " + oldDisease
 								+ "\nEntrada nueva: " + disease;
