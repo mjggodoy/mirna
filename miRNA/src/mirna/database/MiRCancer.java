@@ -35,10 +35,6 @@ public class MiRCancer implements IMirnaDatabase {
 	public MiRCancer() { }
 	
 	public void insertInTable(String csvInputFile) throws Exception {
-		this.insertInTable(csvInputFile, null);
-	}
-	
-	public void insertInTable(String csvInputFile, Integer maxLines) throws Exception {
 		
 		// URL of Oracle database server
 		String url = "jdbc:mysql://localhost:3306/mirna_raw";
@@ -61,7 +57,7 @@ public class MiRCancer implements IMirnaDatabase {
 	
 			br.readLine();
 			
-			while (((line = br.readLine()) != null) && ((maxLines==null) || (count<maxLines))) {
+			while ((line = br.readLine()) != null) {
 	
 				count++;
 				System.out.println(count);
