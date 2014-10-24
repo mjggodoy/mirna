@@ -8,11 +8,11 @@ public class Target extends Transcript {
 	private String UTR3end;//ok
 	private String start_strand;//ok
 	private String end_strand;//ok
-	private String biotype;
+	//private String biotype;
 	private String sequence;//ok
-	private String transcriptID;
+	//private String transcriptID;
 	private String name;//ok
-	private String ExternalName;
+	//private String ExternalName;
 	private String chromosome;//ok
 	private String polarity;//ok
 	private String binding_site_start;//ok
@@ -22,8 +22,67 @@ public class Target extends Transcript {
 	private String region;//ok
 	private String seed_match;//ok
 	private String coordinates;//ok
+	private String GC_proportion;//ok
 	
-	public Target() {
+	public Target() { super();
+	}
+
+
+
+	
+	
+	
+
+
+	public Target(int pk,String cdsStart, String cdsEnd, String uTR5start,
+			String uTR3end, String start_strand, String end_strand,
+			String biotype, String sequence, String transcriptID, String name,
+			String externalName, String chromosome, String polarity,
+			String binding_site_start, String binding_site_end,
+			String repeated_motifs, String uTR3conservation_score,
+			String region, String seed_match, String coordinates,
+			String gC_proportion) {
+		super(pk);
+		this.cdsStart = cdsStart;
+		this.cdsEnd = cdsEnd;
+		UTR5start = uTR5start;
+		UTR3end = uTR3end;
+		this.start_strand = start_strand;
+		this.end_strand = end_strand;
+		//this.biotype = biotype;
+		this.sequence = sequence;
+		//this.transcriptID = transcriptID;
+		this.name = name;
+		//this.ExternalName = externalName;
+		this.chromosome = chromosome;
+		this.polarity = polarity;
+		this.binding_site_start = binding_site_start;
+		this.binding_site_end = binding_site_end;
+		this.repeated_motifs = repeated_motifs;
+		UTR3conservation_score = uTR3conservation_score;
+		this.region = region;
+		this.seed_match = seed_match;
+		this.coordinates = coordinates;
+		GC_proportion = gC_proportion;
+	}
+
+
+
+
+
+
+
+
+	public String getGC_proportion() {
+		return GC_proportion;
+	}
+
+
+
+
+
+	public void setGC_proportion(String gC_proportion) {
+		GC_proportion = gC_proportion;
 	}
 
 
@@ -145,13 +204,13 @@ public class Target extends Transcript {
 
 
 
-	public String getExternalName() {
-		return ExternalName;
-	}
+	//public String getExternalName() {
+		//return ExternalName;
+	//}
 
-	public void setExternalName(String externalName) {
-		ExternalName = externalName;
-	}
+	//public void setExternalName(String externalName) {
+		//ExternalName = externalName;
+	//}
 
 	
 
@@ -187,13 +246,13 @@ public class Target extends Transcript {
 		UTR3end = uTR3end;
 	}
 
-	public String getBiotype() {
-		return biotype;
-	}
+	//public String getBiotype() {
+		//return biotype;
+	//}
 
-	public void setBiotype(String biotype) {
-		this.biotype = biotype;
-	}
+	//public void setBiotype(String biotype) {
+		//this.biotype = biotype;
+	//}
 
 	public String getSequence() {
 		return sequence;
@@ -203,13 +262,13 @@ public class Target extends Transcript {
 		this.sequence = sequence;
 	}
 
-	public String getTranscriptID() {
-		return transcriptID;
-	}
+	//public String getTranscriptID() {
+		//return transcriptID;
+	//}
 
-	public void setTranscriptID(String transcriptID) {
-		this.transcriptID = transcriptID;
-	}
+	//public void setTranscriptID(String transcriptID) {
+		//this.transcriptID = transcriptID;
+	//}
 
 	public String getName() {
 		return name;

@@ -1,16 +1,26 @@
 package mirna.beans;
 
-public class Organism {
+public class Organism extends ModelClass{
 
 	private String specie;
 	private String name;
 	private String resource;
 
-	public Organism() {}
+	public Organism() {super();}
 
 	
 	
 	
+	public Organism(int pk,String specie, String name, String resource) {
+		super(pk);
+		this.specie = specie;
+		this.name = name;
+		this.resource = resource;
+	}
+
+
+
+
 	public String getResource() {
 		return resource;
 	}

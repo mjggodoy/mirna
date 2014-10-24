@@ -1,26 +1,86 @@
 package mirna.beans;
 
-public class Gene {
+public class Gene extends ModelClass {
 
 	private String name;//ok
 	private String chromosome;//ok
 	private String accessionumber;//ok
 	private String geneId;//ok
 	private String description;//ok
-	private String refseq_name;
+	//private String refseq_name;
 	private String year;//ok
 	private String resource;//ok
 	private String start_strand;//ok
 	private String end_strand;//ok
 	private String hgnc_symbol;
 	private String location;//ok
-	private String expression_site;
-	private String kegg_id;
+	private String expression_site;//ok
+	private String kegg_id;//ok
+	private String arm;//ok
+	private String distance;//OK
 	
-	public Gene() {}
+	public Gene() {		
+		
+		super();
+		}
 
-	
-	
+
+
+	public Gene(int pk,String name, String chromosome, String accessionumber,
+			String geneId, String description, String year, String resource,
+			String start_strand, String end_strand, String hgnc_symbol,
+			String location, String expression_site, String kegg_id,
+			String arm, String distance) {
+		super(pk);
+		this.name = name;
+		this.chromosome = chromosome;
+		this.accessionumber = accessionumber;
+		this.geneId = geneId;
+		this.description = description;
+		this.year = year;
+		this.resource = resource;
+		this.start_strand = start_strand;
+		this.end_strand = end_strand;
+		this.hgnc_symbol = hgnc_symbol;
+		this.location = location;
+		this.expression_site = expression_site;
+		this.kegg_id = kegg_id;
+		this.arm = arm;
+		this.distance = distance;
+	}
+
+
+
+
+
+
+
+
+	public String getDistance() {
+		return distance;
+	}
+
+
+
+	public void setDistance(String distance) {
+		this.distance = distance;
+	}
+
+
+
+	public String getArm() {
+		return arm;
+	}
+
+
+
+
+	public void setArm(String arm) {
+		this.arm = arm;
+	}
+
+
+
 
 	public String getKegg_id() {
 		return kegg_id;
@@ -129,13 +189,13 @@ public class Gene {
 
 
 
-	public String getRefseq_name() {
-		return refseq_name;
-	}
+	//public String getRefseq_name() {
+		//return refseq_name;
+	//}
 
-	public void setRefseq_name(String refseq_name) {
-		this.refseq_name = refseq_name;
-	}
+	//public void setRefseq_name(String refseq_name) {
+		//this.refseq_name = refseq_name;
+	//}
 
 	public String getYear() {
 		return year;
