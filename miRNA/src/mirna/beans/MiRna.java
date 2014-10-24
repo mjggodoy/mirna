@@ -65,29 +65,25 @@ public class MiRna extends ModelClass {
 		this.resource = resource;
 	}
 
-	public boolean checkConflict(MiRna mirna) {
-		if ((mirna.getName() != null)
-				&& (this.name != null)
-				&& (!this.name.equals(mirna.getName()))) {
-			return false;
+	public int checkConflict(MiRna mirna) {
+		int res = 0;
+		if (mirna.getName()!=null) {
+			if (this.name==null) res++;
+			else if (!this.name.equals(mirna.getName())) return -1;
 		}
-		if ((mirna.getAccessionNumber() != null)
-				&& (this.accessionNumber != null)
-				&& (!this.accessionNumber.equals(mirna.getAccessionNumber()))) {
-			return false;
+		if (mirna.getAccessionNumber()!=null) {
+			if (this.accessionNumber==null) res++;
+			else if (!this.accessionNumber.equals(mirna.getAccessionNumber())) return -1;
 		}
-		if ((mirna.getSequence() != null)
-				&& (this.sequence != null)
-				&& (!this.sequence.equals(mirna.getSequence()))) {
-			return false;
+		if (mirna.getSequence()!=null) {
+			if (this.sequence==null) res++;
+			else if (!this.sequence.equals(mirna.getSequence())) return -1;
 		}
-		if ((mirna.getResource() != null)
-				&& (this.resource != null)
-				&& (!this.resource.equals(mirna.getResource()))) {
-			return false;
+		if (mirna.getResource()!=null) {
+			if (this.resource==null) res++;
+			else if (!this.resource.equals(mirna.getResource())) return -1;
 		}
-
-		return true;
+		return res;
 	}
 
 	@Override

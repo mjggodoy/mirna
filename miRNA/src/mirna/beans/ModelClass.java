@@ -17,5 +17,5 @@ public class ModelClass {
 	public void setPk(int pk) {
 		this.pk = pk;
 	}
-
+	
 }

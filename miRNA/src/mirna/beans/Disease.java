@@ -35,18 +35,22 @@ public class Disease extends ModelClass {
 		this.diseaseClass = diseaseClass;
 	}
 
-	public boolean checkConflict(Disease disease) {
-		if ((disease.getName() != null)
-				&& (this.name != null)
-				&& (!this.name.equals(disease.getName()))) {
-			return false;
+	public int checkConflict(Disease disease) {
+		int res = 0;
+		if (disease.getName()!=null) {
+			if (this.name==null) res++; 
+			else if (!this.name.equals(disease.getName())) return -1;
 		}
-		if ((disease.getDiseaseClass() != null)
-				&& (this.diseaseClass != null)
-				&& (!this.diseaseClass.equals(disease.getDiseaseClass()))) {
-			return false;
+		if (disease.getDiseaseClass() != null){
+			if (this.diseaseClass==null) res++;
+			else if (!this.diseaseClass.equals(disease.getDiseaseClass())) return -1;
 		}
-		return true;
+		return res;
+	}
+
+	@Override
+	public String toString() {
+		return "Disease [name=" + name + ", diseaseClass=" + diseaseClass + "]";
 	}
 	
 }
