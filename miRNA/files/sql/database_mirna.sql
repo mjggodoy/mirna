@@ -34,12 +34,12 @@ CREATE TABLE mirna.expression_data
    provenance_id    varchar(20),
    provenance       varchar(20),
    study_design     varchar(20),
-   method           varchar(20),
+   method           varchar(40),
    treatment        varchar(20),
-   evidence         varchar(20),
+   evidence         varchar(80),
    pubmed_id        varchar(20),
    year             varchar(4),
-   description      varchar(200),
+   description      varchar(1600),
    cellular_line    varchar(20),
    condition_       varchar(20)
 );
