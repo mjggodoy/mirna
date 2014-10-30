@@ -67,20 +67,20 @@ public class MiRna extends ModelClass {
 
 	public int checkConflict(MiRna mirna) {
 		int res = 0;
-		if (mirna.getName()!=null) {
-			if (this.name==null) res++;
+		if (this.name!=null) {
+			if (mirna.getName()==null) res++;
 			else if (!this.name.equals(mirna.getName())) return -1;
 		}
-		if (mirna.getAccessionNumber()!=null) {
-			if (this.accessionNumber==null) res++;
+		if (this.accessionNumber!=null) {
+			if (mirna.getAccessionNumber()==null) res++;
 			else if (!this.accessionNumber.equals(mirna.getAccessionNumber())) return -1;
 		}
-		if (mirna.getSequence()!=null) {
-			if (this.sequence==null) res++;
+		if (this.sequence!=null) {
+			if (mirna.getSequence()==null) res++;
 			else if (!this.sequence.equals(mirna.getSequence())) return -1;
 		}
-		if (mirna.getResource()!=null) {
-			if (this.resource==null) res++;
+		if (this.resource!=null) {
+			if (mirna.getResource()==null) res++;
 			else if (!this.resource.equals(mirna.getResource())) return -1;
 		}
 		return res;

@@ -21,7 +21,7 @@ CREATE TABLE mirna.mirna
 CREATE TABLE mirna.disease
 (
    pk               int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-   name             varchar(40) NOT NULL,
+   name             varchar(80) NOT NULL,
    disease_class    varchar(20)
 );
 
@@ -33,7 +33,7 @@ CREATE TABLE mirna.expression_data
    foldchange_max   varchar(20),
    provenance_id    varchar(20),
    provenance       varchar(20),
-   study_design     varchar(20),
+   study_design     varchar(40),
    method           varchar(40),
    treatment        varchar(20),
    evidence         varchar(80),

@@ -1,0 +1,7 @@
+- Arreglar sinónimos de diseases. Ej:
+  select * from mirna.disease where name like '%thyroid%'
+
+- Juntar tablas expression_data_involves_mirna y
+  expression_data_related_to_disease quizá con
+  expression_data.
+  Dependerá de si se combinan o no, varios ExpressionData.

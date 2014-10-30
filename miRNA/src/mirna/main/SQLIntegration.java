@@ -3,6 +3,7 @@ package mirna.main;
 import mirna.database.HMDD;
 import mirna.database.MiRCancer;
 import mirna.database.Mir2Disease;
+import mirna.database.Phenomir;
 
 public class SQLIntegration {
 	
@@ -17,7 +18,8 @@ public class SQLIntegration {
 		Mir2Disease mir2disease = new Mir2Disease();
 		mir2disease.insertIntoSQLModel();
 		
-
+		Phenomir phenomir = new Phenomir();
+		phenomir.insertIntoSQLModel();
 		
 	}
 

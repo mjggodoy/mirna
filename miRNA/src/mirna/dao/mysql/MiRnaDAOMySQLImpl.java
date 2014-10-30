@@ -71,11 +71,12 @@ public class MiRnaDAOMySQLImpl extends ModelDAOMySQLImpl implements MiRnaDAO {
 	@Override
 	public void update(MiRna miRnaToUpdate) throws MiRnaException {
 		DBConnection con = null;
+		String queryString = "";
 		try {
 			con = new DBConnectionMySQLImpl();
-			String queryTemplate = "update mirna.mirna set name=%s, accession_number=%s, "
-					+ "sequence=%s, resource=%s where pk=%d";
-			String queryString = String.format(queryTemplate,
+			String queryTemplate = "update mirna.mirna set name='%s', accession_number='%s', "
+					+ "sequence='%s', resource='%s' where pk=%d";
+			queryString = String.format(queryTemplate,
 					safe(miRnaToUpdate.getName()),
 					miRnaToUpdate.getAccessionNumber(),
 					miRnaToUpdate.getSequence(),
@@ -83,6 +84,7 @@ public class MiRnaDAOMySQLImpl extends ModelDAOMySQLImpl implements MiRnaDAO {
 					miRnaToUpdate.getPk());
 			con.update(queryString);
 		} catch (SQLException ex) {
+			System.err.println(queryString);
 			throw new MiRnaException("SQLException:" + ex.getMessage());
 		} finally {
 			if (con!=null) con.closeDBConnection();

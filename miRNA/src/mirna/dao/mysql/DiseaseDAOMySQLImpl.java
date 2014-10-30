@@ -67,16 +67,18 @@ public class DiseaseDAOMySQLImpl extends ModelDAOMySQLImpl implements DiseaseDAO
 	@Override
 	public void update(Disease diseaseToUpdate) throws MiRnaException {
 		DBConnection con = null;
+		String queryString = "";
 		try {
 			con = new DBConnectionMySQLImpl();
-			String queryTemplate = "update mirna.disease set name=%s, "
-					+ "disease_class=%s where pk=%d";
-			String queryString = String.format(queryTemplate,
+			String queryTemplate = "update mirna.disease set name='%s', "
+					+ "disease_class='%s' where pk=%d";
+			queryString = String.format(queryTemplate,
 					safe(diseaseToUpdate.getName()),
 					safe(diseaseToUpdate.getDiseaseClass()),
 					diseaseToUpdate.getPk());
 			con.update(queryString);
 		} catch (SQLException ex) {
+			System.err.println(queryString);
 			throw new MiRnaException("SQLException:" + ex.getMessage());
 		} finally {
 			if (con!=null) con.closeDBConnection();

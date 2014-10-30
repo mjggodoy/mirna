@@ -37,12 +37,12 @@ public class Disease extends ModelClass {
 
 	public int checkConflict(Disease disease) {
 		int res = 0;
-		if (disease.getName()!=null) {
-			if (this.name==null) res++; 
+		if (this.name!=null) {
+			if (disease.getName()==null) res++; 
 			else if (!this.name.equals(disease.getName())) return -1;
 		}
-		if (disease.getDiseaseClass() != null){
-			if (this.diseaseClass==null) res++;
+		if (this.diseaseClass != null){
+			if (disease.getDiseaseClass()==null) res++;
 			else if (!this.diseaseClass.equals(disease.getDiseaseClass())) return -1;
 		}
 		return res;

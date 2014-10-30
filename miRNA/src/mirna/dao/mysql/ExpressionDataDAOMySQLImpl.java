@@ -101,11 +101,11 @@ public class ExpressionDataDAOMySQLImpl extends ModelDAOMySQLImpl implements Exp
 		try {
 			con = new DBConnectionMySQLImpl();
 			
-			String queryTemplate = "update mirna.expression_data set title_reference=%s, "
-					+ "foldchange_min=%s, foldchange_max=%s, provenance_id=%s, "
-					+ "provenance=%s, study_design=%s, method=%s, treatment=%s,"
-					+ "evidence=%s, pubmed_id=%s, year=%s, description=%s,"
-					+ "cellular_line=%s, condition_=%s where pk=%d";
+			String queryTemplate = "update mirna.expression_data set title_reference='%s', "
+					+ "foldchange_min='%s', foldchange_max='%s', provenance_id='%s', "
+					+ "provenance='%s', study_design='%s', method='%s', treatment='%s',"
+					+ "evidence='%s', pubmed_id='%s', year='%s', description='%s',"
+					+ "cellular_line='%s', condition_='%s' where pk=%d";
 			String queryString = String.format(queryTemplate, 
 					dataExpressionToUpdate.getTitleReference(),
 					dataExpressionToUpdate.getFoldchangeMin(),
