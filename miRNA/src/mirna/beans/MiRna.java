@@ -2,7 +2,7 @@ package mirna.beans;
 
 public class MiRna extends ModelClass {
 	
-	private String name; //ok
+	protected String name; //ok
 //	private String journal;//ok X
 	private String accessionNumber; //ok
 //	private String subName; //ok X
@@ -12,7 +12,7 @@ public class MiRna extends ModelClass {
 //	private String GC_proportion; //ok
 //	private String chromosome; //ok
 //	private String version; //ok 
-	private String sequence; //ok
+	protected String sequence; //ok
 //	private String newName; //ok
 //	private String minimal_free_energy;//ok
 //	private String normalized_minimal_free_energy;//ok

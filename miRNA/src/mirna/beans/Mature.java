@@ -2,46 +2,20 @@ package mirna.beans;
 
 public class Mature extends MiRna {
 	
-	private String name; //ok
-	private String sequence; //ok
+	//private String name; //HEREDADO
+	//private String sequence; //HEREDADO
 	private String length; //ok
-	private String GC_proportion; //ok
+	private String gcProportion; //ok
 	
-	public Mature() {
-		super();
-		}
+	public Mature() { }
 	
-	
-	
-	
-
 	public Mature(int pk, String name, String sequence, String length,
-			String gC_proportion) {
-		super(pk);
+			String gcProportion) {
+		this.pk = pk;
 		this.name = name;
 		this.sequence = sequence;
 		this.length = length;
-		GC_proportion = gC_proportion;
-	}
-
-
-
-
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getSequence() {
-		return sequence;
-	}
-
-	public void setSequence(String sequence) {
-		this.sequence = sequence;
+		this.gcProportion = gcProportion;
 	}
 
 	public String getLength() {
@@ -52,14 +26,12 @@ public class Mature extends MiRna {
 		this.length = length;
 	}
 
-	public String getGC_proportion() {
-		return GC_proportion;
+	public String getGcProportion() {
+		return gcProportion;
 	}
 
-	public void setGC_proportion(String gC_proportion) {
-		GC_proportion = gC_proportion;
+	public void setGcProportion(String gcProportion) {
+		this.gcProportion = gcProportion;
 	}
-
 	
-
 }
