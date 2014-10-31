@@ -2,14 +2,9 @@ package mirna.beans;
 
 public class BiologicalProcess extends ModelClass {
 	
-	
-	
 	private String name;
 	
-	
-	public BiologicalProcess(){
-		super();
-	}
+	public BiologicalProcess() { }
 
 	public BiologicalProcess(int pk, String name) {
 		super(pk);
@@ -23,7 +18,5 @@ public class BiologicalProcess extends ModelClass {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	
 
 }
