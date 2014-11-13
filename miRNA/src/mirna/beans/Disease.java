@@ -13,12 +13,6 @@ public class Disease extends ModelClass {
 	
 	public Disease() {}
 	
-	public Disease(int pk, String name, String diseaseClass) {
-		super(pk);
-		this.name = name;
-		this.diseaseClass = diseaseClass;
-	}
-	
 	public String getName() {
 		return name;
 	}
@@ -50,7 +44,8 @@ public class Disease extends ModelClass {
 
 	@Override
 	public String toString() {
-		return "Disease [name=" + name + ", diseaseClass=" + diseaseClass + "]";
+		return "Disease [name=" + name + ", diseaseClass=" + diseaseClass
+				+ ", pk=" + pk + "]";
 	}
 	
 }

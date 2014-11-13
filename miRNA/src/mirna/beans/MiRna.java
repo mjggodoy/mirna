@@ -23,15 +23,17 @@ public class MiRna extends ModelClass {
 //	private String title_reference;//ok
 //	private String year;
 	
+	private Integer organismPk;
+	
 	public MiRna() {}
 	
-	public MiRna(int pk, String name, String accessionNumber, String sequence, String resource) {
-		super(pk);
-		this.name = name;
-		this.accessionNumber = accessionNumber;
-		this.sequence = sequence;
-		this.resource = resource;
-	}
+//	public MiRna(int pk, String name, String accessionNumber, String sequence, String resource) {
+//		super(pk);
+//		this.name = name;
+//		this.accessionNumber = accessionNumber;
+//		this.sequence = sequence;
+//		this.resource = resource;
+//	}
 	
 	public String getName() {
 		return name;
@@ -64,6 +66,14 @@ public class MiRna extends ModelClass {
 	public void setResource(String resource) {
 		this.resource = resource;
 	}
+	
+	public Integer getOrganismPk() {
+		return organismPk;
+	}
+
+	public void setOrganismPk(Integer organismPk) {
+		this.organismPk = organismPk;
+	}
 
 	public int checkConflict(MiRna mirna) {
 		int res = 0;
@@ -83,12 +93,18 @@ public class MiRna extends ModelClass {
 			if (mirna.getResource()==null) res++;
 			else if (!this.resource.equals(mirna.getResource())) return -1;
 		}
+		if (this.organismPk!=null) {
+			if (mirna.getOrganismPk()==null) res++;
+			else if (!this.organismPk.equals(mirna.getOrganismPk())) return -1;
+		}
 		return res;
 	}
 
 	@Override
 	public String toString() {
 		return "MiRna [name=" + name + ", accessionNumber=" + accessionNumber
-				+ ", sequence=" + sequence + ", resource=" + resource + "]";
+				+ ", sequence=" + sequence + ", resource=" + resource
+				+ ", organismPk=" + organismPk + ", pk=" + pk + "]";
 	}
+	
 }

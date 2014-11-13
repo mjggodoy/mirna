@@ -25,9 +25,10 @@ public class ExpressionDataDAOMySQLImpl extends ModelDAOMySQLImpl implements Exp
 					+ "title_reference, foldchange_min, foldchange_max,"
 					+ "provenance_id, provenance, study_design, method,"
 					+ "treatment, evidence, pubmed_id, year, description,"
-					+ "cellular_line, condition_) values "
+					+ "cellular_line, condition, mirna_pk, disease_pk,"
+					+ "environmental_factor_pk) values "
 					+ "('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s',"
-					+ "'%s', '%s', '%s', '%s', '%s', '%s')";
+					+ "'%s', '%s', '%s', '%s', '%s', '%s', %d, %d, %d)";
 			queryString = String.format(queryTemplate, 
 					newDataExpression.getTitleReference(),
 					newDataExpression.getFoldchangeMin(),
@@ -42,7 +43,10 @@ public class ExpressionDataDAOMySQLImpl extends ModelDAOMySQLImpl implements Exp
 					newDataExpression.getYear(),
 					safe(newDataExpression.getDescription()),
 					newDataExpression.getCellularLine(),
-					newDataExpression.getCondition());
+					newDataExpression.getCondition(),
+					newDataExpression.getMirnaPk(),
+					newDataExpression.getDiseasePk(),
+					newDataExpression.getEnviromentalFactorPk());
 			queryString = queryString.replaceAll("'null'", "null");
 			res = con.insert(queryString);
 		} catch (SQLException ex) {
@@ -68,22 +72,25 @@ public class ExpressionDataDAOMySQLImpl extends ModelDAOMySQLImpl implements Exp
 			dataExpressionList = new ArrayList<ExpressionData>();
 			
 			for (Map<String, Object> row : list) {
-				ExpressionData dataExpression = new ExpressionData(
-						(Integer) row.get("pk"),
-						(String) row.get("title_reference"),
-						(String) row.get("foldchange_min"),
-						(String) row.get("foldchange_max"),
-						(String) row.get("provenance_id"),
-						(String) row.get("provenance"),
-						(String) row.get("study_design"),
-						(String) row.get("method"),
-						(String) row.get("treatment"),
-						(String) row.get("evidence"),
-						(String) row.get("pubmed_id"),
-						(String) row.get("year"),
-						(String) row.get("description"),
-						(String) row.get("cellular_line"),
-						(String) row.get("condition_"));
+				ExpressionData dataExpression = new ExpressionData();
+				dataExpression.setPk((Integer) row.get("pk"));
+				dataExpression.setTitleReference((String) row.get("title_reference"));
+				dataExpression.setFoldchangeMin((String) row.get("foldchange_min"));
+				dataExpression.setFoldchangeMax((String) row.get("foldchange_max"));
+				dataExpression.setProvenanceId((String) row.get("provenance_id"));
+				dataExpression.setProvenance((String) row.get("provenance"));
+				dataExpression.setStudyDesign((String) row.get("study_design"));
+				dataExpression.setMethod((String) row.get("method"));
+				dataExpression.setTreatment((String) row.get("treatment"));
+				dataExpression.setEvidence((String) row.get("evidence"));
+				dataExpression.setPubmedId((String) row.get("pubmed_id"));
+				dataExpression.setYear((String) row.get("year"));
+				dataExpression.setDescription((String) row.get("description"));
+				dataExpression.setCellularLine((String) row.get("cellular_line"));
+				dataExpression.setCondition((String) row.get("condition"));
+				dataExpression.setMirnaPk((Integer) row.get("mirna_pk"));
+				dataExpression.setDiseasePk((Integer) row.get("disease_pk"));
+				dataExpression.setEnviromentalFactorPk((Integer) row.get("enviromental_factor_pk"));
 
 				dataExpressionList.add(dataExpression);
 			}

@@ -23,32 +23,14 @@ public class ExpressionData extends ModelClass {
 //	private String reference; //ok
 //	private String resource; //ok
 	
+	private Integer mirnaPk;
+	private Integer diseasePk;
+	private Integer enviromentalFactorPk;
+	
 	public ExpressionData() {
 		super();
 	}
 	
-	public ExpressionData(int pk, String titleReference, String foldchangeMin,
-			String foldchangeMax, String provenanceId, String provenance,
-			String studyDesign, String method, String treatment, String evidence,
-			String pubmedId, String year, String description, String cellularLine,
-			String condition) {
-		super(pk);
-		this.titleReference = titleReference;
-		this.foldchangeMin = foldchangeMin;
-		this.foldchangeMax = foldchangeMax;
-		this.provenanceId = provenanceId;
-		this.provenance = provenance;
-		this.studyDesign = studyDesign;
-		this.method = method;
-		this.treatment = treatment;
-		this.evidence = evidence;
-		this.pubmedId = pubmedId;
-		this.year = year;
-		this.description = description;
-		this.cellularLine = cellularLine;
-		this.condition = condition;
-	}
-
 	public String getTitleReference() {
 		return titleReference;
 	}
@@ -160,6 +142,30 @@ public class ExpressionData extends ModelClass {
 	public void setCondition(String condition) {
 		this.condition = condition;
 	}
+	
+	public Integer getMirnaPk() {
+		return mirnaPk;
+	}
+
+	public void setMirnaPk(Integer mirnaPk) {
+		this.mirnaPk = mirnaPk;
+	}
+
+	public Integer getDiseasePk() {
+		return diseasePk;
+	}
+
+	public void setDiseasePk(Integer diseasePk) {
+		this.diseasePk = diseasePk;
+	}
+
+	public Integer getEnviromentalFactorPk() {
+		return enviromentalFactorPk;
+	}
+
+	public void setEnviromentalFactorPk(Integer enviromentalFactorPk) {
+		this.enviromentalFactorPk = enviromentalFactorPk;
+	}
 
 	@Override
 	public String toString() {
@@ -171,7 +177,9 @@ public class ExpressionData extends ModelClass {
 				+ ", evidence=" + evidence + ", pubmedId=" + pubmedId
 				+ ", year=" + year + ", description=" + description
 				+ ", cellularLine=" + cellularLine + ", condition=" + condition
-				+ "]";
+				+ ", mirnaPk=" + mirnaPk + ", diseasePk=" + diseasePk
+				+ ", enviromentalFactorPk=" + enviromentalFactorPk + ", pk="
+				+ pk + "]";
 	}
-	
+
 }

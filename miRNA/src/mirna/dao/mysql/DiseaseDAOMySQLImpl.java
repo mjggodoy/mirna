@@ -49,11 +49,10 @@ public class DiseaseDAOMySQLImpl extends ModelDAOMySQLImpl implements DiseaseDAO
 			diseaseList = new ArrayList<Disease>();
 			
 			for (Map<String, Object> row : list) {
-				Disease disease = new Disease(
-						(Integer) row.get("pk"),
-						(String) row.get("name"),
-						(String) row.get("disease_class"));
-
+				Disease disease = new Disease();
+				disease.setPk((Integer) row.get("pk"));
+				disease.setName((String) row.get("name"));
+				disease.setDiseaseClass((String) row.get("disease_class"));
 				diseaseList.add(disease);
 			}
 		} catch (SQLException ex) {
@@ -114,10 +113,10 @@ public class DiseaseDAOMySQLImpl extends ModelDAOMySQLImpl implements DiseaseDAO
 			
 			if (list.size()==1) {
 				Map<String, Object> row = list.get(0);
-				disease = new Disease(
-						(Integer) row.get("pk"),
-						(String) row.get("name"),
-						(String) row.get("disease_class"));
+				disease = new Disease();
+				disease.setPk((Integer) row.get("pk"));
+				disease.setName((String) row.get("name"));
+				disease.setDiseaseClass((String) row.get("disease_class"));
 			}
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
@@ -140,10 +139,10 @@ public class DiseaseDAOMySQLImpl extends ModelDAOMySQLImpl implements DiseaseDAO
 			queryString = String.format(queryTemplate, safe(name));
 			list = con.query(queryString);
 			for (Map<String, Object> row : list) {
-				res = new Disease(
-						(Integer) row.get("pk"),
-						(String) row.get("name"),
-						(String) row.get("disease_class"));
+				res = new Disease();
+				res.setPk((Integer) row.get("pk"));
+				res.setName((String) row.get("name"));
+				res.setDiseaseClass((String) row.get("disease_class"));
 				diseaseList.add(res);
 			}
 			if (diseaseList.size()>1) {

@@ -18,6 +18,8 @@ public class Gene extends ModelClass {
 	private String kegg_id;//ok
 	private String arm;//ok
 	private String distance;//OK
+	private String pubmedId;
+	private String journal;
 	
 	public Gene() {		
 		

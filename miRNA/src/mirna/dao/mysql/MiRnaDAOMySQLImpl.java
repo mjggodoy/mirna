@@ -21,13 +21,14 @@ public class MiRnaDAOMySQLImpl extends ModelDAOMySQLImpl implements MiRnaDAO {
 		try {
 			con = new DBConnectionMySQLImpl();
 			String queryTemplate = "insert into mirna.mirna ("
-					+ "name, accession_number, sequence, resource) values "
-					+ "('%s', '%s', '%s', '%s')";
+					+ "name, accession_number, sequence, resource, organism_pk) values "
+					+ "('%s', '%s', '%s', '%s', %d)";
 			String queryString = String.format(queryTemplate,
 					safe(newMiRna.getName()), 
 					newMiRna.getAccessionNumber(),
 					newMiRna.getSequence(),
-					newMiRna.getResource());
+					newMiRna.getResource(),
+					newMiRna.getOrganismPk());
 			queryString = queryString.replaceAll("'null'", "null");
 			res = con.insert(queryString);
 		} catch (SQLException ex) {
@@ -51,13 +52,13 @@ public class MiRnaDAOMySQLImpl extends ModelDAOMySQLImpl implements MiRnaDAO {
 			miRnaList = new ArrayList<MiRna>();
 			
 			for (Map<String, Object> row : list) {
-				MiRna miRna = new MiRna(
-						(Integer) row.get("pk"),
-						(String) row.get("name"),
-						(String) row.get("accession_number"),
-						(String) row.get("sequence"),
-						(String) row.get("resource"));
-
+				MiRna miRna = new MiRna();
+				miRna.setPk((Integer) row.get("pk"));
+				miRna.setName((String) row.get("name"));
+				miRna.setAccessionNumber((String) row.get("accession_number"));
+				miRna.setSequence((String) row.get("sequence"));
+				miRna.setResource((String) row.get("resource"));
+				miRna.setOrganismPk((Integer) row.get("organism_pk"));
 				miRnaList.add(miRna);
 			}
 		} catch (SQLException ex) {
@@ -75,12 +76,13 @@ public class MiRnaDAOMySQLImpl extends ModelDAOMySQLImpl implements MiRnaDAO {
 		try {
 			con = new DBConnectionMySQLImpl();
 			String queryTemplate = "update mirna.mirna set name='%s', accession_number='%s', "
-					+ "sequence='%s', resource='%s' where pk=%d";
+					+ "sequence='%s', resource='%s', organism_pk=%d where pk=%d";
 			queryString = String.format(queryTemplate,
 					safe(miRnaToUpdate.getName()),
 					miRnaToUpdate.getAccessionNumber(),
 					miRnaToUpdate.getSequence(),
 					miRnaToUpdate.getResource(),
+					miRnaToUpdate.getOrganismPk(),
 					miRnaToUpdate.getPk());
 			con.update(queryString);
 		} catch (SQLException ex) {
@@ -120,12 +122,13 @@ public class MiRnaDAOMySQLImpl extends ModelDAOMySQLImpl implements MiRnaDAO {
 			
 			if (list.size()==1) {
 				Map<String, Object> row = list.get(0);
-				miRna = new MiRna(
-						(Integer) row.get("pk"),
-						(String) row.get("name"),
-						(String) row.get("accession_number"),
-						(String) row.get("sequence"),
-						(String) row.get("resource"));
+				miRna = new MiRna();
+				miRna.setPk((Integer) row.get("pk"));
+				miRna.setName((String) row.get("name"));
+				miRna.setAccessionNumber((String) row.get("accession_number"));
+				miRna.setSequence((String) row.get("sequence"));
+				miRna.setResource((String) row.get("resource"));
+				miRna.setOrganismPk((Integer) row.get("organism_pk"));
 			}
 		} catch (SQLException ex) {
 			throw new MiRnaException("SQLException:" + ex.getMessage());
@@ -147,12 +150,13 @@ public class MiRnaDAOMySQLImpl extends ModelDAOMySQLImpl implements MiRnaDAO {
 			String queryString = String.format(queryTemplate, name);
 			list = con.query(queryString);
 			for (Map<String, Object> row : list) {
-				res = new MiRna(
-						(Integer) row.get("pk"),
-						(String) row.get("name"),
-						(String) row.get("accession_number"),
-						(String) row.get("sequence"),
-						(String) row.get("resource"));
+				res = new MiRna();
+				res.setPk((Integer) row.get("pk"));
+				res.setName((String) row.get("name"));
+				res.setAccessionNumber((String) row.get("accession_number"));
+				res.setSequence((String) row.get("sequence"));
+				res.setResource((String) row.get("resource"));
+				res.setOrganismPk((Integer) row.get("organism_pk"));
 				miRnaList.add(res);
 			}
 			if (miRnaList.size()>1) {
