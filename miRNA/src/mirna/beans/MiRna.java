@@ -6,15 +6,17 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
+import mirna.exception.ConflictException;
+
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "mirna")
 public class MiRna extends ModelClass {
 	
-	@Column(name = "name", nullable = false, length = 20)
+	@Column(name = "name", nullable = false, length = 20, unique = true)
 	protected String name;
 	
-	@Column(name = "accession_number", nullable = true, length = 45, unique = true)
+	@Column(name = "accession_number", nullable = true, length = 45)
 	private String accessionNumber;
 	
 	@Column(name = "sequence", nullable = true, length = 45)
@@ -118,12 +120,47 @@ public class MiRna extends ModelClass {
 		}
 		return res;
 	}
+	
+	public void update(MiRna mirna) throws ConflictException {
+		this.update(mirna, true);
+	}
+	
+	public void update(MiRna mirna, boolean checkConflict) throws ConflictException {
+		
+		if (checkConflict) {
+			if (this.checkConflict(mirna)==-1) throw new ConflictException(this, mirna);
+		}
+		
+		if (mirna.getName()!=null) this.name = mirna.getName();
+		if (mirna.getAccessionNumber()!=null) this.accessionNumber = mirna.getAccessionNumber();
+		if (mirna.getSequence()!=null) this.sequence = mirna.getSequence();
+		if (mirna.getResource()!=null) this.resource = mirna.getResource();
+		if (mirna.getOrganismPk()!=null) this.organismPk = mirna.getOrganismPk();
+		
+	}
 
 	@Override
 	public String toString() {
 		return "MiRna [name=" + name + ", accessionNumber=" + accessionNumber
 				+ ", sequence=" + sequence + ", resource=" + resource
 				+ ", organismPk=" + organismPk + ", pk=" + pk + "]";
+	}
+	
+	public static void main(String[] args) throws Exception {
+		
+		MiRna m1 = new MiRna();
+		MiRna m2 = new MiRna();
+		m1.setAccessionNumber("caca");
+		m2.setName("Pua");
+		m2.setAccessionNumber("cac");
+		
+		System.out.println(m1);
+		System.out.println(m2);
+		
+		m1.update(m2);
+		
+		System.out.println(m1);
+		
 	}
 	
 }

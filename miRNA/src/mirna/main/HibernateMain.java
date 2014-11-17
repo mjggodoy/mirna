@@ -18,7 +18,7 @@ public class HibernateMain {
 
 		
         MiRna mirna = new MiRna();
-        mirna.setName("hibernate3");
+        mirna.setName("hibernate4");
         mirna.setAccessionNumber("numero");
         
         //start transaction
@@ -29,16 +29,23 @@ public class HibernateMain {
         System.out.println(mirna);
 		
 		Object object = session.createCriteria(MiRna.class)
-			.add( Restrictions.eq("name", "hibernate") )
+			.add( Restrictions.eq("name", "hibernate2") )
 			.uniqueResult();
 		
+		System.out.println(object!=null);
+		
+		Object object1 = session.createCriteria(MiRna.class)
+				.add( Restrictions.eq("name", "pua") )
+				.uniqueResult();
+		
+		System.out.println(object1!=null);
 		
 		MiRna mirna1 = (MiRna) object;
 		System.out.println("Selected MiRna details");
 		System.out.println(mirna1);
 		//Update Student Details
 		System.out.println("Updating MiRna details ");
-		mirna1.setName("hibernate2");
+		mirna1.setName("hibernate3");
 		session.update(mirna1);
 		
 		
