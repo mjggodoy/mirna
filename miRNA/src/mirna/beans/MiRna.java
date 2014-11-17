@@ -1,10 +1,27 @@
 package mirna.beans;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "mirna")
 public class MiRna extends ModelClass {
 	
-	protected String name; //ok
+	@Column(name = "name", nullable = false, length = 20)
+	protected String name;
+	
+	@Column(name = "accession_number", nullable = true, length = 45)
+	private String accessionNumber;
+	
+	@Column(name = "sequence", nullable = false, length = 45)
+	protected String sequence;
+	
+	@Column(name = "resource", nullable = false, length = 45)
+	private String resource;
+	
 //	private String journal;//ok X
-	private String accessionNumber; //ok
+	
 //	private String subName; //ok X
 //	private String provenance; //ok X
 //	private String length;//ok X
@@ -12,13 +29,11 @@ public class MiRna extends ModelClass {
 //	private String GC_proportion; //ok
 //	private String chromosome; //ok
 //	private String version; //ok 
-	protected String sequence; //ok
 //	private String newName; //ok
 //	private String minimal_free_energy;//ok
 //	private String normalized_minimal_free_energy;//ok
 //	private String polarity;//ok
 //	private String pubmedId ;//ok
-	private String resource;//ok
 //	private String start_strand;//ok
 //	private String title_reference;//ok
 //	private String year;
