@@ -2,9 +2,12 @@ package mirna.beans;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "mirna")
 public class MiRna extends ModelClass {
 	
@@ -14,11 +17,14 @@ public class MiRna extends ModelClass {
 	@Column(name = "accession_number", nullable = true, length = 45)
 	private String accessionNumber;
 	
-	@Column(name = "sequence", nullable = false, length = 45)
+	@Column(name = "sequence", nullable = true, length = 45)
 	protected String sequence;
 	
-	@Column(name = "resource", nullable = false, length = 45)
+	@Column(name = "resource", nullable = true, length = 45)
 	private String resource;
+	
+	@Column(name = "organism_pk", nullable = true, length = 45)
+	private Integer organismPk;
 	
 //	private String journal;//ok X
 	
@@ -37,8 +43,6 @@ public class MiRna extends ModelClass {
 //	private String start_strand;//ok
 //	private String title_reference;//ok
 //	private String year;
-	
-	private Integer organismPk;
 	
 	public MiRna() {}
 	

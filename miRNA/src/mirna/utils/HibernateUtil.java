@@ -1,5 +1,6 @@
 package mirna.utils;
 
+import java.io.File;
 import java.util.Properties;
 
 import org.hibernate.SessionFactory;
@@ -43,7 +44,7 @@ public class HibernateUtil {
         try {
             // Create the SessionFactory from hibernate.cfg.xml
             Configuration configuration = new Configuration();
-            configuration.configure("hibernate-annotation.cfg.xml");
+            configuration.configure(new File("hibernate-annotation.cfg.xml"));
             System.out.println("Hibernate Annotation Configuration loaded");
              
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();

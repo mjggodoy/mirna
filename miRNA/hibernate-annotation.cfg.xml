@@ -6,9 +6,9 @@
  <session-factory>
   <!-- Database connection properties - Driver, URL, user, password -->
   <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-  <property name="hibernate.connection.url">jdbc:mysql://localhost/TestDB</property>
+  <property name="hibernate.connection.url">jdbc:mysql://localhost/mirna</property>
   <property name="hibernate.connection.username">mirna</property>
-  <property name="hibernate.connection.password">r2d2c3po</property>
+  <property name="hibernate.connection.password">mirna</property>
   <!-- Connection Pool Size -->
   <property name="hibernate.connection.pool_size">1</property>
   
