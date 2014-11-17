@@ -11,7 +11,7 @@ public class ModelClass {
 	
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name="ID", nullable=false, unique=true, length=11)
+    @Column(name="pk", nullable=false, unique=true, length=11)
 	protected int pk;
 	
 	public ModelClass() {}
