@@ -29,7 +29,6 @@ public class MiRna extends ModelClass {
 	private Integer organismPk;
 	
 //	private String journal;//ok X
-	
 //	private String subName; //ok X
 //	private String provenance; //ok X
 //	private String length;//ok X
@@ -47,14 +46,6 @@ public class MiRna extends ModelClass {
 //	private String year;
 	
 	public MiRna() {}
-	
-//	public MiRna(int pk, String name, String accessionNumber, String sequence, String resource) {
-//		super(pk);
-//		this.name = name;
-//		this.accessionNumber = accessionNumber;
-//		this.sequence = sequence;
-//		this.resource = resource;
-//	}
 	
 	public String getName() {
 		return name;
@@ -98,6 +89,10 @@ public class MiRna extends ModelClass {
 
 	public int checkConflict(MiRna mirna) {
 		int res = 0;
+		if (this.pk!=null) {
+			if (mirna.getPk()==null) res++;
+			else if (!this.pk.equals(mirna.getPk())) return -1;
+		}
 		if (this.name!=null) {
 			if (mirna.getName()==null) res++;
 			else if (!this.name.equals(mirna.getName())) return -1;
@@ -131,6 +126,7 @@ public class MiRna extends ModelClass {
 			if (this.checkConflict(mirna)==-1) throw new ConflictException(this, mirna);
 		}
 		
+		if (mirna.getPk()!=null) this.pk = mirna.getPk();
 		if (mirna.getName()!=null) this.name = mirna.getName();
 		if (mirna.getAccessionNumber()!=null) this.accessionNumber = mirna.getAccessionNumber();
 		if (mirna.getSequence()!=null) this.sequence = mirna.getSequence();

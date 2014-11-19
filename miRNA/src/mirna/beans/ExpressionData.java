@@ -1,31 +1,73 @@
 package mirna.beans;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.Table;
+
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "expression_data")
 public class ExpressionData extends ModelClass {
 
-	private String titleReference;//ok
-//	private String phenomicId;//ok
-//	private String mirenvironmentID;
-	private String foldchangeMin; //ok
-	private String foldchangeMax; //ok
-	private String provenanceId; //ok
+	@Column(name = "title_reference", nullable = true, length = 300)
+	private String titleReference;
+	
+	@Column(name = "foldchange_min", nullable = true, length = 20)
+	private String foldchangeMin;
+	
+	@Column(name = "foldchange_max", nullable = true, length = 20)
+	private String foldchangeMax;
+	
+	@Column(name = "provenance_id", nullable = true, length = 10)
+	private String provenanceId;
+	
+	@Column(name = "provenance", nullable = false, length = 40)
 	private String provenance;
-	private String studyDesign;//ok
-	private String method; //ok
-	private String treatment; //ok
-//	private String support;//ok
-	private String evidence;// ok
-	private String pubmedId;//ok
-	private String year;//ok
-	private String description; //ok
-	private String cellularLine; //ok
-	private String condition; //ok
+	
+	@Column(name = "study_design", nullable = true, length = 20)
+	private String studyDesign;
+	
+	@Column(name = "method", nullable = true, length = 40)
+	private String method;
+	
+	@Column(name = "treatment", nullable = true, length = 400)
+	private String treatment;
+	
+	@Column(name = "evidence", nullable = true, length = 80)
+	private String evidence;
+	
+	@Column(name = "pubmed_id", nullable = true, length = 10)
+	private String pubmedId;
+	
+	@Column(name = "year", nullable = true, length = 4)
+	private String year;
+	
+	@Column(name = "description", nullable = true, length = 1600)
+	private String description;
+	
+	@Column(name = "cellular_line", nullable = true, length = 400)
+	private String cellularLine;
+	
+	@Column(name = "condition_", nullable = true, length = 200)
+	private String condition;
+	
+	@Column(name = "mirna_pk", nullable = false, length = 20)
+	private Integer mirnaPk;
+	
+	@Column(name = "disease_pk", nullable = true, length = 20)
+	private Integer diseasePk;
+	
+	@Column(name = "environmental_factor_pk", nullable = true, length = 20)
+	private Integer environmentalFactorPk;
+	
 //	private String journal; //ok
 //	private String reference; //ok
 //	private String resource; //ok
-	
-	private Integer mirnaPk;
-	private Integer diseasePk;
-	private Integer enviromentalFactorPk;
+//	private String phenomicId;//ok
+//	private String mirenvironmentID;
+//	private String support;//ok
 	
 	public ExpressionData() {
 		super();
@@ -159,12 +201,12 @@ public class ExpressionData extends ModelClass {
 		this.diseasePk = diseasePk;
 	}
 
-	public Integer getEnviromentalFactorPk() {
-		return enviromentalFactorPk;
+	public Integer getEnvironmentalFactorPk() {
+		return environmentalFactorPk;
 	}
 
-	public void setEnviromentalFactorPk(Integer enviromentalFactorPk) {
-		this.enviromentalFactorPk = enviromentalFactorPk;
+	public void setEnvironmentalFactorPk(Integer environmentalFactorPk) {
+		this.environmentalFactorPk = environmentalFactorPk;
 	}
 
 	@Override
@@ -178,7 +220,7 @@ public class ExpressionData extends ModelClass {
 				+ ", year=" + year + ", description=" + description
 				+ ", cellularLine=" + cellularLine + ", condition=" + condition
 				+ ", mirnaPk=" + mirnaPk + ", diseasePk=" + diseasePk
-				+ ", enviromentalFactorPk=" + enviromentalFactorPk + ", pk="
+				+ ", environmentalFactorPk=" + environmentalFactorPk + ", pk="
 				+ pk + "]";
 	}
 

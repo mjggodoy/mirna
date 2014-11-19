@@ -24,5 +24,7 @@
  
   <!-- mapping file, we can use Bean annotations too -->
   <mapping class="mirna.beans.MiRna" />
+  <mapping class="mirna.beans.Disease" />
+  <mapping class="mirna.beans.ExpressionData" />
  </session-factory>
 </hibernate-configuration>

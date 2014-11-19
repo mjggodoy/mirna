@@ -11,13 +11,6 @@ import java.sql.Statement;
 import mirna.beans.Disease;
 import mirna.beans.ExpressionData;
 import mirna.beans.MiRna;
-import mirna.dao.DiseaseDAO;
-import mirna.dao.ExpressionDataDAO;
-import mirna.dao.MiRnaDAO;
-import mirna.dao.mysql.DiseaseDAOMySQLImpl;
-import mirna.dao.mysql.ExpressionDataDAOMySQLImpl;
-import mirna.dao.mysql.MiRnaDAOMySQLImpl;
-import mirna.exception.MiRnaException;
 import mirna.utils.HibernateUtil;
 
 import org.apache.commons.lang.StringUtils;
@@ -140,10 +133,10 @@ public class MiRCancer implements IMirnaDatabase {
 			int count = 0;
 			while (rs.next()) {
 				
-				String cancer = rs.getString("cancer");
-				String mirId = rs.getString("mirId");
-				String evidence = rs.getString("profile");
-				String pubmedArticle = rs.getString("pubmed_article");
+				String cancer = rs.getString("cancer").trim();
+				String mirId = rs.getString("mirId").trim();
+				String evidence = rs.getString("profile").trim();
+				String pubmedArticle = rs.getString("pubmed_article").trim();
 				
 				MiRna miRna = new MiRna();
 				miRna.setName(mirId);
@@ -151,63 +144,45 @@ public class MiRCancer implements IMirnaDatabase {
 				Disease disease = new Disease();
 				disease.setName(cancer);
 				
-				ExpressionData dataExpression = new ExpressionData();
-				dataExpression.setDescription(pubmedArticle);
-				dataExpression.setEvidence(evidence);
-				dataExpression.setProvenance("miRCancer");
+				ExpressionData expressionData = new ExpressionData();
+				expressionData.setDescription(pubmedArticle);
+				expressionData.setEvidence(evidence);
+				expressionData.setProvenance("miRCancer");
 				
 				// Inserta MiRna (o recupera su id. si ya existe)
 				Object oldMiRna = session.createCriteria(MiRna.class)
 						.add( Restrictions.eq("name", miRna.getName()) )
 						.uniqueResult();
-//				MiRna oldMiRna = miRnaDAO.findByName(miRna.getName());
 				if (oldMiRna==null) {
 					session.save(miRna);
-//					int key = miRnaDAO.create(miRna);
-//					miRna.setPk(key);
-					session.flush();  // to get the Pk
+					session.flush();  // to get the PK
 				} else {
 					MiRna miRnaToUpdate = (MiRna) oldMiRna;
 					miRnaToUpdate.update(miRna);
-//					miRna.setPk(oldMiRna.getPk());
-//					int conflict = miRna.checkConflict(oldMiRna);
-//					if (conflict > 0) {
-//						miRnaDAO.update(miRna);
-//					} else if (conflict == -1){
-//						String msg = "Conflicto detectado!"
-//								+ "\nEntrada en BD: " + oldMiRna
-//								+ "\nEntrada nueva: " + miRna;
-//						throw new MiRnaException(msg);
-//					}
 					session.update(miRnaToUpdate);
-					
+					miRna = miRnaToUpdate;
 				}
 				
-//				// Inserta Disease (o recupera su id. si ya existe)
-//				Disease oldDisease = diseaseDAO.findByName(disease.getName());
-//				if (oldDisease==null) {
-//					int key = diseaseDAO.create(disease);
-//					disease.setPk(key);
-//				} else {
-//					disease.setPk(oldDisease.getPk());
-//					int conflict = disease.checkConflict(oldDisease);
-//					if (conflict > 0) {
-//						diseaseDAO.update(disease);
-//					} else if (conflict == -1){
-//						String msg = "Conflicto detectado!"
-//								+ "\nEntrada en BD: " + oldDisease
-//								+ "\nEntrada nueva: " + disease;
-//						throw new MiRnaException(msg);
-//					}
-//					
-//				}
-//				
-//				// Inserta nueva DataExpression
-//				// (y la relaciona con el MiRna y Disease correspondiente)
-//				int dataExpressionId = dataExpressionDAO.create(dataExpression);
-//				dataExpressionDAO.newMiRnaInvolved(dataExpressionId, miRna.getPk());
-//				dataExpressionDAO.newRelatedDisease(dataExpressionId, disease.getPk());
-//				// DataExpression igual (?)
+				// Inserta Disease (o recupera su id. si ya existe)
+				Object oldDisease = session.createCriteria(Disease.class)
+						.add( Restrictions.eq("name", disease.getName()) )
+						.uniqueResult();
+				if (oldDisease==null) {
+					session.save(disease);
+					session.flush(); // to get the PK
+				} else {
+					Disease diseaseToUpdate = (Disease) oldDisease;
+					diseaseToUpdate.update(disease);
+					session.update(diseaseToUpdate);
+					disease = diseaseToUpdate;
+				}
+				
+				// Inserta nueva DataExpression
+				// (y la relaciona con el MiRna y Disease correspondiente)
+				expressionData.setMirnaPk(miRna.getPk());
+				expressionData.setDiseasePk(disease.getPk());
+				session.save(expressionData);
+				// ExpressionData igual (?)
 				
 				count++;
 				if (count%100==0) {

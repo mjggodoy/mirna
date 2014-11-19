@@ -12,19 +12,19 @@ public class ModelClass {
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="pk", nullable=false, unique=true, length=11)
-	protected int pk;
+	protected Integer pk;
 	
 	public ModelClass() {}
 	
-	public ModelClass(int pk) {
+	public ModelClass(Integer pk) {
 		this.pk = pk;
 	}
 	
-	public int getPk() {
+	public Integer getPk() {
 		return pk;
 	}
 	
-	public void setPk(int pk) {
+	public void setPk(Integer pk) {
 		this.pk = pk;
 	}
 	
