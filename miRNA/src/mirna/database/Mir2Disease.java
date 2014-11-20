@@ -13,15 +13,13 @@ import java.sql.Statement;
 import mirna.beans.Disease;
 import mirna.beans.ExpressionData;
 import mirna.beans.MiRna;
-import mirna.dao.DiseaseDAO;
-import mirna.dao.ExpressionDataDAO;
-import mirna.dao.MiRnaDAO;
-import mirna.dao.mysql.DiseaseDAOMySQLImpl;
-import mirna.dao.mysql.ExpressionDataDAOMySQLImpl;
-import mirna.dao.mysql.MiRnaDAOMySQLImpl;
-import mirna.exception.MiRnaException;
+import mirna.utils.HibernateUtil;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 
 /**
  * Código para procesar los datos de Mir2Disease
@@ -114,6 +112,13 @@ public class Mir2Disease implements IMirnaDatabase {
 		String line = null;
 		String[] tokens = null;
 		
+		//Get Session
+		SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
+		Session session = sessionFactory.getCurrentSession();
+				
+		//start transaction
+		Transaction tx = session.beginTransaction();
+		
 		try {
 			con = DriverManager.getConnection(url, user, password);
 			Statement stmt = (Statement) con.createStatement();
@@ -126,16 +131,9 @@ public class Mir2Disease implements IMirnaDatabase {
 			// execute the query, and get a java resultset
 			ResultSet rs = stmt.executeQuery(query);
 			
-			MiRnaDAO miRnaDAO = new MiRnaDAOMySQLImpl();
-			DiseaseDAO diseaseDAO = new DiseaseDAOMySQLImpl();
-			ExpressionDataDAO dataExpressionDAO = new ExpressionDataDAOMySQLImpl();
-			
 			// iterate through the java resultset
 			int count = 0;
 			while (rs.next()) {
-				
-				count++;
-				if (count%100==0) System.out.println(count);
 				
 //				mirna -> miRNA.name
 //				disease  -> Disease.name
@@ -144,13 +142,12 @@ public class Mir2Disease implements IMirnaDatabase {
 //				date -> ExpressionData.year
 //				description -> ExpressionData.description
 				
-				//int pk = rs.getInt("pk");
 				String mirna = rs.getString("mirna").toLowerCase().trim();
 				String diseaseField = rs.getString("disease").toLowerCase().trim();
-				String evidence = rs.getString("expression");
-				String method = rs.getString("method");
-				String year = rs.getString("date");
-				String description = rs.getString("reference");
+				String evidence = rs.getString("expression").trim();
+				String method = rs.getString("method").trim();
+				String year = rs.getString("date").trim();
+				String description = rs.getString("reference").trim();
 				
 				MiRna miRna = new MiRna();
 				miRna.setName(mirna);
@@ -166,49 +163,46 @@ public class Mir2Disease implements IMirnaDatabase {
 				ed.setProvenance("miR2Disease");
 				
 				// Inserta MiRna (o recupera su id. si ya existe)
-				MiRna oldMiRna = miRnaDAO.findByName(miRna.getName());
+				Object oldMiRna = session.createCriteria(MiRna.class)
+						.add( Restrictions.eq("name", miRna.getName()) )
+						.uniqueResult();
 				if (oldMiRna==null) {
-					int key = miRnaDAO.create(miRna);
-					miRna.setPk(key);
+					session.save(miRna);
+					session.flush();  // to get the PK
 				} else {
-					miRna.setPk(oldMiRna.getPk());
-					int conflict = miRna.checkConflict(oldMiRna);
-					if (conflict > 0) {
-						//System.out.println(miRna);
-						//System.out.println(oldMiRna);
-						miRnaDAO.update(miRna);
-					} else if (conflict == -1){
-						String msg = "Conflicto detectado!"
-								+ "\nEntrada en BD: " + oldMiRna
-								+ "\nEntrada nueva: " + miRna;
-						throw new MiRnaException(msg);
-					}
+					MiRna miRnaToUpdate = (MiRna) oldMiRna;
+					miRnaToUpdate.update(miRna);
+					session.update(miRnaToUpdate);
+					miRna = miRnaToUpdate;
 				}
 				
 				// Inserta Disease (o recupera su id. si ya existe)
-				Disease oldDisease = diseaseDAO.findByName(disease.getName());
+				Object oldDisease = session.createCriteria(Disease.class)
+						.add( Restrictions.eq("name", disease.getName()) )
+						.uniqueResult();
 				if (oldDisease==null) {
-					int key = diseaseDAO.create(disease);
-					disease.setPk(key);
+					session.save(disease);
+					session.flush(); // to get the PK
 				} else {
-					disease.setPk(oldDisease.getPk());
-					int conflict = disease.checkConflict(oldDisease);
-					if (conflict > 0) {
-						diseaseDAO.update(disease);
-					} else if (conflict == -1){
-						String msg = "Conflicto detectado!"
-								+ "\nEntrada en BD: " + oldDisease
-								+ "\nEntrada nueva: " + disease;
-						throw new MiRnaException(msg);
-					}
+					Disease diseaseToUpdate = (Disease) oldDisease;
+					diseaseToUpdate.update(disease);
+					session.update(diseaseToUpdate);
+					disease = diseaseToUpdate;
 				}
 				
 				// Inserta nueva DataExpression
 				// (y la relaciona con el MiRna y Disease correspondiente)
-				int dataExpressionId = dataExpressionDAO.create(ed);
-				dataExpressionDAO.newMiRnaInvolved(dataExpressionId, miRna.getPk());
-				dataExpressionDAO.newRelatedDisease(dataExpressionId, disease.getPk());
-				// DataExpression igual (?)
+				ed.setMirnaPk(miRna.getPk());
+				ed.setDiseasePk(disease.getPk());
+				session.save(ed);
+				// ExpressionData igual (?)
+				
+				count++;
+				if (count%100==0) {
+					System.out.println(count);
+					session.flush();
+			        session.clear();
+				}
 				
 			}
 			stmt.close();
@@ -224,6 +218,9 @@ public class Mir2Disease implements IMirnaDatabase {
 		} finally {
 			if (con!=null) con.close();
 		}
+		
+		tx.commit();
+		sessionFactory.close();
 		
 	}
 

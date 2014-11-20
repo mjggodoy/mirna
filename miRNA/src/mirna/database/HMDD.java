@@ -114,7 +114,7 @@ public class HMDD implements IMirnaDatabase {
 		Session session = sessionFactory.getCurrentSession();
 		
 		//start transaction
-        Transaction tx = session.beginTransaction();
+		Transaction tx = session.beginTransaction();
 		
 		try {
 			con = DriverManager.getConnection(url, user, password);
