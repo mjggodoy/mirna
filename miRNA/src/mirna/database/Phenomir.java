@@ -168,8 +168,6 @@ public class Phenomir implements IMirnaDatabase {
 		String password = "mirna";
 		
 		Connection con = null;
-		String line = null;
-		String[] tokens = null;
 		
 		//Get Session
 		SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
@@ -284,13 +282,6 @@ public class Phenomir implements IMirnaDatabase {
 			}
 			stmt.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
-			if (line!=null) {
-				System.out.println(line);
-				for (int j = 0; j < tokens.length; j++) {
-					System.out.println(j + ": " + tokens[j]);
-				}
-			}
 			e.printStackTrace();
 		} finally {
 			if (con!=null) con.close();

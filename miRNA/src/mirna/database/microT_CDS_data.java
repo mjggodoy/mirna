@@ -4,24 +4,23 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+
+import mirna.beans.Disease;
+import mirna.beans.ExpressionData;
+import mirna.beans.MiRna;
 
 import org.apache.commons.lang.StringUtils;
 
-public class microT_CDS_data implements IMirnaDatabaseLegacy {
+public class microT_CDS_data implements IMirnaDatabase {
 	
+	private final String tableName = "microt_cds";
 	
-private String csvInputFile;
+	public microT_CDS_data() { }
 	
-	public microT_CDS_data(String csvInputFile) {
-		this.csvInputFile = csvInputFile;
-	}
-	
-	public void insertInTable(String tableName) throws Exception {
-		this.insertInTable(tableName, null);
-	}
-	
-	public void insertInTable(String tableName, Integer maxLines) throws Exception {
+	public void insertInTable(String csvInputFile) throws Exception {
 		
 		// URL of Oracle database server
 		String url = "jdbc:mysql://localhost:3306/mirna_raw";
@@ -57,7 +56,7 @@ private String csvInputFile;
 			String chromosome = null;
 			String coordinates = null;
 			
-			while (((line = br.readLine()) != null) && ((maxLines==null) || (count<maxLines))) {
+			while ((line = br.readLine()) != null) {
 	
 				count++;
 				System.out.println(count);
@@ -122,23 +121,88 @@ private String csvInputFile;
 	}
 	
 	@Override
-	public void insertIntoSQLModel(String originTable) throws Exception {
-		// TODO Auto-generated method stub
+	public void insertIntoSQLModel() throws Exception {
+		// URL of Oracle database server
+		String url = "jdbc:mysql://localhost:3306/mirna_raw";
+
+		String user = "mirna";
+		String password = "mirna";
+		
+		Connection con = null;
+		
+		try {
+			con = DriverManager.getConnection(url, user, password);
+			Statement stmt = (Statement) con.createStatement();
+			
+			// our SQL SELECT query. 
+			// if you only need a few columns, specify them by name instead of using "*"
+			String query = "SELECT * FROM " + tableName;
+			System.out.println("STARTING: " + query);
+			
+			// execute the query, and get a java resultset
+			ResultSet rs = stmt.executeQuery(query);
+			
+			// iterate through the java resultset
+			//int count = 0;
+
+
+			
+			// CAMBIAR ESTO:
+			
+			String phenomicid = rs.getString("phenomicid");
+			String pmid = rs.getString("pmid");
+			String diseaseField = rs.getString("disease").toLowerCase().trim();
+			String diseaseClass = rs.getString("class").toLowerCase().trim();
+			String mirna = rs.getString("miRNA").toLowerCase().trim();
+			String accession = rs.getString("accession").toLowerCase().trim();
+			String evidence = rs.getString("expression");
+			String foldchangemin = rs.getString("foldchangemin");
+			String foldchangemax = rs.getString("foldchangemax");
+			String studyDesign = rs.getString("name");
+			String method = rs.getString("method");
+			
+			
+			MiRna miRna = new MiRna();
+			miRna.setName(mirna);
+			miRna.setAccessionNumber(accession);
+			
+			Disease disease = new Disease();
+			disease.setName(diseaseField);
+			disease.setDiseaseClass(diseaseClass);
+			
+			ExpressionData ed = new ExpressionData();
+			ed.setProvenanceId(phenomicid);
+			ed.setPubmedId(pmid);
+			ed.setEvidence(evidence);
+			ed.setFoldchangeMin(foldchangemin);
+			ed.setFoldchangeMax(foldchangemax);
+			ed.setStudyDesign(studyDesign);
+			ed.setMethod(method);
+			ed.setProvenance("PhenomiR");
+			
+			System.out.println(miRna);
+			System.out.println(disease);
+			System.out.println(ed);
+			
+			// FIN DE CAMBIAR ESTO
+			
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (con!=null) con.close();
+		}
 		
 	}
 
-	@Override
-	public void insertIntoSQLModel(String originTable, Integer maxLines)
-			throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	public static void main(String[] args) throws Exception {
 		
-		String inputFile = "/Users/esteban/Softw/miRNA/microalgo/microT_CDS_data.csv";
-		microT_CDS_data microT_CDS_data = new microT_CDS_data(inputFile);
-		microT_CDS_data.insertInTable("microt_cds");
+		microT_CDS_data microT_CDS_data = new microT_CDS_data();
+
+		//String inputFile = "/Users/esteban/Softw/miRNA/microalgo/microT_CDS_data.csv";
+		//microT_CDS_data.insertInTable(inputFile);
+		
+		microT_CDS_data.insertIntoSQLModel();
 		
 	}
 	
