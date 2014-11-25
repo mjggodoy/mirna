@@ -11,6 +11,7 @@ import java.sql.Statement;
 import mirna.beans.Disease;
 import mirna.beans.ExpressionData;
 import mirna.beans.MiRna;
+import mirna.exception.MiRnaException;
 import mirna.utils.HibernateUtil;
 
 import org.apache.commons.lang.StringUtils;
@@ -25,26 +26,20 @@ import org.hibernate.criterion.Restrictions;
  * @author Esteban López Camacho
  *
  */
-public class HMDD implements IMirnaDatabase {
+public class HMDD extends MirnaDatabase {
 	
 	private final String tableName = "hmdd";
 	
-	public HMDD() { }
+	public HMDD() throws MiRnaException { super(); }
 	
 	public void insertInTable(String csvInputFile) throws Exception {
-		
-		// URL of Oracle database server
-		String url = "jdbc:mysql://localhost:3306/mirna_raw";
-		
-		String user = "mirna";
-		String password = "mirna";
 		
 		Connection con = null;
 		String line = null;
 		String[] tokens = null;
 		
 		try {
-			con = DriverManager.getConnection(url, user, password);
+			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			Statement stmt = (Statement) con.createStatement(); 
 			
 			FileReader fr = new FileReader(csvInputFile);
@@ -99,12 +94,6 @@ public class HMDD implements IMirnaDatabase {
 	
 	@Override
 	public void insertIntoSQLModel() throws Exception {
-		// URL of Oracle database server
-		String url = "jdbc:mysql://localhost:3306/mirna_raw";
-
-		String user = "mirna";
-		String password = "mirna";
-		
 		Connection con = null;
 		String line = null;
 		String[] tokens = null;
@@ -117,7 +106,7 @@ public class HMDD implements IMirnaDatabase {
 		Transaction tx = session.beginTransaction();
 		
 		try {
-			con = DriverManager.getConnection(url, user, password);
+			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			Statement stmt = (Statement) con.createStatement();
 			
 			// our SQL SELECT query. 

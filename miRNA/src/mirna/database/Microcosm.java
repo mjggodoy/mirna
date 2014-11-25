@@ -8,10 +8,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import mirna.beans.Disease;
-import mirna.beans.ExpressionData;
 import mirna.beans.InteractionData;
 import mirna.beans.MiRna;
+import mirna.exception.MiRnaException;
 import mirna.beans.Target;
 import mirna.beans.Transcript;
 
@@ -23,26 +22,20 @@ import org.apache.commons.lang.StringUtils;
  * @author Esteban López Camacho
  *
  */
-public class Microcosm implements IMirnaDatabase {
+public class Microcosm extends MirnaDatabase {
 	
 	private final String tableName = "microcosm_homo_sapiens";
 	
-	public Microcosm() { }
+	public Microcosm() throws MiRnaException { super(); }
 	
 	public void insertInTable(String csvInputFile) throws Exception {
-		
-		// URL of Oracle database server
-		String url = "jdbc:mysql://localhost:3306/mirna_raw";
-		
-		String user = "mirna";
-		String password = "mirna";
 		
 		Connection con = null;
 		String line = null;
 		String[] tokens = null;
 		
 		try {
-			con = DriverManager.getConnection(url, user, password);
+			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			Statement stmt = (Statement) con.createStatement(); 
 			
 			FileReader fr = new FileReader(csvInputFile);
@@ -117,16 +110,11 @@ public class Microcosm implements IMirnaDatabase {
 	
 	@Override
 	public void insertIntoSQLModel() throws Exception {
-		// URL of Oracle database server
-		String url = "jdbc:mysql://localhost:3306/mirna_raw";
 
-		String user = "mirna";
-		String password = "mirna";
-		
 		Connection con = null;
 		
 		try {
-			con = DriverManager.getConnection(url, user, password);
+			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			Statement stmt = (Statement) con.createStatement();
 			
 			// our SQL SELECT query. 
@@ -197,11 +185,11 @@ public class Microcosm implements IMirnaDatabase {
 		Microcosm microcosm = new Microcosm();
 		
 		//1
-//		String inputFile = "/Users/esteban/Softw/miRNA/microcosm/v5.txt.homo_sapiens";
-//		microcosm.insertInTable(inputFile);
+		String inputFile = "/Users/esteban/Softw/miRNA/microcosm/v5.txt.homo_sapiens";
+		microcosm.insertInTable(inputFile);
 		
 		//2
-		microcosm.insertIntoSQLModel();
+		//microcosm.insertIntoSQLModel();
 		
 	}
 

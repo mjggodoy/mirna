@@ -13,6 +13,7 @@ import java.sql.Statement;
 import mirna.beans.Disease;
 import mirna.beans.ExpressionData;
 import mirna.beans.MiRna;
+import mirna.exception.MiRnaException;
 import mirna.utils.HibernateUtil;
 
 import org.apache.commons.lang.StringUtils;
@@ -27,19 +28,13 @@ import org.hibernate.criterion.Restrictions;
  * @author Esteban López Camacho
  *
  */
-public class Mir2Disease implements IMirnaDatabase {
+public class Mir2Disease extends MirnaDatabase {
 	
 	private final String tableName = "mir2disease";
 	
-	public Mir2Disease() { }
+	public Mir2Disease() throws MiRnaException { super(); }
 	
 	public void insertInTable(String csvInputFile) throws Exception {
-		
-		// URL of Oracle database server
-		String url = "jdbc:mysql://localhost:3306/mirna_raw";
-		
-		String user = "mirna";
-		String password = "mirna";
 		
 		Connection con = null;
 		String line = null;
@@ -48,7 +43,7 @@ public class Mir2Disease implements IMirnaDatabase {
 		String query = "";
 		
 		try {
-			con = DriverManager.getConnection(url, user, password);
+			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			Statement stmt = (Statement) con.createStatement(); 
 			
 			FileReader fr = new FileReader(csvInputFile);
@@ -102,11 +97,6 @@ public class Mir2Disease implements IMirnaDatabase {
 	
 	@Override
 	public void insertIntoSQLModel() throws Exception {
-		// URL of Oracle database server
-		String url = "jdbc:mysql://localhost:3306/mirna_raw";
-
-		String user = "mirna";
-		String password = "mirna";
 		
 		Connection con = null;
 		String line = null;
@@ -120,7 +110,7 @@ public class Mir2Disease implements IMirnaDatabase {
 		Transaction tx = session.beginTransaction();
 		
 		try {
-			con = DriverManager.getConnection(url, user, password);
+			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			Statement stmt = (Statement) con.createStatement();
 			
 			// our SQL SELECT query. 

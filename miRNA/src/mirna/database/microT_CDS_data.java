@@ -15,22 +15,17 @@ import mirna.beans.InteractionData;
 import mirna.beans.MiRna;
 import mirna.beans.Target;
 import mirna.beans.Transcript;
+import mirna.exception.MiRnaException;
 
 import org.apache.commons.lang.StringUtils;
 
-public class microT_CDS_data implements IMirnaDatabase {
+public class microT_CDS_data extends MirnaDatabase {
 	
 	private final String tableName = "microt_cds";
 	
-	public microT_CDS_data() { }
+	public microT_CDS_data() throws MiRnaException { super(); }
 	
 	public void insertInTable(String csvInputFile) throws Exception {
-		
-		// URL of Oracle database server
-		String url = "jdbc:mysql://localhost:3306/mirna_raw";
-		
-		String user = "mirna";
-		String password = "mirna";
 		
 		Connection con = null;
 		String line = null;
@@ -41,7 +36,7 @@ public class microT_CDS_data implements IMirnaDatabase {
 		
 		try {
 			
-			con = DriverManager.getConnection(url, user, password);
+			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			Statement stmt = (Statement) con.createStatement(); 
 			
 			FileReader fr = new FileReader(csvInputFile);
@@ -126,16 +121,11 @@ public class microT_CDS_data implements IMirnaDatabase {
 	
 	@Override
 	public void insertIntoSQLModel() throws Exception {
-		// URL of Oracle database server
-		String url = "jdbc:mysql://localhost:3306/mirna_raw";
-
-		String user = "mirna";
-		String password = "mirna";
 		
 		Connection con = null;
 		
 		try {
-			con = DriverManager.getConnection(url, user, password);
+			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			Statement stmt = (Statement) con.createStatement();
 			
 			// our SQL SELECT query. 
@@ -153,8 +143,8 @@ public class microT_CDS_data implements IMirnaDatabase {
 			
 			// CAMBIAR ESTO:
 			
-			String transcriptId = rs.getString("id");
-			String geneId  = rs.getString("id");
+			String transcriptId = rs.getString("transcriptId");
+			String geneId  = rs.getString("gene_Id");
 			String miRNA = rs.getString("name");
 			String miTG_score = rs.getString("miTG_score");
 			String region = rs.getString("region");
@@ -178,9 +168,7 @@ public class microT_CDS_data implements IMirnaDatabase {
 			Target target = new Target();
 			target.setRegion(region);
 			target.setRegion(chromosome);
-			target.setRegion(coordinates1);
-			target.setRegion(coordinates2);
-			
+				
 			Transcript transcript = new Transcript();
 			transcript.setId(transcriptId);;
 
@@ -188,6 +176,7 @@ public class microT_CDS_data implements IMirnaDatabase {
 			System.out.println(gene);
 			System.out.println(id);
 			System.out.println(target);
+
 
 			
 			// FIN DE CAMBIAR ESTO
@@ -205,10 +194,10 @@ public class microT_CDS_data implements IMirnaDatabase {
 		
 		microT_CDS_data microT_CDS_data = new microT_CDS_data();
 
-		//String inputFile = "/Users/esteban/Softw/miRNA/microalgo/microT_CDS_data.csv";
-		//microT_CDS_data.insertInTable(inputFile);
+		String inputFile = "/Users/esteban/Softw/miRNA/microalgo/microT_CDS_data.csv";
+		microT_CDS_data.insertInTable(inputFile);
 		
-		microT_CDS_data.insertIntoSQLModel();
+		//microT_CDS_data.insertIntoSQLModel();
 		
 	}
 	
