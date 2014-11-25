@@ -11,6 +11,7 @@ import java.sql.Statement;
 import mirna.beans.Disease;
 import mirna.beans.ExpressionData;
 import mirna.beans.MiRna;
+import mirna.exception.MiRnaException;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -20,26 +21,20 @@ import org.apache.commons.lang.StringUtils;
  * @author Esteban López Camacho
  *
  */
-public class miRDB implements IMirnaDatabase {
+public class miRDB extends MirnaDatabase {
 	
 	private final String tableName = "miRDB";
 	
-	public miRDB() { }
+	public miRDB() throws MiRnaException { super(); }
 	
 	public void insertInTable(String csvInputFile) throws Exception {
-		
-		// URL of Oracle database server
-		String url = "jdbc:mysql://localhost:3306/mirna_raw";
-		
-		String user = "mirna";
-		String password = "mirna";
 		
 		Connection con = null;
 		String line = null;
 		String[] tokens = null;
 		
 		try {
-			con = DriverManager.getConnection(url, user, password);
+			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			Statement stmt = (Statement) con.createStatement(); 
 			
 			FileReader fr = new FileReader(csvInputFile);
@@ -95,16 +90,10 @@ public class miRDB implements IMirnaDatabase {
 	@Override
 	public void insertIntoSQLModel() throws Exception {
 
-		// URL of Oracle database server
-		String url = "jdbc:mysql://localhost:3306/mirna_raw";
-
-		String user = "mirna";
-		String password = "mirna";
-		
 		Connection con = null;
 		
 		try {
-			con = DriverManager.getConnection(url, user, password);
+			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			Statement stmt = (Statement) con.createStatement();
 			
 			// our SQL SELECT query. 

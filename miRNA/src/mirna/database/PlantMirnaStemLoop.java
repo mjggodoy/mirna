@@ -15,23 +15,21 @@ import mirna.exception.MiRnaException;
 
 import org.apache.commons.lang.StringUtils;
 
-public class microtv4 extends MirnaDatabase {
+public class PlantMirnaStemLoop extends MirnaDatabase {
+
+	private final String tableName = "plant_mirna_stem_loop";
 	
-	private final String tableName = "microtv4";
-	
-	public microtv4() throws MiRnaException { super(); }
-	
-	public void insertInTable(String csvInputFile) throws Exception {
+	public PlantMirnaStemLoop() throws MiRnaException { super(); }
+
+	@Override
+	public void insertInTable(String csvInputFile)
+			throws Exception {
 		
 		Connection con = null;
 		String line = null;
 		String[] tokens = null;
-		String[] tokens2 = null;
-		
-		String  query = "";
 		
 		try {
-			
 			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			Statement stmt = (Statement) con.createStatement(); 
 			
@@ -42,52 +40,41 @@ public class microtv4 extends MirnaDatabase {
 	
 			br.readLine();
 			
-			String transcript_id = null;
-			String gene_id = null;
-			String miRNA = null;
-			String miTG_score = null;
-			String region = null;
-			//String location = null;
-			String chromosome = null;
-			String coordinates = null;
+			String specie = "", mirnaid = "";
 			
-			while ((line = br.readLine()) != null) {
-	
+			while (((line = br.readLine()) != null)) {
+				
 				count++;
 				System.out.println(count);
 				
-				tokens = StringUtils.splitPreserveAllTokens(line, ",");
+				tokens = StringUtils.splitPreserveAllTokens(line, "\n");
+				
+				if(line.startsWith (">")){
 	
-				if (line != null && !line.startsWith("UTR3") && !line.startsWith("CDS")) {
+					String specie1 = tokens[0];
+					int index1 = specie1.indexOf(">");
+					int index2 = specie1.indexOf("-");
+					specie = specie1.substring(index1+1, index2);
+					mirnaid = specie1.substring(index2+1);
 					
 					
-					transcript_id = tokens[0].replaceAll("'", "\\\\'");
-					gene_id = tokens[1].replaceAll("'", "\\\\'");;
-					miRNA = tokens[2].replaceAll("'", "\\\\'");;
-					miTG_score = tokens[3].replaceAll("'", "\\\\'");;
-					
-			
+//					String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
+//							+ specie2 + "','"
+//							+ mirnaid + "')";
+//					
+//					stmt.executeUpdate(query);
 	
 				}else{
 					
-					region = tokens[0];
-					//location = tokens[1];
 					
-					tokens2 = StringUtils.splitPreserveAllTokens(tokens[1], ":");
-					chromosome = tokens2[0].replaceAll("'", "\\\\'");;
-					coordinates = tokens2[1].replaceAll("'", "\\\\'");;
-					
-					
-					query = "INSERT INTO " + tableName + " VALUES (NULL, '"
-							+ transcript_id + "','"
-							+ gene_id + "','"
-							+ miRNA + "','"
-							+ miTG_score + "','"
-							+ region + "','"
-							+ chromosome + "','"
-							+ coordinates + "')";
+					String sequence = tokens[0];
+					String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
+							+ specie + "','"
+							+ mirnaid + "','"
+							+ sequence + "')";
 					
 					stmt.executeUpdate(query);
+						
 					
 				}
 	
@@ -95,25 +82,24 @@ public class microtv4 extends MirnaDatabase {
 			fr.close();
 			br.close();
 			stmt.close();
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 			if (line!=null) {
 				System.out.println(line);
-				System.out.println(query);
 				for (int j = 0; j < tokens.length; j++) {
-					System.out.println(j + ": " + tokens[j]);
+					System.out.println(j + ": (" + tokens[j].length() + ") " + tokens[j]);
 				}
 			}
 			e.printStackTrace();
 		} finally {
 			if (con!=null) con.close();
-		}
+		}		
 		
 	}
-	
+
 	@Override
 	public void insertIntoSQLModel() throws Exception {
-		
+
 		Connection con = null;
 		
 		try {
@@ -181,15 +167,13 @@ public class microtv4 extends MirnaDatabase {
 		
 	}
 	
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws Exception{
 		
-		microtv4 microtv4 = new microtv4();
+		PlantMirnaStemLoop plant = new PlantMirnaStemLoop();
 		
-		//String inputFile = "/Users/esteban/Softw/miRNA/microalgo/microtv4_data.csv";
-		//microtv4.insertInTable(inputFile));
-		
-		microtv4.insertIntoSQLModel();
-		
+		String inputFile = "/Users/esteban/Softw/miRNA/plant_mirna/all_stem_loop.txt";
+		plant.insertInTable(inputFile);
+	
 	}
-
+	
 }
