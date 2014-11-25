@@ -10,7 +10,10 @@ import java.sql.Statement;
 
 import mirna.beans.Disease;
 import mirna.beans.ExpressionData;
+import mirna.beans.InteractionData;
 import mirna.beans.MiRna;
+import mirna.beans.Target;
+import mirna.beans.Transcript;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -141,40 +144,42 @@ public class Microcosm implements IMirnaDatabase {
 			
 			// CAMBIAR ESTO:
 			
-			String phenomicid = rs.getString("phenomicid");
-			String pmid = rs.getString("pmid");
-			String diseaseField = rs.getString("disease").toLowerCase().trim();
-			String diseaseClass = rs.getString("class").toLowerCase().trim();
-			String mirna = rs.getString("miRNA").toLowerCase().trim();
-			String accession = rs.getString("accession").toLowerCase().trim();
-			String evidence = rs.getString("expression");
-			String foldchangemin = rs.getString("foldchangemin");
-			String foldchangemax = rs.getString("foldchangemax");
-			String studyDesign = rs.getString("name");
+			String seq = rs.getString("seq");
 			String method = rs.getString("method");
-			
+			String feature = rs.getString("feature").toLowerCase().trim();
+			String chromosome = rs.getString("chr").toLowerCase().trim();
+			String start = rs.getString("start").toLowerCase().trim();
+			String end = rs.getString("end").toLowerCase().trim();
+			String strand = rs.getString("strand").toLowerCase().trim();
+			String phase = rs.getString("phase");
+			String score = rs.getString("score");
+			String pvalue_og = rs.getString("pvalue_og");
+			String transcriptId = rs.getString("transcript_id");
+			String externalName = rs.getString("external_name");
 			
 			MiRna miRna = new MiRna();
-			miRna.setName(mirna);
-			miRna.setAccessionNumber(accession);
+			miRna.setName(seq);
 			
-			Disease disease = new Disease();
-			disease.setName(diseaseField);
-			disease.setDiseaseClass(diseaseClass);
+			InteractionData id = new InteractionData();
+			id.setMethod(method);
+			id.setFeature(feature);
+			id.setPhase(phase);
+			id.setScore(score);
+			id.setPvalue_og(pvalue_og);
 			
-			ExpressionData ed = new ExpressionData();
-			ed.setProvenanceId(phenomicid);
-			ed.setPubmedId(pmid);
-			ed.setEvidence(evidence);
-			ed.setFoldchangeMin(foldchangemin);
-			ed.setFoldchangeMax(foldchangemax);
-			ed.setStudyDesign(studyDesign);
-			ed.setMethod(method);
-			ed.setProvenance("PhenomiR");
+			Target target = new Target();
+			target.setChromosome(chromosome);
+			target.setStart_strand(start);
+			target.setEnd_strand(end);
+			target.setPolarity(strand);
+			
+			Transcript transcript = new Transcript();
+			transcript.setId(transcriptId);
+			transcript.setExternalName(externalName);
 			
 			System.out.println(miRna);
-			System.out.println(disease);
-			System.out.println(ed);
+			System.out.println(id);
+			System.out.println(target);
 			
 			// FIN DE CAMBIAR ESTO
 			
