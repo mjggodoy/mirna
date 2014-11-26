@@ -136,7 +136,7 @@ public class microT_CDS_data extends MirnaDatabase {
 			//int count = 0;
 
 
-			
+			rs.next();
 			// CAMBIAR ESTO:
 			
 			String phenomicid = rs.getString("phenomicid");
@@ -189,10 +189,10 @@ public class microT_CDS_data extends MirnaDatabase {
 		
 		microT_CDS_data microT_CDS_data = new microT_CDS_data();
 
-		String inputFile = "/Users/esteban/Softw/miRNA/microalgo/microT_CDS_data.csv";
-		microT_CDS_data.insertInTable(inputFile);
+		//String inputFile = "/Users/esteban/Softw/miRNA/microalgo/microT_CDS_data.csv";
+		//microT_CDS_data.insertInTable(inputFile);
 		
-		//microT_CDS_data.insertIntoSQLModel();
+		microT_CDS_data.insertIntoSQLModel();
 		
 	}
 	

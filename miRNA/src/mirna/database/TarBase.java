@@ -11,6 +11,7 @@ import java.sql.Statement;
 import mirna.beans.Disease;
 import mirna.beans.ExpressionData;
 import mirna.beans.MiRna;
+import mirna.exception.MiRnaException;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -20,26 +21,20 @@ import org.apache.commons.lang.StringUtils;
  * @author Esteban López Camacho
  *
  */
-public class TarBase implements IMirnaDatabase {
+public class TarBase extends MirnaDatabase {
 	
 	private final String tableName = "tarBase";
 	
-	public TarBase() { }
+	public TarBase() throws MiRnaException { super(); }
 	
 	public void insertInTable(String csvInputFile) throws Exception {
-		
-		// URL of Oracle database server
-		String url = "jdbc:mysql://localhost:3306/mirna_raw";
-		
-		String user = "mirna";
-		String password = "mirna";
 		
 		Connection con = null;
 		String line = null;
 		String[] tokens = null;
 		
 		try {
-			con = DriverManager.getConnection(url, user, password);
+			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			Statement stmt = (Statement) con.createStatement(); 
 			
 			FileReader fr = new FileReader(csvInputFile);
@@ -94,7 +89,6 @@ public class TarBase implements IMirnaDatabase {
 					String swissProt = tokens[31];
 					String aux = tokens[32];
 					
-
 					String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
 							+ id + "','"
 							+ idV4 + "','"
@@ -131,9 +125,7 @@ public class TarBase implements IMirnaDatabase {
 							+ aux + "')";
 					
 					stmt.executeUpdate(query);
-	
 				}
-	
 			}
 			fr.close();
 			br.close();
@@ -156,16 +148,10 @@ public class TarBase implements IMirnaDatabase {
 	@Override
 	public void insertIntoSQLModel() throws Exception {
 
-		// URL of Oracle database server
-		String url = "jdbc:mysql://localhost:3306/mirna_raw";
-
-		String user = "mirna";
-		String password = "mirna";
-		
 		Connection con = null;
 		
 		try {
-			con = DriverManager.getConnection(url, user, password);
+			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			Statement stmt = (Statement) con.createStatement();
 			
 			// our SQL SELECT query. 
@@ -179,8 +165,7 @@ public class TarBase implements IMirnaDatabase {
 			// iterate through the java resultset
 			//int count = 0;
 
-
-			
+			rs.next();
 			// CAMBIAR ESTO:
 			
 			String phenomicid = rs.getString("phenomicid");

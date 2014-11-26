@@ -1,31 +1,28 @@
 package mirna.database;
 
-public abstract class VirmiRNA implements IMirnaDatabaseLegacy {
+import mirna.exception.MiRnaException;
+
+public abstract class VirmiRNA extends MirnaDatabase {
 	
-	protected String csvInputFile;
-	
-	public void insertInTable(String tableName) throws Exception {
-		this.insertInTable(tableName, null);
-	}
+	public VirmiRNA() throws MiRnaException { super(); }
 	
 	public static void main(String[] args) throws Exception {
 		
-		String inputFile;
-		VirmiRNA virmirRNA;
-		
-//		inputFile = "/Users/esteban/Softw/miRNA/VIRmiRNA/vmr.tsv";
-//		virmirRNA = new VirmiRNA1(inputFile);
-//		virmirRNA.insertInTable("virmirna1");
-//
-//		inputFile = "/Users/esteban/Softw/miRNA/VIRmiRNA/avm.tsv";
-//		virmirRNA = new VirmiRNA2(inputFile);
-//		virmirRNA.insertInTable("virmirna2");
-//		
-		inputFile = "/Users/esteban/Softw/miRNA/VIRmiRNA/vmt.tsv";
-		virmirRNA = new VirmiRNA3(inputFile);
-		virmirRNA.insertInTable("virmirna3");
+		VirmiRNA virmiRNA1 = new VirmiRNA1();
+		VirmiRNA virmiRNA2 = new VirmiRNA2();
+		VirmiRNA virmiRNA3 = new VirmiRNA3();
 
+//		String inputFile1 = "/Users/esteban/Softw/miRNA/VIRmiRNA/vmr.tsv";
+//		String inputFile2 = "/Users/esteban/Softw/miRNA/VIRmiRNA/avm.tsv";
+//		String inputFile3 = "/Users/esteban/Softw/miRNA/VIRmiRNA/vmt.tsv";
+//		virmiRNA1.insertInTable(inputFile1);
+//		virmiRNA2.insertInTable(inputFile2);
+//		virmiRNA3.insertInTable(inputFile3);
 		
+		virmiRNA1.insertIntoSQLModel();
+		virmiRNA2.insertIntoSQLModel();
+		virmiRNA3.insertIntoSQLModel();
+
 	}
 	
 	

@@ -129,7 +129,7 @@ public class Microcosm extends MirnaDatabase {
 			//int count = 0;
 
 
-			
+			rs.next();
 			// CAMBIAR ESTO:
 			
 			String seq = rs.getString("seq");
@@ -185,11 +185,11 @@ public class Microcosm extends MirnaDatabase {
 		Microcosm microcosm = new Microcosm();
 		
 		//1
-		String inputFile = "/Users/esteban/Softw/miRNA/microcosm/v5.txt.homo_sapiens";
-		microcosm.insertInTable(inputFile);
+		//String inputFile = "/Users/esteban/Softw/miRNA/microcosm/v5.txt.homo_sapiens";
+		//microcosm.insertInTable(inputFile);
 		
 		//2
-		//microcosm.insertIntoSQLModel();
+		microcosm.insertIntoSQLModel();
 		
 	}
 

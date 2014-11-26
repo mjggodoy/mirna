@@ -115,7 +115,7 @@ public class PlantMirnaMatureMirna extends MirnaDatabase {
 			//int count = 0;
 
 
-			
+			rs.next();
 			// CAMBIAR ESTO:
 			
 			String phenomicid = rs.getString("phenomicid");

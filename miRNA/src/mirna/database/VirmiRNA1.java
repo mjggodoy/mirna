@@ -4,31 +4,34 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+
+import mirna.beans.InteractionData;
+import mirna.beans.MiRna;
+import mirna.beans.Target;
+import mirna.beans.Transcript;
+import mirna.exception.MiRnaException;
 
 import org.apache.commons.lang.StringUtils;
 
 public class VirmiRNA1 extends VirmiRNA{
 	
-
+	private final String tableName = "virmirna1";
 	
-	public VirmiRNA1(String csvInputFile) {
-		this.csvInputFile = csvInputFile;
+	public VirmiRNA1() throws MiRnaException {
+		super();
 	}
 	
-	public void insertInTable(String tableName, Integer numlines) throws Exception {
-		
-		String url = "jdbc:mysql://localhost:3306/mirna_raw";
-		
-		String user = "mirna";
-		String password = "mirna";
+	public void insertInTable(String csvInputFile) throws Exception {
 		
 		Connection con = null;
 		String line = null;
 		String[] tokens = null;
 		
 		try {
-			con = DriverManager.getConnection(url, user, password);
+			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			Statement stmt = (Statement) con.createStatement(); 
 			
 			FileReader fr = new FileReader(csvInputFile);
@@ -58,7 +61,6 @@ public class VirmiRNA1 extends VirmiRNA{
 				String cell_line = tokens[11];
 				String method = tokens[12];
 				String pubmed_id = tokens[13];
-
 				
 				String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
 						+ id_virus + "','"
@@ -95,16 +97,76 @@ public class VirmiRNA1 extends VirmiRNA{
 		
 	}		
 	
-	public void insertIntoSQLModel(String originTable) throws Exception {
-	this.insertIntoSQLModel(originTable, null);
-	}
+	@Override
+	public void insertIntoSQLModel() throws Exception {
 
-	public void insertIntoSQLModel(String originTable, Integer maxLines) throws Exception {
-	
-	}
+		Connection con = null;
+		
+		try {
+			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+			Statement stmt = (Statement) con.createStatement();
+			
+			// our SQL SELECT query. 
+			// if you only need a few columns, specify them by name instead of using "*"
+			String query = "SELECT * FROM " + tableName;
+			System.out.println("STARTING: " + query);
+			
+			// execute the query, and get a java resultset
+			ResultSet rs = stmt.executeQuery(query);
+			
+			// iterate through the java resultset
+			//int count = 0;
 
+
+			rs.next();
+			// CAMBIAR ESTO:
+			
+			String seq = rs.getString("seq");
+			String method = rs.getString("method");
+			String feature = rs.getString("feature").toLowerCase().trim();
+			String chromosome = rs.getString("chr").toLowerCase().trim();
+			String start = rs.getString("start").toLowerCase().trim();
+			String end = rs.getString("end").toLowerCase().trim();
+			String strand = rs.getString("strand").toLowerCase().trim();
+			String phase = rs.getString("phase");
+			String score = rs.getString("score");
+			String pvalue_og = rs.getString("pvalue_og");
+			String transcriptId = rs.getString("transcript_id");
+			String externalName = rs.getString("external_name");
+			
+			MiRna miRna = new MiRna();
+			miRna.setName(seq);
+			
+			InteractionData id = new InteractionData();
+			id.setMethod(method);
+			id.setFeature(feature);
+			id.setPhase(phase);
+			id.setScore(score);
+			id.setPvalue_og(pvalue_og);
+			
+			Target target = new Target();
+			target.setChromosome(chromosome);
+			target.setStart_strand(start);
+			target.setEnd_strand(end);
+			target.setPolarity(strand);
+			
+			Transcript transcript = new Transcript();
+			transcript.setId(transcriptId);
+			transcript.setExternalName(externalName);
+			
+			System.out.println(miRna);
+			System.out.println(id);
+			System.out.println(target);
+			
+			// FIN DE CAMBIAR ESTO
+			
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (con!=null) con.close();
+		}
 		
-		
-		
+	}
 
 }

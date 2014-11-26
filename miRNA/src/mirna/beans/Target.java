@@ -169,5 +169,21 @@ public class Target extends Transcript {
 	public void setGC_proportion(String gC_proportion) {
 		GC_proportion = gC_proportion;
 	}
+
+	@Override
+	public String toString() {
+		return "Target [cdsStart=" + cdsStart + ", cdsEnd=" + cdsEnd
+				+ ", UTR5start=" + UTR5start + ", UTR3end=" + UTR3end
+				+ ", start_strand=" + start_strand + ", end_strand="
+				+ end_strand + ", sequence=" + sequence + ", name=" + name
+				+ ", chromosome=" + chromosome + ", polarity=" + polarity
+				+ ", binding_site_start=" + binding_site_start
+				+ ", binding_site_end=" + binding_site_end
+				+ ", repeated_motifs=" + repeated_motifs
+				+ ", UTR3conservation_score=" + UTR3conservation_score
+				+ ", region=" + region + ", seed_match=" + seed_match
+				+ ", coordinates=" + coordinates + ", GC_proportion="
+				+ GC_proportion + ", pk=" + pk + "]";
+	}
 	
 }

@@ -4,41 +4,28 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+
+import mirna.beans.InteractionData;
+import mirna.beans.MiRna;
+import mirna.beans.Target;
+import mirna.beans.Transcript;
+import mirna.exception.MiRnaException;
 
 import org.apache.commons.lang.StringUtils;
 
-public class repTar implements IMirnaDatabase {
+public class repTar extends MirnaDatabase {
 	
-	private String csvInputFile1;
+	private String tableName;
 	
-	public repTar(String csvInputFile1) {
-		this.csvInputFile1 = csvInputFile1;
+	public repTar(String tableName) throws MiRnaException {
+		super();
+		this.tableName = tableName;
 	}
 	
-	@Override
-	public void insertInTable(String tableName) throws Exception {
-		insertInTable(tableName, null);
-	}
-
-	@Override
-	public void insertIntoSQLModel(String originTable) throws Exception {
-		
-	}
-
-	@Override
-	public void insertIntoSQLModel(String originTable, Integer maxLines)
-			throws Exception {
-		
-	}
-		
-	public void insertInTable(String tableName, Integer maxLines) throws Exception {
-		
-		// URL of Oracle database server
-		String url = "jdbc:mysql://localhost:3306/mirna_raw";
-		
-		String user = "mirna";
-		String password = "mirna";
+	public void insertInTable(String csvInputFile) throws Exception {
 		
 		Connection con = null;
 		String line = null;
@@ -46,10 +33,10 @@ public class repTar implements IMirnaDatabase {
 //		String specie = "";
 		
 		try {
-			con = DriverManager.getConnection(url, user, password);
+			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			Statement stmt = (Statement) con.createStatement(); 
 			
-			FileReader fr = new FileReader(csvInputFile1);
+			FileReader fr = new FileReader(csvInputFile);
 			BufferedReader br = new BufferedReader(fr);
 	
 			int count = 0;
@@ -160,20 +147,96 @@ public class repTar implements IMirnaDatabase {
 				
 		
 	}
+	
+	@Override
+	public void insertIntoSQLModel() throws Exception {
 		
+		Connection con = null;
 		
+		try {
+			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+			Statement stmt = (Statement) con.createStatement();
+			
+			// our SQL SELECT query. 
+			// if you only need a few columns, specify them by name instead of using "*"
+			String query = "SELECT * FROM " + tableName;
+			System.out.println("STARTING: " + query);
+			
+			// execute the query, and get a java resultset
+			ResultSet rs = stmt.executeQuery(query);
+			
+			// iterate through the java resultset
+			//int count = 0;
+
+
+			rs.next();
+			// CAMBIAR ESTO:
+			
+			String seq = rs.getString("seq");
+			String method = rs.getString("method");
+			String feature = rs.getString("feature").toLowerCase().trim();
+			String chromosome = rs.getString("chr").toLowerCase().trim();
+			String start = rs.getString("start").toLowerCase().trim();
+			String end = rs.getString("end").toLowerCase().trim();
+			String strand = rs.getString("strand").toLowerCase().trim();
+			String phase = rs.getString("phase");
+			String score = rs.getString("score");
+			String pvalue_og = rs.getString("pvalue_og");
+			String transcriptId = rs.getString("transcript_id");
+			String externalName = rs.getString("external_name");
+			
+			MiRna miRna = new MiRna();
+			miRna.setName(seq);
+			
+			InteractionData id = new InteractionData();
+			id.setMethod(method);
+			id.setFeature(feature);
+			id.setPhase(phase);
+			id.setScore(score);
+			id.setPvalue_og(pvalue_og);
+			
+			Target target = new Target();
+			target.setChromosome(chromosome);
+			target.setStart_strand(start);
+			target.setEnd_strand(end);
+			target.setPolarity(strand);
+			
+			Transcript transcript = new Transcript();
+			transcript.setId(transcriptId);
+			transcript.setExternalName(externalName);
+			
+			System.out.println(miRna);
+			System.out.println(id);
+			System.out.println(target);
+			
+			// FIN DE CAMBIAR ESTO
+			
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (con!=null) con.close();
+		}
 		
+	}
 		
 	public static void main(String[] args) throws Exception {
 		
-//		String inputFile1 = "/Users/esteban/Softw/miRNA/repTar/human_pred.txt";
-//		repTar reptar1 = new repTar(inputFile1);
-//		reptar1.insertInTable("repTar_human");
-		String inputFile2 = "/Users/esteban/Softw/miRNA/repTar/mouse_pred.txt";
-		repTar reptar2 = new repTar(inputFile2);
-		reptar2.insertInTable("repTar_mouse");
-
+		/*
+		 * HUMAN
+		 */
+		repTar repTarHuman = new repTar("repTar_human");
+		//String inputFileHuman = "/Users/esteban/Softw/miRNA/repTar/human_pred.txt";
+		//repTarHuman.insertInTable(inputFileHuman);
+		repTarHuman.insertIntoSQLModel();
 		
+		/*
+		 * MOUSE
+		 */
+		repTar repTarMouse = new repTar("repTar_mouse");
+		//String inputFileMouse = "/Users/esteban/Softw/miRNA/repTar/mouse_pred.txt";
+		//repTarMouse.insertInTable(inputFileMouse);
+		repTarMouse.insertIntoSQLModel();
 		
 	}
 

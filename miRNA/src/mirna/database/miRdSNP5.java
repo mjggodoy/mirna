@@ -110,7 +110,7 @@ public class miRdSNP5 extends miRdSNP {
 			//int count = 0;
 
 
-			
+			rs.next();
 			// CAMBIAR ESTO:
 			
 			String phenomicid = rs.getString("phenomicid");
