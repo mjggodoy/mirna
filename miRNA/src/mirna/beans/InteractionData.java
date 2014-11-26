@@ -153,6 +153,30 @@ public class InteractionData extends ModelClass {
 		this.phase = phase;
 	}
 
+
+
+	@Override
+	public String toString() {
+		return "InteractionData [score=" + score + ", pvalue_log=" + pvalue_log
+				+ ", miTG_score=" + miTG_score + ", method=" + method
+				+ ", feature=" + feature + ", phase=" + phase + ", rank="
+				+ rank + ", provenance=" + provenance + ", reference="
+				+ reference + ", pubmedId=" + pubmedId + ", cellularLine="
+				+ cellularLine + ", pvalue_og=" + pvalue_og + ", type=" + type
+				+ ", pk=" + pk + ", getType()=" + getType()
+				+ ", getPvalue_og()=" + getPvalue_og() + ", getCellularLine()="
+				+ getCellularLine() + ", getPubmedId()=" + getPubmedId()
+				+ ", getReference()=" + getReference() + ", getScore()="
+				+ getScore() + ", getPvalue_log()=" + getPvalue_log()
+				+ ", getRank()=" + getRank() + ", getProvenance()="
+				+ getProvenance() + ", getMiTG_score()=" + getMiTG_score()
+				+ ", getMethod()=" + getMethod() + ", getFeature()="
+				+ getFeature() + ", getPhase()=" + getPhase() + ", getPk()="
+				+ getPk() + ", getClass()=" + getClass() + ", hashCode()="
+				+ hashCode() + ", toString()=" + super.toString() + "]";
+	}
+
+	
 	
 
 }

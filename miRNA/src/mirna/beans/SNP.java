@@ -41,6 +41,19 @@ public class SNP extends Mutation {
 	}
 
 
+	@Override
+	public String toString() {
+		return "SNP [SNPid=" + SNPid + ", position=" + position
+				+ ", article_date=" + article_date + ", pk=" + pk
+				+ ", getSNPid()=" + getSNPid() + ", getArticle_date()="
+				+ getArticle_date() + ", getPosition()=" + getPosition()
+				+ ", getChromosome()=" + getChromosome() + ", getSpecie()="
+				+ getSpecie() + ", toString()=" + super.toString()
+				+ ", getPk()=" + getPk() + ", getClass()=" + getClass()
+				+ ", hashCode()=" + hashCode() + "]";
+	}
+
+
 	
 	
 	

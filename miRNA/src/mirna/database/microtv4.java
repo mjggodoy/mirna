@@ -10,7 +10,11 @@ import java.sql.Statement;
 
 import mirna.beans.Disease;
 import mirna.beans.ExpressionData;
+import mirna.beans.Gene;
+import mirna.beans.InteractionData;
 import mirna.beans.MiRna;
+import mirna.beans.Target;
+import mirna.beans.Transcript;
 import mirna.exception.MiRnaException;
 
 import org.apache.commons.lang.StringUtils;
@@ -135,40 +139,50 @@ public class microtv4 extends MirnaDatabase {
 			rs.next();
 			// CAMBIAR ESTO:
 			
-			String phenomicid = rs.getString("phenomicid");
-			String pmid = rs.getString("pmid");
-			String diseaseField = rs.getString("disease").toLowerCase().trim();
-			String diseaseClass = rs.getString("class").toLowerCase().trim();
-			String mirna = rs.getString("miRNA").toLowerCase().trim();
-			String accession = rs.getString("accession").toLowerCase().trim();
-			String evidence = rs.getString("expression");
-			String foldchangemin = rs.getString("foldchangemin");
-			String foldchangemax = rs.getString("foldchangemax");
-			String studyDesign = rs.getString("name");
-			String method = rs.getString("method");
-			
-			
+			String transcript_id = rs.getString("transcript_id");
+			String gene_id = rs.getString("gene_id");
+			String miRNA = rs.getString("miRNA");
+			String miTG_score = rs.getString("miTG_score");
+			String region = rs.getString("region");
+			String chromosome = rs.getString("chromosome");
+			String coordinates = rs.getString("coordinates");
+
+
 			MiRna miRna = new MiRna();
-			miRna.setName(mirna);
-			miRna.setAccessionNumber(accession);
+			miRna.setName(miRNA);
 			
-			Disease disease = new Disease();
-			disease.setName(diseaseField);
-			disease.setDiseaseClass(diseaseClass);
+			Gene gene = new Gene();
+			gene.setName(gene_id);
 			
-			ExpressionData ed = new ExpressionData();
-			ed.setProvenanceId(phenomicid);
-			ed.setPubmedId(pmid);
-			ed.setEvidence(evidence);
-			ed.setFoldchangeMin(foldchangemin);
-			ed.setFoldchangeMax(foldchangemax);
-			ed.setStudyDesign(studyDesign);
-			ed.setMethod(method);
-			ed.setProvenance("PhenomiR");
+			InteractionData id = new InteractionData();
+			id.setMiTG_score(miTG_score);
 			
+			Target target = new Target();
+			target.setRegion(region);
+			target.setChromosome(chromosome);
+			
+			
+			if(region.equals("CDS")){
+				
+				target.setCdsEnd(coordinates);
+
+		
+				
+			}else if(region.equals("UTR3")){
+				
+				target.setUTR3end(coordinates);
+
+			}
+			
+				
+			Transcript transcript = new Transcript();
+			transcript.setId(transcript_id);
+
+		
 			System.out.println(miRna);
-			System.out.println(disease);
-			System.out.println(ed);
+			System.out.println(gene);
+			System.out.println(id);
+			System.out.println(transcript);
 			
 			// FIN DE CAMBIAR ESTO
 			

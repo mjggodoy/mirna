@@ -17,25 +17,12 @@ public class Pathway {
 		this.id = id;
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	@Override
+	public String toString() {
+		return "Pathway [id=" + id + ", getId()=" + getId() + ", getClass()="
+				+ getClass() + ", hashCode()=" + hashCode() + ", toString()="
+				+ super.toString() + "]";
+	}
 
 
 }

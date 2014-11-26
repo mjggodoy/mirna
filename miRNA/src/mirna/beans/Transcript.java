@@ -66,5 +66,20 @@ public class Transcript extends ModelClass {
 	public void setExternalName(String externalName) {
 		this.externalName = externalName;
 	}
+
+	@Override
+	public String toString() {
+		return "Transcript [transcriptID=" + transcriptID + ", name=" + name
+				+ ", isoform=" + isoform + ", id=" + id + ", externalName="
+				+ externalName + ", pk=" + pk + ", getTranscriptID()="
+				+ getTranscriptID() + ", getName()=" + getName()
+				+ ", getIsoform()=" + getIsoform() + ", getId()=" + getId()
+				+ ", getExternalName()=" + getExternalName() + ", getPk()="
+				+ getPk() + ", toString()=" + super.toString()
+				+ ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
+				+ "]";
+	}
+	
+	
 	
 }

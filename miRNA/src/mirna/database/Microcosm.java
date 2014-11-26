@@ -114,6 +114,9 @@ public class Microcosm extends MirnaDatabase {
 		Connection con = null;
 		
 		try {
+			System.out.println(dbUrl);
+			System.out.println(dbUser);
+			System.out.println(dbPassword);
 			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			Statement stmt = (Statement) con.createStatement();
 			
