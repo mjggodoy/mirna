@@ -1,4 +1,4 @@
-CREATE TABLE miRCancer
+CREATE TABLE mirna_raw.miRCancer
 (
    pk               int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
    mirId            varchar(20) NOT NULL,
@@ -7,7 +7,7 @@ CREATE TABLE miRCancer
    pubmed_article   varchar(200) NOT NULL
 );
 
-CREATE TABLE phenomir
+CREATE TABLE mirna_raw.phenomir
 (
    pk               int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
    phenomicid       varchar(20) NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE phenomir
    method           varchar(20) NOT NULL
 );
 
-CREATE TABLE hmdd
+CREATE TABLE mirna_raw.hmdd
 (
    pk              int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
    id              varchar(10) NOT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE hmdd
    description     varchar(1600) NOT NULL    
 );
 
-CREATE TABLE microcosm_homo_sapiens
+CREATE TABLE mirna_raw.microcosm_homo_sapiens
 (
    pk              int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
    group_          varchar(20) NOT NULL,
@@ -53,7 +53,7 @@ CREATE TABLE microcosm_homo_sapiens
    external_name   varchar(20) NOT NULL
 );
 
-CREATE TABLE mir2disease
+CREATE TABLE mirna_raw.mir2disease
 (
    pk              int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
    mirna           varchar(20) NOT NULL,
@@ -64,7 +64,7 @@ CREATE TABLE mir2disease
    reference       varchar(300) NOT NULL
 );
 
-CREATE TABLE sm2mir2n
+CREATE TABLE mirna_raw.sm2mir2n
 (
    pk               int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
    mirna            varchar(20) NOT NULL,
@@ -83,7 +83,7 @@ CREATE TABLE sm2mir2n
    expression       varchar(20) NOT NULL
 );
 
-CREATE TABLE miREnvironment
+CREATE TABLE mirna_raw.miREnvironment
 (
    pk              int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
    mir             varchar(20) NOT NULL,
@@ -99,7 +99,7 @@ CREATE TABLE miREnvironment
    pubmedId        varchar(20) NOT NULL
 );
 
-CREATE TABLE miRDB
+CREATE TABLE mirna_raw.miRDB
 (
    pk              int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
    mir             varchar(20) NOT NULL,
@@ -107,7 +107,7 @@ CREATE TABLE miRDB
    score           varchar(20) NOT NULL
 );
 
-CREATE TABLE mirDIP
+CREATE TABLE mirna_raw.mirDIP
 (
    pk              int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
    accesionnumber  varchar(20) NOT NULL,
@@ -116,7 +116,7 @@ CREATE TABLE mirDIP
    provenance      varchar(400) NOT NULL
 );
 
-CREATE TABLE tarBase
+CREATE TABLE mirna_raw.tarBase
 (
  	pk     int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	id varchar(20) NOT NULL,
@@ -154,7 +154,7 @@ CREATE TABLE tarBase
 	aux varchar(80) NOT NULL
 );
 
-CREATE TABLE plant_mirna_mature_mirna
+CREATE TABLE mirna_raw.plant_mirna_mature_mirna
 (
  	pk     int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	specie varchar(20) NOT NULL,
@@ -162,7 +162,7 @@ CREATE TABLE plant_mirna_mature_mirna
 	sequence varchar(40) NOT NULL
 );
 
-CREATE TABLE plant_mirna_stem_loop
+CREATE TABLE mirna_raw.plant_mirna_stem_loop
 (
  	pk     int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	specie varchar(20) NOT NULL,
@@ -170,7 +170,7 @@ CREATE TABLE plant_mirna_stem_loop
 	sequence varchar(1000) NOT NULL
 );
 
-CREATE TABLE miRdSNP1
+CREATE TABLE mirna_raw.miRdSNP1
 (
  	pk     int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	pubmed_id varchar(20) NOT NULL,
@@ -184,7 +184,7 @@ CREATE TABLE miRdSNP1
 	link varchar(80) NOT NULL
 );
 
-CREATE TABLE miRdSNP2
+CREATE TABLE mirna_raw.miRdSNP2
 (
    pk           int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
    gene      	varchar(20) NOT NULL,
@@ -194,7 +194,7 @@ CREATE TABLE miRdSNP2
    disease      varchar(200) NOT NULL
 );
 
-CREATE TABLE miRdSNP3
+CREATE TABLE mirna_raw.miRdSNP3
 (
    pk           int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
    gene      	varchar(20) NOT NULL,
@@ -206,7 +206,7 @@ CREATE TABLE miRdSNP3
    expConf varchar(20) NOT NULL
 );
 
-CREATE TABLE miRdSNP4
+CREATE TABLE mirna_raw.miRdSNP4
 (
    pk           int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
    gene      	varchar(20) NOT NULL,
@@ -218,7 +218,7 @@ CREATE TABLE miRdSNP4
    expConf varchar(20) NOT NULL
 );
 
-CREATE TABLE miRdSNP5
+CREATE TABLE mirna_raw.miRdSNP5
 (
    pk           int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
    chromosome   varchar(20) NOT NULL,
@@ -228,7 +228,7 @@ CREATE TABLE miRdSNP5
    disease      varchar(200) NOT NULL
 );
 
-CREATE TABLE virmirna1
+CREATE TABLE mirna_raw.virmirna1
 (
    pk           int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
    id_virus   varchar(20) NOT NULL,
@@ -247,7 +247,7 @@ CREATE TABLE virmirna1
       pubmed   		varchar(80) NOT NULL
 );
 
-CREATE TABLE virmirna2
+CREATE TABLE mirna_raw.virmirna2
 (
    pk           int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
    avm_id   varchar(20) NOT NULL,
@@ -271,7 +271,7 @@ CREATE TABLE virmirna2
    pubmed_id   varchar(200) NOT NULL
 );
 
-CREATE TABLE virmirna3
+CREATE TABLE mirna_raw.virmirna3
 (
    pk           int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
    vmt_id   varchar(20) NOT NULL,
@@ -292,7 +292,7 @@ CREATE TABLE virmirna3
    pubmed_id   varchar(20) NOT NULL
 );
 
-CREATE TABLE microt_cds
+CREATE TABLE mirna_raw.microt_cds
 (
    pk              int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
    transcript_id   varchar(20) NOT NULL,
@@ -304,7 +304,7 @@ CREATE TABLE microt_cds
    coordinates     varchar(100) NOT NULL
 );
 
-CREATE TABLE microtv4
+CREATE TABLE mirna_raw.microtv4
 (
    pk              int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
    transcript_id   varchar(20) NOT NULL,
@@ -316,9 +316,9 @@ CREATE TABLE microtv4
    coordinates     varchar(100) NOT NULL
 );
 
-CREATE TABLE `repTar_human`
+CREATE TABLE mirna_raw.repTar_human
 (
-   pk                         int(10) NOT NULL AUTO_INCREMENT,
+   pk                         int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
    gene_symbol                varchar(20) NOT NULL,
    gene_accesion              varchar(10) NOT NULL,
    mirna                      varchar(20) NOT NULL,
@@ -334,7 +334,7 @@ CREATE TABLE `repTar_human`
    algorithm                  varchar(10) NOT NULL
 );
 
-CREATE TABLE repTar_mouse
+CREATE TABLE mirna_raw.repTar_mouse
 (
    pk                         int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
    gene_symbol                varchar(20) NOT NULL,
