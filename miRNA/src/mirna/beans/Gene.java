@@ -238,5 +238,35 @@ public class Gene extends ModelClass {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+
+
+	@Override
+	public String toString() {
+		return "Gene [name=" + name + ", chromosome=" + chromosome
+				+ ", accessionumber=" + accessionumber + ", geneId=" + geneId
+				+ ", description=" + description + ", year=" + year
+				+ ", resource=" + resource + ", start_strand=" + start_strand
+				+ ", end_strand=" + end_strand + ", hgnc_symbol=" + hgnc_symbol
+				+ ", location=" + location + ", expression_site="
+				+ expression_site + ", kegg_id=" + kegg_id + ", arm=" + arm
+				+ ", distance=" + distance + ", pubmedId=" + pubmedId
+				+ ", journal=" + journal + ", pk=" + pk + ", getDistance()="
+				+ getDistance() + ", getArm()=" + getArm() + ", getKegg_id()="
+				+ getKegg_id() + ", getExpression_site()="
+				+ getExpression_site() + ", getHgnc_symbol()="
+				+ getHgnc_symbol() + ", getLocation()=" + getLocation()
+				+ ", getAccessionumber()=" + getAccessionumber()
+				+ ", getStart_strand()=" + getStart_strand()
+				+ ", getEnd_strand()=" + getEnd_strand() + ", getResource()="
+				+ getResource() + ", getYear()=" + getYear()
+				+ ", getChromosome()=" + getChromosome() + ", getGeneId()="
+				+ getGeneId() + ", getDescription()=" + getDescription()
+				+ ", getName()=" + getName() + ", getPk()=" + getPk()
+				+ ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
+				+ ", toString()=" + super.toString() + "]";
+	}
+	
+	
 	
 }

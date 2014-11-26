@@ -33,5 +33,21 @@ public class Mature extends MiRna {
 	public void setGcProportion(String gcProportion) {
 		this.gcProportion = gcProportion;
 	}
+
+	@Override
+	public String toString() {
+		return "Mature [length=" + length + ", gcProportion=" + gcProportion
+				+ ", name=" + name + ", sequence=" + sequence + ", pk=" + pk
+				+ ", getLength()=" + getLength() + ", getGcProportion()="
+				+ getGcProportion() + ", getName()=" + getName()
+				+ ", getAccessionNumber()=" + getAccessionNumber()
+				+ ", getSequence()=" + getSequence() + ", getResource()="
+				+ getResource() + ", getOrganismPk()=" + getOrganismPk()
+				+ ", toString()=" + super.toString() + ", getPk()=" + getPk()
+				+ ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
+				+ "]";
+	}
+	
+	
 	
 }

@@ -169,5 +169,43 @@ public class Target extends Transcript {
 	public void setGC_proportion(String gC_proportion) {
 		GC_proportion = gC_proportion;
 	}
+
+	@Override
+	public String toString() {
+		return "Target [cdsStart=" + cdsStart + ", cdsEnd=" + cdsEnd
+				+ ", UTR5start=" + UTR5start + ", UTR3end=" + UTR3end
+				+ ", start_strand=" + start_strand + ", end_strand="
+				+ end_strand + ", sequence=" + sequence + ", name=" + name
+				+ ", chromosome=" + chromosome + ", polarity=" + polarity
+				+ ", binding_site_start=" + binding_site_start
+				+ ", binding_site_end=" + binding_site_end
+				+ ", repeated_motifs=" + repeated_motifs
+				+ ", UTR3conservation_score=" + UTR3conservation_score
+				+ ", region=" + region + ", seed_match=" + seed_match
+				+ ", coordinates=" + coordinates + ", GC_proportion="
+				+ GC_proportion + ", pk=" + pk + ", getCdsStart()="
+				+ getCdsStart() + ", getCdsEnd()=" + getCdsEnd()
+				+ ", getUTR5start()=" + getUTR5start() + ", getUTR3end()="
+				+ getUTR3end() + ", getStart_strand()=" + getStart_strand()
+				+ ", getEnd_strand()=" + getEnd_strand() + ", getSequence()="
+				+ getSequence() + ", getName()=" + getName()
+				+ ", getChromosome()=" + getChromosome() + ", getPolarity()="
+				+ getPolarity() + ", getBinding_site_start()="
+				+ getBinding_site_start() + ", getBinding_site_end()="
+				+ getBinding_site_end() + ", getRepeated_motifs()="
+				+ getRepeated_motifs() + ", getUTR3conservation_score()="
+				+ getUTR3conservation_score() + ", getRegion()=" + getRegion()
+				+ ", getSeed_match()=" + getSeed_match()
+				+ ", getCoordinates()=" + getCoordinates()
+				+ ", getGC_proportion()=" + getGC_proportion()
+				+ ", getTranscriptID()=" + getTranscriptID()
+				+ ", getIsoform()=" + getIsoform() + ", getId()=" + getId()
+				+ ", getExternalName()=" + getExternalName() + ", getPk()="
+				+ getPk() + ", toString()=" + super.toString()
+				+ ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
+				+ "]";
+	}
+	
+	
 	
 }

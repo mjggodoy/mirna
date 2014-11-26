@@ -27,5 +27,12 @@ public class ModelClass {
 	public void setPk(Integer pk) {
 		this.pk = pk;
 	}
+
+	@Override
+	public String toString() {
+		return "ModelClass [pk=" + pk + ", getPk()=" + getPk()
+				+ ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
+				+ ", toString()=" + super.toString() + "]";
+	}
 	
 }

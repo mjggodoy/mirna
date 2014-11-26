@@ -16,4 +16,17 @@ public class Hairpin extends MiRna {
 		this.sequence = sequence;
 	}
 
+	@Override
+	public String toString() {
+		return "Hairpin [name=" + name + ", sequence=" + sequence + ", pk="
+				+ pk + ", getName()=" + getName() + ", getAccessionNumber()="
+				+ getAccessionNumber() + ", getSequence()=" + getSequence()
+				+ ", getResource()=" + getResource() + ", getOrganismPk()="
+				+ getOrganismPk() + ", toString()=" + super.toString()
+				+ ", getPk()=" + getPk() + ", getClass()=" + getClass()
+				+ ", hashCode()=" + hashCode() + "]";
+	}
+	
+	
+
 }

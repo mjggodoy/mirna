@@ -183,40 +183,25 @@ public class TarBase implements IMirnaDatabase {
 			
 			// CAMBIAR ESTO:
 			
-			String phenomicid = rs.getString("phenomicid");
-			String pmid = rs.getString("pmid");
-			String diseaseField = rs.getString("disease").toLowerCase().trim();
-			String diseaseClass = rs.getString("class").toLowerCase().trim();
-			String mirna = rs.getString("miRNA").toLowerCase().trim();
-			String accession = rs.getString("accession").toLowerCase().trim();
-			String evidence = rs.getString("expression");
-			String foldchangemin = rs.getString("foldchangemin");
-			String foldchangemax = rs.getString("foldchangemax");
-			String studyDesign = rs.getString("name");
-			String method = rs.getString("method");
+			String idv4 = rs.getString("idV4");
+			String dataType = rs.getString("dataType");
+			String organism = rs.getString("organism");
+			String miRna = rs.getString("miRna");
+			String hgncSymbol = rs.getString("hgncSymbol");
+			String gene = rs.getString("gene");
+			String isoform = rs.getString("isoform");
+			String ensembl = rs.getString("ensembl");
+			String chrLoc = rs.getString("chrLoc");
+			String is = rs.getString("chrLoc");
+			String ds = rs.getString("ds");
+			String paper = rs.getString("paper");
+			String targetSeq = rs.getString("targetSeq");
+
+
 			
 			
-			MiRna miRna = new MiRna();
-			miRna.setName(mirna);
-			miRna.setAccessionNumber(accession);
 			
-			Disease disease = new Disease();
-			disease.setName(diseaseField);
-			disease.setDiseaseClass(diseaseClass);
 			
-			ExpressionData ed = new ExpressionData();
-			ed.setProvenanceId(phenomicid);
-			ed.setPubmedId(pmid);
-			ed.setEvidence(evidence);
-			ed.setFoldchangeMin(foldchangemin);
-			ed.setFoldchangeMax(foldchangemax);
-			ed.setStudyDesign(studyDesign);
-			ed.setMethod(method);
-			ed.setProvenance("PhenomiR");
-			
-			System.out.println(miRna);
-			System.out.println(disease);
-			System.out.println(ed);
 			
 			// FIN DE CAMBIAR ESTO
 			

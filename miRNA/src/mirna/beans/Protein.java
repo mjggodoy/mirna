@@ -24,8 +24,15 @@ public class Protein extends ModelClass {
 	public void setUniprot_id(String uniprot_id) {
 		Uniprot_id = uniprot_id;
 	}
-	
-	
-	
+
+
+	@Override
+	public String toString() {
+		return "Protein [Uniprot_id=" + Uniprot_id + ", pk=" + pk
+				+ ", getUniprot_id()=" + getUniprot_id() + ", getPk()="
+				+ getPk() + ", toString()=" + super.toString()
+				+ ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
+				+ "]";
+	}	
 
 }

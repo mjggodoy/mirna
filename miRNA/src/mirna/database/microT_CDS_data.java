@@ -143,16 +143,13 @@ public class microT_CDS_data extends MirnaDatabase {
 			
 			// CAMBIAR ESTO:
 			
-			String transcriptId = rs.getString("transcriptId");
-			String geneId  = rs.getString("gene_Id");
-			String miRNA = rs.getString("name");
+			String transcriptId = rs.getString("transcript_id");
+			String geneId  = rs.getString("gene_id");
+			String miRNA = rs.getString("miRNA");
 			String miTG_score = rs.getString("miTG_score");
 			String region = rs.getString("region");
 			String chromosome = rs.getString("chromosome");
-			String coordinates1 = rs.getString("3UTRstart");
-			String coordinates2 = rs.getString("3UTRend");
-			String coordinates3 = rs.getString("CDsStart");
-			String coordinates4 = rs.getString("CDsEnd");
+			String coordinates = rs.getString("coordinates");
 
 
 		
@@ -167,17 +164,30 @@ public class microT_CDS_data extends MirnaDatabase {
 			
 			Target target = new Target();
 			target.setRegion(region);
-			target.setRegion(chromosome);
+			target.setChromosome(chromosome);
+			
+			
+			if(region.equals("CDS")){
+				
+				target.setCdsEnd(coordinates);
+
+		
+				
+			}else if(region.equals("UTR3")){
+				
+				target.setUTR3end(coordinates);
+
+			}
+			
 				
 			Transcript transcript = new Transcript();
-			transcript.setId(transcriptId);;
+			transcript.setId(transcriptId);
 
 			System.out.println(miRna);
 			System.out.println(gene);
 			System.out.println(id);
 			System.out.println(target);
-
-
+			System.out.println(transcript);
 			
 			// FIN DE CAMBIAR ESTO
 			

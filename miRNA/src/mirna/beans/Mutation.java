@@ -22,8 +22,6 @@ public class Mutation extends ModelClass {
 	}
 
 
-
-
 	public String getChromosome() {
 		return chromosome;
 	}
@@ -39,6 +37,14 @@ public class Mutation extends ModelClass {
 	public void setSpecie(String specie) {
 		this.specie = specie;
 	}
-
+	
+	@Override
+	public String toString() {
+		return "Mutation [specie=" + specie + ", chromosome=" + chromosome
+				+ ", pk=" + pk + ", getChromosome()=" + getChromosome()
+				+ ", getSpecie()=" + getSpecie() + ", getPk()=" + getPk()
+				+ ", toString()=" + super.toString() + ", getClass()="
+				+ getClass() + ", hashCode()=" + hashCode() + "]";
+	}
 	
 }
