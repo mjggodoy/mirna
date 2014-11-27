@@ -21,7 +21,7 @@ import mirna.exception.MiRnaException;
  */
 public class miRdSNP3 extends miRdSNP {
 	
-	private final String tableName = "mirdsnp3";
+	private final String tableName = "miRdSNP3";
 	
 	public miRdSNP3() throws MiRnaException { super(); }
 	

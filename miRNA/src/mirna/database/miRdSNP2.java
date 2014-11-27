@@ -23,7 +23,7 @@ import org.apache.commons.lang.StringUtils;
  */
 public class miRdSNP2 extends miRdSNP {
 	
-	private final String tableName = "mirdsnp2";
+	private final String tableName = "miRdSNP2";
 	
 	public miRdSNP2() throws MiRnaException { super(); }
 	
