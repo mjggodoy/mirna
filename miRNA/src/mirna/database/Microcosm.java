@@ -171,6 +171,7 @@ public class Microcosm extends MirnaDatabase {
 			System.out.println(miRna);
 			System.out.println(id);
 			System.out.println(target);
+			System.out.println(transcript);
 			
 			// FIN DE CAMBIAR ESTO
 			

@@ -10,7 +10,9 @@ import java.sql.Statement;
 
 import mirna.beans.Disease;
 import mirna.beans.ExpressionData;
+import mirna.beans.Gene;
 import mirna.beans.MiRna;
+import mirna.beans.SNP;
 import mirna.exception.MiRnaException;
 
 import org.apache.commons.lang.StringUtils;
@@ -56,19 +58,21 @@ public class miRdSNP5 extends miRdSNP {
 				tokens = StringUtils.splitPreserveAllTokens(line, "\t");
 	
 				String chromosome = tokens[0];
-				String start_sequence = tokens[1];
-				String end_sequence = tokens[2];
+				String position_initial = tokens[1];
+				String position_final = tokens[2];
 				String disease_SNP = tokens[3];
 				tokens2 = StringUtils.splitPreserveAllTokens(disease_SNP, ":");
 				String SNP = tokens2[0];
 				String disease = tokens2[1].replaceAll("'", "\\\\'");
+				String orientation = tokens[5];
 			
 				String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
 						+ chromosome + "','"
-						+ start_sequence + "','"
-						+ end_sequence + "','"
+						+ position_initial + "','"
+						+ position_final + "','"
 						+ SNP + "','"
-						+ disease + "')";
+						+ disease + "','"
+						+ orientation + "')";
 				
 				stmt.executeUpdate(query);
 			}
@@ -113,40 +117,25 @@ public class miRdSNP5 extends miRdSNP {
 			rs.next();
 			// CAMBIAR ESTO:
 			
-			String phenomicid = rs.getString("phenomicid");
-			String pmid = rs.getString("pmid");
-			String diseaseField = rs.getString("disease").toLowerCase().trim();
-			String diseaseClass = rs.getString("class").toLowerCase().trim();
-			String mirna = rs.getString("miRNA").toLowerCase().trim();
-			String accession = rs.getString("accession").toLowerCase().trim();
-			String evidence = rs.getString("expression");
-			String foldchangemin = rs.getString("foldchangemin");
-			String foldchangemax = rs.getString("foldchangemax");
-			String studyDesign = rs.getString("name");
-			String method = rs.getString("method");
-			
-			
-			MiRna miRna = new MiRna();
-			miRna.setName(mirna);
-			miRna.setAccessionNumber(accession);
+			String chromosome = rs.getString("chromosome").toLowerCase().trim();
+			String position = rs.getString("position_initial").toLowerCase().trim();
+			String snp_name = rs.getString("snp").toLowerCase().trim();
+			String disease_name = rs.getString("disease").toLowerCase().trim();
+			String orientation = rs.getString("orientation").toLowerCase().trim();
+
 			
 			Disease disease = new Disease();
-			disease.setName(diseaseField);
-			disease.setDiseaseClass(diseaseClass);
+			disease.setName(disease_name);
+					
+			SNP snp = new SNP();
+			snp.setChromosome(chromosome);
+			snp.setSNPid(snp_name);
+			snp.setPosition(position);
+			snp.setOrientation(orientation);
 			
-			ExpressionData ed = new ExpressionData();
-			ed.setProvenanceId(phenomicid);
-			ed.setPubmedId(pmid);
-			ed.setEvidence(evidence);
-			ed.setFoldchangeMin(foldchangemin);
-			ed.setFoldchangeMax(foldchangemax);
-			ed.setStudyDesign(studyDesign);
-			ed.setMethod(method);
-			ed.setProvenance("PhenomiR");
-			
-			System.out.println(miRna);
 			System.out.println(disease);
-			System.out.println(ed);
+			System.out.println(snp);
+			
 			
 			// FIN DE CAMBIAR ESTO
 			

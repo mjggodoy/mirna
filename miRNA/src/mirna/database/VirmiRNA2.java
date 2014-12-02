@@ -8,10 +8,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import mirna.beans.InteractionData;
+import mirna.beans.BiologicalProcess;
+import mirna.beans.ExpressionData;
+import mirna.beans.Gene;
 import mirna.beans.MiRna;
+import mirna.beans.Organism;
 import mirna.beans.Target;
-import mirna.beans.Transcript;
 import mirna.exception.MiRnaException;
 
 import org.apache.commons.lang.StringUtils;
@@ -143,42 +145,62 @@ public class VirmiRNA2 extends VirmiRNA {
 			rs.next();
 			// CAMBIAR ESTO:
 			
-			String seq = rs.getString("seq");
+			
+			String mirna_name = rs.getString("mirna");
+			String mirna_seq = rs.getString("mirna_seq");
+			String accesion_number = rs.getString("mirbase_id");
+			String specie_target = rs.getString("specie");
+			String organism_name = rs.getString("virus");
+			String organism_name_full = rs.getString("virus_full_name");
+			String resource_organism = rs.getString("taxonomy");
+			String target1 = rs.getString("target");
+			String uniprot = rs.getString("uniprot");
+			String target_process = rs.getString("target_process");
 			String method = rs.getString("method");
-			String feature = rs.getString("feature").toLowerCase().trim();
-			String chromosome = rs.getString("chr").toLowerCase().trim();
-			String start = rs.getString("start").toLowerCase().trim();
-			String end = rs.getString("end").toLowerCase().trim();
-			String strand = rs.getString("strand").toLowerCase().trim();
-			String phase = rs.getString("phase");
-			String score = rs.getString("score");
-			String pvalue_og = rs.getString("pvalue_og");
-			String transcriptId = rs.getString("transcript_id");
-			String externalName = rs.getString("external_name");
+			String cell_line = rs.getString("cell_line");
+			String target_sequence = rs.getString("target_sequence");
+			String target_region = rs.getString("target_region");
+			String target_coords = rs.getString("target_coords");
+			String send_match = rs.getString("seed_match");
+			String target_resource = rs.getString("target_ref");
+			String target_pubmedId = rs.getString("pubmed_id");
 			
-			MiRna miRna = new MiRna();
-			miRna.setName(seq);
+			MiRna mirna = new MiRna();
+			mirna.setName(mirna_name);
+			mirna.setSequence(mirna_seq);
+			mirna.setAccessionNumber(accesion_number);
 			
-			InteractionData id = new InteractionData();
-			id.setMethod(method);
-			id.setFeature(feature);
-			id.setPhase(phase);
-			id.setScore(score);
-			id.setPvalue_og(pvalue_og);
+			Organism organism = new Organism();
+			organism.setSpecie(specie_target);
+			organism.setName(organism_name_full);
+			organism.setName(organism_name);
+			organism.setResource(resource_organism);
 			
 			Target target = new Target();
-			target.setChromosome(chromosome);
-			target.setStart_strand(start);
-			target.setEnd_strand(end);
-			target.setPolarity(strand);
+			target.setSequence(target_sequence);
+			target.setRegion(target_region);
+			target.setCoordinates(target_coords);
+			target.setSeed_match(send_match);
+			target.setResource(target_resource);
+			target.setPubmed_id(target_pubmedId);
 			
-			Transcript transcript = new Transcript();
-			transcript.setId(transcriptId);
-			transcript.setExternalName(externalName);
+			BiologicalProcess biologicalprocess = new BiologicalProcess();
+			biologicalprocess.setName(target_process);
 			
-			System.out.println(miRna);
-			System.out.println(id);
+			ExpressionData expressiondata = new ExpressionData();
+			expressiondata.setCellularLine(cell_line);
+			expressiondata.setCellularLine(method);
+			
+			Gene gene = new Gene();
+			gene.setName(target1);
+			gene.setGeneId(uniprot);
+			
+			
+			System.out.println(mirna);
+			System.out.println(organism);
+			System.out.println(expressiondata);
 			System.out.println(target);
+			System.out.println(biologicalprocess);
 			
 			// FIN DE CAMBIAR ESTO
 			

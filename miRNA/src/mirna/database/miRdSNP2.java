@@ -57,10 +57,10 @@ public class miRdSNP2 extends miRdSNP {
 					tokens[i] = quitarComillas(tokens[i]);
 				}
 	
-				String gene = tokens[0];
-				String refseq_name = tokens[1];
-				String name_miRNA = tokens[2];
-				String SNPid = tokens[3];
+				String refseq_name = tokens[0];
+				String gene_name = tokens[1];
+				String SNPid = tokens[2];
+				String miRNA_name = tokens[3];
 				String disease_name = tokens[4].replaceAll("'", "\\\\'");;
 				
 				if (tokens.length>5) {
@@ -69,10 +69,10 @@ public class miRdSNP2 extends miRdSNP {
 				}
 			
 				String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
-						+ gene + "','"
 						+ refseq_name + "','"
-						+ name_miRNA + "','"
+						+ gene_name + "','"
 						+ SNPid + "','"
+						+ miRNA_name + "','"
 						+ disease_name + "')";
 				
 				stmt.executeUpdate(query);
@@ -121,8 +121,8 @@ public class miRdSNP2 extends miRdSNP {
 			
 			String ref_seq = rs.getString("refseq").toLowerCase().trim();
 			String gene_name = rs.getString("gene").toLowerCase().trim();
-			String mirna_name = rs.getString("mirna").toLowerCase().trim();
 			String snp_id = rs.getString("snp_id").toLowerCase().trim();
+			String mirna_name = rs.getString("mirna").toLowerCase().trim();
 			String disease_name = rs.getString("disease").toLowerCase().trim();
 
 			
@@ -143,6 +143,8 @@ public class miRdSNP2 extends miRdSNP {
 			System.out.println(disease);
 			System.out.println(snp);
 			System.out.println(gene);
+			System.out.println(mirna);
+
 
 			
 			// FIN DE CAMBIAR ESTO

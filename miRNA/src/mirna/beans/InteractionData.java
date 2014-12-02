@@ -15,6 +15,7 @@ public class InteractionData extends ModelClass {
 	private String cellularLine;//ok
 	private String pvalue_og;//ok
 	private String type;
+	private String description;
 	
 	public InteractionData() {
 		super();
@@ -25,7 +26,7 @@ public class InteractionData extends ModelClass {
 	public InteractionData(int pk,String score, String pvalue_log, String miTG_score,
 			String method, String feature, String phase, String rank,
 			String provenance, String reference, String pubmedId,
-			String cellularLine, String pvalue_og, String type) {
+			String cellularLine, String pvalue_og, String type, String description) {
 		super(pk);
 		this.score = score;
 		this.pvalue_log = pvalue_log;
@@ -40,7 +41,23 @@ public class InteractionData extends ModelClass {
 		this.cellularLine = cellularLine;
 		this.pvalue_og = pvalue_og;
 		this.type = type;
+		this.description = description;
 	}
+
+
+	
+	
+	
+	public String getDescription() {
+		return description;
+	}
+
+
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 
 
 	public String getType() {
@@ -163,19 +180,24 @@ public class InteractionData extends ModelClass {
 				+ rank + ", provenance=" + provenance + ", reference="
 				+ reference + ", pubmedId=" + pubmedId + ", cellularLine="
 				+ cellularLine + ", pvalue_og=" + pvalue_og + ", type=" + type
-				+ ", pk=" + pk + ", getType()=" + getType()
-				+ ", getPvalue_og()=" + getPvalue_og() + ", getCellularLine()="
-				+ getCellularLine() + ", getPubmedId()=" + getPubmedId()
-				+ ", getReference()=" + getReference() + ", getScore()="
-				+ getScore() + ", getPvalue_log()=" + getPvalue_log()
-				+ ", getRank()=" + getRank() + ", getProvenance()="
-				+ getProvenance() + ", getMiTG_score()=" + getMiTG_score()
-				+ ", getMethod()=" + getMethod() + ", getFeature()="
-				+ getFeature() + ", getPhase()=" + getPhase() + ", getPk()="
-				+ getPk() + ", getClass()=" + getClass() + ", hashCode()="
-				+ hashCode() + ", toString()=" + super.toString() + "]";
+				+ ", description=" + description + ", pk=" + pk
+				+ ", getDescription()=" + getDescription() + ", getType()="
+				+ getType() + ", getPvalue_og()=" + getPvalue_og()
+				+ ", getCellularLine()=" + getCellularLine()
+				+ ", getPubmedId()=" + getPubmedId() + ", getReference()="
+				+ getReference() + ", getScore()=" + getScore()
+				+ ", getPvalue_log()=" + getPvalue_log() + ", getRank()="
+				+ getRank() + ", getProvenance()=" + getProvenance()
+				+ ", getMiTG_score()=" + getMiTG_score() + ", getMethod()="
+				+ getMethod() + ", getFeature()=" + getFeature()
+				+ ", getPhase()=" + getPhase() + ", getPk()=" + getPk()
+				+ ", toString()=" + super.toString() + ", getClass()="
+				+ getClass() + ", hashCode()=" + hashCode() + "]";
 	}
 
+
+
+	
 	
 	
 

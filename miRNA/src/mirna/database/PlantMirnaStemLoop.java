@@ -10,7 +10,9 @@ import java.sql.Statement;
 
 import mirna.beans.Disease;
 import mirna.beans.ExpressionData;
+import mirna.beans.Hairpin;
 import mirna.beans.MiRna;
+import mirna.beans.Organism;
 import mirna.exception.MiRnaException;
 
 import org.apache.commons.lang.StringUtils;
@@ -121,40 +123,23 @@ public class PlantMirnaStemLoop extends MirnaDatabase {
 			rs.next();
 			// CAMBIAR ESTO:
 			
-			String phenomicid = rs.getString("phenomicid");
-			String pmid = rs.getString("pmid");
-			String diseaseField = rs.getString("disease").toLowerCase().trim();
-			String diseaseClass = rs.getString("class").toLowerCase().trim();
-			String mirna = rs.getString("miRNA").toLowerCase().trim();
-			String accession = rs.getString("accession").toLowerCase().trim();
-			String evidence = rs.getString("expression");
-			String foldchangemin = rs.getString("foldchangemin");
-			String foldchangemax = rs.getString("foldchangemax");
-			String studyDesign = rs.getString("name");
-			String method = rs.getString("method");
-			
-			
+
+			String specie = rs.getString("specie").toLowerCase().trim();
+			String mirna_id = rs.getString("mirna_id").toLowerCase().trim();
+			String sequence = rs.getString("sequence").toLowerCase().trim();
+		
 			MiRna miRna = new MiRna();
-			miRna.setName(mirna);
-			miRna.setAccessionNumber(accession);
+			miRna.setName(mirna_id);
 			
-			Disease disease = new Disease();
-			disease.setName(diseaseField);
-			disease.setDiseaseClass(diseaseClass);
+			Organism organism = new Organism();
+			organism.setSpecie(specie);
 			
-			ExpressionData ed = new ExpressionData();
-			ed.setProvenanceId(phenomicid);
-			ed.setPubmedId(pmid);
-			ed.setEvidence(evidence);
-			ed.setFoldchangeMin(foldchangemin);
-			ed.setFoldchangeMax(foldchangemax);
-			ed.setStudyDesign(studyDesign);
-			ed.setMethod(method);
-			ed.setProvenance("PhenomiR");
+			Hairpin hairpin = new Hairpin();
+			hairpin.setSequence(sequence);
 			
 			System.out.println(miRna);
-			System.out.println(disease);
-			System.out.println(ed);
+			System.out.println(organism);
+			System.out.println(hairpin);
 			
 			// FIN DE CAMBIAR ESTO
 			

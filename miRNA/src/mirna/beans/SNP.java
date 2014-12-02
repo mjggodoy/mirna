@@ -7,6 +7,7 @@ public class SNP extends Mutation {
 	private String article_date;
 	
 	
+	
 	public SNP(){}
 
 	
@@ -48,15 +49,16 @@ public class SNP extends Mutation {
 				+ ", getSNPid()=" + getSNPid() + ", getArticle_date()="
 				+ getArticle_date() + ", getPosition()=" + getPosition()
 				+ ", getChromosome()=" + getChromosome() + ", getSpecie()="
-				+ getSpecie() + ", toString()=" + super.toString()
-				+ ", getPk()=" + getPk() + ", getClass()=" + getClass()
-				+ ", hashCode()=" + hashCode() + "]";
+				+ getSpecie() + ", getCoordinates()=" + getCoordinates()
+				+ ", toString()=" + super.toString() + ", getPk()=" + getPk()
+				+ ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
+				+ "]";
 	}
+	
+	
+	
 
 
-	
-	
-	
 	
 
 }

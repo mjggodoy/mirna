@@ -32,7 +32,7 @@ public class Gene extends ModelClass {
 			String geneId, String description, String year, String resource,
 			String start_strand, String end_strand, String hgnc_symbol,
 			String location, String expression_site, String kegg_id,
-			String arm, String distance) {
+			String arm, String distance, String journal) {
 		super(pk);
 		this.name = name;
 		this.chromosome = chromosome;
@@ -49,6 +49,7 @@ public class Gene extends ModelClass {
 		this.kegg_id = kegg_id;
 		this.arm = arm;
 		this.distance = distance;
+		this.journal = journal;
 	}
 
 
@@ -241,6 +242,30 @@ public class Gene extends ModelClass {
 
 
 
+	public String getJournal() {
+		return journal;
+	}
+
+
+
+	public void setJournal(String journal) {
+		this.journal = journal;
+	}
+
+
+
+	public String getPubmedId() {
+		return pubmedId;
+	}
+
+
+
+	public void setPubmedId(String pubmedId) {
+		this.pubmedId = pubmedId;
+	}
+
+
+
 	@Override
 	public String toString() {
 		return "Gene [name=" + name + ", chromosome=" + chromosome
@@ -251,21 +276,12 @@ public class Gene extends ModelClass {
 				+ ", location=" + location + ", expression_site="
 				+ expression_site + ", kegg_id=" + kegg_id + ", arm=" + arm
 				+ ", distance=" + distance + ", pubmedId=" + pubmedId
-				+ ", journal=" + journal + ", pk=" + pk + ", getDistance()="
-				+ getDistance() + ", getArm()=" + getArm() + ", getKegg_id()="
-				+ getKegg_id() + ", getExpression_site()="
-				+ getExpression_site() + ", getHgnc_symbol()="
-				+ getHgnc_symbol() + ", getLocation()=" + getLocation()
-				+ ", getAccessionumber()=" + getAccessionumber()
-				+ ", getStart_strand()=" + getStart_strand()
-				+ ", getEnd_strand()=" + getEnd_strand() + ", getResource()="
-				+ getResource() + ", getYear()=" + getYear()
-				+ ", getChromosome()=" + getChromosome() + ", getGeneId()="
-				+ getGeneId() + ", getDescription()=" + getDescription()
-				+ ", getName()=" + getName() + ", getPk()=" + getPk()
-				+ ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
-				+ ", toString()=" + super.toString() + "]";
+				+ ", journal=" + journal + "]";
 	}
+
+
+
+	
 	
 	
 	

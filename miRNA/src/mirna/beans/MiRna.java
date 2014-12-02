@@ -28,6 +28,8 @@ public class MiRna extends ModelClass {
 	@Column(name = "organism_pk", nullable = true, length = 45)
 	private Integer organismPk;
 	
+	private String pubmedId;
+	
 //	private String journal;//ok X
 //	private String subName; //ok X
 //	private String provenance; //ok X
@@ -85,6 +87,14 @@ public class MiRna extends ModelClass {
 
 	public void setOrganismPk(Integer organismPk) {
 		this.organismPk = organismPk;
+	}
+
+	public String getPubmedId() {
+		return pubmedId;
+	}
+
+	public void setPubmedId(String pubmedId) {
+		this.pubmedId = pubmedId;
 	}
 
 	public int checkConflict(MiRna mirna) {

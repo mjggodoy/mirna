@@ -10,7 +10,9 @@ import java.sql.Statement;
 
 import mirna.beans.Disease;
 import mirna.beans.ExpressionData;
+import mirna.beans.Gene;
 import mirna.beans.MiRna;
+import mirna.beans.SNP;
 import mirna.exception.MiRnaException;
 
 /**
@@ -121,40 +123,33 @@ public class miRdSNP1 extends miRdSNP {
 			rs.next();
 			// CAMBIAR ESTO:
 			
-			String phenomicid = rs.getString("phenomicid");
-			String pmid = rs.getString("pmid");
-			String diseaseField = rs.getString("disease").toLowerCase().trim();
-			String diseaseClass = rs.getString("class").toLowerCase().trim();
-			String mirna = rs.getString("miRNA").toLowerCase().trim();
-			String accession = rs.getString("accession").toLowerCase().trim();
-			String evidence = rs.getString("expression");
-			String foldchangemin = rs.getString("foldchangemin");
-			String foldchangemax = rs.getString("foldchangemax");
-			String studyDesign = rs.getString("name");
-			String method = rs.getString("method");
-			
-			
-			MiRna miRna = new MiRna();
-			miRna.setName(mirna);
-			miRna.setAccessionNumber(accession);
+			String pubmedId = rs.getString("pubmed_id").toLowerCase().trim();
+			String year = rs.getString("year").toLowerCase().trim();
+			String journal = rs.getString("journal").toLowerCase().trim();
+			String description = rs.getString("title").toLowerCase().trim();
+			String snp_id = rs.getString("snp").toLowerCase().trim();
+			String disease_name = rs.getString("disease").toLowerCase().trim();
+			String resource = rs.getString("link").toLowerCase().trim();
+
 			
 			Disease disease = new Disease();
-			disease.setName(diseaseField);
-			disease.setDiseaseClass(diseaseClass);
+			disease.setName(disease_name);
 			
-			ExpressionData ed = new ExpressionData();
-			ed.setProvenanceId(phenomicid);
-			ed.setPubmedId(pmid);
-			ed.setEvidence(evidence);
-			ed.setFoldchangeMin(foldchangemin);
-			ed.setFoldchangeMax(foldchangemax);
-			ed.setStudyDesign(studyDesign);
-			ed.setMethod(method);
-			ed.setProvenance("PhenomiR");
+			Gene gene = new Gene();
+			gene.setYear(year);
+			gene.setJournal(journal);
+			gene.setDescription(description);
+			gene.setResource(resource);
+			gene.setPubmedId(pubmedId);
 			
-			System.out.println(miRna);
+			SNP snp = new SNP();
+			snp.setSNPid(snp_id);
+			
+			
 			System.out.println(disease);
-			System.out.println(ed);
+			System.out.println(snp);
+			System.out.println(gene);
+
 			
 			// FIN DE CAMBIAR ESTO
 			

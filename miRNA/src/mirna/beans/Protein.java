@@ -3,6 +3,8 @@ package mirna.beans;
 public class Protein extends ModelClass {
 	
 	private String Uniprot_id;
+	private String Swiss_prot_id;
+	private String Type;
 	
 	
 	public Protein() {
@@ -12,9 +14,12 @@ public class Protein extends ModelClass {
 	}
 	
 
-	public Protein(int pk,String uniprot_id) {
+	public Protein(int pk,String uniprot_id, String swiss_prot_id, String type) {
 		super(pk);
 		Uniprot_id = uniprot_id;
+		Swiss_prot_id = swiss_prot_id;
+		Type = type;
+		
 	}
 
 	public String getUniprot_id() {
@@ -26,13 +31,41 @@ public class Protein extends ModelClass {
 	}
 
 
+	public String getSwiss_prot_id() {
+		return Swiss_prot_id;
+	}
+
+
+	public void setSwiss_prot_id(String swiss_prot_id) {
+		Swiss_prot_id = swiss_prot_id;
+	}
+
+
+	public String getType() {
+		return Type;
+	}
+
+
+	public void setType(String type) {
+		this.Type = type;
+	}
+
+
 	@Override
 	public String toString() {
-		return "Protein [Uniprot_id=" + Uniprot_id + ", pk=" + pk
-				+ ", getUniprot_id()=" + getUniprot_id() + ", getPk()="
-				+ getPk() + ", toString()=" + super.toString()
-				+ ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
-				+ "]";
-	}	
+		return "Protein [Uniprot_id=" + Uniprot_id + ", Swiss_prot_id="
+				+ Swiss_prot_id + ", type=" + Type + ", pk=" + pk
+				+ ", getUniprot_id()=" + getUniprot_id()
+				+ ", getSwiss_prot_id()=" + getSwiss_prot_id() + ", getType()="
+				+ getType() + ", getPk()=" + getPk() + ", toString()="
+				+ super.toString() + ", getClass()=" + getClass()
+				+ ", hashCode()=" + hashCode() + "]";
+	}
+
+
+
+
+
+
 
 }

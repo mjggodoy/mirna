@@ -8,10 +8,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import mirna.beans.InteractionData;
+import mirna.beans.ExpressionData;
+import mirna.beans.Gene;
+import mirna.beans.Hairpin;
+import mirna.beans.Mature;
 import mirna.beans.MiRna;
-import mirna.beans.Target;
-import mirna.beans.Transcript;
+import mirna.beans.Organism;
 import mirna.exception.MiRnaException;
 
 import org.apache.commons.lang.StringUtils;
@@ -121,42 +123,51 @@ public class VirmiRNA1 extends VirmiRNA{
 			rs.next();
 			// CAMBIAR ESTO:
 			
-			String seq = rs.getString("seq");
+			String virus_name = rs.getString("virus_name");
+			String virus_full_name = rs.getString("virus_full_name");
+			String resource = rs.getString("link_virus");
+			String mirna_name = rs.getString("mirna");
+			String mirna_seq = rs.getString("mirna_seq");
+			String length = rs.getString("length");
+			String gc_proportion = rs.getString("gc_proportion");
+			String arm = rs.getString("arm");
+			String pre_mirna = rs.getString("pre_mirna");
+			String pre_mirna_seq = rs.getString("pre_mirna_seq");
+			String cell_line = rs.getString("cell_line");
 			String method = rs.getString("method");
-			String feature = rs.getString("feature").toLowerCase().trim();
-			String chromosome = rs.getString("chr").toLowerCase().trim();
-			String start = rs.getString("start").toLowerCase().trim();
-			String end = rs.getString("end").toLowerCase().trim();
-			String strand = rs.getString("strand").toLowerCase().trim();
-			String phase = rs.getString("phase");
-			String score = rs.getString("score");
-			String pvalue_og = rs.getString("pvalue_og");
-			String transcriptId = rs.getString("transcript_id");
-			String externalName = rs.getString("external_name");
+			String pubmed = rs.getString("pubmed");
+
+			Organism organism = new Organism();
+			organism.setName(virus_name);
+			organism.setName(virus_full_name);
+			organism.setResource(resource);
 			
-			MiRna miRna = new MiRna();
-			miRna.setName(seq);
+			Mature mature = new Mature();
+			mature.setName(mirna_name);
+			mature.setSequence(mirna_seq);
+			mature.setLength(length);
+			mature.setGcProportion(gc_proportion);
 			
-			InteractionData id = new InteractionData();
-			id.setMethod(method);
-			id.setFeature(feature);
-			id.setPhase(phase);
-			id.setScore(score);
-			id.setPvalue_og(pvalue_og);
+			Gene gene = new Gene();
+			gene.setArm(arm);
 			
-			Target target = new Target();
-			target.setChromosome(chromosome);
-			target.setStart_strand(start);
-			target.setEnd_strand(end);
-			target.setPolarity(strand);
+			Hairpin hairpin = new Hairpin();
+			hairpin.setName(pre_mirna);
+			hairpin.setName(pre_mirna_seq);
 			
-			Transcript transcript = new Transcript();
-			transcript.setId(transcriptId);
-			transcript.setExternalName(externalName);
+			ExpressionData expressiondata = new ExpressionData();
+			expressiondata.setCondition(cell_line);
+			expressiondata.setMethod(method);
 			
-			System.out.println(miRna);
-			System.out.println(id);
-			System.out.println(target);
+			MiRna mirna = new MiRna();
+			mirna.setPubmedId(pubmed);
+			
+			System.out.println(organism);
+			System.out.println(expressiondata);
+			System.out.println(mirna);
+			System.out.println(gene);
+			System.out.println(hairpin);
+			System.out.println(mature);
 			
 			// FIN DE CAMBIAR ESTO
 			

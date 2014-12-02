@@ -10,7 +10,13 @@ import java.sql.Statement;
 
 import mirna.beans.Disease;
 import mirna.beans.ExpressionData;
+import mirna.beans.Gene;
+import mirna.beans.InteractionData;
 import mirna.beans.MiRna;
+import mirna.beans.Organism;
+import mirna.beans.Protein;
+import mirna.beans.Target;
+import mirna.beans.Transcript;
 import mirna.exception.MiRnaException;
 
 import org.apache.commons.lang.StringUtils;
@@ -168,25 +174,87 @@ public class TarBase extends MirnaDatabase {
 			rs.next();
 			// CAMBIAR ESTO:
 			
-			String idv4 = rs.getString("idV4");
-			String dataType = rs.getString("dataType");
-			String organism = rs.getString("organism");
-			String miRna = rs.getString("miRna");
-			String hgncSymbol = rs.getString("hgncSymbol");
-			String gene = rs.getString("gene");
+			String idv4 = rs.getString("id_v4");
+			String dataType = rs.getString("data_type");
+			String supportType = rs.getString("support_type");
+			String specie = rs.getString("organism");
+			String miRna = rs.getString("miRNA");
+			String hgncSymbol = rs.getString("hgnc_symbol");
+			String gene_name = rs.getString("gene");
 			String isoform = rs.getString("isoform");
 			String ensembl = rs.getString("ensembl");
-			String chrLoc = rs.getString("chrLoc");
-			String is = rs.getString("chrLoc");
-			String ds = rs.getString("ds");
+			String chrLoc = rs.getString("chr_loc");
+			String is = rs.getString("i_s");
+			String ds = rs.getString("d_s");
 			String paper = rs.getString("paper");
-			String targetSeq = rs.getString("targetSeq");
-
-
+			String targetSeq = rs.getString("target_seq");
+			String mirnaSeq =rs.getString("mirna_seq");
+			String seqLocation = rs.getString("seq_location");
+			String pmid = rs.getString("pmid");
+			String kegg = rs.getString("kegg");
+			String protein_type = rs.getString("protein_type");
+			String pathology_or_event = rs.getString("pathology_or_event");
+			String mis_regulation = rs.getString("mis_regulation");
+			String gene_expression = rs.getString("gene_expression");
+			String bib = rs.getString("bib");
+			String cell_line_used = rs.getString("cell_line_used");
+			String hgnc_id = rs.getString("hgnc_id");
+			String swiss_prot = rs.getString("swiss_prot");
 			
 			
 			
+			InteractionData id = new InteractionData();
+			id.setType(dataType);
+			id.setReference(paper);
+			id.setPubmedId(pmid);
+			id.setDescription(bib);
+			id.setCellularLine(cell_line_used);
 			
+			Organism organism = new Organism();
+			organism.setSpecie(specie);
+			
+			MiRna mirna = new MiRna();
+			mirna.setName(miRna);
+			mirna.setSequence(mirnaSeq);
+			
+			Gene gene = new Gene();
+			gene.setName(gene_name);
+			gene.setLocation(seqLocation);
+			gene.setChromosome(chrLoc);
+			gene.setKegg_id(kegg);
+			gene.setExpression_site(gene_expression);
+			gene.setHgnc_symbol(hgncSymbol);
+			gene.setGeneId(hgnc_id);
+			
+			Protein protein = new Protein();
+			protein.setSwiss_prot_id(swiss_prot);
+			protein.setType(protein_type);
+			
+			Target target = new Target();
+			target.setSequence(targetSeq);
+		
+			Transcript transcript = new Transcript();
+			transcript.setId(ensembl);
+			transcript.setIsoform(isoform);
+			
+			Disease disease = new Disease();
+			disease.setName(pathology_or_event);
+			
+			ExpressionData ed = new ExpressionData();
+			ed.setMethod(is);
+			ed.setMethod(ds);
+			ed.setEvidence(mis_regulation);
+			ed.setProvenanceId(idv4);
+					
+			System.out.println(mirna);
+			System.out.println(id);
+			System.out.println(target);	
+			System.out.println(gene);
+			System.out.println(disease);
+			System.out.println(transcript);
+			System.out.println(ed);
+			System.out.println(organism);
+			System.out.println(protein);
 			
 			// FIN DE CAMBIAR ESTO
 			

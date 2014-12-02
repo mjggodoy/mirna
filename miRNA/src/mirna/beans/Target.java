@@ -23,8 +23,36 @@ public class Target extends Transcript {
 	private String seed_match;//ok
 	private String coordinates;//ok
 	private String GC_proportion;//ok
+	private String resource;
+	private String pubmed_id;
 	
 	public Target() { }
+
+	
+	
+	public String getResource() {
+		return resource;
+	}
+
+
+
+	public void setResource(String resource) {
+		this.resource = resource;
+	}
+
+
+
+	public String getPubmed_id() {
+		return pubmed_id;
+	}
+
+
+
+	public void setPubmed_id(String pubmed_id) {
+		this.pubmed_id = pubmed_id;
+	}
+
+
 
 	public String getCdsStart() {
 		return cdsStart;
@@ -170,6 +198,8 @@ public class Target extends Transcript {
 		GC_proportion = gC_proportion;
 	}
 
+
+
 	@Override
 	public String toString() {
 		return "Target [cdsStart=" + cdsStart + ", cdsEnd=" + cdsEnd
@@ -183,7 +213,30 @@ public class Target extends Transcript {
 				+ ", UTR3conservation_score=" + UTR3conservation_score
 				+ ", region=" + region + ", seed_match=" + seed_match
 				+ ", coordinates=" + coordinates + ", GC_proportion="
-				+ GC_proportion + ", pk=" + pk + "]";
+				+ GC_proportion + ", resource=" + resource + ", pubmed_id="
+				+ pubmed_id + ", pk=" + pk + ", getResource()=" + getResource()
+				+ ", getPubmed_id()=" + getPubmed_id() + ", getCdsStart()="
+				+ getCdsStart() + ", getCdsEnd()=" + getCdsEnd()
+				+ ", getUTR5start()=" + getUTR5start() + ", getUTR3end()="
+				+ getUTR3end() + ", getStart_strand()=" + getStart_strand()
+				+ ", getEnd_strand()=" + getEnd_strand() + ", getSequence()="
+				+ getSequence() + ", getName()=" + getName()
+				+ ", getChromosome()=" + getChromosome() + ", getPolarity()="
+				+ getPolarity() + ", getBinding_site_start()="
+				+ getBinding_site_start() + ", getBinding_site_end()="
+				+ getBinding_site_end() + ", getRepeated_motifs()="
+				+ getRepeated_motifs() + ", getUTR3conservation_score()="
+				+ getUTR3conservation_score() + ", getRegion()=" + getRegion()
+				+ ", getSeed_match()=" + getSeed_match()
+				+ ", getCoordinates()=" + getCoordinates()
+				+ ", getGC_proportion()=" + getGC_proportion()
+				+ ", getTranscriptID()=" + getTranscriptID()
+				+ ", getIsoform()=" + getIsoform() + ", getId()=" + getId()
+				+ ", getExternalName()=" + getExternalName() + ", toString()="
+				+ super.toString() + ", getPk()=" + getPk() + ", getClass()="
+				+ getClass() + ", hashCode()=" + hashCode() + "]";
 	}
+
+	
 	
 }
