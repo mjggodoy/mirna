@@ -12,17 +12,17 @@ CREATE TABLE mirna_raw.phenomir
    pk               int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
    phenomicid       varchar(20) NOT NULL,
    pmid             varchar(20) NOT NULL,
-   disease          varchar(20) NOT NULL,
+   disease          varchar(80) NOT NULL,
    diseasesub_id    varchar(20) NOT NULL,
    class            varchar(20) NOT NULL,
    miRNA            varchar(20) NOT NULL,
    accession        varchar(20) NOT NULL,
-   expression       varchar(20) NOT NULL,
+   expression       varchar(40) NOT NULL,
    foldchangemin    varchar(20) NOT NULL,
    foldchangemax    varchar(20) NOT NULL,
    id               varchar(20) NOT NULL,
-   name             varchar(20) NOT NULL,
-   method           varchar(20) NOT NULL
+   name             varchar(40) NOT NULL,
+   method           varchar(40) NOT NULL
 );
 
 CREATE TABLE mirna_raw.hmdd
@@ -187,10 +187,10 @@ CREATE TABLE mirna_raw.miRdSNP1
 CREATE TABLE mirna_raw.miRdSNP2
 (
    pk           int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-   gene      	varchar(20) NOT NULL,
    refseq       varchar(20) NOT NULL,
-   mirna        varchar(10000) NOT NULL,
-   snp_id   	varchar(2000) NOT NULL,
+   gene      	varchar(20) NOT NULL,
+   snp_id        varchar(10000) NOT NULL,
+   mirna   	varchar(2000) NOT NULL,
    disease      varchar(200) NOT NULL
 );
 
@@ -225,7 +225,8 @@ CREATE TABLE mirna_raw.miRdSNP5
    start       	varchar(20) NOT NULL,
    end       	varchar(20) NOT NULL,
    snp   		varchar(20) NOT NULL,
-   disease      varchar(200) NOT NULL
+   disease      varchar(200) NOT NULL,
+   orientation  varchar(5) NOT NULL
 );
 
 CREATE TABLE mirna_raw.virmirna1

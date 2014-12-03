@@ -45,8 +45,6 @@ public class miREnvironment extends MirnaDatabase {
 	
 			int count = 0;
 	
-			br.readLine();
-			
 			while (((line = br.readLine()) != null)) {
 	
 				count++;
