@@ -8,9 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import mirna.beans.Disease;
-import mirna.beans.ExpressionData;
-import mirna.beans.Hairpin;
 import mirna.beans.Mature;
 import mirna.beans.MiRna;
 import mirna.beans.Organism;
@@ -153,8 +150,10 @@ public class PlantMirnaMatureMirna extends MirnaDatabase {
 		
 		PlantMirnaMatureMirna plant = new PlantMirnaMatureMirna();
 		
-		String inputFile = "/Users/esteban/Softw/miRNA/plant_mirna/all_mature.txt";
-		plant.insertInTable(inputFile);
+//		String inputFile = "/Users/esteban/Softw/miRNA/plant_mirna/all_mature.txt";
+//		plant.insertInTable(inputFile);
+		
+		plant.insertIntoSQLModel();
 	
 	}
 	

@@ -9,9 +9,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import mirna.beans.Disease;
-import mirna.beans.ExpressionData;
-import mirna.beans.Gene;
-import mirna.beans.MiRna;
 import mirna.beans.SNP;
 import mirna.exception.MiRnaException;
 

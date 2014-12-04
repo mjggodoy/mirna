@@ -8,8 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import mirna.beans.Disease;
-import mirna.beans.ExpressionData;
 import mirna.beans.Hairpin;
 import mirna.beans.MiRna;
 import mirna.beans.Organism;
@@ -156,8 +154,10 @@ public class PlantMirnaStemLoop extends MirnaDatabase {
 		
 		PlantMirnaStemLoop plant = new PlantMirnaStemLoop();
 		
-		String inputFile = "/Users/esteban/Softw/miRNA/plant_mirna/all_stem_loop.txt";
-		plant.insertInTable(inputFile);
+//		String inputFile = "/Users/esteban/Softw/miRNA/plant_mirna/all_stem_loop.txt";
+//		plant.insertInTable(inputFile);
+		
+		plant.insertIntoSQLModel();
 	
 	}
 	
