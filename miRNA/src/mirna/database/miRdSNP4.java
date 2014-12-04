@@ -125,13 +125,13 @@ public class miRdSNP4 extends miRdSNP {
 			rs.next();
 			// CAMBIAR ESTO:
 			
-			String ref_seq = rs.getString("gene").toLowerCase().trim();
-			String gene_name = rs.getString("refseq").toLowerCase().trim();
-			String snp_id = rs.getString("miR").toLowerCase().trim();
-			String mirna_name = rs.getString("snp").toLowerCase().trim();
+			String gene_name  = rs.getString("gene").toLowerCase().trim();
+			String ref_seq = rs.getString("refseq").toLowerCase().trim();
+			String mirna_name = rs.getString("miR").toLowerCase().trim();
+			String snp_id = rs.getString("snp").toLowerCase().trim();
 			String disease_name = rs.getString("diseases").toLowerCase().trim();
 			String distance = rs.getString("distance").toLowerCase().trim();
-			String exp_config = rs.getString("exp_conf").toLowerCase().trim();
+			String exp_config = rs.getString("expConf").toLowerCase().trim();
 			
 			Gene gene = new Gene();
 			gene.setName(gene_name);

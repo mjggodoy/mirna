@@ -2,9 +2,9 @@ package mirna.beans;
 
 public class SNP extends Mutation {
 	
-	private String SNPid;
-	private String position;
-	private String article_date;
+	protected String SNPid;
+	protected String position;
+	protected String article_date;
 	
 	
 	
@@ -45,15 +45,26 @@ public class SNP extends Mutation {
 	@Override
 	public String toString() {
 		return "SNP [SNPid=" + SNPid + ", position=" + position
-				+ ", article_date=" + article_date + ", pk=" + pk
-				+ ", getSNPid()=" + getSNPid() + ", getArticle_date()="
-				+ getArticle_date() + ", getPosition()=" + getPosition()
-				+ ", getChromosome()=" + getChromosome() + ", getSpecie()="
-				+ getSpecie() + ", getCoordinates()=" + getCoordinates()
-				+ ", toString()=" + super.toString() + ", getPk()=" + getPk()
-				+ ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
-				+ "]";
+				+ ", article_date=" + article_date + ", specie=" + specie
+				+ ", chromosome=" + chromosome + ", coordinates=" + coordinates
+				+ ", orientation=" + orientation + ", distance=" + distance
+				+ ", journal=" + journal + ", year=" + year + ", description="
+				+ description + ", pubmed_id=" + pubmed_id + ", resource="
+				+ resource + ", pk=" + pk + "]";
 	}
+
+
+	
+
+
+	
+
+	
+
+
+	
+	
+	
 	
 	
 	

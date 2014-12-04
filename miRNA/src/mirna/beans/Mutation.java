@@ -3,11 +3,16 @@ package mirna.beans;
 public class Mutation extends ModelClass {
 	
 	
-	private String specie;
-	private String chromosome;
-	private String coordinates;
-	private String orientation;
-	private String distance;
+	protected String specie;
+	protected String chromosome;
+	protected String coordinates;
+	protected String orientation;
+	protected String distance;
+	protected String journal;
+	protected String year;
+	protected String description;
+	protected String pubmed_id;
+	protected String resource;
 	
 	
 	
@@ -68,17 +73,70 @@ public class Mutation extends ModelClass {
 	}
 
 
+	public String getJournal() {
+		return journal;
+	}
+
+
+	public void setJournal(String journal) {
+		this.journal = journal;
+	}
+
+
+	public String getYear() {
+		return year;
+	}
+
+
+	public void setYear(String year) {
+		this.year = year;
+	}
+
+
+	public String getDescription() {
+		return description;
+	}
+
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+
+	public String getPubmed_id() {
+		return pubmed_id;
+	}
+
+
+	public void setPubmed_id(String pubmed_id) {
+		this.pubmed_id = pubmed_id;
+	}
+
+
+	public String getResource() {
+		return resource;
+	}
+
+
+	public void setResource(String resource) {
+		this.resource = resource;
+	}
+
+
 	@Override
 	public String toString() {
 		return "Mutation [specie=" + specie + ", chromosome=" + chromosome
 				+ ", coordinates=" + coordinates + ", orientation="
-				+ orientation + ", distance=" + distance + ", pk=" + pk
-				+ ", getOrientation()=" + getOrientation()
-				+ ", getChromosome()=" + getChromosome() + ", getSpecie()="
-				+ getSpecie() + ", getCoordinates()=" + getCoordinates()
-				+ ", getDistance()=" + getDistance() + ", getPk()=" + getPk()
-				+ ", toString()=" + super.toString() + ", getClass()="
-				+ getClass() + ", hashCode()=" + hashCode() + "]";
+				+ orientation + ", distance=" + distance + ", journal="
+				+ journal + ", year=" + year + ", description=" + description
+				+ ", pubmed_id=" + pubmed_id + ", resource=" + resource
+				+ ", pk=" + pk + "]";
 	}
+
+
+	
+
+
+
 	
 }

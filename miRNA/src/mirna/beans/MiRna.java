@@ -145,13 +145,16 @@ public class MiRna extends ModelClass {
 		
 	}
 
+	
+	
 	@Override
 	public String toString() {
 		return "MiRna [name=" + name + ", accessionNumber=" + accessionNumber
 				+ ", sequence=" + sequence + ", resource=" + resource
-				+ ", organismPk=" + organismPk + ", pk=" + pk + "]";
+				+ ", organismPk=" + organismPk + ", pubmedId=" + pubmedId
+				+ ", pk=" + pk + "]";
 	}
-	
+
 	public static void main(String[] args) throws Exception {
 		
 		MiRna m1 = new MiRna();

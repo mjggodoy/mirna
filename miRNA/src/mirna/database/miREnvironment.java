@@ -8,8 +8,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import mirna.beans.Disease;
+import mirna.beans.EnvironmentalFactor;
+import mirna.beans.ExpressionData;
 import mirna.beans.InteractionData;
 import mirna.beans.MiRna;
+import mirna.beans.Organism;
 import mirna.beans.Target;
 import mirna.beans.Transcript;
 import mirna.exception.MiRnaException;
@@ -124,42 +128,47 @@ public class miREnvironment extends MirnaDatabase {
 			rs.next();
 			// CAMBIAR ESTO:
 			
-			String seq = rs.getString("seq");
-			String method = rs.getString("method");
-			String feature = rs.getString("feature").toLowerCase().trim();
-			String chromosome = rs.getString("chr").toLowerCase().trim();
-			String start = rs.getString("start").toLowerCase().trim();
-			String end = rs.getString("end").toLowerCase().trim();
-			String strand = rs.getString("strand").toLowerCase().trim();
-			String phase = rs.getString("phase");
-			String score = rs.getString("score");
-			String pvalue_og = rs.getString("pvalue_og");
-			String transcriptId = rs.getString("transcript_id");
-			String externalName = rs.getString("external_name");
+			String id = rs.getString("mir");
+			String name = rs.getString("name");
+			String name2 = rs.getString("name2");
+			String name3 = rs.getString("name3").toLowerCase().trim();
+			String disease_name = rs.getString("disease").toLowerCase().trim();
+			String environmentalFactor = rs.getString("enviromentalFactor").toLowerCase().trim();
+			String treatment = rs.getString("treatment").toLowerCase().trim();
+			String cellularLine = rs.getString("cellularLine").toLowerCase().trim();
+			String specie_name = rs.getString("specie");
+			String description = rs.getString("description");
+			String pubmedId = rs.getString("pubmedId");
+
 			
 			MiRna miRna = new MiRna();
-			miRna.setName(seq);
+			miRna.setName(name);
+			miRna.setName(name2);
+			miRna.setName(name3);
+
+			Disease disease = new Disease();
+			disease.setName(disease_name);
 			
-			InteractionData id = new InteractionData();
-			id.setMethod(method);
-			id.setFeature(feature);
-			id.setPhase(phase);
-			id.setScore(score);
-			id.setPvalue_og(pvalue_og);
+			EnvironmentalFactor ef = new EnvironmentalFactor();
+			ef.setName(environmentalFactor);
 			
-			Target target = new Target();
-			target.setChromosome(chromosome);
-			target.setStart_strand(start);
-			target.setEnd_strand(end);
-			target.setPolarity(strand);
+			ExpressionData ed = new ExpressionData();
+			ed.setTreatment(treatment);
+			ed.setCellularLine(cellularLine);
+			ed.setDescription(description);
+			ed.setPubmedId(pubmedId);
+			ed.setProvenanceId(id);
+			ed.setProvenance("miREnvironment");
 			
-			Transcript transcript = new Transcript();
-			transcript.setId(transcriptId);
-			transcript.setExternalName(externalName);
+			Organism specie = new Organism();
+			specie.setName(specie_name);
+			
 			
 			System.out.println(miRna);
-			System.out.println(id);
-			System.out.println(target);
+			System.out.println(disease);
+			System.out.println(ef);
+			System.out.println(ed);
+			System.out.println(specie);
 			
 			// FIN DE CAMBIAR ESTO
 			

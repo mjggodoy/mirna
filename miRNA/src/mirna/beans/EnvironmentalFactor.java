@@ -21,7 +21,9 @@ public class EnvironmentalFactor extends ModelClass  {
 
 	@Override
 	public String toString() {
-		return "EnvironmentalFactor [name=" + name + "]";
+		return "EnvironmentalFactor [name=" + name + ", pk=" + pk + "]";
 	}
+
+	
 	
 }

@@ -61,12 +61,13 @@ public class Organism extends ModelClass{
 	@Override
 	public String toString() {
 		return "Organism [specie=" + specie + ", name=" + name + ", resource="
-				+ resource + ", pk=" + pk + ", getResource()=" + getResource()
-				+ ", getName()=" + getName() + ", getSpecie()=" + getSpecie()
-				+ ", getPk()=" + getPk() + ", toString()=" + super.toString()
-				+ ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
-				+ "]";
+				+ resource + ", pk=" + pk + "]";
 	}
+
+
+
+
+
 
 	
 	

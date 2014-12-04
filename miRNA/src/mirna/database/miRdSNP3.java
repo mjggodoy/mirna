@@ -122,6 +122,8 @@ public class miRdSNP3 extends miRdSNP {
 			String query = "SELECT * FROM " + tableName;
 			System.out.println("STARTING: " + query);
 			
+            stmt.setFetchSize(Integer.MIN_VALUE);
+			
 			// execute the query, and get a java resultset
 			ResultSet rs = stmt.executeQuery(query);
 			
@@ -132,11 +134,11 @@ public class miRdSNP3 extends miRdSNP {
 			rs.next();
 			// CAMBIAR ESTO:
 			
-			String ref_seq = rs.getString("refseq").toLowerCase().trim();
 			String gene_name = rs.getString("gene").toLowerCase().trim();
-			String snp_id = rs.getString("snp_id").toLowerCase().trim();
-			String mirna_name = rs.getString("mirna").toLowerCase().trim();
-			String disease_name = rs.getString("disease").toLowerCase().trim();
+			String ref_seq = rs.getString("refseq").toLowerCase().trim();
+			String mirna_name = rs.getString("miR").toLowerCase().trim();
+			String snp_id = rs.getString("snp").toLowerCase().trim();
+			String disease_name = rs.getString("diseases").toLowerCase().trim();
 			String distance = rs.getString("distance").toLowerCase().trim();
 
 

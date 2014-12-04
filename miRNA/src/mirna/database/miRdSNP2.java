@@ -117,6 +117,9 @@ public class miRdSNP2 extends miRdSNP {
 
 
 			rs.next();
+			
+
+			
 			// CAMBIAR ESTO:
 			
 			String ref_seq = rs.getString("refseq").toLowerCase().trim();

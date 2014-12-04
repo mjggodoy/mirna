@@ -8,8 +8,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import mirna.beans.ExpressionData;
 import mirna.beans.InteractionData;
 import mirna.beans.MiRna;
+import mirna.beans.Organism;
+import mirna.beans.SmallMolecule;
 import mirna.beans.Target;
 import mirna.beans.Transcript;
 import mirna.exception.MiRnaException;
@@ -131,44 +134,54 @@ public class SM2miR2N extends MirnaDatabase {
 
 
 			rs.next();
+			rs.next();
 			// CAMBIAR ESTO:
 			
-			String seq = rs.getString("seq");
-			String method = rs.getString("method");
-			String feature = rs.getString("feature").toLowerCase().trim();
-			String chromosome = rs.getString("chr").toLowerCase().trim();
-			String start = rs.getString("start").toLowerCase().trim();
-			String end = rs.getString("end").toLowerCase().trim();
-			String strand = rs.getString("strand").toLowerCase().trim();
-			String phase = rs.getString("phase");
-			String score = rs.getString("score");
-			String pvalue_og = rs.getString("pvalue_og");
-			String transcriptId = rs.getString("transcript_id");
-			String externalName = rs.getString("external_name");
+			String name = rs.getString("mirna");
+			String mirbase = rs.getString("mirbase");
+			String small_molecule = rs.getString("small_molecule").toLowerCase().trim();
+			String fda = rs.getString("fda").toLowerCase().trim();
+			String db = rs.getString("db").toLowerCase().trim();
+			String cid = rs.getString("cid").toLowerCase().trim();
+			String method = rs.getString("method").toLowerCase().trim();
+			String specie = rs.getString("species");
+			String condition = rs.getString("condition_");
+			String pmid = rs.getString("pmid");
+			String year = rs.getString("year");
+			String reference = rs.getString("reference");
+			String support = rs.getString("support");
+			String evidence = rs.getString("expression");
+
+
 			
 			MiRna miRna = new MiRna();
-			miRna.setName(seq);
+			miRna.setName(name);
+			miRna.setAccessionNumber(mirbase);
 			
-			InteractionData id = new InteractionData();
-			id.setMethod(method);
-			id.setFeature(feature);
-			id.setPhase(phase);
-			id.setScore(score);
-			id.setPvalue_og(pvalue_og);
+			SmallMolecule smallmolecule = new SmallMolecule();
+			smallmolecule.setName(small_molecule);
+			smallmolecule.setFda(fda);
+			smallmolecule.setCid(cid);
+			smallmolecule.setDb(db);
 			
-			Target target = new Target();
-			target.setChromosome(chromosome);
-			target.setStart_strand(start);
-			target.setEnd_strand(end);
-			target.setPolarity(strand);
+			ExpressionData ed = new ExpressionData();
+			ed.setCondition(condition);
+			ed.setEvidence(evidence);
+			ed.setMethod(method);
+			ed.setTitleReference(reference);
+			ed.setYear(year);
+			ed.setPubmedId(pmid);
+			ed.setDescription(support);
 			
-			Transcript transcript = new Transcript();
-			transcript.setId(transcriptId);
-			transcript.setExternalName(externalName);
+			Organism organism = new Organism();
+			organism.setSpecie(specie);
+			
+			
 			
 			System.out.println(miRna);
-			System.out.println(id);
-			System.out.println(target);
+			System.out.println(ed);
+			System.out.println(smallmolecule);
+			System.out.println(organism);
 			
 			// FIN DE CAMBIAR ESTO
 			

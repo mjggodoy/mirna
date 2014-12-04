@@ -118,7 +118,7 @@ public class miRdSNP5 extends miRdSNP {
 			// CAMBIAR ESTO:
 			
 			String chromosome = rs.getString("chromosome").toLowerCase().trim();
-			String position = rs.getString("position_initial").toLowerCase().trim();
+			String position = rs.getString("start").toLowerCase().trim();
 			String snp_name = rs.getString("snp").toLowerCase().trim();
 			String disease_name = rs.getString("disease").toLowerCase().trim();
 			String orientation = rs.getString("orientation").toLowerCase().trim();

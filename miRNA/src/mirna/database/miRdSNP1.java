@@ -127,7 +127,7 @@ public class miRdSNP1 extends miRdSNP {
 			String year = rs.getString("year").toLowerCase().trim();
 			String journal = rs.getString("journal").toLowerCase().trim();
 			String description = rs.getString("title").toLowerCase().trim();
-			String snp_id = rs.getString("snp").toLowerCase().trim();
+			String snp_id = rs.getString("snp_id").toLowerCase().trim();
 			String disease_name = rs.getString("disease").toLowerCase().trim();
 			String resource = rs.getString("link").toLowerCase().trim();
 
@@ -135,20 +135,19 @@ public class miRdSNP1 extends miRdSNP {
 			Disease disease = new Disease();
 			disease.setName(disease_name);
 			
-			Gene gene = new Gene();
-			gene.setYear(year);
-			gene.setJournal(journal);
-			gene.setDescription(description);
-			gene.setResource(resource);
-			gene.setPubmedId(pubmedId);
+			
 			
 			SNP snp = new SNP();
 			snp.setSNPid(snp_id);
+			snp.setPubmed_id(pubmedId);
+			snp.setResource(resource);
+			snp.setJournal(journal);
+			snp.setYear(year);
+			snp.setDescription(description);
 			
 			
 			System.out.println(disease);
 			System.out.println(snp);
-			System.out.println(gene);
 
 			
 			// FIN DE CAMBIAR ESTO
