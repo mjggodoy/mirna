@@ -36,9 +36,7 @@ public class PlantMirnaMatureMirna extends MirnaDatabase {
 			BufferedReader br = new BufferedReader(fr);
 	
 			int count = 0;
-	
-			br.readLine();
-			
+				
 			String specie = "", mirnaid = "";
 			
 			while (((line = br.readLine()) != null)) {

@@ -321,7 +321,7 @@ CREATE TABLE mirna_raw.repTar_human
 (
    pk                         int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
    gene_symbol                varchar(20) NOT NULL,
-   gene_accesion              varchar(10) NOT NULL,
+   gene_accesion              varchar(20) NOT NULL,
    mirna                      varchar(20) NOT NULL,
    sequence_start             varchar(10) NOT NULL,
    sequence_end               varchar(10) NOT NULL,
@@ -339,7 +339,7 @@ CREATE TABLE mirna_raw.repTar_mouse
 (
    pk                         int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
    gene_symbol                varchar(20) NOT NULL,
-   gene_accesion              varchar(10) NOT NULL,
+   gene_accesion              varchar(20) NOT NULL,
    mirna                      varchar(20) NOT NULL,
    sequence_start             varchar(10) NOT NULL,
    sequence_end               varchar(10) NOT NULL,

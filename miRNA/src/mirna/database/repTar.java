@@ -52,22 +52,9 @@ public class repTar extends MirnaDatabase {
 				tokens2 = StringUtils.splitPreserveAllTokens(gene_token, ":::");
 				
 				String gene_symbol  = tokens2[0];
-				String gene_accesion = tokens2[1];
+				String gene_accesion = tokens2[3];
 				
 				String mirna = tokens[1];
-				
-//				if(tokens[1].contains("hsa")){
-//					
-//					specie = "Homo sapiens (human)";
-//					
-//					
-//				}else if (tokens[1].contains("hsa")){ //TODO:cambiar
-//					
-//					specie = "Mus musculus (mouse)";
-//
-//					
-//					
-//				}
 				
 				String sequence_start = tokens[2];
 				tokens3 = StringUtils.splitPreserveAllTokens(sequence_start, ":");
