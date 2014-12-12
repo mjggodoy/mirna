@@ -19,6 +19,8 @@ public class Disease extends ModelClass {
 	@Column(name = "disease_class", nullable = true, length = 20)
 	private String diseaseClass;
 	
+	private String type_tumour;
+	
 //	private String diseaseSub;
 //	private String phenomicId;
 //	private String description; //ok
@@ -42,6 +44,16 @@ public class Disease extends ModelClass {
 
 	public void setDiseaseClass(String diseaseClass) {
 		this.diseaseClass = diseaseClass;
+	}
+	
+	
+
+	public String getType_tumour() {
+		return type_tumour;
+	}
+
+	public void setType_tumour(String type_tumour) {
+		this.type_tumour = type_tumour;
 	}
 
 	public int checkConflict(Disease disease) {
@@ -77,7 +89,8 @@ public class Disease extends ModelClass {
 	@Override
 	public String toString() {
 		return "Disease [name=" + name + ", diseaseClass=" + diseaseClass
-				+ ", pk=" + pk + "]";
+				+ ", type_tumour=" + type_tumour + ", pk=" + pk + "]";
 	}
+
 	
 }

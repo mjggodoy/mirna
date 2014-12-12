@@ -7,6 +7,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import mirna.beans.Disease;
 import mirna.beans.ExpressionData;
@@ -117,6 +119,9 @@ public class miRdSNP2 extends miRdSNP {
 
 
 			rs.next();
+			rs.next();
+
+			
 			
 
 			
@@ -139,12 +144,25 @@ public class miRdSNP2 extends miRdSNP {
 			MiRna mirna = new MiRna();
 			mirna.setName(mirna_name);
 			
-			SNP snp = new SNP();
-			snp.setSNPid(snp_id);
+			
+			
+			String[] snpTokens = StringUtils.splitPreserveAllTokens(snp_id, "|");
+			
+			List<SNP> snpList = new ArrayList<SNP>();
+			
+			for (String token : snpTokens) {
+				SNP snp = new SNP();
+				snp.setSNPid(token);
+				
+				snpList.add(snp);
+			}
 			
 			
 			System.out.println(disease);
-			System.out.println(snp);
+						
+			for (SNP snp : snpList) {
+				System.out.println(snp);
+			}
 			System.out.println(gene);
 			System.out.println(mirna);
 

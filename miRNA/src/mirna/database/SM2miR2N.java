@@ -134,7 +134,6 @@ public class SM2miR2N extends MirnaDatabase {
 
 
 			rs.next();
-			rs.next();
 			// CAMBIAR ESTO:
 			
 			String name = rs.getString("mirna");

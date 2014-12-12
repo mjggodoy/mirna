@@ -12,7 +12,7 @@ public class Target extends Transcript {
 	private String sequence;//ok
 	//private String transcriptID;
 	private String name;//ok
-	//private String ExternalName;
+	private String ExternalName;
 	private String chromosome;//ok
 	private String polarity;//ok
 	private String binding_site_start;//ok
@@ -23,8 +23,10 @@ public class Target extends Transcript {
 	private String seed_match;//ok
 	private String coordinates;//ok
 	private String GC_proportion;//ok
+	private String GU_proportion;
 	private String resource;
 	private String pubmed_id;
+	private String site_conservation_score;
 	
 	public Target() { }
 
@@ -200,42 +202,87 @@ public class Target extends Transcript {
 
 
 
+
+	public String getExternalName() {
+		return ExternalName;
+	}
+
+
+
+	public void setExternalName(String externalName) {
+		ExternalName = externalName;
+	}
+	
+	
+
+
+	public String getGU_proportion() {
+		return GU_proportion;
+	}
+
+
+
+	public void setGU_proportion(String gU_proportion) {
+		GU_proportion = gU_proportion;
+	}
+
+
+
+	public String getSite_conservation_score() {
+		return site_conservation_score;
+	}
+
+
+
+	public void setSite_conservation_score(String site_conservation_score) {
+		this.site_conservation_score = site_conservation_score;
+	}
+
+
+
 	@Override
 	public String toString() {
 		return "Target [cdsStart=" + cdsStart + ", cdsEnd=" + cdsEnd
 				+ ", UTR5start=" + UTR5start + ", UTR3end=" + UTR3end
 				+ ", start_strand=" + start_strand + ", end_strand="
 				+ end_strand + ", sequence=" + sequence + ", name=" + name
-				+ ", chromosome=" + chromosome + ", polarity=" + polarity
+				+ ", ExternalName=" + ExternalName + ", chromosome="
+				+ chromosome + ", polarity=" + polarity
 				+ ", binding_site_start=" + binding_site_start
 				+ ", binding_site_end=" + binding_site_end
 				+ ", repeated_motifs=" + repeated_motifs
 				+ ", UTR3conservation_score=" + UTR3conservation_score
 				+ ", region=" + region + ", seed_match=" + seed_match
 				+ ", coordinates=" + coordinates + ", GC_proportion="
-				+ GC_proportion + ", resource=" + resource + ", pubmed_id="
-				+ pubmed_id + ", pk=" + pk + ", getResource()=" + getResource()
-				+ ", getPubmed_id()=" + getPubmed_id() + ", getCdsStart()="
-				+ getCdsStart() + ", getCdsEnd()=" + getCdsEnd()
-				+ ", getUTR5start()=" + getUTR5start() + ", getUTR3end()="
-				+ getUTR3end() + ", getStart_strand()=" + getStart_strand()
-				+ ", getEnd_strand()=" + getEnd_strand() + ", getSequence()="
-				+ getSequence() + ", getName()=" + getName()
-				+ ", getChromosome()=" + getChromosome() + ", getPolarity()="
-				+ getPolarity() + ", getBinding_site_start()="
-				+ getBinding_site_start() + ", getBinding_site_end()="
-				+ getBinding_site_end() + ", getRepeated_motifs()="
-				+ getRepeated_motifs() + ", getUTR3conservation_score()="
-				+ getUTR3conservation_score() + ", getRegion()=" + getRegion()
-				+ ", getSeed_match()=" + getSeed_match()
-				+ ", getCoordinates()=" + getCoordinates()
-				+ ", getGC_proportion()=" + getGC_proportion()
-				+ ", getTranscriptID()=" + getTranscriptID()
-				+ ", getIsoform()=" + getIsoform() + ", getId()=" + getId()
-				+ ", getExternalName()=" + getExternalName() + ", toString()="
-				+ super.toString() + ", getPk()=" + getPk() + ", getClass()="
-				+ getClass() + ", hashCode()=" + hashCode() + "]";
+				+ GC_proportion + ", GU_proportion=" + GU_proportion
+				+ ", resource=" + resource + ", pubmed_id=" + pubmed_id
+				+ ", site_conservation_score=" + site_conservation_score
+				+ ", pk=" + pk + "]";
 	}
+
+
+
+	
+
+
+
+	
+
+
+
+	
+
+
+
+	
+
+	
+
+
+
+
+
+	
 
 	
 	

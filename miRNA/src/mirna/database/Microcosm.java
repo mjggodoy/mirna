@@ -119,6 +119,7 @@ public class Microcosm extends MirnaDatabase {
 			System.out.println(dbPassword);
 			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			Statement stmt = (Statement) con.createStatement();
+			stmt.setFetchSize(Integer.MIN_VALUE);
 			
 			// our SQL SELECT query. 
 			// if you only need a few columns, specify them by name instead of using "*"
@@ -152,7 +153,7 @@ public class Microcosm extends MirnaDatabase {
 			miRna.setName(seq);
 			
 			InteractionData id = new InteractionData();
-			id.setMethod(method);
+			id.setAlgorithm(method);
 			id.setFeature(feature);
 			id.setPhase(phase);
 			id.setScore(score);
@@ -160,9 +161,9 @@ public class Microcosm extends MirnaDatabase {
 			
 			Target target = new Target();
 			target.setChromosome(chromosome);
-			target.setStart_strand(start);
-			target.setEnd_strand(end);
 			target.setPolarity(strand);
+			target.setBinding_site_start(start);
+			target.setBinding_site_end(end);
 			
 			Transcript transcript = new Transcript();
 			transcript.setId(transcriptId);

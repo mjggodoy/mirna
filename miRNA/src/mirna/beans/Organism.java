@@ -5,6 +5,7 @@ public class Organism extends ModelClass{
 	private String specie;
 	private String name;
 	private String resource;
+	private String short_name;
 
 	public Organism() {super();}
 
@@ -56,19 +57,27 @@ public class Organism extends ModelClass{
 	}
 
 
+	
 
-
-	@Override
-	public String toString() {
-		return "Organism [specie=" + specie + ", name=" + name + ", resource="
-				+ resource + ", pk=" + pk + "]";
+	public String getShort_name() {
+		return short_name;
 	}
 
 
 
 
+	public void setShort_name(String short_name) {
+		this.short_name = short_name;
+	}
 
 
+
+
+	@Override
+	public String toString() {
+		return "Organism [specie=" + specie + ", name=" + name + ", resource="
+				+ resource + ", short_name=" + short_name + ", pk=" + pk + "]";
+	}
 	
 	
 }

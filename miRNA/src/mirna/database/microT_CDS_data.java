@@ -127,7 +127,8 @@ public class microT_CDS_data extends MirnaDatabase {
 		try {
 			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			Statement stmt = (Statement) con.createStatement();
-			
+			stmt.setFetchSize(Integer.MIN_VALUE);
+
 			// our SQL SELECT query. 
 			// if you only need a few columns, specify them by name instead of using "*"
 			String query = "SELECT * FROM " + tableName;
@@ -140,6 +141,8 @@ public class microT_CDS_data extends MirnaDatabase {
 			//int count = 0;
 
 
+			rs.next();
+			rs.next();
 			rs.next();
 			// CAMBIAR ESTO:
 			
@@ -165,20 +168,8 @@ public class microT_CDS_data extends MirnaDatabase {
 			Target target = new Target();
 			target.setRegion(region);
 			target.setChromosome(chromosome);
-			
-			
-			if(region.equals("CDS")){
-				
-				target.setCdsEnd(coordinates);
+			target.setCoordinates(coordinates);
 
-		
-				
-			}else if(region.equals("UTR3")){
-				
-				target.setUTR3end(coordinates);
-
-			}
-			
 				
 			Transcript transcript = new Transcript();
 			transcript.setId(transcriptId);

@@ -123,6 +123,7 @@ public class VirmiRNA1 extends VirmiRNA{
 			rs.next();
 			// CAMBIAR ESTO:
 			
+			String virus_id = rs.getString("id_virus");
 			String virus_name = rs.getString("virus_name");
 			String virus_full_name = rs.getString("virus_full_name");
 			String resource = rs.getString("link_virus");
@@ -142,32 +143,31 @@ public class VirmiRNA1 extends VirmiRNA{
 			organism.setName(virus_full_name);
 			organism.setResource(resource);
 			
-			Mature mature = new Mature();
-			mature.setName(mirna_name);
-			mature.setSequence(mirna_seq);
-			mature.setLength(length);
-			mature.setGcProportion(gc_proportion);
+			MiRna mirna = new MiRna();
+			mirna.setName(mirna_name);
+			mirna.setSequence(mirna_seq);
+			mirna.setPubmedId(pubmed);
+			mirna.setGC_proportion(gc_proportion);
+			mirna.setLength(length);
 			
 			Gene gene = new Gene();
 			gene.setArm(arm);
 			
 			Hairpin hairpin = new Hairpin();
 			hairpin.setName(pre_mirna);
-			hairpin.setName(pre_mirna_seq);
+			hairpin.setSequence(pre_mirna_seq);
 			
 			ExpressionData expressiondata = new ExpressionData();
-			expressiondata.setCondition(cell_line);
+			expressiondata.setCellularLine(cell_line);
 			expressiondata.setMethod(method);
-			
-			MiRna mirna = new MiRna();
-			mirna.setPubmedId(pubmed);
+			expressiondata.setProvenance("VirmiRNA");
+			expressiondata.setProvenanceId(virus_id);
 			
 			System.out.println(organism);
 			System.out.println(expressiondata);
 			System.out.println(mirna);
 			System.out.println(gene);
 			System.out.println(hairpin);
-			System.out.println(mature);
 			
 			// FIN DE CAMBIAR ESTO
 			

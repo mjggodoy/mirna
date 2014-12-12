@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import mirna.beans.Complex;
+import mirna.beans.Gene;
 import mirna.beans.InteractionData;
 import mirna.beans.MiRna;
 import mirna.beans.Target;
@@ -157,6 +159,7 @@ public class repTar extends MirnaDatabase {
 			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			Statement stmt = (Statement) con.createStatement();
 			
+            stmt.setFetchSize(Integer.MIN_VALUE);
 			// our SQL SELECT query. 
 			// if you only need a few columns, specify them by name instead of using "*"
 			String query = "SELECT * FROM " + tableName;
@@ -172,42 +175,49 @@ public class repTar extends MirnaDatabase {
 			rs.next();
 			// CAMBIAR ESTO:
 			
-			String seq = rs.getString("seq");
-			String method = rs.getString("method");
-			String feature = rs.getString("feature").toLowerCase().trim();
-			String chromosome = rs.getString("chr").toLowerCase().trim();
-			String start = rs.getString("start").toLowerCase().trim();
-			String end = rs.getString("end").toLowerCase().trim();
-			String strand = rs.getString("strand").toLowerCase().trim();
-			String phase = rs.getString("phase");
-			String score = rs.getString("score");
-			String pvalue_og = rs.getString("pvalue_og");
-			String transcriptId = rs.getString("transcript_id");
-			String externalName = rs.getString("external_name");
-			
+			String gene_symbol = rs.getString("gene_symbol");
+			String gene_accesion = rs.getString("gene_accesion");
+			String mirna_name = rs.getString("mirna").toLowerCase().trim();
+			String binding_site_start_position = rs.getString("sequence_start").toLowerCase().trim();
+			String binding_site_end_position = rs.getString("sequence_end").toLowerCase().trim();
+			String minimal_free_energy = rs.getString("minimal_free_energy").toLowerCase().trim();
+			String normalized_free_energy = rs.getString("normalized_free_energy").toLowerCase().trim();
+			String site_conservation_score = rs.getString("site_conservation_score");
+			String binding_site_pattern = rs.getString("binding_site_pattern");
+			String gu_proportion = rs.getString("gu_proportion");
+			String UTR3_conservation_score = rs.getString("UTR_conservation_score");
+			String repeated_motifs = rs.getString("repeated_motifs");
+			String algorithm = rs.getString("algorithm");
+
 			MiRna miRna = new MiRna();
-			miRna.setName(seq);
+			miRna.setName(mirna_name);
 			
-			InteractionData id = new InteractionData();
-			id.setMethod(method);
-			id.setFeature(feature);
-			id.setPhase(phase);
-			id.setScore(score);
-			id.setPvalue_og(pvalue_og);
+			Gene gene = new Gene();
+			gene.setAccessionumber(gene_accesion);
+			gene.setName(gene_symbol);
 			
 			Target target = new Target();
-			target.setChromosome(chromosome);
-			target.setStart_strand(start);
-			target.setEnd_strand(end);
-			target.setPolarity(strand);
+			target.setBinding_site_start(binding_site_start_position);
+			target.setBinding_site_end(binding_site_end_position);
+			target.setGU_proportion(gu_proportion);
+			target.setUTR3conservation_score(UTR3_conservation_score);
+			target.setSite_conservation_score(site_conservation_score);
+			target.setRepeated_motifs(repeated_motifs);
 			
-			Transcript transcript = new Transcript();
-			transcript.setId(transcriptId);
-			transcript.setExternalName(externalName);
+			Complex complex = new Complex();
+			complex.setMinimal_free_energy(minimal_free_energy);
+			complex.setNormalized_minimal_free_energy(normalized_free_energy);
+			complex.setBinding_site_pattern(binding_site_pattern);
 			
+			InteractionData id = new InteractionData();
+			id.setAlgorithm(algorithm);
+			id.setProvenance("repTar");
+		
 			System.out.println(miRna);
-			System.out.println(id);
+			System.out.println(gene);
 			System.out.println(target);
+			System.out.println(complex);
+			System.out.println(id);
 			
 			// FIN DE CAMBIAR ESTO
 			
@@ -236,7 +246,7 @@ public class repTar extends MirnaDatabase {
 		repTar repTarMouse = new repTar("repTar_mouse");
 		//String inputFileMouse = "/Users/esteban/Softw/miRNA/repTar/mouse_pred.txt";
 		//repTarMouse.insertInTable(inputFileMouse);
-		repTarMouse.insertIntoSQLModel();
+		//repTarMouse.insertIntoSQLModel();
 		
 	}
 

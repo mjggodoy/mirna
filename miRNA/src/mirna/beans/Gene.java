@@ -32,7 +32,7 @@ public class Gene extends ModelClass {
 			String geneId, String description, String year, String resource,
 			String start_strand, String end_strand, String hgnc_symbol,
 			String location, String expression_site, String kegg_id,
-			String arm, String distance, String journal) {
+			String arm, String distance, String journal,String isoform) {
 		super(pk);
 		this.name = name;
 		this.chromosome = chromosome;
@@ -264,6 +264,11 @@ public class Gene extends ModelClass {
 		this.pubmedId = pubmedId;
 	}
 
+	
+	
+
+
+	
 
 
 	@Override
@@ -276,13 +281,9 @@ public class Gene extends ModelClass {
 				+ ", location=" + location + ", expression_site="
 				+ expression_site + ", kegg_id=" + kegg_id + ", arm=" + arm
 				+ ", distance=" + distance + ", pubmedId=" + pubmedId
-				+ ", journal=" + journal + "]";
+				+ ", journal=" + journal + ", pk="
+				+ pk + "]";
 	}
-
-
-
-	
-	
 	
 	
 }
