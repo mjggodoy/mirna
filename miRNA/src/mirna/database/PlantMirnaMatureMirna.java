@@ -114,6 +114,8 @@ public class PlantMirnaMatureMirna extends MirnaDatabase {
 
 
 			rs.next();
+			rs.next();
+
 			// CAMBIAR ESTO:
 			
 			String specie = rs.getString("specie").toLowerCase().trim();
@@ -124,7 +126,7 @@ public class PlantMirnaMatureMirna extends MirnaDatabase {
 			miRna.setName(mirna_id);
 			
 			Organism organism = new Organism();
-			organism.setSpecie(specie);
+			organism.setShort_name(specie);
 			
 			Mature mature = new Mature();
 			mature.setSequence(sequence);

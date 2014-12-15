@@ -31,10 +31,8 @@ public class BiologicalProcess extends ModelClass {
 
 	@Override
 	public String toString() {
-		return "BiologicalProcess [name=" + name + ", pk=" + pk
-				+ ", getName()=" + getName() + ", getPk()=" + getPk()
-				+ ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
-				+ ", toString()=" + super.toString() + "]";
+		return "BiologicalProcess [name=" + name + ", pk=" + pk + "]";
 	}
+
 
 }

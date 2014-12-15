@@ -123,7 +123,8 @@ public class microtv4 extends MirnaDatabase {
 		try {
 			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			Statement stmt = (Statement) con.createStatement();
-			
+			stmt.setFetchSize(Integer.MIN_VALUE);
+
 			// our SQL SELECT query. 
 			// if you only need a few columns, specify them by name instead of using "*"
 			String query = "SELECT * FROM " + tableName;
@@ -160,21 +161,8 @@ public class microtv4 extends MirnaDatabase {
 			Target target = new Target();
 			target.setRegion(region);
 			target.setChromosome(chromosome);
-			
-			
-			if(region.equals("CDS")){
-				
-				target.setCdsEnd(coordinates);
-
-		
-				
-			}else if(region.equals("UTR3")){
-				
-				target.setUTR3end(coordinates);
-
-			}
-			
-				
+			target.setCoordinates(coordinates);
+					
 			Transcript transcript = new Transcript();
 			transcript.setId(transcript_id);
 
@@ -183,6 +171,7 @@ public class microtv4 extends MirnaDatabase {
 			System.out.println(gene);
 			System.out.println(id);
 			System.out.println(transcript);
+			System.out.println(target);
 			
 			// FIN DE CAMBIAR ESTO
 			

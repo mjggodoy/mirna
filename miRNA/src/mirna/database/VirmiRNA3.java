@@ -131,9 +131,9 @@ public class VirmiRNA3 extends VirmiRNA {
 			//int count = 0;
 
 
-			rs.next();
+			rs.next(); ///MUY IMPORTANTE: Target relacionado con organism
 			// CAMBIAR ESTO:
-			
+			String id_virus = rs.getString("vmt_id");
 			String virus_name = rs.getString("virus");
 			String virus_full_name = rs.getString("virus_full_name");
 			String taxonomy_resource = rs.getString("taxonomy");
@@ -153,8 +153,10 @@ public class VirmiRNA3 extends VirmiRNA {
 			Organism organism = new Organism();
 			organism.setName(virus_name);
 			organism.setName(virus_full_name);
-			organism.setSpecie(target_organism);
 			organism.setResource(taxonomy_resource);
+			
+			Organism organism2 = new Organism();
+			organism2.setSpecie(target_organism);
 			
 			MiRna mirna = new MiRna();
 			mirna.setName(mirna_name);
@@ -163,10 +165,12 @@ public class VirmiRNA3 extends VirmiRNA {
 			expressiondata.setMethod(method);
 			expressiondata.setCellularLine(cell_line);
 			expressiondata.setPubmedId(pmid);
+			expressiondata.setProvenance("VirmiRNA");
+			expressiondata.setProvenanceId(id_virus);
 			
 			Gene gene = new Gene();
 			gene.setName(gene_name);
-			gene.setName(uniprot_id);
+			gene.setGeneId(uniprot_id);
 			
 			
 			Target target = new Target();
@@ -181,6 +185,7 @@ public class VirmiRNA3 extends VirmiRNA {
 			System.out.println(expressiondata);
 			System.out.println(gene);
 			System.out.println(target);
+			System.out.println(organism2);
 			
 			
 			// FIN DE CAMBIAR ESTO

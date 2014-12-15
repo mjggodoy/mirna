@@ -54,13 +54,9 @@ public class Protein extends ModelClass {
 	@Override
 	public String toString() {
 		return "Protein [Uniprot_id=" + Uniprot_id + ", Swiss_prot_id="
-				+ Swiss_prot_id + ", type=" + Type + ", pk=" + pk
-				+ ", getUniprot_id()=" + getUniprot_id()
-				+ ", getSwiss_prot_id()=" + getSwiss_prot_id() + ", getType()="
-				+ getType() + ", getPk()=" + getPk() + ", toString()="
-				+ super.toString() + ", getClass()=" + getClass()
-				+ ", hashCode()=" + hashCode() + "]";
+				+ Swiss_prot_id + ", Type=" + Type + ", pk=" + pk + "]";
 	}
+
 
 
 

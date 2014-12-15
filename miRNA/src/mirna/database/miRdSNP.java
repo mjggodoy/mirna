@@ -39,12 +39,12 @@ public abstract class miRdSNP extends MirnaDatabase {
 //		mirdsnp4.insertInTable(inputFile4);
 //		mirdsnp5.insertInTable(inputFile5);
 		
-	//	mirdsnp1.insertIntoSQLModel();
+	//  mirdsnp1.insertIntoSQLModel();
 	
-	//	mirdsnp2.insertIntoSQLModel();
-	//	mirdsnp3.insertIntoSQLModel();
-	//	mirdsnp4.insertIntoSQLModel();
-	mirdsnp5.insertIntoSQLModel();
+	 mirdsnp2.insertIntoSQLModel();
+	// mirdsnp3.insertIntoSQLModel();
+	// mirdsnp4.insertIntoSQLModel();
+	//mirdsnp5.insertIntoSQLModel();
 		
 
 	}

@@ -20,8 +20,8 @@ public abstract class VirmiRNA extends MirnaDatabase {
 //		virmiRNA3.insertInTable(inputFile3);
 		
 		virmiRNA1.insertIntoSQLModel();
-		virmiRNA2.insertIntoSQLModel();
-		virmiRNA3.insertIntoSQLModel();
+		//virmiRNA2.insertIntoSQLModel();
+		//virmiRNA3.insertIntoSQLModel();
 
 	}
 	

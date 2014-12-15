@@ -69,6 +69,10 @@ public class VirmiRNA2 extends VirmiRNA {
 				String target_reference = tokens[17];
 				String pubmed_id = tokens[18];
 				
+				int index = pubmed_id.indexOf("/");
+				int index1 = pubmed_id.indexOf("\">");
+				pubmed_id = pubmed_id.substring(index, index1+2);
+				
 				if ((tokens.length>20) || ((tokens.length==20) && (!"".equals(tokens[19])))) {
 					br.close();
 					throw new Exception(tokens.length + " tokens found!");
@@ -145,9 +149,9 @@ public class VirmiRNA2 extends VirmiRNA {
 			rs.next();
 			// CAMBIAR ESTO:
 			
-			
+			String id_virus = rs.getString("avm_id");
 			String mirna_name = rs.getString("mirna");
-			String mirna_seq = rs.getString("mirna_seq");
+			String mirna_seq = rs.getString("mirna_sequence");
 			String accesion_number = rs.getString("mirbase_id");
 			String specie_target = rs.getString("specie");
 			String organism_name = rs.getString("virus");
@@ -171,10 +175,12 @@ public class VirmiRNA2 extends VirmiRNA {
 			mirna.setAccessionNumber(accesion_number);
 			
 			Organism organism = new Organism();
-			organism.setSpecie(specie_target);
 			organism.setName(organism_name_full);
-			organism.setName(organism_name);
+			organism.setShort_name(organism_name);
 			organism.setResource(resource_organism);
+			
+			Organism organism2 = new Organism();
+			organism2.setSpecie(specie_target);
 			
 			Target target = new Target();
 			target.setSequence(target_sequence);
@@ -183,24 +189,26 @@ public class VirmiRNA2 extends VirmiRNA {
 			target.setSeed_match(send_match);
 			target.setResource(target_resource);
 			target.setPubmed_id(target_pubmedId);
-			
+				
 			BiologicalProcess biologicalprocess = new BiologicalProcess();
 			biologicalprocess.setName(target_process);
 			
 			ExpressionData expressiondata = new ExpressionData();
 			expressiondata.setCellularLine(cell_line);
-			expressiondata.setCellularLine(method);
+			expressiondata.setMethod(method);
+			expressiondata.setProvenanceId(id_virus);
+			expressiondata.setProvenance("VirmiRNA");
 			
 			Gene gene = new Gene();
 			gene.setName(target1);
 			gene.setGeneId(uniprot);
-			
 			
 			System.out.println(mirna);
 			System.out.println(organism);
 			System.out.println(expressiondata);
 			System.out.println(target);
 			System.out.println(biologicalprocess);
+			System.out.println(organism2);
 			
 			// FIN DE CAMBIAR ESTO
 			

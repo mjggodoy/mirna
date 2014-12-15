@@ -16,6 +16,7 @@ public class InteractionData extends ModelClass {
 	private String pvalue_og;//ok
 	private String type;
 	private String description;
+	private String algorithm;
 	
 	public InteractionData() {
 		super();
@@ -26,7 +27,7 @@ public class InteractionData extends ModelClass {
 	public InteractionData(int pk,String score, String pvalue_log, String miTG_score,
 			String method, String feature, String phase, String rank,
 			String provenance, String reference, String pubmedId,
-			String cellularLine, String pvalue_og, String type, String description) {
+			String cellularLine, String pvalue_og, String type, String description, String algorithm) {
 		super(pk);
 		this.score = score;
 		this.pvalue_log = pvalue_log;
@@ -42,6 +43,7 @@ public class InteractionData extends ModelClass {
 		this.pvalue_og = pvalue_og;
 		this.type = type;
 		this.description = description;
+		this.algorithm = algorithm;
 	}
 
 
@@ -170,6 +172,18 @@ public class InteractionData extends ModelClass {
 		this.phase = phase;
 	}
 
+	
+
+	public String getAlgorithm() {
+		return algorithm;
+	}
+
+
+
+	public void setAlgorithm(String algorithm) {
+		this.algorithm = algorithm;
+	}
+
 
 
 	@Override
@@ -180,20 +194,17 @@ public class InteractionData extends ModelClass {
 				+ rank + ", provenance=" + provenance + ", reference="
 				+ reference + ", pubmedId=" + pubmedId + ", cellularLine="
 				+ cellularLine + ", pvalue_og=" + pvalue_og + ", type=" + type
-				+ ", description=" + description + ", pk=" + pk
-				+ ", getDescription()=" + getDescription() + ", getType()="
-				+ getType() + ", getPvalue_og()=" + getPvalue_og()
-				+ ", getCellularLine()=" + getCellularLine()
-				+ ", getPubmedId()=" + getPubmedId() + ", getReference()="
-				+ getReference() + ", getScore()=" + getScore()
-				+ ", getPvalue_log()=" + getPvalue_log() + ", getRank()="
-				+ getRank() + ", getProvenance()=" + getProvenance()
-				+ ", getMiTG_score()=" + getMiTG_score() + ", getMethod()="
-				+ getMethod() + ", getFeature()=" + getFeature()
-				+ ", getPhase()=" + getPhase() + ", getPk()=" + getPk()
-				+ ", toString()=" + super.toString() + ", getClass()="
-				+ getClass() + ", hashCode()=" + hashCode() + "]";
+				+ ", description=" + description + ", algorithm=" + algorithm
+				+ ", pk=" + pk + "]";
 	}
+
+
+
+
+
+
+
+	
 
 
 

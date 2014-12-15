@@ -28,7 +28,9 @@ public class MiRna extends ModelClass {
 	@Column(name = "organism_pk", nullable = true, length = 45)
 	private Integer organismPk;
 	
-	private String pubmedId;
+	private String pubmedId; //lo he puesto nuevo
+	private String length; //lo he puesto nuevo
+	private String GC_proportion;//lo he puesto nuevo
 	
 //	private String journal;//ok X
 //	private String subName; //ok X
@@ -96,6 +98,25 @@ public class MiRna extends ModelClass {
 	public void setPubmedId(String pubmedId) {
 		this.pubmedId = pubmedId;
 	}
+	
+	
+	
+
+	public String getLength() {
+		return length;
+	}
+
+	public void setLength(String length) {
+		this.length = length;
+	}
+
+	public String getGC_proportion() {
+		return GC_proportion;
+	}
+
+	public void setGC_proportion(String gC_proportion) {
+		GC_proportion = gC_proportion;
+	}
 
 	public int checkConflict(MiRna mirna) {
 		int res = 0;
@@ -147,11 +168,14 @@ public class MiRna extends ModelClass {
 
 	
 	
+	
+
 	@Override
 	public String toString() {
 		return "MiRna [name=" + name + ", accessionNumber=" + accessionNumber
 				+ ", sequence=" + sequence + ", resource=" + resource
 				+ ", organismPk=" + organismPk + ", pubmedId=" + pubmedId
+				+ ", length=" + length + ", GC_proportion=" + GC_proportion
 				+ ", pk=" + pk + "]";
 	}
 
