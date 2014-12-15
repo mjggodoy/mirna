@@ -11,14 +11,15 @@ import java.sql.Statement;
 import mirna.beans.Disease;
 import mirna.beans.EnvironmentalFactor;
 import mirna.beans.ExpressionData;
-import mirna.beans.InteractionData;
 import mirna.beans.MiRna;
 import mirna.beans.Organism;
-import mirna.beans.Target;
-import mirna.beans.Transcript;
 import mirna.exception.MiRnaException;
+import mirna.utils.HibernateUtil;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 /**
  * Código para procesar los datos de miREnvironment
@@ -102,10 +103,16 @@ public class miREnvironment extends MirnaDatabase {
 	}
 	
 	@Override
-	public void insertIntoSQLModel()
-			throws Exception {
+	public void insertIntoSQLModel() throws Exception {
 
 		Connection con = null;
+		
+		//Get Session
+		SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
+		Session session = sessionFactory.getCurrentSession();
+		
+		//start transaction
+		Transaction tx = session.beginTransaction();
 		
 		try {
 			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
@@ -120,11 +127,9 @@ public class miREnvironment extends MirnaDatabase {
 			ResultSet rs = stmt.executeQuery(query);
 			
 			// iterate through the java resultset
-			//int count = 0;
+			int count = 0;
+			while (rs.next()) {
 
-
-			rs.next();
-			// CAMBIAR ESTO:
 			
 			String id = rs.getString("mir");
 			String name = rs.getString("name");
