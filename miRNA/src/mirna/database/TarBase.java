@@ -242,7 +242,7 @@ public class TarBase extends MirnaDatabase {
 			disease.setType_tumour(type_tumour);
 	
 			ExpressionData ed = new ExpressionData();
-			ed.setType(dataType);
+			ed.setDataType(dataType);
 			ed.setMethod(is);
 			ed.setEvidence(mis_regulation);
 			ed.setCellularLine(cell_line_used);
@@ -252,12 +252,12 @@ public class TarBase extends MirnaDatabase {
 			
 			ExpressionData ed2 = new ExpressionData();
 			ed2.setMethod(ds);
-			ed.setType(dataType);
+			ed.setDataType(dataType);
 			ed.setEvidence(mis_regulation);
 			ed.setProvenanceId(id_tarbase);
 			ed.setCellularLine(cell_line_used);
 			ed.setProvenance("TarBase");
-			ed.setDifferent_expression_location(different_expression);
+			ed.setDifferentExpressionLocation(different_expression);
 					
 			System.out.println(mirna);
 			System.out.println(id);

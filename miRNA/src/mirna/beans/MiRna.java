@@ -13,7 +13,7 @@ import mirna.exception.ConflictException;
 @Table(name = "mirna")
 public class MiRna extends ModelClass {
 	
-	@Column(name = "name", nullable = false, length = 20, unique = true)
+	@Column(name = "name", nullable = false, length = 80, unique = true)
 	protected String name;
 	
 	@Column(name = "accession_number", nullable = true, length = 45)
@@ -25,12 +25,18 @@ public class MiRna extends ModelClass {
 	@Column(name = "resource", nullable = true, length = 45)
 	private String resource;
 	
+	//TODO: Poner como bean aparte
+	//@Column(name = "pubmed_id", nullable = true, length = 10)
+	//private String pubmedId; //lo he puesto nuevo
+	
+	@Column(name = "length", nullable = true, length = 10)
+	private String length; //lo he puesto nuevo
+	
+	@Column(name = "gc_proportion", nullable = true, length = 10)
+	private String GC_proportion;//lo he puesto nuevo
+	
 	@Column(name = "organism_pk", nullable = true, length = 45)
 	private Integer organismPk;
-	
-	private String pubmedId; //lo he puesto nuevo
-	private String length; //lo he puesto nuevo
-	private String GC_proportion;//lo he puesto nuevo
 	
 //	private String journal;//ok X
 //	private String subName; //ok X
@@ -83,25 +89,6 @@ public class MiRna extends ModelClass {
 		this.resource = resource;
 	}
 	
-	public Integer getOrganismPk() {
-		return organismPk;
-	}
-
-	public void setOrganismPk(Integer organismPk) {
-		this.organismPk = organismPk;
-	}
-
-	public String getPubmedId() {
-		return pubmedId;
-	}
-
-	public void setPubmedId(String pubmedId) {
-		this.pubmedId = pubmedId;
-	}
-	
-	
-	
-
 	public String getLength() {
 		return length;
 	}
@@ -116,6 +103,14 @@ public class MiRna extends ModelClass {
 
 	public void setGC_proportion(String gC_proportion) {
 		GC_proportion = gC_proportion;
+	}
+
+	public Integer getOrganismPk() {
+		return organismPk;
+	}
+
+	public void setOrganismPk(Integer organismPk) {
+		this.organismPk = organismPk;
 	}
 
 	public int checkConflict(MiRna mirna) {
@@ -140,6 +135,14 @@ public class MiRna extends ModelClass {
 			if (mirna.getResource()==null) res++;
 			else if (!this.resource.equals(mirna.getResource())) return -1;
 		}
+		if (this.length!=null) {
+			if (mirna.getLength()==null) res++;
+			else if (!this.length.equals(mirna.getLength())) return -1;
+		}
+		if (this.GC_proportion!=null) {
+			if (mirna.getGC_proportion()==null) res++;
+			else if (!this.GC_proportion.equals(mirna.getGC_proportion())) return -1;
+		}
 		if (this.organismPk!=null) {
 			if (mirna.getOrganismPk()==null) res++;
 			else if (!this.organismPk.equals(mirna.getOrganismPk())) return -1;
@@ -162,38 +165,19 @@ public class MiRna extends ModelClass {
 		if (mirna.getAccessionNumber()!=null) this.accessionNumber = mirna.getAccessionNumber();
 		if (mirna.getSequence()!=null) this.sequence = mirna.getSequence();
 		if (mirna.getResource()!=null) this.resource = mirna.getResource();
+		if (mirna.getLength()!=null) this.length = mirna.getLength();
+		if (mirna.getGC_proportion()!=null) this.GC_proportion = mirna.getGC_proportion();
 		if (mirna.getOrganismPk()!=null) this.organismPk = mirna.getOrganismPk();
 		
 	}
-
-	
-	
-	
 
 	@Override
 	public String toString() {
 		return "MiRna [name=" + name + ", accessionNumber=" + accessionNumber
 				+ ", sequence=" + sequence + ", resource=" + resource
-				+ ", organismPk=" + organismPk + ", pubmedId=" + pubmedId
+				+ ", organismPk=" + organismPk
 				+ ", length=" + length + ", GC_proportion=" + GC_proportion
 				+ ", pk=" + pk + "]";
 	}
 
-	public static void main(String[] args) throws Exception {
-		
-		MiRna m1 = new MiRna();
-		MiRna m2 = new MiRna();
-		m1.setAccessionNumber("caca");
-		m2.setName("Pua");
-		m2.setAccessionNumber("cac");
-		
-		System.out.println(m1);
-		System.out.println(m2);
-		
-		m1.update(m2);
-		
-		System.out.println(m1);
-		
-	}
-	
 }

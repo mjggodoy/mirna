@@ -60,7 +60,7 @@ public class HMDD {
 
 					ExpressionData dataexpression = new ExpressionData();
 					dataexpression.setDescription(tokens[5]);
-					dataexpression.setPubmedId(tokens[4]);
+					//dataexpression.setPubmedId(tokens[4]);
 
 					Resource miRNA = model
 							.createResource(
@@ -83,9 +83,9 @@ public class HMDD {
 								.addProperty(
 									ResourceFactory.createProperty(namespace
 											+ "Description"), dataexpression.getDescription())
-							.addProperty(
-									ResourceFactory.createProperty(namespace
-											+ "PubmedId"), dataexpression.getPubmedId())
+//							.addProperty(
+//									ResourceFactory.createProperty(namespace
+//											+ "PubmedId"), dataexpression.getPubmedId())
 							.addProperty(
 									ResourceFactory.createProperty(namespace
 											+ "involvesmiRNA"), miRNA)

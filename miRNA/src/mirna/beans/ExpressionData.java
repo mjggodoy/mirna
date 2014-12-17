@@ -38,8 +38,9 @@ public class ExpressionData extends ModelClass {
 	@Column(name = "evidence", nullable = true, length = 80)
 	private String evidence;
 	
-	@Column(name = "pubmed_id", nullable = true, length = 10)
-	private String pubmedId;
+	//TODO: Poner como bean aparte
+//	@Column(name = "pubmed_id", nullable = true, length = 10)
+//	private String pubmedId;
 	
 	@Column(name = "year", nullable = true, length = 4)
 	private String year;
@@ -62,8 +63,13 @@ public class ExpressionData extends ModelClass {
 	@Column(name = "environmental_factor_pk", nullable = true, length = 20)
 	private Integer environmentalFactorPk;
 	
-	private String type;
-	private String different_expression_location;
+	
+	//TODO: SUSTITUIR TYPE POR DATA_TYPE
+	@Column(name = "data_type", nullable = true, length = 20)
+	private String dataType;
+	
+	@Column(name = "different_expression_location", nullable = true, length = 80)
+	private String differentExpressionLocation;
 //	private String journal; //ok
 //	private String reference; //ok
 //	private String resource; //ok
@@ -147,14 +153,6 @@ public class ExpressionData extends ModelClass {
 		this.evidence = evidence;
 	}
 
-	public String getPubmedId() {
-		return pubmedId;
-	}
-
-	public void setPubmedId(String pubmedId) {
-		this.pubmedId = pubmedId;
-	}
-
 	public String getYear() {
 		return year;
 	}
@@ -211,25 +209,21 @@ public class ExpressionData extends ModelClass {
 		this.environmentalFactorPk = environmentalFactorPk;
 	}
 
-	
-	public String getType() {
-		return type;
+	public String getDataType() {
+		return dataType;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setDataType(String dataType) {
+		this.dataType = dataType;
+	}
+	
+	public String getDifferentExpressionLocation() {
+		return differentExpressionLocation;
 	}
 
-	
-	
-	
-	public String getDifferent_expression_location() {
-		return different_expression_location;
-	}
-
-	public void setDifferent_expression_location(
-			String different_expression_location) {
-		this.different_expression_location = different_expression_location;
+	public void setDifferentExpressionLocation(
+			String differentExpressionLocation) {
+		this.differentExpressionLocation = differentExpressionLocation;
 	}
 
 	@Override
@@ -239,13 +233,13 @@ public class ExpressionData extends ModelClass {
 				+ foldchangeMax + ", provenanceId=" + provenanceId
 				+ ", provenance=" + provenance + ", studyDesign=" + studyDesign
 				+ ", method=" + method + ", treatment=" + treatment
-				+ ", evidence=" + evidence + ", pubmedId=" + pubmedId
+				+ ", evidence=" + evidence
 				+ ", year=" + year + ", description=" + description
 				+ ", cellularLine=" + cellularLine + ", condition=" + condition
 				+ ", mirnaPk=" + mirnaPk + ", diseasePk=" + diseasePk
 				+ ", environmentalFactorPk=" + environmentalFactorPk
-				+ ", type=" + type + ", different_expression_location="
-				+ different_expression_location + ", pk=" + pk + "]";
+				+ ", type=" + dataType + ", different_expression_location="
+				+ differentExpressionLocation + ", pk=" + pk + "]";
 	}
 	
 
