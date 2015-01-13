@@ -25,10 +25,6 @@ public class MiRna extends ModelClass {
 	@Column(name = "resource", nullable = true, length = 45)
 	private String resource;
 	
-	//TODO: Poner como bean aparte
-	//@Column(name = "pubmed_id", nullable = true, length = 10)
-	//private String pubmedId; //lo he puesto nuevo
-	
 	@Column(name = "length", nullable = true, length = 10)
 	private String length; //lo he puesto nuevo
 	

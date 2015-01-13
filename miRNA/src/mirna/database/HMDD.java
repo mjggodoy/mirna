@@ -11,6 +11,9 @@ import java.sql.Statement;
 import mirna.beans.Disease;
 import mirna.beans.ExpressionData;
 import mirna.beans.MiRna;
+import mirna.beans.PubmedDocument;
+import mirna.beans.nToM.ExpressionDataHasPubmedDocument;
+import mirna.beans.nToM.MirnaHasPubmedDocument;
 import mirna.exception.MiRnaException;
 import mirna.utils.HibernateUtil;
 
@@ -120,7 +123,7 @@ public class HMDD extends MirnaDatabase {
 			while (rs.next()) {
 				
 				String id = rs.getString("id");
-				String mir = rs.getString("mir").toLowerCase().trim();
+				String mir = rs.getString("mir").trim();
 				String diseaseField = rs.getString("disease").toLowerCase().trim();
 				String pubmedid = rs.getString("pubmedid").trim();
 				String description = rs.getString("description").trim();
@@ -133,9 +136,11 @@ public class HMDD extends MirnaDatabase {
 				
 				ExpressionData expressionData = new ExpressionData();
 				expressionData.setDescription(description);
-				expressionData.setPubmedId(pubmedid);
 				expressionData.setProvenanceId(id);
 				expressionData.setProvenance("hmdd");
+				
+				PubmedDocument pubmedDoc = new PubmedDocument();
+				pubmedDoc.setId(pubmedid);
 				
 				// Inserta MiRna (o recupera su id. si ya existe)
 				Object oldMiRna = session.createCriteria(MiRna.class)
@@ -165,12 +170,44 @@ public class HMDD extends MirnaDatabase {
 					disease = diseaseToUpdate;
 				}
 				
+				// Inserta PubmedDocument (o recupera su id. si ya existe)
+				Object oldPubmedDoc = session.createCriteria(PubmedDocument.class)
+						.add( Restrictions.eq("id", pubmedDoc.getId()) )
+						.uniqueResult();
+				if (oldPubmedDoc==null) {
+					session.save(pubmedDoc);
+					session.flush(); // to get the PK
+				} else {
+					PubmedDocument pubmedDocToUpdate = (PubmedDocument) oldPubmedDoc;
+					pubmedDocToUpdate.update(pubmedDoc);
+					session.update(pubmedDocToUpdate);
+					pubmedDoc = pubmedDocToUpdate;
+				}
+				
 				// Inserta nueva DataExpression
 				// (y la relaciona con el MiRna y Disease correspondiente)
 				expressionData.setMirnaPk(miRna.getPk());
 				expressionData.setDiseasePk(disease.getPk());
 				session.save(expressionData);
+				session.flush(); // to get the PK
 				// ExpressionData igual (?)
+				
+				MirnaHasPubmedDocument mirnaHasPubmedDocument =
+						new MirnaHasPubmedDocument(miRna.getPk(), pubmedDoc.getPk());
+				ExpressionDataHasPubmedDocument expresDataHasPubmedDocument =
+						new ExpressionDataHasPubmedDocument(expressionData.getPk(), pubmedDoc.getPk());
+				
+				// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
+				Object oldMirnaHasPubmedDocument = session.createCriteria(MirnaHasPubmedDocument.class)
+						.add( Restrictions.eq("mirnaPk", miRna.getPk()) )
+						.add( Restrictions.eq("pubmedDocumentPk", pubmedDoc.getPk()) )
+						.uniqueResult();
+				if (oldMirnaHasPubmedDocument==null) {
+					session.save(mirnaHasPubmedDocument);
+				}
+				
+				// Relaciona PubmedDocument con ExpressionData
+				session.save(expresDataHasPubmedDocument);
 				
 				count++;
 				if (count%100==0) {
@@ -191,7 +228,6 @@ public class HMDD extends MirnaDatabase {
 		sessionFactory.close();
 		
 	}
-
 	
 	public static void main(String[] args) throws Exception {
 		

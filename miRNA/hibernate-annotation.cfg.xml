@@ -6,7 +6,7 @@
  <session-factory>
   <!-- Database connection properties - Driver, URL, user, password -->
   <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-  <property name="hibernate.connection.url">jdbc:mysql://192.168.44.3:3306/mirna</property>
+  <property name="hibernate.connection.url">jdbc:mysql://192.168.44.23:3306/mirna</property>
   <property name="hibernate.connection.username">mirna</property>
   <property name="hibernate.connection.password">mirna</property>
   <!-- Connection Pool Size -->
@@ -16,7 +16,7 @@
   <property name="hibernate.current_session_context_class">thread</property>
   
   <!-- Outputs the SQL queries, should be disabled in Production -->
-  <property name="hibernate.show_sql">true</property>
+  <property name="hibernate.show_sql">false</property>
   
   <!-- Dialect is required to let Hibernate know the Database Type, MySQL, Oracle etc
    Hibernate 4 automatically figure out Dialect from Database Connection Metadata -->
@@ -26,5 +26,9 @@
   <mapping class="mirna.beans.MiRna" />
   <mapping class="mirna.beans.Disease" />
   <mapping class="mirna.beans.ExpressionData" />
+  <mapping class="mirna.beans.PubmedDocument" />
+  <mapping class="mirna.beans.nToM.ExpressionDataHasPubmedDocument" />
+  <mapping class="mirna.beans.nToM.MirnaHasPubmedDocument" />
+  
  </session-factory>
 </hibernate-configuration>

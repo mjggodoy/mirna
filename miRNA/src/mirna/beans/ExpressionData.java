@@ -38,10 +38,6 @@ public class ExpressionData extends ModelClass {
 	@Column(name = "evidence", nullable = true, length = 80)
 	private String evidence;
 	
-	//TODO: Poner como bean aparte
-//	@Column(name = "pubmed_id", nullable = true, length = 10)
-//	private String pubmedId;
-	
 	@Column(name = "year", nullable = true, length = 4)
 	private String year;
 	
@@ -63,8 +59,6 @@ public class ExpressionData extends ModelClass {
 	@Column(name = "environmental_factor_pk", nullable = true, length = 20)
 	private Integer environmentalFactorPk;
 	
-	
-	//TODO: SUSTITUIR TYPE POR DATA_TYPE
 	@Column(name = "data_type", nullable = true, length = 20)
 	private String dataType;
 	
@@ -241,6 +235,5 @@ public class ExpressionData extends ModelClass {
 				+ ", type=" + dataType + ", different_expression_location="
 				+ differentExpressionLocation + ", pk=" + pk + "]";
 	}
-	
 
 }
