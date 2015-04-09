@@ -239,7 +239,6 @@ public class TarBase extends MirnaDatabase {
 			
 			Disease disease = new Disease();
 			disease.setName(pathology_or_event);
-			disease.setType_tumour(type_tumour);
 	
 			ExpressionData ed = new ExpressionData();
 			ed.setDataType(dataType);

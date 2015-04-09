@@ -169,7 +169,6 @@ public class SM2miR2N extends MirnaDatabase {
 			ed.setMethod(method);
 			ed.setTitleReference(reference);
 			ed.setYear(year);
-			ed.setPubmedId(pmid);
 			ed.setDescription(support);
 			
 			Organism organism = new Organism();

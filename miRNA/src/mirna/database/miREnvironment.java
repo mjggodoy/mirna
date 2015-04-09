@@ -159,7 +159,6 @@ public class miREnvironment extends MirnaDatabase {
 			ed.setTreatment(treatment);
 			ed.setCellularLine(cellularLine);
 			ed.setDescription(description);
-			ed.setPubmedId(pubmedId);
 			ed.setProvenanceId(id);
 			ed.setProvenance("miREnvironment");
 			
@@ -176,6 +175,7 @@ public class miREnvironment extends MirnaDatabase {
 			// FIN DE CAMBIAR ESTO
 			
 			stmt.close();
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

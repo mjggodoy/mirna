@@ -164,7 +164,6 @@ public class VirmiRNA3 extends VirmiRNA {
 			ExpressionData expressiondata = new ExpressionData();
 			expressiondata.setMethod(method);
 			expressiondata.setCellularLine(cell_line);
-			expressiondata.setPubmedId(pmid);
 			expressiondata.setProvenance("VirmiRNA");
 			expressiondata.setProvenanceId(id_virus);
 			

@@ -146,7 +146,6 @@ public class VirmiRNA1 extends VirmiRNA{
 			MiRna mirna = new MiRna();
 			mirna.setName(mirna_name);
 			mirna.setSequence(mirna_seq);
-			mirna.setPubmedId(pubmed);
 			mirna.setGC_proportion(gc_proportion);
 			mirna.setLength(length);
 			
