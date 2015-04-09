@@ -13,12 +13,14 @@ import java.sql.Statement;
 import mirna.beans.Disease;
 import mirna.beans.ExpressionData;
 import mirna.beans.MiRna;
+import mirna.beans.PubmedDocument;
+import mirna.beans.nToM.ExpressionDataHasPubmedDocument;
+import mirna.beans.nToM.MirnaHasPubmedDocument;
 import mirna.exception.MiRnaException;
 import mirna.utils.HibernateUtil;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
@@ -158,9 +160,8 @@ public class Phenomir extends MirnaDatabase {
 		
 		Connection con = null;
 		
-		//Get Session
-		SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
-		Session session = sessionFactory.getCurrentSession();
+		// Get session
+		Session session = HibernateUtil.getSessionFactory().openSession();
 		
 		//start transaction
 		Transaction tx = session.beginTransaction();
@@ -181,12 +182,11 @@ public class Phenomir extends MirnaDatabase {
 			int count = 0;
 			while (rs.next()) {
 				
-				//int pk = rs.getInt("pk");
 				String phenomicid = rs.getString("phenomicid");
 				String pmid = rs.getString("pmid");
 				String diseaseField = rs.getString("disease").toLowerCase().trim();
 				String diseaseClass = rs.getString("class").toLowerCase().trim();
-				String mirna = rs.getString("miRNA").toLowerCase().trim();
+				String mirna = rs.getString("miRNA").trim();
 				String accession = rs.getString("accession").toLowerCase().trim();
 				String evidence = rs.getString("expression");
 				String foldchangemin = rs.getString("foldchangemin");
@@ -218,13 +218,16 @@ public class Phenomir extends MirnaDatabase {
 				
 				ExpressionData ed = new ExpressionData();
 				ed.setProvenanceId(phenomicid);
-				ed.setPubmedId(pmid);
+				//ed.setPubmedId(pmid);
 				ed.setEvidence(evidence);
 				ed.setFoldchangeMin(foldchangemin);
 				ed.setFoldchangeMax(foldchangemax);
 				ed.setStudyDesign(studyDesign);
 				ed.setMethod(method);
 				ed.setProvenance("PhenomiR");
+				
+				PubmedDocument pubmedDoc = new PubmedDocument();
+				pubmedDoc.setId(pmid);
 				
 				// Inserta MiRna (o recupera su id. si ya existe)
 				Object oldMiRna = session.createCriteria(MiRna.class)
@@ -254,12 +257,44 @@ public class Phenomir extends MirnaDatabase {
 					disease = diseaseToUpdate;
 				}
 				
+				// Inserta PubmedDocument (o recupera su id. si ya existe)
+				Object oldPubmedDoc = session.createCriteria(PubmedDocument.class)
+						.add( Restrictions.eq("id", pubmedDoc.getId()) )
+						.uniqueResult();
+				if (oldPubmedDoc==null) {
+					session.save(pubmedDoc);
+					session.flush(); // to get the PK
+				} else {
+					PubmedDocument pubmedDocToUpdate = (PubmedDocument) oldPubmedDoc;
+					pubmedDocToUpdate.update(pubmedDoc);
+					session.update(pubmedDocToUpdate);
+					pubmedDoc = pubmedDocToUpdate;
+				}
+				
 				// Inserta nueva DataExpression
 				// (y la relaciona con el MiRna y Disease correspondiente)
 				ed.setMirnaPk(miRna.getPk());
 				ed.setDiseasePk(disease.getPk());
 				session.save(ed);
+				session.flush(); // to get the PK
 				// ExpressionData igual (?)
+				
+				MirnaHasPubmedDocument mirnaHasPubmedDocument =
+						new MirnaHasPubmedDocument(miRna.getPk(), pubmedDoc.getPk());
+				ExpressionDataHasPubmedDocument expresDataHasPubmedDocument =
+						new ExpressionDataHasPubmedDocument(ed.getPk(), pubmedDoc.getPk());
+				
+				// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
+				Object oldMirnaHasPubmedDocument = session.createCriteria(MirnaHasPubmedDocument.class)
+						.add( Restrictions.eq("mirnaPk", miRna.getPk()) )
+						.add( Restrictions.eq("pubmedDocumentPk", pubmedDoc.getPk()) )
+						.uniqueResult();
+				if (oldMirnaHasPubmedDocument==null) {
+					session.save(mirnaHasPubmedDocument);
+				}
+				
+				// Relaciona PubmedDocument con ExpressionData
+				session.save(expresDataHasPubmedDocument);
 				
 				count++;
 				if (count%100==0) {
@@ -271,13 +306,14 @@ public class Phenomir extends MirnaDatabase {
 			}
 			stmt.close();
 		} catch (SQLException e) {
+			tx.rollback();
 			e.printStackTrace();
 		} finally {
 			if (con!=null) con.close();
 		}
 		
 		tx.commit();
-		sessionFactory.close();
+		session.close();
 		
 	}
 
@@ -286,11 +322,14 @@ public class Phenomir extends MirnaDatabase {
 		
 		Phenomir phenomir = new Phenomir();
 		
-//		String inputFile = "/Users/esteban/Softw/miRNA/phenomir-2.0.tbl";
-//		inputFile = phenomir.specificFileFix(inputFile);
-//		phenomir.insertInTable(inputFile);
+		// /* 1. meter datos en mirna_raw */
+		// String inputFile = "/Users/esteban/Softw/miRNA/phenomir-2.0.tbl";
+		// inputFile = phenomir.specificFileFix(inputFile);
+		// phenomir.insertInTable(inputFile);
 		
+		/* 2. meter datos en mirna */
 		phenomir.insertIntoSQLModel();
+		HibernateUtil.closeSessionFactory();
 		
 	}
 
