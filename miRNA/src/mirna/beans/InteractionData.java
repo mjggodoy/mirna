@@ -2,6 +2,7 @@ package mirna.beans;
 
 public class InteractionData extends ModelClass {
 
+	
 	private String score;//ok
 	private String pvalue_log;//ok
 	private String miTG_score; //ok
