@@ -13,6 +13,9 @@ import mirna.beans.EnvironmentalFactor;
 import mirna.beans.ExpressionData;
 import mirna.beans.MiRna;
 import mirna.beans.Organism;
+import mirna.beans.PubmedDocument;
+import mirna.beans.nToM.ExpressionDataHasPubmedDocument;
+import mirna.beans.nToM.MirnaHasPubmedDocument;
 import mirna.exception.MiRnaException;
 import mirna.utils.HibernateUtil;
 
@@ -20,6 +23,7 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 
 /**
  * CÃ³digo para procesar los datos de miREnvironment
@@ -165,14 +169,116 @@ public class miREnvironment extends MirnaDatabase {
 			Organism specie = new Organism();
 			specie.setName(specie_name);
 			
+			PubmedDocument pubmedDoc = new PubmedDocument();
+			pubmedDoc.setId(pubmedId);
 			
-			System.out.println(miRna);
+			/*System.out.println(miRna);
 			System.out.println(disease);
 			System.out.println(ef);
 			System.out.println(ed);
 			System.out.println(specie);
+			System.out.println(pubmedDoc);*/
 			
 			// FIN DE CAMBIAR ESTO
+			
+			// Inserta MiRna (o recupera su id. si ya existe)
+			
+			Object oldMiRna = session.createCriteria(MiRna.class)
+					.add( Restrictions.eq("name", miRna.getName()) )
+					.uniqueResult();
+			if (oldMiRna==null) {
+				session.save(miRna);
+				session.flush();  // to get the PK
+			} else {
+				MiRna miRnaToUpdate = (MiRna) oldMiRna;
+				miRnaToUpdate.update(miRna);
+				session.update(miRnaToUpdate);
+				miRna = miRnaToUpdate;
+			}
+			
+			// Inserta Disease (o recupera su id. si ya existe)
+			
+			Object oldDisease = session.createCriteria(Disease.class)
+					.add( Restrictions.eq("name", disease.getName()) )
+					.uniqueResult();
+			if (oldDisease==null) {
+				session.save(disease);
+				session.flush(); // to get the PK
+			} else {
+				Disease diseaseToUpdate = (Disease) oldDisease;
+				diseaseToUpdate.update(disease);
+				session.update(diseaseToUpdate);
+				disease = diseaseToUpdate;
+			}
+			
+			// Inserta EnvironmentalFactor (o recupera su id. si ya existe)
+			
+			Object oldEnvironmentalFactor = session.createCriteria(EnvironmentalFactor.class)
+					.add( Restrictions.eq("name", ef.getName()) )
+					.uniqueResult();
+			if (oldEnvironmentalFactor==null) {
+				session.save(ef);
+				session.flush(); // to get the PK
+			} else {
+				EnvironmentalFactor environmentalFactorToUpdate = (EnvironmentalFactor) oldEnvironmentalFactor;
+				environmentalFactorToUpdate.update(ef);
+				session.update(ef);
+				ef = environmentalFactorToUpdate;
+			}
+			
+			// Inserta PubmedDocument (o recupera su id. si ya existe)
+			
+			Object oldPubmedDoc = session.createCriteria(PubmedDocument.class)
+					.add( Restrictions.eq("id", pubmedDoc.getId()) )
+					.uniqueResult();
+			if (oldPubmedDoc==null) {
+				session.save(pubmedDoc);
+				session.flush(); // to get the PK
+			} else {
+				PubmedDocument pubmedDocToUpdate = (PubmedDocument) oldPubmedDoc;
+				pubmedDocToUpdate.update(pubmedDoc);
+				session.update(pubmedDocToUpdate);
+				pubmedDoc = pubmedDocToUpdate;
+			}
+			
+			// Inserta nueva DataExpression
+			// (y la relaciona con el MiRna y Disease correspondiente)
+			
+			// y con enviromentalFactor
+			
+			ed.setMirnaPk(miRna.getPk());
+			ed.setDiseasePk(disease.getPk());
+			ed.setEnvironmentalFactorPk(ef.getPk());
+			session.save(ed);
+			session.flush(); // to get the PK
+			
+			// Relaciona miRNa con Organism. No estoy segura. La entidad-relaci—n es de one-to-many segœn Žl modelo.
+			
+			miRna.setPk(specie.getPk());
+			session.save(miRna);
+			
+			
+			MirnaHasPubmedDocument mirnaHasPubmedDocument =
+					new MirnaHasPubmedDocument(miRna.getPk(), pubmedDoc.getPk());
+			ExpressionDataHasPubmedDocument expresDataHasPubmedDocument =
+					new ExpressionDataHasPubmedDocument(ed.getPk(), pubmedDoc.getPk());
+			
+			
+			// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
+			Object oldMirnaHasPubmedDocument = session.createCriteria(MirnaHasPubmedDocument.class)
+					.add( Restrictions.eq("mirnaPk", miRna.getPk()) )
+					.add( Restrictions.eq("pubmedDocumentPk", pubmedDoc.getPk()) )
+					.uniqueResult();
+			if (oldMirnaHasPubmedDocument==null) {
+				session.save(mirnaHasPubmedDocument);
+			}
+			
+			
+			// Relaciona PubmedDocument con ExpressionData
+			session.save(expresDataHasPubmedDocument);
+			
+			
+			
 			
 			stmt.close();
 			}
