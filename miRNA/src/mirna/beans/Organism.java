@@ -1,5 +1,7 @@
 package mirna.beans;
 
+import mirna.exception.ConflictException;
+
 public class Organism extends ModelClass{
 
 	private String specie;
@@ -70,6 +72,37 @@ public class Organism extends ModelClass{
 		this.short_name = short_name;
 	}
 
+	
+	public int checkConflict(Organism specie) {
+		int res = 0;
+		
+		if (this.pk!=null) {
+			if (specie.getPk()==null) res++; // res = 1
+			else if (!this.pk.equals(specie.getPk())) return -1;
+		}
+		
+		if (this.name!=null) {
+			if (specie.getName()==null) res++; 
+			else if (!this.name.equals(specie.getName())) return -1;
+		}
+		
+		return res;
+	}
+	
+	
+	public void update(Organism specie) throws ConflictException {
+		this.update(specie, true);
+	}
+	
+	
+	public void update(Organism specie, boolean checkConflict) throws ConflictException {
+		if (checkConflict) {
+			if (this.checkConflict(specie)==-1) throw new ConflictException(this, specie);
+		}
+		if (specie.getPk()!=null) this.pk = specie.getPk();
+		if (specie.getName()!=null) this.name = specie.getName();
+		
+	}
 
 
 

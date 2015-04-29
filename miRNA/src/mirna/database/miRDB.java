@@ -8,12 +8,23 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import mirna.beans.Disease;
+import mirna.beans.ExpressionData;
 import mirna.beans.InteractionData;
 import mirna.beans.MiRna;
+import mirna.beans.PubmedDocument;
 import mirna.beans.Target;
+import mirna.beans.nToM.ExpressionDataHasPubmedDocument;
+import mirna.beans.nToM.MirnaHasPubmedDocument;
 import mirna.exception.MiRnaException;
+import mirna.utils.HibernateUtil;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
+
 
 /**
  * Código para procesar los datos de miRDB
@@ -89,6 +100,10 @@ public class miRDB extends MirnaDatabase {
 	
 	@Override
 	public void insertIntoSQLModel() throws Exception {
+		
+		//Get Session
+		SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
+		Session session = sessionFactory.getCurrentSession();
 
 		Connection con = null;
 		
@@ -123,15 +138,45 @@ public class miRDB extends MirnaDatabase {
 			InteractionData id = new InteractionData();
 			id.setScore(score);
 			
-			
 			Target target = new Target();
 			target.setName(target_name);
 			
-			System.out.println(miRna);
+			/*System.out.println(miRna);
 			System.out.println(id);
 			System.out.println(target);
-			
+			*/
 			// FIN DE CAMBIAR ESTO
+			
+			// Inserta MiRna (o recupera su id. si ya existe)
+
+			Object oldMiRna = session.createCriteria(MiRna.class)
+					.add( Restrictions.eq("name", miRna.getName()) )
+					.uniqueResult();
+			if (oldMiRna==null) {
+				session.save(miRna);
+				session.flush();  // to get the PK
+			} else {
+				MiRna miRnaToUpdate = (MiRna) oldMiRna;
+				miRnaToUpdate.update(miRna);
+				session.update(miRnaToUpdate);
+				miRna = miRnaToUpdate;
+			}
+			
+			// Inserta InteractionData (o recupera su id. si ya existe)
+		
+			Object oldInteractionData = session.createCriteria(InteractionData.class)
+					.add( Restrictions.eq("id", id.getPk()) )
+					.uniqueResult();
+			if (oldInteractionData==null) {
+				session.save(id);
+				session.flush();  // to get the PK
+			} else {
+				InteractionData interactionDataToUpdate = (InteractionData) oldInteractionData;
+				interactionDataToUpdate.update(id);
+				session.update(interactionDataToUpdate);
+				id = interactionDataToUpdate;
+			}
+			
 			
 			stmt.close();
 		} catch (SQLException e) {

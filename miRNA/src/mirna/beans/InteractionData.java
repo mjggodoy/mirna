@@ -1,5 +1,7 @@
 package mirna.beans;
 
+import mirna.exception.ConflictException;
+
 public class InteractionData extends ModelClass {
 
 	
@@ -186,7 +188,103 @@ public class InteractionData extends ModelClass {
 	}
 
 
-
+	public int checkConflict(InteractionData id) {
+		int res = 0;
+		
+		if (this.pk!=null) {
+			if (id.getPk()==null) res++; 
+			else if (!this.pk.equals(id.getPk())) return -1;
+		}
+		if (this.score!=null) {
+			if (id.getScore()==null) res++; 
+			else if (!this.score.equals(id.getScore())) return -1;
+		}
+		if (this.pvalue_log != null){
+			if (id.pvalue_log==null) res++;
+			else if (!this.pvalue_log.equals(id.pvalue_log)) return -1;
+		}
+		if (this.rank != null){
+			if (id.rank==null) res++;
+			else if (!this.rank.equals(id.rank)) return -1;
+		}
+		if (this.provenance != null){
+			if (id.provenance==null) res++;
+			else if (!this.provenance.equals(id.provenance)) return -1;
+		}
+		
+		if (this.pvalue_og != null){
+			if (id.pvalue_og==null) res++;
+			else if (!this.pvalue_og.equals(id.pvalue_og)) return -1;
+		}
+		
+		if (this.miTG_score != null){
+			if (id.miTG_score==null) res++;
+			else if (!this.miTG_score.equals(id.miTG_score)) return -1;
+		}
+		
+		if (this.method != null){
+			if (id.method==null) res++;
+			else if (!this.method.equals(id.method)) return -1;
+		}
+		
+		if (this.phase != null){
+			if (id.phase==null) res++;
+			else if (!this.phase.equals(id.phase)) return -1;
+		}
+		
+		if (this.feature != null){
+			if (id.feature==null) res++;
+			else if (!this.feature.equals(id.feature)) return -1;
+		}
+		
+		if (this.algorithm != null){
+			if (id.algorithm==null) res++;
+			else if (!this.algorithm.equals(id.algorithm)) return -1;
+		}
+				
+		if (this.cellularLine != null){
+			if (id.cellularLine==null) res++;
+			else if (!this.cellularLine.equals(id.cellularLine)) return -1;
+		}
+		
+		if (this.pubmedId != null){
+			if (id.pubmedId==null) res++;
+			else if (!this.pubmedId.equals(id.pubmedId)) return -1;
+		}
+		
+		if (this.type != null){
+			if (id.type==null) res++;
+			else if (!this.type.equals(id.type)) return -1;
+		}
+		
+		if (this.description != null){
+			if (id.description==null) res++;
+			else if (!this.description.equals(id.description)) return -1;
+		}
+		
+		if (this.reference != null){
+			if (id.reference==null) res++;
+			else if (!this.reference.equals(id.reference)) return -1;
+		}
+		
+		return res;
+	}
+	
+	public void update(InteractionData id) throws ConflictException {
+		this.update(id, true);
+	}
+	
+	public void update(InteractionData id, boolean checkConflict) throws ConflictException {
+		if (checkConflict) {
+			if (this.checkConflict(id)==-1) throw new ConflictException(this, id);
+		}
+		if (id.getPk()!=null) this.pk = id.getPk();
+		if (id.getScore()!=null) this.score = id.getScore();
+		if (id.getPvalue_log()!=null) this.pvalue_log = id.getPvalue_log();
+	}
+	
+	
+	
 	@Override
 	public String toString() {
 		return "InteractionData [score=" + score + ", pvalue_log=" + pvalue_log

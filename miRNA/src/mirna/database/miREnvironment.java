@@ -226,6 +226,21 @@ public class miREnvironment extends MirnaDatabase {
 				ef = environmentalFactorToUpdate;
 			}
 			
+			 //Inserta Organism (o recupera su id. si ya existe)
+			
+			Object oldOrganism = session.createCriteria(Organism.class)
+					.add( Restrictions.eq("name", specie.getName()) )
+					.uniqueResult();
+			if (oldOrganism==null) {
+				session.save(specie);
+				session.flush(); // to get the PK
+			} else {
+				Organism organismToUpdate = (Organism) oldOrganism;
+				organismToUpdate.update(specie);
+				session.update(specie);
+				specie = organismToUpdate;
+			}
+			
 			// Inserta PubmedDocument (o recupera su id. si ya existe)
 			
 			Object oldPubmedDoc = session.createCriteria(PubmedDocument.class)
