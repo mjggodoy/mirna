@@ -20,6 +20,9 @@ public class InteractionData extends ModelClass {
 	private String type;
 	private String description;
 	private String algorithm;
+	private int mirnaPk;
+	private int targetPk;
+
 	
 	public InteractionData() {
 		super();
@@ -187,6 +190,27 @@ public class InteractionData extends ModelClass {
 		this.algorithm = algorithm;
 	}
 
+	public int getMirnaPk() {
+		return mirnaPk;
+	}
+
+
+
+	public void setMirnaPk(int mirnaPk) {
+		this.mirnaPk = mirnaPk;
+	}
+
+
+
+	public int getTargetPk() {
+		return targetPk;
+	}
+
+	public void setTargetPk(int targetPk) {
+		this.targetPk = targetPk;
+	}
+
+
 
 	public int checkConflict(InteractionData id) {
 		int res = 0;
@@ -281,6 +305,20 @@ public class InteractionData extends ModelClass {
 		if (id.getPk()!=null) this.pk = id.getPk();
 		if (id.getScore()!=null) this.score = id.getScore();
 		if (id.getPvalue_log()!=null) this.pvalue_log = id.getPvalue_log();
+		if (id.getPvalue_og()!=null) this.pvalue_og = id.getPvalue_og();
+		if (id.getRank()!=null) this.rank = id.getRank();
+		if (id.getDescription()!=null) this.description = id.getDescription();
+		if (id.getReference()!=null) this.reference = id.getReference();
+		if (id.getAlgorithm()!=null) this.algorithm = id.getAlgorithm();
+		if (id.getPubmedId()!=null) this.pubmedId = id.getPubmedId();
+		if (id.getType()!=null) this.type = id.getType();
+		if (id.getFeature()!=null) this.feature = id.getFeature();
+		if (id.getPhase()!=null) this.phase = id.getPhase();
+		if (id.getMethod()!=null) this.rank = id.getMethod();
+		if (id.getCellularLine()!=null) this.cellularLine = id.getCellularLine();
+		if (id.getMiTG_score()!=null) this.miTG_score = id.getCellularLine();
+		if (id.getProvenance()!=null) this.provenance = id.getProvenance();
+
 	}
 	
 	
@@ -297,19 +335,6 @@ public class InteractionData extends ModelClass {
 				+ ", pk=" + pk + "]";
 	}
 
-
-
-
-
-
-
-	
-
-
-
-	
-	
-	
 
 }
 

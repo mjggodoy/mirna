@@ -107,6 +107,9 @@ public class miRDB extends MirnaDatabase {
 
 		Connection con = null;
 		
+		//start transaction
+		Transaction tx = session.beginTransaction();
+		
 		try {
 			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			Statement stmt = (Statement) con.createStatement();
@@ -122,11 +125,10 @@ public class miRDB extends MirnaDatabase {
 			ResultSet rs = stmt.executeQuery(query);
 			
 			// iterate through the java resultset
-			//int count = 0;
+			int count = 0;
 
 
-			rs.next();
-			// CAMBIAR ESTO:
+			while (rs.next()){// antes estaba para que s—lo se hiciera una vez, en forma de condici—n
 			
 			String miRNA = rs.getString("mir");
 			String target_name = rs.getString("target");
@@ -177,13 +179,46 @@ public class miRDB extends MirnaDatabase {
 				id = interactionDataToUpdate;
 			}
 			
+			// Inserta Target (o recupera su id. si ya existe)
+
+			Object oldTarget = session.createCriteria(Target.class)
+					.add( Restrictions.eq("id", id.getPk()) )
+					.uniqueResult();
+			if (oldTarget==null) {
+				session.save(id);
+				session.flush();  // to get the PK
+			} else {
+				Target targetDataToUpdate = (Target) oldTarget;
+				targetDataToUpdate.update(target);
+				session.update(targetDataToUpdate);
+				target = targetDataToUpdate;
+			}
+			
+			// Inserta nueva InteractinData
+			// (y la relaciona con el MiRna y Target correspondientes)
+			
+			id.setMirnaPk(miRna.getPk());
+			id.setTargetPk(target.getPk());
+			session.save(id);
+			session.flush();
+			
+			count++;
+			if (count%100==0) {
+				System.out.println(count);
+				session.flush();
+		        session.clear();
+			}
 			
 			stmt.close();
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			if (con!=null) con.close();
 		}
+		
+		tx.commit();
+		sessionFactory.close();
 		
 	}
 	

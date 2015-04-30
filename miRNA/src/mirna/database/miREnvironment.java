@@ -267,7 +267,7 @@ public class miREnvironment extends MirnaDatabase {
 			session.save(ed);
 			session.flush(); // to get the PK
 			
-			// Relaciona miRNa con Organism. No estoy segura. La entidad-relaci—n es de one-to-many segœn Žl modelo.
+			// Relaciona miRNa con Organism. No estoy segura. La entidad-relaci—n es de one-to-many segœn el modelo.
 			
 			miRna.setPk(specie.getPk());
 			session.save(miRna);
@@ -292,7 +292,12 @@ public class miREnvironment extends MirnaDatabase {
 			// Relaciona PubmedDocument con ExpressionData
 			session.save(expresDataHasPubmedDocument);
 			
-			
+			count++;
+			if (count%100==0) {
+				System.out.println(count);
+				session.flush();
+		        session.clear();
+			}
 			
 			
 			stmt.close();
@@ -302,6 +307,9 @@ public class miREnvironment extends MirnaDatabase {
 		} finally {
 			if (con!=null) con.close();
 		}
+		
+		tx.commit();
+		sessionFactory.close();
 		
 	}
 	
