@@ -18,8 +18,12 @@ import mirna.beans.Protein;
 import mirna.beans.Target;
 import mirna.beans.Transcript;
 import mirna.exception.MiRnaException;
+import mirna.utils.HibernateUtil;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 /**
  * Código para procesar los datos de TarBase
@@ -151,10 +155,21 @@ public class TarBase extends MirnaDatabase {
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see mirna.database.IMirnaDatabase#insertIntoSQLModel()
+	 */
 	@Override
 	public void insertIntoSQLModel() throws Exception {
 
+		
+		//Get Session
+				SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
+				Session session = sessionFactory.getCurrentSession();
+				
 		Connection con = null;
+		
+		//start transaction
+		Transaction tx = session.beginTransaction();
 		
 		try {
 			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
@@ -258,7 +273,7 @@ public class TarBase extends MirnaDatabase {
 			ed.setProvenance("TarBase");
 			ed.setDifferentExpressionLocation(different_expression);
 					
-			System.out.println(mirna);
+			/*System.out.println(mirna);
 			System.out.println(id);
 			System.out.println(target);	
 			System.out.println(gene);
@@ -267,7 +282,7 @@ public class TarBase extends MirnaDatabase {
 			System.out.println(ed);
 			System.out.println(ed2);
 			System.out.println(organism);
-			System.out.println(protein);
+			System.out.println(protein);*/
 			
 			// FIN DE CAMBIAR ESTO
 			

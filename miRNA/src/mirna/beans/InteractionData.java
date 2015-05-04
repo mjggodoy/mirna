@@ -20,8 +20,8 @@ public class InteractionData extends ModelClass {
 	private String type;
 	private String description;
 	private String algorithm;
-	private int mirnaPk;
-	private int targetPk;
+	private Integer mirnaPk;
+	private Integer targetPk;
 
 	
 	public InteractionData() {
@@ -33,7 +33,8 @@ public class InteractionData extends ModelClass {
 	public InteractionData(int pk,String score, String pvalue_log, String miTG_score,
 			String method, String feature, String phase, String rank,
 			String provenance, String reference, String pubmedId,
-			String cellularLine, String pvalue_og, String type, String description, String algorithm) {
+			String cellularLine, String pvalue_og, String type, String description, String algorithm,
+			int mirnaPk, int targetPk) {
 		super(pk);
 		this.score = score;
 		this.pvalue_log = pvalue_log;
@@ -50,45 +51,33 @@ public class InteractionData extends ModelClass {
 		this.type = type;
 		this.description = description;
 		this.algorithm = algorithm;
+		this.mirnaPk = mirnaPk;
+		this.targetPk = targetPk;
 	}
-
-
-	
-	
 	
 	public String getDescription() {
 		return description;
 	}
 
-
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
-
 
 	public String getType() {
 		return type;
 	}
 
-
 	public void setType(String type) {
 		this.type = type;
 	}
-
 
 	public String getPvalue_og() {
 		return pvalue_og;
 	}
 
-
-
 	public void setPvalue_og(String pvalue_og) {
 		this.pvalue_og = pvalue_og;
 	}
-
-
 
 	public String getCellularLine() {
 		return cellularLine;
@@ -179,12 +168,9 @@ public class InteractionData extends ModelClass {
 	}
 
 	
-
 	public String getAlgorithm() {
 		return algorithm;
 	}
-
-
 
 	public void setAlgorithm(String algorithm) {
 		this.algorithm = algorithm;
@@ -194,13 +180,9 @@ public class InteractionData extends ModelClass {
 		return mirnaPk;
 	}
 
-
-
 	public void setMirnaPk(int mirnaPk) {
 		this.mirnaPk = mirnaPk;
 	}
-
-
 
 	public int getTargetPk() {
 		return targetPk;
@@ -213,6 +195,7 @@ public class InteractionData extends ModelClass {
 
 
 	public int checkConflict(InteractionData id) {
+		
 		int res = 0;
 		
 		if (this.pk!=null) {
@@ -289,6 +272,18 @@ public class InteractionData extends ModelClass {
 		if (this.reference != null){
 			if (id.reference==null) res++;
 			else if (!this.reference.equals(id.reference)) return -1;
+		}
+		
+		if (this.mirnaPk != null){
+			if (id.mirnaPk==null) res++;
+			else if (!this.mirnaPk.equals(id.mirnaPk)) return -1;
+			
+		}
+		
+		if (this.targetPk != null){
+			if (id.targetPk==null) res++;
+			else if (!this.targetPk.equals(id.targetPk)) return -1;	
+			
 		}
 		
 		return res;

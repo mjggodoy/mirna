@@ -16,8 +16,13 @@ import mirna.beans.MiRna;
 import mirna.beans.Target;
 import mirna.beans.Transcript;
 import mirna.exception.MiRnaException;
+import mirna.utils.HibernateUtil;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 
 public class microtv4 extends MirnaDatabase {
 	
@@ -117,9 +122,14 @@ public class microtv4 extends MirnaDatabase {
 	
 	@Override
 	public void insertIntoSQLModel() throws Exception {
+		//Get Session
+			SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
+			Session session = sessionFactory.getCurrentSession();
 		
-		Connection con = null;
-		
+			Connection con = null;
+			
+			Transaction tx = session.beginTransaction();
+
 		try {
 			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			Statement stmt = (Statement) con.createStatement();
@@ -167,15 +177,106 @@ public class microtv4 extends MirnaDatabase {
 			transcript.setId(transcript_id);
 
 		
-			System.out.println(miRna);
+			/*System.out.println(miRna);
 			System.out.println(gene);
 			System.out.println(id);
 			System.out.println(transcript);
-			System.out.println(target);
+			System.out.println(target);*/
 			
 			// FIN DE CAMBIAR ESTO
 			
+			// Inserta MiRna (o recupera su id. si ya existe)
+
+			Object oldMiRna = session.createCriteria(MiRna.class)
+					.add( Restrictions.eq("name", miRna.getName()) )
+					.uniqueResult();
+			if (oldMiRna==null) {
+				session.save(miRna);
+				session.flush();  // to get the PK
+			} else {
+				MiRna miRnaToUpdate = (MiRna) oldMiRna;
+				miRnaToUpdate.update(miRna);
+				session.update(miRnaToUpdate);
+				miRna = miRnaToUpdate;
+			}
+			
+			// Inserta gene (o recupera su id. si ya existe)
+
+			
+			Object oldGene = session.createCriteria(Gene.class)
+					.add( Restrictions.eq("name", gene.getName()) )
+					.uniqueResult();
+			if (oldGene==null) {
+				session.save(gene);
+				session.flush();  // to get the PK
+			} else {
+				Gene geneToUpdate = (Gene) oldGene;
+				geneToUpdate.update(gene);
+				session.update(geneToUpdate);
+				gene = geneToUpdate;
+			}
+			
+			// Inserta interactionData (o recupera su id. si ya existe)
+
+			Object oldInteractionData = session.createCriteria(InteractionData.class)
+					.add( Restrictions.eq("name", gene.getName()) )
+					.uniqueResult();
+			if (oldInteractionData==null) {
+				session.save(id);
+				session.flush();  // to get the PK
+			} else {
+				InteractionData interactionDataToUpdate = (InteractionData) oldInteractionData;
+				interactionDataToUpdate.update(id);
+				session.update(interactionDataToUpdate);
+				id = interactionDataToUpdate;
+			}
+			
+			// Inserta Target (o recupera su id. si ya existe)
+
+			Object oldTarget = session.createCriteria(Target.class)
+					.add( Restrictions.eq("name", target.getName()) )
+					.uniqueResult();
+			if (oldTarget==null) {
+				session.save(id);
+				session.flush();  // to get the PK
+			} else {
+				Target targetToUpdate = (Target) oldInteractionData;
+				targetToUpdate.update(target);
+				session.update(targetToUpdate);
+				target = targetToUpdate;
+			}
+			
+			// Inserta Transcript (o recupera su id. si ya existe)
+
+			
+			Object oldTranscript = session.createCriteria(Transcript.class)
+					.add( Restrictions.eq("name", transcript.getName()) )
+					.uniqueResult();
+			if (oldTranscript==null) {
+				session.save(transcript);
+				session.flush();  // to get the PK
+			} else {
+				Target transcriptToUpdate = (Target) oldInteractionData;
+				transcriptToUpdate.update(target);
+				session.update(transcriptToUpdate);
+				transcript = transcriptToUpdate;
+			}
+			
+			
+			 //Inserta nueva interactionData
+				// (y la relaciona con el MiRna y Target correspondiente)
+			id.setTargetPk(target.getPk());
+			id.setMirnaPk(miRna.getPk());
+			id.setGenePk(gene.getPk());
+			session.save(id);
+			session.flush();
+			
+			
+			
+			
+			
 			stmt.close();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

@@ -1,5 +1,7 @@
 package mirna.beans;
 
+import mirna.exception.ConflictException;
+
 public class Gene extends ModelClass {
 
 	private String name;//ok
@@ -263,14 +265,124 @@ public class Gene extends ModelClass {
 	public void setPubmedId(String pubmedId) {
 		this.pubmedId = pubmedId;
 	}
-
 	
 	
+	public int checkConflict(Gene gene) {
+		int res = 0;
+		if (this.pk!=null) {
+			if (gene.getPk()==null) res++; 
+			else if (!this.pk.equals(gene.getPk())) return -1;
+		}
+		if (this.name!=null) {
+			if (gene.getName()==null) res++; 
+			else if (!this.name.equals(gene.getName())) return -1;
+		}
+		
+		if (this.chromosome!=null) {
+			if (gene.getName()==null) res++; 
+			else if (!this.chromosome.equals(gene.getChromosome())) return -1;
+		}
+		
+		if (this.accessionumber!=null) {
+			if (gene.getName()==null) res++; 
+			else if (!this.accessionumber.equals(gene.getAccessionumber())) return -1;
+		}
+			
+		if (this.geneId!=null) {
+			if (gene.getGeneId()==null) res++; 
+			else if (!this.geneId.equals(gene.getGeneId())) return -1;
+		}
+				
+		if (this.description!=null) {
+			if (gene.getDescription()==null) res++; 
+			else if (!this.description.equals(gene.getDescription())) return -1;
+		}
+		
+		if (this.year!=null) {
+			if (gene.getYear()==null) res++; 
+			else if (!this.year.equals(gene.getYear())) return -1;
+		}
+		
+		if (this.resource!=null) {
+			if (gene.getResource()==null) res++; 
+			else if (!this.resource.equals(gene.getResource())) return -1;
+		}
+		
+		if (this.start_strand!=null) {
+			if (gene.getStart_strand()==null) res++; 
+			else if (!this.start_strand.equals(gene.getStart_strand())) return -1;
+		}
+		
+		if (this.end_strand !=null) {
+			if (gene.getEnd_strand()==null) res++; 
+			else if (!this.end_strand.equals(gene.getEnd_strand())) return -1;
+		}
+		
+		if (this.hgnc_symbol !=null) {
+			if (gene.getHgnc_symbol()==null) res++; 
+			else if (!this.hgnc_symbol.equals(gene.getHgnc_symbol())) return -1;
+		}
+		if (this.location !=null) {
+			if (gene.getLocation()==null) res++; 
+			else if (!this.location.equals(gene.getLocation())) return -1;
+		}
+		if (this.expression_site !=null) {
+			if (gene.getExpression_site()==null) res++; 
+			else if (!this.expression_site.equals(gene.getExpression_site())) return -1;
+		}
+		
+		if (this.kegg_id !=null) {
+			if (gene.getKegg_id()==null) res++; 
+			else if (!this.kegg_id.equals(gene.getKegg_id())) return -1;
+		}
+		
+		if (this.arm !=null) {
+			if (gene.getArm()==null) res++; 
+			else if (!this.arm.equals(gene.getArm())) return -1;
+		}
+		
+		if (this.distance !=null) {
+			if (gene.getDistance()==null) res++; 
+			else if (!this.distance.equals(gene.getDistance())) return -1;
+		}
+		
+		if (this.journal !=null) {
+			if (gene.getJournal()==null) res++; 
+			else if (!this.journal.equals(gene.getJournal())) return -1;
+		}
+		
+		
+		return res;
+	}
 
+	public void update(Gene gene) throws ConflictException {
+		this.update(gene, true);
+	}
+	
+	
+	public void update(Gene gene, boolean checkConflict) throws ConflictException {
+		if (checkConflict) {
+			if (this.checkConflict(gene)==-1) throw new ConflictException(this, gene);
+		}
+		if (gene.getPk()!=null) this.pk = gene.getPk();
+		if (gene.getName()!=null) this.name = gene.getName();
+		if (gene.getGeneId()!=null) this.name = gene.getGeneId();
+		if (gene.getDescription()!=null) this.description = gene.getDescription();
+		if (gene.getChromosome()!=null) this.chromosome = gene.getChromosome();
+		if (gene.getYear()!=null) this.year = gene.getYear();
+		if (gene.getResource()!=null) this.resource = gene.getResource();
+		if (gene.getStart_strand()!=null) this.start_strand = gene.getStart_strand();
+		if (gene.getEnd_strand()!=null) this.end_strand = gene.getEnd_strand();
+		if (gene.getHgnc_symbol()!=null) this.end_strand = gene.getEnd_strand();
+		if (gene.getLocation()!=null) this.location = gene.getLocation();
+		if (gene.getExpression_site()!=null) this.expression_site = gene.getExpression_site();
+		if (gene.getKegg_id()!=null) this.kegg_id = gene.getKegg_id();
+		if (gene.getArm()!=null) this.arm = gene.getArm();
+		if (gene.getDistance()!=null) this.distance = gene.getDistance();
+		if (gene.getJournal()!=null) this.journal = gene.getJournal();
+	}
 
 	
-
-
 	@Override
 	public String toString() {
 		return "Gene [name=" + name + ", chromosome=" + chromosome
