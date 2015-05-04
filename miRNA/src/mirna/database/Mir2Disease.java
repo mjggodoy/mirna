@@ -18,7 +18,6 @@ import mirna.utils.HibernateUtil;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
@@ -102,10 +101,9 @@ public class Mir2Disease extends MirnaDatabase {
 		String line = null;
 		String[] tokens = null;
 		
-		//Get Session
-		SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
-		Session session = sessionFactory.getCurrentSession();
-				
+		// Get session
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		
 		//start transaction
 		Transaction tx = session.beginTransaction();
 		
@@ -132,7 +130,7 @@ public class Mir2Disease extends MirnaDatabase {
 //				date -> ExpressionData.year
 //				description -> ExpressionData.description
 				
-				String mirna = rs.getString("mirna").toLowerCase().trim();
+				String mirna = rs.getString("mirna").trim();
 				String diseaseField = rs.getString("disease").toLowerCase().trim();
 				String evidence = rs.getString("expression").trim();
 				String method = rs.getString("method").trim();
@@ -152,6 +150,7 @@ public class Mir2Disease extends MirnaDatabase {
 				ed.setYear(year);
 				ed.setProvenance("miR2Disease");
 				
+				//System.out.println("BUSCO: " + miRna.getName());
 				// Inserta MiRna (o recupera su id. si ya existe)
 				Object oldMiRna = session.createCriteria(MiRna.class)
 						.add( Restrictions.eq("name", miRna.getName()) )
@@ -160,6 +159,7 @@ public class Mir2Disease extends MirnaDatabase {
 					session.save(miRna);
 					session.flush();  // to get the PK
 				} else {
+					//System.out.println("Encuentro: " + );
 					MiRna miRnaToUpdate = (MiRna) oldMiRna;
 					miRnaToUpdate.update(miRna);
 					session.update(miRnaToUpdate);
@@ -197,6 +197,7 @@ public class Mir2Disease extends MirnaDatabase {
 			}
 			stmt.close();
 		} catch (SQLException e) {
+			tx.rollback();
 			e.printStackTrace();
 			if (line!=null) {
 				System.out.println(line);
@@ -210,7 +211,7 @@ public class Mir2Disease extends MirnaDatabase {
 		}
 		
 		tx.commit();
-		sessionFactory.close();
+		session.close();
 		
 	}
 
@@ -250,11 +251,15 @@ public class Mir2Disease extends MirnaDatabase {
 		
 		Mir2Disease mir2disease = new Mir2Disease();
 		
-//		String inputFile = "/Users/esteban/Softw/miRNA/mir2disease_AllEntries.txt";
-//		inputFile = mir2disease.specificFileFix(inputFile);
-//		mir2disease.insertInTable(inputFile);
+		// /* 1. meter datos en mirna_raw */
+		// String inputFile = "/Users/esteban/Softw/miRNA/mir2disease_AllEntries.txt";
+		// inputFile = mir2disease.specificFileFix(inputFile);
+		// mir2disease.insertInTable(inputFile);
 		
+		/* 2. meter datos en mirna */
 		mir2disease.insertIntoSQLModel();
+		HibernateUtil.closeSessionFactory();
+
 	}
 
 }

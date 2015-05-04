@@ -163,8 +163,9 @@ public class TarBase extends MirnaDatabase {
 
 		
 		//Get Session
-				SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
-				Session session = sessionFactory.getCurrentSession();
+//		SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
+//		Session session = sessionFactory.getCurrentSession();
+		Session session = HibernateUtil.getSessionFactory().openSession();
 				
 		Connection con = null;
 		

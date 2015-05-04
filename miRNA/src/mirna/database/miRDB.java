@@ -102,8 +102,9 @@ public class miRDB extends MirnaDatabase {
 	public void insertIntoSQLModel() throws Exception {
 		
 		//Get Session
-		SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
-		Session session = sessionFactory.getCurrentSession();
+//		SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
+//		Session session = sessionFactory.getCurrentSession();
+		Session session = HibernateUtil.getSessionFactory().openSession();
 
 		Connection con = null;
 		
@@ -128,7 +129,7 @@ public class miRDB extends MirnaDatabase {
 			int count = 0;
 
 
-			while (rs.next()){// antes estaba para que s—lo se hiciera una vez, en forma de condici—n
+			while (rs.next()){// antes estaba para que sï¿½lo se hiciera una vez, en forma de condiciï¿½n
 			
 			String miRNA = rs.getString("mir");
 			String target_name = rs.getString("target");
@@ -218,7 +219,7 @@ public class miRDB extends MirnaDatabase {
 		}
 		
 		tx.commit();
-		sessionFactory.close();
+		session.close();
 		
 	}
 	

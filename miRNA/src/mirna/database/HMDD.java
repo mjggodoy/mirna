@@ -19,7 +19,6 @@ import mirna.utils.HibernateUtil;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
@@ -99,9 +98,8 @@ public class HMDD extends MirnaDatabase {
 	public void insertIntoSQLModel() throws Exception {
 		Connection con = null;
 		
-		//Get Session
-		SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
-		Session session = sessionFactory.getCurrentSession();
+		// Get session
+		Session session = HibernateUtil.getSessionFactory().openSession();
 		
 		//start transaction
 		Transaction tx = session.beginTransaction();
@@ -219,13 +217,14 @@ public class HMDD extends MirnaDatabase {
 			}
 			stmt.close();
 		} catch (SQLException e) {
+			tx.rollback();
 			e.printStackTrace();
 		} finally {
 			if (con!=null) con.close();
 		}
 		
 		tx.commit();
-		sessionFactory.close();
+		session.close();
 		
 	}
 	
@@ -233,10 +232,13 @@ public class HMDD extends MirnaDatabase {
 		
 		HMDD hmdd = new HMDD();
 		
+		// /* 1. meter datos en mirna_raw */
 		// String inputFile = "/Users/esteban/Softw/miRNA/hmdd/alldata.txt";
 		// hmdd.insertInTable(inputFile);
 		
+		/* 2. meter datos en mirna */
 		hmdd.insertIntoSQLModel();
+		HibernateUtil.closeSessionFactory();
 		
 	}
 

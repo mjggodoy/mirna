@@ -112,8 +112,9 @@ public class miREnvironment extends MirnaDatabase {
 		Connection con = null;
 		
 		//Get Session
-		SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
-		Session session = sessionFactory.getCurrentSession();
+//		SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
+//		Session session = sessionFactory.getCurrentSession();
+		Session session = HibernateUtil.getSessionFactory().openSession();
 		
 		//start transaction
 		Transaction tx = session.beginTransaction();
@@ -267,7 +268,7 @@ public class miREnvironment extends MirnaDatabase {
 			session.save(ed);
 			session.flush(); // to get the PK
 			
-			// Relaciona miRNa con Organism. No estoy segura. La entidad-relaci—n es de one-to-many segœn el modelo.
+			// Relaciona miRNa con Organism. No estoy segura. La entidad-relaciï¿½n es de one-to-many segï¿½n el modelo.
 			
 			miRna.setPk(specie.getPk());
 			session.save(miRna);
@@ -303,13 +304,14 @@ public class miREnvironment extends MirnaDatabase {
 			stmt.close();
 			}
 		} catch (SQLException e) {
+			//TODO: Meter Rollback
 			e.printStackTrace();
 		} finally {
 			if (con!=null) con.close();
 		}
 		
 		tx.commit();
-		sessionFactory.close();
+		session.close();
 		
 	}
 	

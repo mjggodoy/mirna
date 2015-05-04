@@ -4,6 +4,7 @@ import mirna.database.HMDD;
 import mirna.database.MiRCancer;
 import mirna.database.Mir2Disease;
 import mirna.database.Phenomir;
+import mirna.utils.HibernateUtil;
 
 public class SQLIntegration {
 	
@@ -20,6 +21,8 @@ public class SQLIntegration {
 		
 		Phenomir phenomir = new Phenomir();
 		phenomir.insertIntoSQLModel();
+		
+		HibernateUtil.closeSessionFactory();;
 		
 	}
 

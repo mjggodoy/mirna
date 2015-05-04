@@ -117,7 +117,9 @@ public class MiRna extends ModelClass {
 		}
 		if (this.name!=null) {
 			if (mirna.getName()==null) res++;
-			else if (!this.name.equals(mirna.getName())) return -1;
+			else if (!this.name.equals(mirna.getName())) {
+				return -1;
+			}
 		}
 		if (this.accessionNumber!=null) {
 			if (mirna.getAccessionNumber()==null) res++;

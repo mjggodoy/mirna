@@ -122,9 +122,12 @@ public class microtv4 extends MirnaDatabase {
 	
 	@Override
 	public void insertIntoSQLModel() throws Exception {
+		
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		
 		//Get Session
-			SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
-			Session session = sessionFactory.getCurrentSession();
+//			SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
+//			Session session = sessionFactory.getCurrentSession();
 		
 			Connection con = null;
 			
@@ -267,6 +270,7 @@ public class microtv4 extends MirnaDatabase {
 				// (y la relaciona con el MiRna y Target correspondiente)
 			id.setTargetPk(target.getPk());
 			id.setMirnaPk(miRna.getPk());
+			//TODO: Solucionar fallo de compilacion ¡Pua!
 			id.setGenePk(gene.getPk());
 			session.save(id);
 			session.flush();

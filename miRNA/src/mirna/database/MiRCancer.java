@@ -16,7 +16,6 @@ import mirna.utils.HibernateUtil;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
@@ -99,9 +98,8 @@ public class MiRCancer extends MirnaDatabase {
 		String line = null;
 		String[] tokens = null;
 		
-		//Get Session
-		SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
-		Session session = sessionFactory.getCurrentSession();
+		// Get session
+		Session session = HibernateUtil.getSessionFactory().openSession();
 		
 		//start transaction
         Transaction tx = session.beginTransaction();
@@ -183,6 +181,7 @@ public class MiRCancer extends MirnaDatabase {
 			}
 			stmt.close();
 		} catch (SQLException e) {
+			tx.rollback();
 			e.printStackTrace();
 			if (line!=null) {
 				System.out.println(line);
@@ -196,7 +195,7 @@ public class MiRCancer extends MirnaDatabase {
 		}
 		
 		tx.commit();
-		sessionFactory.close();
+		session.close();
 		
 	}
 	
@@ -312,10 +311,14 @@ public class MiRCancer extends MirnaDatabase {
 		
 		MiRCancer miRCancer = new MiRCancer();
 		
+		// /* 1. meter datos en mirna_raw */
 		// String inputFile = "/Users/esteban/Softw/miRNA/miRCancerMarch2014.txt";
 		// miRCancer.insertInTable(inputFile);
 		
+		/* 2. meter datos en mirna */
 		miRCancer.insertIntoSQLModel();
+		HibernateUtil.closeSessionFactory();
+		
 	}
 
 }
