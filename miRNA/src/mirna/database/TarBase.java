@@ -24,6 +24,7 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 
 /**
  * C√≥digo para procesar los datos de TarBase
@@ -273,22 +274,138 @@ public class TarBase extends MirnaDatabase {
 			ed.setCellularLine(cell_line_used);
 			ed.setProvenance("TarBase");
 			ed.setDifferentExpressionLocation(different_expression);
-					
-			/*System.out.println(mirna);
-			System.out.println(id);
-			System.out.println(target);	
-			System.out.println(gene);
-			System.out.println(disease);
-			System.out.println(transcript);
-			System.out.println(ed);
-			System.out.println(ed2);
-			System.out.println(organism);
-			System.out.println(protein);*/
+				
 			
-			// FIN DE CAMBIAR ESTO
+			// Inserta MiRna (o recupera su id. si ya existe)
+			Object oldMiRna = session.createCriteria(MiRna.class)
+					.add( Restrictions.eq("name", mirna.getName()) )
+					.uniqueResult();
+			if (oldMiRna==null) {
+				session.save(miRna);
+				session.flush();  // to get the PK
+			} else {
+				MiRna miRnaToUpdate = (MiRna) oldMiRna;
+				miRnaToUpdate.update(mirna);
+				session.update(miRnaToUpdate);
+				mirna = miRnaToUpdate;
+			}
 			
+			// Inserta Disease (o recupera su id. si ya existe)
+			Object oldDisease = session.createCriteria(Disease.class)
+					.add( Restrictions.eq("name", disease.getName()) )
+					.uniqueResult();
+			if (oldDisease==null) {
+				session.save(disease);
+				session.flush(); // to get the PK
+			} else {
+				Disease diseaseToUpdate = (Disease) oldDisease;
+				diseaseToUpdate.update(disease);
+				session.update(diseaseToUpdate);
+				disease = diseaseToUpdate;
+			}
+			
+			// Inserta Gene (o recupera su id. si ya existe)
+			Object oldGene = session.createCriteria(Gene.class)
+					.add( Restrictions.eq("name", gene.getName()) )
+					.uniqueResult();
+			if (oldGene==null) {
+				session.save(disease);
+				session.flush(); // to get the PK
+			} else {
+				Gene geneToUpdate = (Gene) oldGene;
+				geneToUpdate.update(gene);
+				session.update(geneToUpdate);
+				gene = geneToUpdate;
+			}
+			
+			// Insertar Organism (o recupera su id. si ya existe)
+			
+			Object oldOrganism = session.createCriteria(Organism.class)
+					.add( Restrictions.eq("name", organism.getName()) )
+					.uniqueResult();
+			if (oldOrganism==null) {
+				session.save(organism);
+				session.flush(); // to get the PK
+			} else {
+				Organism organismToUpdate = (Organism) oldOrganism;
+				organismToUpdate.update(organism);
+				session.update(organismToUpdate);
+				organism = organismToUpdate;
+			}
+			
+			// Insertar Target (o recupera su id. si ya existe)
+			
+			Object oldTarget = session.createCriteria(Target.class)
+					.add( Restrictions.eq("name", target.getName()) )
+					.uniqueResult();
+			if (oldTarget==null) {
+				session.save(target);
+				session.flush(); // to get the PK
+			} else {
+				Target targetToUpdate = (Target) oldTarget;
+				targetToUpdate.update(target);
+				session.update(target);
+				target = targetToUpdate;
+			}
+			
+			// Insertar Protein (o recupera su id. si ya existe)
+			
+			Object oldProtein = session.createCriteria(Protein.class)
+					.add( Restrictions.eq("name", protein.getSwiss_prot_id()   ) )
+					.uniqueResult();
+			if (oldProtein==null) {
+				session.save(protein);
+				session.flush(); // to get the PK
+			} else {
+				Protein proteinToUpdate = (Protein) oldProtein;
+				proteinToUpdate.update(protein);
+				session.update(protein);
+				protein = proteinToUpdate;
+			}
+		
+			Object oldTranscript = session.createCriteria(Transcript.class)
+					.add( Restrictions.eq("name", transcript.getName()))
+					.uniqueResult();
+			if (oldTranscript==null) {
+				session.save(transcript);
+				session.flush(); // to get the PK
+			} else {
+				Transcript transcriptToUpdate = (Transcript) oldTranscript;
+				transcriptToUpdate.update(transcript);
+				session.update(transcript);
+				transcript = transcriptToUpdate;
+			}
+			
+			// Inserta nueva DataExpression
+			// (y la relaciona con el MiRna y Disease correspondiente)
+			
+			ed.setMirnaPk(mirna.getPk());
+			ed.setDiseasePk(disease.getPk());
+			session.save(ed);
+			session.flush();
+			//TODO: No sé si habría que relacionarlo con interaction data como en el modelo
+			
+			// Inserta nueva InteractionData 
+			// (y la relaciona con el MiRna, target y gene correspondiente)
+						
+			id.setMirnaPk(mirna.getPk());
+			id.setGenePk(gene.getPk());
+			id.setTargetPk(target.getPk());
+			session.save(id);
+			session.flush();
+			
+			// Inserta nueva Organism
+			// (y la relaciona con el MiRna y Gene correspondiente)
+			
+			//TODO: No estoy segura si esta relación está bien debido a que Organism apunta a mirna.
+			
+			mirna.setPk(organism.getPk());
+			session.save(mirna);
+			session.flush();
+
 			stmt.close();
 		} catch (SQLException e) {
+			tx.rollback();
 			e.printStackTrace();
 		} finally {
 			if (con!=null) con.close();
