@@ -58,5 +58,7 @@ public class PubmedDocument extends ModelClass {
 	public String toString() {
 		return "PubmedDocument [id=" + id + ", pk=" + pk + "]";
 	}
+
+	
 	
 }

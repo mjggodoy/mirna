@@ -71,8 +71,10 @@ public class Transcript extends ModelClass {
 	public String toString() {
 		return "Transcript [transcriptID=" + transcriptID + ", name=" + name
 				+ ", isoform=" + isoform + ", id=" + id + ", externalName="
-				+ externalName + ", pk=" + pk + "]";
+				+ externalName + "]";
 	}
+
+	
 
 	
 	

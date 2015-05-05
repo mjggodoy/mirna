@@ -268,7 +268,7 @@ public class miREnvironment extends MirnaDatabase {
 			session.save(ed);
 			session.flush(); // to get the PK
 			
-			// Relaciona miRNa con Organism. No estoy segura. La entidad-relaci�n es de one-to-many seg�n el modelo.
+			// Relaciona miRNa con Organism. No estoy segura. La entidad-relacion es de one-to-many segun el modelo.
 			
 			miRna.setPk(specie.getPk());
 			session.save(miRna);
@@ -305,6 +305,7 @@ public class miREnvironment extends MirnaDatabase {
 			}
 		} catch (SQLException e) {
 			//TODO: Meter Rollback
+			tx.rollback();
 			e.printStackTrace();
 		} finally {
 			if (con!=null) con.close();

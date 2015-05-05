@@ -54,8 +54,12 @@ public class Complex extends ModelClass{
 		return "Complex [minimal_free_energy=" + minimal_free_energy
 				+ ", normalized_minimal_free_energy="
 				+ normalized_minimal_free_energy + ", binding_site_pattern="
-				+ binding_site_pattern + "]";
+				+ binding_site_pattern + ", pk=" + pk + "]";
 	}
+
+
+
+	
 	
 	
 	

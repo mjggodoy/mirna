@@ -22,6 +22,7 @@ public class InteractionData extends ModelClass {
 	private String algorithm;
 	private Integer mirnaPk;
 	private Integer targetPk;
+	private Integer genePk;
 
 	
 	public InteractionData() {
@@ -34,7 +35,7 @@ public class InteractionData extends ModelClass {
 			String method, String feature, String phase, String rank,
 			String provenance, String reference, String pubmedId,
 			String cellularLine, String pvalue_og, String type, String description, String algorithm,
-			int mirnaPk, int targetPk) {
+			int mirnaPk, int targetPk, int genePk) {
 		super(pk);
 		this.score = score;
 		this.pvalue_log = pvalue_log;
@@ -53,6 +54,7 @@ public class InteractionData extends ModelClass {
 		this.algorithm = algorithm;
 		this.mirnaPk = mirnaPk;
 		this.targetPk = targetPk;
+		this.genePk = genePk;
 	}
 	
 	public String getDescription() {
@@ -191,6 +193,15 @@ public class InteractionData extends ModelClass {
 	public void setTargetPk(int targetPk) {
 		this.targetPk = targetPk;
 	}
+	
+	
+	public Integer getGenePk() {
+		return genePk;
+	}
+
+	public void setGenePk(Integer genePk) {
+		this.genePk = genePk;
+	}
 
 
 
@@ -286,6 +297,13 @@ public class InteractionData extends ModelClass {
 			
 		}
 		
+		if(this.genePk != null){
+			
+			if(id.genePk==null) res++;
+			else if(!this.targetPk.equals(id.genePk)) return -1;
+			
+		}
+		
 		return res;
 	}
 	
@@ -315,9 +333,9 @@ public class InteractionData extends ModelClass {
 		if (id.getProvenance()!=null) this.provenance = id.getProvenance();
 
 	}
-	
-	
-	
+
+
+
 	@Override
 	public String toString() {
 		return "InteractionData [score=" + score + ", pvalue_log=" + pvalue_log
@@ -327,9 +345,9 @@ public class InteractionData extends ModelClass {
 				+ reference + ", pubmedId=" + pubmedId + ", cellularLine="
 				+ cellularLine + ", pvalue_og=" + pvalue_og + ", type=" + type
 				+ ", description=" + description + ", algorithm=" + algorithm
-				+ ", pk=" + pk + "]";
+				+ ", mirnaPk=" + mirnaPk + ", targetPk=" + targetPk + ", pk="
+				+ pk + "]";
 	}
-
 
 }
 

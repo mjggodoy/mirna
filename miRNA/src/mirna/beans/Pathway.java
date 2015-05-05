@@ -19,10 +19,11 @@ public class Pathway {
 
 	@Override
 	public String toString() {
-		return "Pathway [id=" + id + ", getId()=" + getId() + ", getClass()="
-				+ getClass() + ", hashCode()=" + hashCode() + ", toString()="
+		return "Pathway [id=" + id + ", getClass()=" + getClass()
+				+ ", hashCode()=" + hashCode() + ", toString()="
 				+ super.toString() + "]";
 	}
 
+	
 
 }

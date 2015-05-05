@@ -173,9 +173,10 @@ public class MiRna extends ModelClass {
 	public String toString() {
 		return "MiRna [name=" + name + ", accessionNumber=" + accessionNumber
 				+ ", sequence=" + sequence + ", resource=" + resource
-				+ ", organismPk=" + organismPk
 				+ ", length=" + length + ", GC_proportion=" + GC_proportion
-				+ ", pk=" + pk + "]";
+				+ ", organismPk=" + organismPk + "]";
 	}
+
+	
 
 }

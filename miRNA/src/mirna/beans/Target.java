@@ -399,7 +399,9 @@ public class Target extends Transcript {
 		
 		return res;
 	}
-	
+
+
+
 	@Override
 	public String toString() {
 		return "Target [cdsStart=" + cdsStart + ", cdsEnd=" + cdsEnd
@@ -416,8 +418,9 @@ public class Target extends Transcript {
 				+ ", coordinates=" + coordinates + ", GC_proportion="
 				+ GC_proportion + ", GU_proportion=" + GU_proportion
 				+ ", resource=" + resource + ", pubmed_id=" + pubmed_id
-				+ ", site_conservation_score=" + site_conservation_score
-				+ ", pk=" + pk + "]";
+				+ ", site_conservation_score=" + site_conservation_score + "]";
 	}
+	
+	
 	
 }

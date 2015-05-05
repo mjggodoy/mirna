@@ -8,8 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import mirna.beans.Disease;
-import mirna.beans.ExpressionData;
 import mirna.beans.Gene;
 import mirna.beans.InteractionData;
 import mirna.beans.MiRna;
@@ -20,7 +18,6 @@ import mirna.utils.HibernateUtil;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
@@ -130,9 +127,8 @@ public class microtv4 extends MirnaDatabase {
 //			Session session = sessionFactory.getCurrentSession();
 		
 			Connection con = null;
-			
 			Transaction tx = session.beginTransaction();
-
+			int count = 0;
 		try {
 			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			Statement stmt = (Statement) con.createStatement();
@@ -275,13 +271,22 @@ public class microtv4 extends MirnaDatabase {
 			session.save(id);
 			session.flush();
 			
-			
-			
-			
-			
+			// (Relaciona transcript with target.)
+			target.setTranscriptID(transcript_id);
+			session.save(target);
+			session.flush();
+
+			count++;
+			if (count%100==0) {
+				System.out.println(count);
+				session.flush();
+		        session.clear();
+			}
+		
 			stmt.close();
 			
 		} catch (SQLException e) {
+			tx.rollback();
 			e.printStackTrace();
 		} finally {
 			if (con!=null) con.close();

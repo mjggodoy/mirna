@@ -51,11 +51,13 @@ public class EnvironmentalFactor extends ModelClass  {
 		if (ef.getName()!=null) this.name = ef.getName();
 		
 	}
-	
+
 	@Override
 	public String toString() {
 		return "EnvironmentalFactor [name=" + name + ", pk=" + pk + "]";
 	}
+	
+	
 
 	
 	

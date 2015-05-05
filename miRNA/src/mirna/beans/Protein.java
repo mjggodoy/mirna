@@ -58,6 +58,9 @@ public class Protein extends ModelClass {
 	}
 
 
+	
+
+
 
 
 

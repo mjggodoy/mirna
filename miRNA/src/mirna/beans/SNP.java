@@ -51,25 +51,6 @@ public class SNP extends Mutation {
 				+ ", journal=" + journal + ", year=" + year + ", description="
 				+ description + ", pubmed_id=" + pubmed_id + ", resource="
 				+ resource + ", pk=" + pk + "]";
-	}
-
-
-	
-
-
-	
-
-	
-
-
-	
-	
-	
-	
-	
-	
-
-
-	
+	}	
 
 }

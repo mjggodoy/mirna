@@ -106,11 +106,16 @@ public class Organism extends ModelClass{
 
 
 
+
 	@Override
 	public String toString() {
 		return "Organism [specie=" + specie + ", name=" + name + ", resource="
 				+ resource + ", short_name=" + short_name + ", pk=" + pk + "]";
 	}
+
+
+
+	
 	
 	
 }

@@ -65,5 +65,8 @@ public class SmallMolecule extends EnvironmentalFactor {
 		return "SmallMolecule [fda=" + fda + ", db=" + db + ", cid=" + cid
 				+ ", name=" + name + ", pk=" + pk + "]";
 	}
+
+	
+	
 	
 }
