@@ -9,18 +9,20 @@ public class Transcript extends ModelClass {
 	private String isoform; // ok
 	private String id;// ok
 	private String externalName;
+	private Integer targetPk;
 
 	public Transcript() {
 	}
 
 	public Transcript(int pk, String transcriptID, String name, String isoform,
-			String id, String externalName) {
+			String id, String externalName, int targetPk) {
 		super(pk);
 		this.transcriptID = transcriptID;
 		this.name = name;
 		this.isoform = isoform;
 		this.id = id;
 		this.externalName = externalName;
+		this.targetPk = targetPk;
 	}
 
 	public String getTranscriptID() {
@@ -61,6 +63,14 @@ public class Transcript extends ModelClass {
 
 	public void setExternalName(String externalName) {
 		this.externalName = externalName;
+	}
+	
+	public Integer getTargetPk() {
+		return targetPk;
+	}
+
+	public void setTargetPk(int targetPk) {
+		this.targetPk = targetPk;
 	}
 
 	public int checkConflict(Transcript transcript) {
@@ -108,6 +118,15 @@ public class Transcript extends ModelClass {
 			else if (!this.externalName.equals(transcript.externalName))
 				return -1;
 		}
+		
+		if(this.targetPk !=null){
+			if (transcript.targetPk == null)res++;	
+			
+			else if (!this.targetPk.equals(transcript.targetPk)){
+				
+			return -1;	
+			}
+		}
 
 		return res;
 	}
@@ -132,6 +151,8 @@ public class Transcript extends ModelClass {
 			this.name = transcript.getName();
 		if (transcript.getExternalName() != null)
 			this.externalName = transcript.getExternalName();
+		if (transcript.getTargetPk() != null)
+			this.targetPk = transcript.getTargetPk();
 
 	}
 

@@ -21,7 +21,6 @@ public class Gene extends ModelClass {
 	private String distance;// OK
 	private String pubmedId;
 	private String journal;
-	private Integer genePk;
 
 	public Gene() {
 
@@ -365,7 +364,6 @@ public class Gene extends ModelClass {
 				+ ", location=" + location + ", expression_site="
 				+ expression_site + ", kegg_id=" + kegg_id + ", arm=" + arm
 				+ ", distance=" + distance + ", pubmedId=" + pubmedId
-				+ ", journal=" + journal + ", genePk=" + genePk + ", pk=" + pk
-				+ "]";
+				+ ", journal=" + journal + ", pk=" + pk + "]";
 	}
 }

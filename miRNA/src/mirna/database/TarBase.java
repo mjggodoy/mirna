@@ -268,12 +268,12 @@ public class TarBase extends MirnaDatabase {
 			
 			ExpressionData ed2 = new ExpressionData();
 			ed2.setMethod(ds);
-			ed.setDataType(dataType);
-			ed.setEvidence(mis_regulation);
-			ed.setProvenanceId(id_tarbase);
-			ed.setCellularLine(cell_line_used);
-			ed.setProvenance("TarBase");
-			ed.setDifferentExpressionLocation(different_expression);
+			ed2.setDataType(dataType);
+			ed2.setEvidence(mis_regulation);
+			ed2.setProvenanceId(id_tarbase);
+			ed2.setCellularLine(cell_line_used);
+			ed2.setProvenance("TarBase");
+			ed2.setDifferentExpressionLocation(different_expression);
 				
 			
 			// Inserta MiRna (o recupera su id. si ya existe)
@@ -383,6 +383,14 @@ public class TarBase extends MirnaDatabase {
 			ed.setDiseasePk(disease.getPk());
 			session.save(ed);
 			session.flush();
+			
+			//Instera nueva DataExpression (y la relaciona con MiRna y Disease correspondiente)
+			
+			ed2.setMirnaPk(mirna.getPk());
+			ed2.setDiseasePk(disease.getPk());
+			session.save(ed2);
+			session.flush();
+			
 			//TODO: No sé si habría que relacionarlo con interaction data como en el modelo
 			
 			// Inserta nueva InteractionData 
@@ -396,7 +404,6 @@ public class TarBase extends MirnaDatabase {
 			
 			// Inserta nueva Organism
 			// (y la relaciona con el MiRna y Gene correspondiente)
-			
 			//TODO: No estoy segura si esta relación está bien debido a que Organism apunta a mirna.
 			
 			mirna.setPk(organism.getPk());

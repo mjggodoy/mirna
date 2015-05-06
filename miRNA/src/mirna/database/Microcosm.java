@@ -11,10 +11,13 @@ import java.sql.Statement;
 import mirna.beans.InteractionData;
 import mirna.beans.MiRna;
 import mirna.exception.MiRnaException;
+import mirna.utils.HibernateUtil;
 import mirna.beans.Target;
 import mirna.beans.Transcript;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
 /**
  * Código para procesar los datos de Microcosm
@@ -113,6 +116,9 @@ public class Microcosm extends MirnaDatabase {
 
 		Connection con = null;
 		
+		Session session = HibernateUtil.getSessionFactory().openSession();
+
+		
 		try {
 			System.out.println(dbUrl);
 			System.out.println(dbUser);
@@ -120,22 +126,22 @@ public class Microcosm extends MirnaDatabase {
 			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			Statement stmt = (Statement) con.createStatement();
 			stmt.setFetchSize(Integer.MIN_VALUE);
-			
-			// our SQL SELECT query. 
-			// if you only need a few columns, specify them by name instead of using "*"
+
+			// our SQL SELECT query.
+			// if you only need a few columns, specify them by name instead of
+			// using "*"
 			String query = "SELECT * FROM " + tableName;
 			System.out.println("STARTING: " + query);
-			
+
 			// execute the query, and get a java resultset
 			ResultSet rs = stmt.executeQuery(query);
-			
-			// iterate through the java resultset
-			//int count = 0;
 
+			// iterate through the java resultset
+			// int count = 0;
 
 			rs.next();
 			// CAMBIAR ESTO:
-			
+
 			String seq = rs.getString("seq");
 			String method = rs.getString("method");
 			String feature = rs.getString("feature").toLowerCase().trim();
@@ -148,41 +154,55 @@ public class Microcosm extends MirnaDatabase {
 			String pvalue_og = rs.getString("pvalue_og");
 			String transcriptId = rs.getString("transcript_id");
 			String externalName = rs.getString("external_name");
-			
+
 			MiRna miRna = new MiRna();
 			miRna.setName(seq);
-			
+
 			InteractionData id = new InteractionData();
 			id.setAlgorithm(method);
 			id.setFeature(feature);
 			id.setPhase(phase);
 			id.setScore(score);
 			id.setPvalue_og(pvalue_og);
-			
+
 			Target target = new Target();
 			target.setChromosome(chromosome);
 			target.setPolarity(strand);
 			target.setBinding_site_start(start);
 			target.setBinding_site_end(end);
-			
+
 			Transcript transcript = new Transcript();
 			transcript.setId(transcriptId);
 			transcript.setExternalName(externalName);
-			
-			System.out.println(miRna);
-			System.out.println(id);
-			System.out.println(target);
-			System.out.println(transcript);
-			
-			// FIN DE CAMBIAR ESTO
-			
+
+			/*
+			 * System.out.println(miRna); System.out.println(id);
+			 * System.out.println(target); System.out.println(transcript);
+			 */
+
+			// Inserta MiRna (o recupera su id. si ya existe)
+
+			Object oldMiRna = session.createCriteria(MiRna.class)
+					.add(Restrictions.eq("name", miRna.getName()))
+					.uniqueResult();
+			if (oldMiRna == null) {
+				session.save(miRna);
+				session.flush(); // to get the PK
+			} else {
+				MiRna miRnaToUpdate = (MiRna) oldMiRna;
+				miRnaToUpdate.update(miRna);
+				session.update(miRnaToUpdate);
+				miRna = miRnaToUpdate;
+			}
+
 			stmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			if (con!=null) con.close();
+			if (con != null)
+				con.close();
 		}
-		
+
 	}
 
 	public static void main(String[] args) throws Exception {
@@ -192,8 +212,6 @@ public class Microcosm extends MirnaDatabase {
 		//1
 		//String inputFile = "/Users/esteban/Softw/miRNA/microcosm/v5.txt.homo_sapiens";
 		//microcosm.insertInTable(inputFile);
-		
-		//2
 		microcosm.insertIntoSQLModel();
 		
 	}

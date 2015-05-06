@@ -148,12 +148,22 @@ public class mirDIP extends MirnaDatabase {
 			transcript.setId(transcriptId);
 			transcript.setExternalName(externalName);
 			
-			System.out.println(miRna);
+			/*System.out.println(miRna);
 			System.out.println(id);
-			System.out.println(target);
+			System.out.println(target);*/
 			
 			// FIN DE CAMBIAR ESTO
 			
+			// Inserta nueva InteractionData 
+			// (y la relaciona con el MiRna, target y gene correspondiente)
+			
+			id.setMirnaPk(miRna.getPk());
+			id.setTargetPk(target.getPk());
+			
+			// Relaciona transcript con target.
+			
+			transcript.setTargetPk(target.getPk());
+						
 			stmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
