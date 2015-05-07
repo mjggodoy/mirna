@@ -11,12 +11,17 @@ import java.sql.Statement;
 import mirna.beans.BiologicalProcess;
 import mirna.beans.ExpressionData;
 import mirna.beans.Gene;
+import mirna.beans.InteractionData;
 import mirna.beans.MiRna;
 import mirna.beans.Organism;
 import mirna.beans.Target;
 import mirna.exception.MiRnaException;
+import mirna.utils.HibernateUtil;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 
 public class VirmiRNA2 extends VirmiRNA {
 	
@@ -129,6 +134,8 @@ public class VirmiRNA2 extends VirmiRNA {
 	public void insertIntoSQLModel() throws Exception {
 
 		Connection con = null;
+		Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
 		
 		try {
 			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
@@ -157,7 +164,7 @@ public class VirmiRNA2 extends VirmiRNA {
 			String organism_name = rs.getString("virus");
 			String organism_name_full = rs.getString("virus_full_name");
 			String resource_organism = rs.getString("taxonomy");
-			String target1 = rs.getString("target");
+			String target1= rs.getString("target");
 			String uniprot = rs.getString("uniprot");
 			String target_process = rs.getString("target_process");
 			String method = rs.getString("method");
@@ -203,17 +210,112 @@ public class VirmiRNA2 extends VirmiRNA {
 			gene.setName(target1);
 			gene.setGeneId(uniprot);
 			
-			System.out.println(mirna);
+			InteractionData interactiondata = new InteractionData();
+			
+			/*System.out.println(mirna);
 			System.out.println(organism);
 			System.out.println(expressiondata);
 			System.out.println(target);
 			System.out.println(biologicalprocess);
-			System.out.println(organism2);
+			System.out.println(organism2);*/			
 			
-			// FIN DE CAMBIAR ESTO
+			// Inserta MiRna (o recupera su id. si ya existe)
+
+			Object oldMiRna = session.createCriteria(MiRna.class)
+					.add(Restrictions.eq("name", mirna.getName()) )
+					.uniqueResult();
+			if (oldMiRna==null) {
+				session.save(mirna);
+				session.flush();  // to get the PK
+			} else {
+				MiRna miRnaToUpdate = (MiRna) oldMiRna;
+				miRnaToUpdate.update(mirna);
+				session.update(miRnaToUpdate);
+				mirna = miRnaToUpdate;
+			}
+			
+			// Inserta Organism (o recupera su id. si ya existe)
+
+			
+			Object oldOrganism = session.createCriteria(Organism.class)
+					.add(Restrictions.eq("name", organism.getName()) )
+					.uniqueResult();
+			if (oldOrganism==null) {
+				session.save(organism);
+				session.flush(); // to get the PK
+			} else {
+				Organism organismToUpdate = (Organism) oldOrganism;
+				organismToUpdate.update(organism);
+				session.update(organismToUpdate);
+				organism = organismToUpdate;
+			}
+			
+			// Inserta Target (o recupera su id. si ya existe)
+
+			Object oldTarget = session.createCriteria(Target.class)
+					.add(Restrictions.eq("name", organism.getName()) )
+					.uniqueResult();
+			if (oldTarget==null) {
+				session.save(organism);
+				session.flush(); // to get the PK
+			} else {
+				Organism organismToUpdate = (Organism) oldOrganism;
+				organismToUpdate.update(organism);
+				session.update(organismToUpdate);
+				organism = organismToUpdate;
+			}
+			
+			// Inserta Gene (o recupera su id. si ya existe)
+
+			
+			Object oldGene = session.createCriteria(Gene.class)
+					.add(Restrictions.eq("name", gene.getName()) )
+					.uniqueResult();
+			if (oldGene==null) {
+				session.save(gene);
+				session.flush(); // to get the PK
+			} else {
+				Gene geneToUpdate = (Gene) oldGene;
+				geneToUpdate.update(gene);
+				session.update(geneToUpdate);
+				gene = geneToUpdate;
+			}
+			
+			// Inserta BiologicalProcess (o recupera su id. si ya existe)
+
+			Object oldBiologicalProcess = session.createCriteria(BiologicalProcess.class)
+					.add(Restrictions.eq("name", gene.getName()) )
+					.uniqueResult();
+			if (oldBiologicalProcess==null) {
+				session.save(biologicalprocess);
+				session.flush(); // to get the PK
+			} else {
+				BiologicalProcess biologicalProcessToUpdate = (BiologicalProcess) oldBiologicalProcess;
+				biologicalProcessToUpdate.update(biologicalprocess);
+				session.update(biologicalProcessToUpdate);
+				biologicalprocess = biologicalProcessToUpdate;
+			}
+			
+			// Relaciona expression data con mirna  (o recupera su id. si ya existe)
+			
+			expressiondata.setMirnaPk(mirna.getPk());
+			
+			// Relaciona interactionData con ExpressionData  (o recupera su id. si ya existe)
+			
+			interactiondata.setExpressionDataPk(expressiondata.getPk());
+			interactiondata.setTargetPk(target.getTargetPk());
+			
+			// Relaciona mirna y organism  (o recupera su id. si ya existe)
+			
+			mirna.setOrganismPk(organism.getPk());
+			
+			// Relaciona gene y organism  (o recupera su id. si ya existe)
+
+			gene.setOrganism(organism.getPk());
 			
 			stmt.close();
 		} catch (SQLException e) {
+			tx.rollback();
 			e.printStackTrace();
 		} finally {
 			if (con!=null) con.close();

@@ -406,7 +406,7 @@ public class TarBase extends MirnaDatabase {
 			// (y la relaciona con el MiRna y Gene correspondiente)
 			//TODO: No estoy segura si esta relaci—n est‡ bien debido a que Organism apunta a mirna.
 			
-			mirna.setPk(organism.getPk());
+			mirna.setOrganismPk(organism.getPk());
 			session.save(mirna);
 			session.flush();
 

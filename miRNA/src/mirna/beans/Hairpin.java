@@ -8,6 +8,8 @@ public class Hairpin extends MiRna {
 	//private String sequence; // HEREDADO
 	//private String name; // HEREDADO
 	
+	
+	
 	public Hairpin() { }
 
 	public Hairpin(int pk, String name, String sequence) {

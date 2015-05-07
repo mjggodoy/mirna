@@ -21,6 +21,7 @@ public class Gene extends ModelClass {
 	private String distance;// OK
 	private String pubmedId;
 	private String journal;
+	private Integer organism;
 
 	public Gene() {
 
@@ -31,7 +32,7 @@ public class Gene extends ModelClass {
 			String geneId, String description, String year, String resource,
 			String start_strand, String end_strand, String hgnc_symbol,
 			String location, String expression_site, String kegg_id,
-			String arm, String distance, String journal, String isoform) {
+			String arm, String distance, String journal, String isoform, Integer Organism) {
 		super(pk);
 		this.name = name;
 		this.chromosome = chromosome;
@@ -49,6 +50,7 @@ public class Gene extends ModelClass {
 		this.arm = arm;
 		this.distance = distance;
 		this.journal = journal;
+		this.organism = organism;
 	}
 
 	public String getDistance() {
@@ -187,7 +189,14 @@ public class Gene extends ModelClass {
 		this.pubmedId = pubmedId;
 	}
 	
-	
+	public Integer getOrganism() {
+		return organism;
+	}
+
+	public void setOrganism(Integer organism) {
+		this.organism = organism;
+	}
+
 	public int checkConflict(Gene gene) {
 		int res = 0;
 		if (this.pk != null) {

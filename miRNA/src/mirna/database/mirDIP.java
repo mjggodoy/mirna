@@ -155,10 +155,11 @@ public class mirDIP extends MirnaDatabase {
 			// FIN DE CAMBIAR ESTO
 			
 			// Inserta nueva InteractionData 
-			// (y la relaciona con el MiRna, target y gene correspondiente)
+			// (y la relaciona con el MiRnt y gene correspondientes)
 			
 			id.setMirnaPk(miRna.getPk());
 			id.setTargetPk(target.getPk());
+
 			
 			// Relaciona transcript con target.
 			

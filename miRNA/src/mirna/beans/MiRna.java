@@ -51,6 +51,8 @@ public class MiRna extends ModelClass {
 //	private String title_reference;//ok
 //	private String year;
 	
+	private Integer hairpinPk;
+	
 	public MiRna() {}
 	
 	public String getName() {
@@ -109,6 +111,14 @@ public class MiRna extends ModelClass {
 		this.organismPk = organismPk;
 	}
 
+	public Integer getHairpinPk() {
+		return hairpinPk;
+	}
+
+	public void setHairpinPk(Integer hairpinPk) {
+		this.hairpinPk = hairpinPk;
+	}
+
 	public int checkConflict(MiRna mirna) {
 		int res = 0;
 		if (this.pk!=null) {
@@ -145,6 +155,11 @@ public class MiRna extends ModelClass {
 			if (mirna.getOrganismPk()==null) res++;
 			else if (!this.organismPk.equals(mirna.getOrganismPk())) return -1;
 		}
+		
+		if (this.hairpinPk!=null) {
+			if (mirna.getHairpinPk()==null) res++;
+			else if (!this.hairpinPk.equals(mirna.getHairpinPk())) return -1;
+		}
 		return res;
 	}
 	
@@ -166,6 +181,8 @@ public class MiRna extends ModelClass {
 		if (mirna.getLength()!=null) this.length = mirna.getLength();
 		if (mirna.getGC_proportion()!=null) this.GC_proportion = mirna.getGC_proportion();
 		if (mirna.getOrganismPk()!=null) this.organismPk = mirna.getOrganismPk();
+		if (mirna.getHairpinPk()!=null) this.hairpinPk = mirna.getHairpinPk();
+
 		
 	}
 

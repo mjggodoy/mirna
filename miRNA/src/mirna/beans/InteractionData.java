@@ -23,6 +23,7 @@ public class InteractionData extends ModelClass {
 	private Integer mirnaPk;
 	private Integer targetPk;
 	private Integer genePk;
+	private Integer expressionDataPk;
 
 	
 	public InteractionData() {
@@ -35,7 +36,7 @@ public class InteractionData extends ModelClass {
 			String method, String feature, String phase, String rank,
 			String provenance, String reference, String pubmedId,
 			String cellularLine, String pvalue_og, String type, String description, String algorithm,
-			int mirnaPk, int targetPk, int genePk) {
+			int mirnaPk, int targetPk, int genePk, int expressionDataPk) {
 		super(pk);
 		this.score = score;
 		this.pvalue_log = pvalue_log;
@@ -55,6 +56,7 @@ public class InteractionData extends ModelClass {
 		this.mirnaPk = mirnaPk;
 		this.targetPk = targetPk;
 		this.genePk = genePk;
+		this.expressionDataPk = expressionDataPk;
 	}
 	
 	public String getDescription() {
@@ -204,6 +206,15 @@ public class InteractionData extends ModelClass {
 	}
 
 
+	public Integer getExpressionDataPk() {
+		return expressionDataPk;
+	}
+
+	public void setExpressionDataPk(Integer expressionDataPk) {
+		this.expressionDataPk = expressionDataPk;
+	}
+
+
 
 	public int checkConflict(InteractionData id) {
 		
@@ -304,6 +315,13 @@ public class InteractionData extends ModelClass {
 			
 		}
 		
+		if(this.expressionDataPk != null){
+			
+			if(id.getExpressionDataPk()==null) res++;
+			else if(!this.expressionDataPk.equals(id.expressionDataPk)) return -1;
+			
+		}
+		
 		return res;
 	}
 	
@@ -331,6 +349,7 @@ public class InteractionData extends ModelClass {
 		if (id.getCellularLine()!=null) this.cellularLine = id.getCellularLine();
 		if (id.getMiTG_score()!=null) this.miTG_score = id.getCellularLine();
 		if (id.getProvenance()!=null) this.provenance = id.getProvenance();
+		if(id.getExpressionDataPk() != null) this.expressionDataPk = id.getExpressionDataPk();
 
 	}
 

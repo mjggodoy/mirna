@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import mirna.beans.Disease;
 import mirna.beans.ExpressionData;
 import mirna.beans.Gene;
 import mirna.beans.Hairpin;
@@ -15,8 +16,12 @@ import mirna.beans.Mature;
 import mirna.beans.MiRna;
 import mirna.beans.Organism;
 import mirna.exception.MiRnaException;
+import mirna.utils.HibernateUtil;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 
 public class VirmiRNA1 extends VirmiRNA{
 	
@@ -103,6 +108,8 @@ public class VirmiRNA1 extends VirmiRNA{
 	public void insertIntoSQLModel() throws Exception {
 
 		Connection con = null;
+		Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
 		
 		try {
 			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
@@ -162,16 +169,90 @@ public class VirmiRNA1 extends VirmiRNA{
 			expressiondata.setProvenance("VirmiRNA");
 			expressiondata.setProvenanceId(virus_id);
 			
-			System.out.println(organism);
+			/*System.out.println(organism);
 			System.out.println(expressiondata);
 			System.out.println(mirna);
 			System.out.println(gene);
-			System.out.println(hairpin);
+			System.out.println(hairpin);*/
 			
-			// FIN DE CAMBIAR ESTO
+			
+			// Inserta MiRna (o recupera su id. si ya existe)
+			
+			Object oldMiRna = session.createCriteria(MiRna.class)
+					.add(Restrictions.eq("name", mirna.getName()) )
+					.uniqueResult();
+			if (oldMiRna==null) {
+				session.save(mirna);
+				session.flush();  // to get the PK
+			} else {
+				MiRna miRnaToUpdate = (MiRna) oldMiRna;
+				miRnaToUpdate.update(mirna);
+				session.update(miRnaToUpdate);
+				mirna = miRnaToUpdate;
+			}
+			
+			// Inserta Organism (o recupera su id. si ya existe)
+			
+			Object oldOrganism = session.createCriteria(Organism.class)
+					.add(Restrictions.eq("name", organism.getName()) )
+					.uniqueResult();
+			if (oldOrganism==null) {
+				session.save(organism);
+				session.flush(); // to get the PK
+			} else {
+				Organism organismToUpdate = (Organism) oldOrganism;
+				organismToUpdate.update(organism);
+				session.update(organismToUpdate);
+				organism = organismToUpdate;
+			}
+			
+			// Inserta Gene (o recupera su id. si ya existe)
+				
+			Object oldGene = session.createCriteria(Gene.class)
+					.add(Restrictions.eq("name", gene.getName()))
+					.uniqueResult();
+			if (oldGene == null) {
+				session.save(gene);
+				session.flush(); // to get the PK
+			} else {
+				Gene geneToUpdate = (Gene) oldGene;
+				geneToUpdate.update(gene);
+				session.update(geneToUpdate);
+				gene = geneToUpdate;
+			}
+			
+			// Inserta Hairpin (o recupera su id. si ya existe)
+
+				
+			Object oldHairpin = session.createCriteria(Hairpin.class)
+					.add(Restrictions.eq("name", hairpin.getName()))
+					.uniqueResult();
+			if (oldHairpin == null) {
+				session.save(hairpin);
+				session.flush(); // to get the PK
+			} else {
+				Gene geneToUpdate = (Gene) oldGene;
+				geneToUpdate.update(gene);
+				session.update(geneToUpdate);
+				gene = geneToUpdate;
+			}
+			
+			// Relaciona expression data con mirna  (o recupera su id. si ya existe)
+
+			expressiondata.setMirnaPk(mirna.getPk());
+
+			// Relaciona organism con gene  (o recupera su id. si ya existe)
+			
+			gene.setOrganism(organism.getPk());
+			
+			
+			// Relaciona mirna con hairpin  (o recupera su id. si ya existe)
+
+			mirna.setHairpinPk(hairpin.getPk());			
 			
 			stmt.close();
 		} catch (SQLException e) {
+			tx.rollback();
 			e.printStackTrace();
 		} finally {
 			if (con!=null) con.close();
