@@ -175,7 +175,6 @@ public class VirmiRNA1 extends VirmiRNA{
 			System.out.println(gene);
 			System.out.println(hairpin);*/
 			
-			
 			// Inserta MiRna (o recupera su id. si ya existe)
 			
 			Object oldMiRna = session.createCriteria(MiRna.class)
@@ -240,15 +239,21 @@ public class VirmiRNA1 extends VirmiRNA{
 			// Relaciona expression data con mirna  (o recupera su id. si ya existe)
 
 			expressiondata.setMirnaPk(mirna.getPk());
-
+			session.save(expressiondata);
+			session.flush(); // No estoy segura si hacer un flush aqu’ y luego en el resto no.
 			// Relaciona organism con gene  (o recupera su id. si ya existe)
 			
 			gene.setOrganism(organism.getPk());
-			
+			session.save(gene);
+			//TODO:session.flush();
+
 			
 			// Relaciona mirna con hairpin  (o recupera su id. si ya existe)
 
-			mirna.setHairpinPk(hairpin.getPk());			
+			mirna.setHairpinPk(hairpin.getPk());	
+			session.save(mirna);
+			//TODO:session.flush();
+
 			
 			stmt.close();
 		} catch (SQLException e) {

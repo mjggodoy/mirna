@@ -274,7 +274,7 @@ public class microtv4 extends MirnaDatabase {
 			// (Relaciona transcript with target.)
 			target.setTranscriptID(transcript_id);
 			session.save(target);
-			session.flush();
+			//TODO: session.flush();
 
 			count++;
 			if (count%100==0) {

@@ -299,19 +299,25 @@ public class VirmiRNA2 extends VirmiRNA {
 			// Relaciona expression data con mirna  (o recupera su id. si ya existe)
 			
 			expressiondata.setMirnaPk(mirna.getPk());
+			session.save(expressiondata);
+
 			
 			// Relaciona interactionData con ExpressionData  (o recupera su id. si ya existe)
 			
 			interactiondata.setExpressionDataPk(expressiondata.getPk());
 			interactiondata.setTargetPk(target.getTargetPk());
+			session.save(interactiondata);
 			
 			// Relaciona mirna y organism  (o recupera su id. si ya existe)
 			
 			mirna.setOrganismPk(organism.getPk());
+			session.save(mirna);
 			
 			// Relaciona gene y organism  (o recupera su id. si ya existe)
 
 			gene.setOrganism(organism.getPk());
+			session.save(gene);
+
 			
 			stmt.close();
 		} catch (SQLException e) {

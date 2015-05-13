@@ -13,8 +13,11 @@ import mirna.beans.MiRna;
 import mirna.beans.Target;
 import mirna.beans.Transcript;
 import mirna.exception.MiRnaException;
+import mirna.utils.HibernateUtil;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 /**
  * Código para procesar los datos de mirDIP
@@ -93,6 +96,9 @@ public class mirDIP extends MirnaDatabase {
 	@Override
 	public void insertIntoSQLModel()
 			throws Exception {
+		
+		Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
 
 		Connection con = null;
 		
@@ -155,18 +161,24 @@ public class mirDIP extends MirnaDatabase {
 			// FIN DE CAMBIAR ESTO
 			
 			// Inserta nueva InteractionData 
-			// (y la relaciona con el MiRnt y gene correspondientes)
+			// (y la relaciona con el MiRna y gene correspondientes)
 			
 			id.setMirnaPk(miRna.getPk());
 			id.setTargetPk(target.getPk());
+			session.save(id);
+			session.flush();
 
 			
 			// Relaciona transcript con target.
 			
 			transcript.setTargetPk(target.getPk());
+			session.save(transcript);
+			//TODO:session.flush();
+
 						
 			stmt.close();
 		} catch (SQLException e) {
+			tx.rollback();
 			e.printStackTrace();
 		} finally {
 			if (con!=null) con.close();
