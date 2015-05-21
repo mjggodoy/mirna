@@ -187,7 +187,7 @@ public class VirmiRNA2 extends VirmiRNA {
 			organism.setResource(resource_organism);
 			
 			Organism organism2 = new Organism();
-			organism2.setSpecie(specie_target);
+			organism2.setSpecie(specie_target);// inclu’ set/get en la clase organism.
 			
 			Target target = new Target();
 			target.setSequence(target_sequence);
@@ -235,7 +235,6 @@ public class VirmiRNA2 extends VirmiRNA {
 			}
 			
 			// Inserta Organism (o recupera su id. si ya existe)
-
 			
 			Object oldOrganism = session.createCriteria(Organism.class)
 					.add(Restrictions.eq("name", organism.getName()) )
@@ -267,7 +266,6 @@ public class VirmiRNA2 extends VirmiRNA {
 			
 			// Inserta Gene (o recupera su id. si ya existe)
 
-			
 			Object oldGene = session.createCriteria(Gene.class)
 					.add(Restrictions.eq("name", gene.getName()) )
 					.uniqueResult();
@@ -302,7 +300,7 @@ public class VirmiRNA2 extends VirmiRNA {
 			session.save(expressiondata);
 
 			
-			// Relaciona interactionData con ExpressionData  (o recupera su id. si ya existe)
+			// Relaciona interactionData con ExpressionData y Target (o recupera su id. si ya existe)
 			
 			interactiondata.setExpressionDataPk(expressiondata.getPk());
 			interactiondata.setTargetPk(target.getTargetPk());
@@ -317,6 +315,11 @@ public class VirmiRNA2 extends VirmiRNA {
 
 			gene.setOrganism(organism.getPk());
 			session.save(gene);
+			
+			// Relaciona target y organism2 (o recupera su id. si ya existe) (Ver modelo relaciones entre gene->organism/gene->Target)
+
+			target.setSpecie(organism2.getPk());
+			session.save(target);
 
 			
 			stmt.close();

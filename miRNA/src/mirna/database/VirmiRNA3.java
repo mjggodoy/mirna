@@ -13,10 +13,17 @@ import mirna.beans.Gene;
 import mirna.beans.MiRna;
 import mirna.beans.Organism;
 import mirna.beans.Protein;
+import mirna.beans.PubmedDocument;
 import mirna.beans.Target;
+import mirna.beans.nToM.ExpressionDataHasPubmedDocument;
+import mirna.beans.nToM.MirnaHasPubmedDocument;
 import mirna.exception.MiRnaException;
+import mirna.utils.HibernateUtil;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 
 public class VirmiRNA3 extends VirmiRNA {
 	
@@ -114,6 +121,8 @@ public class VirmiRNA3 extends VirmiRNA {
 	public void insertIntoSQLModel() throws Exception {
 
 		Connection con = null;
+		Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
 		
 		try {
 			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
@@ -167,6 +176,9 @@ public class VirmiRNA3 extends VirmiRNA {
 			expressiondata.setProvenance("VirmiRNA");
 			expressiondata.setProvenanceId(id_virus);
 			
+			PubmedDocument pubmedDoc = new PubmedDocument();
+			pubmedDoc.setId(pmid);
+
 			Gene gene = new Gene();
 			gene.setName(gene_name);
 			gene.setGeneId(uniprot_id);
@@ -179,18 +191,110 @@ public class VirmiRNA3 extends VirmiRNA {
 			target.setRegion(target_region);
 			target.setExternalName(target_reference);
 
-			System.out.println(organism);
+			/*System.out.println(organism);
 			System.out.println(mirna);
 			System.out.println(expressiondata);
 			System.out.println(gene);
 			System.out.println(target);
-			System.out.println(organism2);
-			
+			System.out.println(organism2);*/
 			
 			// FIN DE CAMBIAR ESTO
 			
+			//Inserta MiRna (o recupera su id. si ya existe)
+			
+			Object oldMiRna = session.createCriteria(MiRna.class)
+					.add(Restrictions.eq("name", mirna.getName()) )
+					.uniqueResult();
+			if (oldMiRna==null) {
+				session.save(mirna);
+				session.flush();  // to get the PK
+			} else {
+				MiRna miRnaToUpdate = (MiRna) oldMiRna;
+				miRnaToUpdate.update(mirna);
+				session.update(miRnaToUpdate);
+				mirna = miRnaToUpdate;
+			}
+			
+			//Inserta Organism (o recupera su id. si ya existe)
+			
+			Object oldOrganism = session.createCriteria(MiRna.class)
+					.add(Restrictions.eq("name", organism.getName()) )
+					.uniqueResult();
+			if (oldOrganism==null) {
+				session.save(mirna);
+				session.flush();  // to get the PK
+			} else {
+				Organism organismToUpdate = (Organism) oldOrganism;
+				organismToUpdate.update(organism);
+				session.update(organismToUpdate);
+				organism = organismToUpdate;
+			}
+			
+			//Inserta Gene (o recupera su id. si ya existe)
+
+			Object oldGene = session.createCriteria(Gene.class)
+					.add(Restrictions.eq("name", gene.getName()) )
+					.uniqueResult();
+			if (oldGene==null) {
+				session.save(gene);
+				session.flush();  // to get the PK
+			} else {
+				Gene geneToUpdate = (Gene) oldGene;
+				geneToUpdate.update(gene);
+				session.update(geneToUpdate);
+				gene = geneToUpdate;
+			}
+		
+			//Inserta Target (o recupera su id. si ya existe)
+
+			Object oldTarget = session.createCriteria(Target.class)
+					.add(Restrictions.eq("name", gene.getName()) )
+					.uniqueResult();
+			if (oldTarget==null) {
+				session.save(target);
+				session.flush();  // to get the PK
+			} else {
+				Target targetToUpdate = (Target) oldGene;
+				targetToUpdate.update(target);
+				session.update(targetToUpdate);
+				target = targetToUpdate;
+			}
+		
+			// Relaciona expression data con mirna  (o recupera su id. si ya existe)
+
+			expressiondata.setMirnaPk(mirna.getPk());
+			session.save(expressiondata);
+			session.flush(); // No estoy segura si hacer un flush aqu’ y luego en el resto no.
+			
+			// Relaciona organism con gene  (o recupera su id. si ya existe)
+			
+			gene.setOrganism(organism.getPk());
+			session.save(gene);
+			//TODO:session.flush();
+			
+			//Relaciona target con organism2
+			target.setSpecie(organism2.getPk());
+			session.save(target);
+		
+			MirnaHasPubmedDocument mirnaHasPubmedDocument =
+					new MirnaHasPubmedDocument(mirna.getPk(), pubmedDoc.getPk());
+			ExpressionDataHasPubmedDocument expresDataHasPubmedDocument =
+					new ExpressionDataHasPubmedDocument(expressiondata.getPk(), pubmedDoc.getPk());
+			
+			// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
+			Object oldMirnaHasPubmedDocument = session.createCriteria(MirnaHasPubmedDocument.class)
+					.add( Restrictions.eq("mirnaPk", mirna.getPk()) )
+					.add( Restrictions.eq("pubmedDocumentPk", pubmedDoc.getPk()) )
+					.uniqueResult();
+			if (oldMirnaHasPubmedDocument==null) {
+				session.save(mirnaHasPubmedDocument);
+			}
+			// Relaciona PubmedDocument con ExpressionData
+			session.save(expresDataHasPubmedDocument);
+				
 			stmt.close();
 		} catch (SQLException e) {
+			tx.rollback();
 			e.printStackTrace();
 		} finally {
 			if (con!=null) con.close();

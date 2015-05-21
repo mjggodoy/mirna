@@ -29,6 +29,7 @@ public class Target extends Transcript {
 	private String resource;
 	private String pubmed_id;
 	private String site_conservation_score;
+	private Integer specie;
 	
 	public Target() { }
 
@@ -236,9 +237,23 @@ public class Target extends Transcript {
 	}
 
 	
+	public Integer getSpecie() {
+		return specie;
+	}
+
+
+
+	public void setSpecie(Integer specie) {
+		this.specie = specie;
+	}
+
+
+
 	public void update(Target target) throws ConflictException {
 		this.update(target, true);
 	}
+	
+
 
 	public void update(Target target, boolean checkConflict) throws ConflictException {
 		if (checkConflict) {
@@ -268,6 +283,7 @@ public class Target extends Transcript {
 		if (target.getResource() != null) this.resource = target.getResource();
 		if (target.getPubmed_id() != null) this.pubmed_id = target.getPubmed_id();
 		if (target.getSite_conservation_score() != null) this.site_conservation_score = target.getSite_conservation_score();
+		if (target.getSpecie()!= null) this.specie = target.getSpecie();
 	}
 	
 	
@@ -397,6 +413,11 @@ public class Target extends Transcript {
 			else if (!this.site_conservation_score.equals(target.getSite_conservation_score())) return -1;
 		}
 		
+		if (this.specie!=null) {
+			if (target.getSpecie()==null) res++; 
+			else if (!this.specie.equals(target.getSpecie())) return -1;
+		}
+		
 		return res;
 	}
 
@@ -418,8 +439,15 @@ public class Target extends Transcript {
 				+ ", coordinates=" + coordinates + ", GC_proportion="
 				+ GC_proportion + ", GU_proportion=" + GU_proportion
 				+ ", resource=" + resource + ", pubmed_id=" + pubmed_id
-				+ ", site_conservation_score=" + site_conservation_score + "]";
+				+ ", site_conservation_score=" + site_conservation_score
+				+ ", specie=" + specie + "]";
 	}
+
+
+
+	
+
+
 	
 	
 	

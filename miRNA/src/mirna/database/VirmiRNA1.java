@@ -15,6 +15,9 @@ import mirna.beans.Hairpin;
 import mirna.beans.Mature;
 import mirna.beans.MiRna;
 import mirna.beans.Organism;
+import mirna.beans.PubmedDocument;
+import mirna.beans.nToM.ExpressionDataHasPubmedDocument;
+import mirna.beans.nToM.MirnaHasPubmedDocument;
 import mirna.exception.MiRnaException;
 import mirna.utils.HibernateUtil;
 
@@ -168,6 +171,9 @@ public class VirmiRNA1 extends VirmiRNA{
 			expressiondata.setMethod(method);
 			expressiondata.setProvenance("VirmiRNA");
 			expressiondata.setProvenanceId(virus_id);
+		
+			PubmedDocument pubmedDoc = new PubmedDocument();
+			pubmedDoc.setId(pubmed);
 			
 			/*System.out.println(organism);
 			System.out.println(expressiondata);
@@ -221,7 +227,6 @@ public class VirmiRNA1 extends VirmiRNA{
 			}
 			
 			// Inserta Hairpin (o recupera su id. si ya existe)
-
 				
 			Object oldHairpin = session.createCriteria(Hairpin.class)
 					.add(Restrictions.eq("name", hairpin.getName()))
@@ -241,6 +246,8 @@ public class VirmiRNA1 extends VirmiRNA{
 			expressiondata.setMirnaPk(mirna.getPk());
 			session.save(expressiondata);
 			session.flush(); // No estoy segura si hacer un flush aqu’ y luego en el resto no.
+			
+			
 			// Relaciona organism con gene  (o recupera su id. si ya existe)
 			
 			gene.setOrganism(organism.getPk());
@@ -255,6 +262,23 @@ public class VirmiRNA1 extends VirmiRNA{
 			//TODO:session.flush();
 
 			
+			MirnaHasPubmedDocument mirnaHasPubmedDocument =
+					new MirnaHasPubmedDocument(mirna.getPk(), pubmedDoc.getPk());
+			ExpressionDataHasPubmedDocument expresDataHasPubmedDocument =
+					new ExpressionDataHasPubmedDocument(expressiondata.getPk(), pubmedDoc.getPk());
+			
+			// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
+			Object oldMirnaHasPubmedDocument = session.createCriteria(MirnaHasPubmedDocument.class)
+					.add( Restrictions.eq("mirnaPk", mirna.getPk()) )
+					.add( Restrictions.eq("pubmedDocumentPk", pubmedDoc.getPk()) )
+					.uniqueResult();
+			if (oldMirnaHasPubmedDocument==null) {
+				session.save(mirnaHasPubmedDocument);
+			}
+			
+			// Relaciona PubmedDocument con ExpressionData
+			session.save(expresDataHasPubmedDocument);
+
 			stmt.close();
 		} catch (SQLException e) {
 			tx.rollback();
