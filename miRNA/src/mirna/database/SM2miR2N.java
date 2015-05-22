@@ -12,12 +12,19 @@ import mirna.beans.ExpressionData;
 import mirna.beans.InteractionData;
 import mirna.beans.MiRna;
 import mirna.beans.Organism;
+import mirna.beans.PubmedDocument;
 import mirna.beans.SmallMolecule;
 import mirna.beans.Target;
 import mirna.beans.Transcript;
+import mirna.beans.nToM.ExpressionDataHasPubmedDocument;
+import mirna.beans.nToM.MirnaHasPubmedDocument;
 import mirna.exception.MiRnaException;
+import mirna.utils.HibernateUtil;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 
 /**
  * Código para procesar los datos de SM2miR2N
@@ -115,6 +122,8 @@ public class SM2miR2N extends MirnaDatabase {
 	@Override
 	public void insertIntoSQLModel() throws Exception {
 
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction tx = session.beginTransaction();
 		Connection con = null;
 		
 		try {
@@ -150,8 +159,6 @@ public class SM2miR2N extends MirnaDatabase {
 			String reference = rs.getString("reference");
 			String support = rs.getString("support");
 			String evidence = rs.getString("expression");
-
-
 			
 			MiRna miRna = new MiRna();
 			miRna.setName(name);
@@ -174,17 +181,92 @@ public class SM2miR2N extends MirnaDatabase {
 			Organism organism = new Organism();
 			organism.setSpecie(specie);
 			
-			
-			
-			System.out.println(miRna);
+			PubmedDocument pubmedDoc = new PubmedDocument();
+			pubmedDoc.setId(pmid);
+		
+			/*System.out.println(miRna);
 			System.out.println(ed);
 			System.out.println(smallmolecule);
 			System.out.println(organism);
-			
+			*/
 			// FIN DE CAMBIAR ESTO
+			
+			// Inserta MiRna (o recupera su id. si ya existe)
+			
+			Object oldMiRna = session.createCriteria(MiRna.class)
+					.add( Restrictions.eq("name", miRna.getName()) )
+					.uniqueResult();
+			if (oldMiRna==null) {
+				session.save(miRna);
+				session.flush();  // to get the PK
+			} else {
+				MiRna miRnaToUpdate = (MiRna) oldMiRna;
+				miRnaToUpdate.update(miRna);
+				session.update(miRnaToUpdate);
+				miRna = miRnaToUpdate;
+			}
+			
+			// Inserta smallmolecule (o recupera su id. si ya existe)
+
+			Object oldSmallMolecule = session.createCriteria(SmallMolecule.class)
+					.add( Restrictions.eq("name", smallmolecule.getName()) )
+					.uniqueResult();
+			if (oldSmallMolecule==null) {
+				session.save(smallmolecule);
+				session.flush();  // to get the PK
+			} else {
+				SmallMolecule smallmoleculeToUpdate = (SmallMolecule) oldSmallMolecule;
+				smallmoleculeToUpdate.update(smallmolecule);
+				session.update(smallmoleculeToUpdate);
+				smallmolecule = smallmoleculeToUpdate;
+			}
+			
+			// Inserta pubmedDocument (o recupera su id. si ya existe)
+
+			Object oldPubmedDoc = session.createCriteria(PubmedDocument.class)
+					.add( Restrictions.eq("id", pubmedDoc.getId()) )
+					.uniqueResult();
+			if (oldPubmedDoc==null) {
+				session.save(pubmedDoc);
+				session.flush(); // to get the PK
+			} else {
+				PubmedDocument pubmedDocToUpdate = (PubmedDocument) oldPubmedDoc;
+				pubmedDocToUpdate.update(pubmedDoc);
+				session.update(pubmedDocToUpdate);
+				pubmedDoc = pubmedDocToUpdate;
+			}
+			
+			
+			// Inserta nueva DataExpression
+			// (y la relaciona con el MiRna y SmallMolecule)
+			
+			ed.setMirnaPk(miRna.getPk());
+			ed.setSmallMolecule_pk(smallmolecule.getPk()); //relacionar expressiondata con smallMolecule
+			session.save(ed);
+			session.flush(); // to get the PK
+			
+			MirnaHasPubmedDocument mirnaHasPubmedDocument =
+					new MirnaHasPubmedDocument(miRna.getPk(), pubmedDoc.getPk());
+			ExpressionDataHasPubmedDocument expresDataHasPubmedDocument =
+					new ExpressionDataHasPubmedDocument(ed.getPk(), pubmedDoc.getPk());
+			
+			// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
+			
+			Object oldMirnaHasPubmedDocument = session.createCriteria(MirnaHasPubmedDocument.class)
+					.add( Restrictions.eq("mirnaPk", miRna.getPk()) )
+					.add( Restrictions.eq("pubmedDocumentPk", pubmedDoc.getPk()) )
+					.uniqueResult();
+			if (oldMirnaHasPubmedDocument==null) {
+				session.save(mirnaHasPubmedDocument);
+			}
+			
+			// Relaciona PubmedDocument con ExpressionData
+			
+			session.save(expresDataHasPubmedDocument);
 			
 			stmt.close();
 		} catch (SQLException e) {
+			tx.rollback();
 			e.printStackTrace();
 		} finally {
 			if (con!=null) con.close();

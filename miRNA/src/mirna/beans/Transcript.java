@@ -7,20 +7,19 @@ public class Transcript extends ModelClass {
 	private String transcriptID;// ok
 	private String name;// ok
 	private String isoform; // ok
-	private String id;// ok
 	private String externalName;
 	private Integer targetPk;
+	private Integer geneId;
 
 	public Transcript() {
 	}
 
-	public Transcript(int pk, String transcriptID, String name, String isoform,
-			String id, String externalName, int targetPk) {
+	public Transcript(int pk, String transcriptID, String name, String isoform
+			, String externalName, int targetPk) {
 		super(pk);
 		this.transcriptID = transcriptID;
 		this.name = name;
 		this.isoform = isoform;
-		this.id = id;
 		this.externalName = externalName;
 		this.targetPk = targetPk;
 	}
@@ -49,14 +48,6 @@ public class Transcript extends ModelClass {
 		this.isoform = isoform;
 	}
 
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
 	public String getExternalName() {
 		return externalName;
 	}
@@ -72,6 +63,14 @@ public class Transcript extends ModelClass {
 	public void setTargetPk(int targetPk) {
 		this.targetPk = targetPk;
 	}
+	
+	public Integer getGeneId() {
+		return geneId;
+	}
+
+	public void setGeneId(Integer geneId) {
+		this.geneId = geneId;
+	}
 
 	public int checkConflict(Transcript transcript) {
 
@@ -81,13 +80,6 @@ public class Transcript extends ModelClass {
 			if (transcript.getPk() == null)
 				res++; // res = 1
 			else if (!this.pk.equals(transcript.getPk()))
-				return -1;
-		}
-
-		if (this.id != null) {
-			if (transcript.id == null)
-				res++;
-			else if (!this.id.equals(transcript.id))
 				return -1;
 		}
 
@@ -143,8 +135,6 @@ public class Transcript extends ModelClass {
 		}
 		if (transcript.getPk() != null)
 			this.pk = transcript.getPk();
-		if (transcript.getId() != null)
-			this.id = transcript.getId();
 		if (transcript.getIsoform() != null)
 			this.isoform = transcript.getIsoform();
 		if (transcript.getName() != null)
@@ -153,14 +143,19 @@ public class Transcript extends ModelClass {
 			this.externalName = transcript.getExternalName();
 		if (transcript.getTargetPk() != null)
 			this.targetPk = transcript.getTargetPk();
+		if (transcript.getGeneId()!= null)
+			this.geneId = transcript.getGeneId();
 
 	}
 
 	@Override
 	public String toString() {
 		return "Transcript [transcriptID=" + transcriptID + ", name=" + name
-				+ ", isoform=" + isoform + ", id=" + id + ", externalName="
-				+ externalName + "]";
+				+ ", isoform=" + isoform + ", externalName="
+				+ externalName + ", targetPk=" + targetPk + ", geneId="
+				+ geneId + ", pk=" + pk + "]";
 	}
+
+	
 
 }

@@ -173,17 +173,14 @@ public class microtv4 extends MirnaDatabase {
 			target.setCoordinates(coordinates);
 					
 			Transcript transcript = new Transcript();
-			transcript.setId(transcript_id);
+			transcript.setTranscriptID(transcript_id);
 
-		
 			/*System.out.println(miRna);
 			System.out.println(gene);
 			System.out.println(id);
 			System.out.println(transcript);
 			System.out.println(target);*/
-			
-			// FIN DE CAMBIAR ESTO
-			
+						
 			// Inserta MiRna (o recupera su id. si ya existe)
 
 			Object oldMiRna = session.createCriteria(MiRna.class)
@@ -215,21 +212,6 @@ public class microtv4 extends MirnaDatabase {
 				gene = geneToUpdate;
 			}
 			
-			// Inserta interactionData (o recupera su id. si ya existe)
-
-			Object oldInteractionData = session.createCriteria(InteractionData.class)
-					.add( Restrictions.eq("name", gene.getName()) )
-					.uniqueResult();
-			if (oldInteractionData==null) {
-				session.save(id);
-				session.flush();  // to get the PK
-			} else {
-				InteractionData interactionDataToUpdate = (InteractionData) oldInteractionData;
-				interactionDataToUpdate.update(id);
-				session.update(interactionDataToUpdate);
-				id = interactionDataToUpdate;
-			}
-			
 			// Inserta Target (o recupera su id. si ya existe)
 
 			Object oldTarget = session.createCriteria(Target.class)
@@ -239,7 +221,7 @@ public class microtv4 extends MirnaDatabase {
 				session.save(id);
 				session.flush();  // to get the PK
 			} else {
-				Target targetToUpdate = (Target) oldInteractionData;
+				Target targetToUpdate = (Target) oldTarget;
 				targetToUpdate.update(target);
 				session.update(targetToUpdate);
 				target = targetToUpdate;
@@ -255,7 +237,7 @@ public class microtv4 extends MirnaDatabase {
 				session.save(transcript);
 				session.flush();  // to get the PK
 			} else {
-				Target transcriptToUpdate = (Target) oldInteractionData;
+				Transcript transcriptToUpdate = (Transcript) oldTranscript;
 				transcriptToUpdate.update(target);
 				session.update(transcriptToUpdate);
 				transcript = transcriptToUpdate;
@@ -264,6 +246,7 @@ public class microtv4 extends MirnaDatabase {
 			
 			 //Inserta nueva interactionData
 				// (y la relaciona con el MiRna y Target correspondiente)
+			
 			id.setTargetPk(target.getPk());
 			id.setMirnaPk(miRna.getPk());
 			//TODO: Solucionar fallo de compilacion ¡Pua!
@@ -271,8 +254,9 @@ public class microtv4 extends MirnaDatabase {
 			session.save(id);
 			session.flush();
 			
-			// (Relaciona transcript with target.)
-			target.setTranscriptID(transcript_id);
+			// (Relaciona transcript with target)
+			
+			target.setTranscriptPk(transcript.getPk());
 			session.save(target);
 			//TODO: session.flush();
 

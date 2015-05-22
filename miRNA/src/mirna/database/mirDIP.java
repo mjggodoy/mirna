@@ -121,61 +121,9 @@ public class mirDIP extends MirnaDatabase {
 			rs.next();
 			// CAMBIAR ESTO:
 			
-			String seq = rs.getString("seq");
-			String method = rs.getString("method");
-			String feature = rs.getString("feature").toLowerCase().trim();
-			String chromosome = rs.getString("chr").toLowerCase().trim();
-			String start = rs.getString("start").toLowerCase().trim();
-			String end = rs.getString("end").toLowerCase().trim();
-			String strand = rs.getString("strand").toLowerCase().trim();
-			String phase = rs.getString("phase");
-			String score = rs.getString("score");
-			String pvalue_og = rs.getString("pvalue_og");
-			String transcriptId = rs.getString("transcript_id");
-			String externalName = rs.getString("external_name");
 			
-			MiRna miRna = new MiRna();
-			miRna.setName(seq);
-			
-			InteractionData id = new InteractionData();
-			id.setMethod(method);
-			id.setFeature(feature);
-			id.setPhase(phase);
-			id.setScore(score);
-			id.setPvalue_og(pvalue_og);
-			
-			Target target = new Target();
-			target.setChromosome(chromosome);
-			target.setStart_strand(start);
-			target.setEnd_strand(end);
-			target.setPolarity(strand);
-			
-			Transcript transcript = new Transcript();
-			transcript.setId(transcriptId);
-			transcript.setExternalName(externalName);
-			
-			/*System.out.println(miRna);
-			System.out.println(id);
-			System.out.println(target);*/
-			
-			// FIN DE CAMBIAR ESTO
-			
-			// Inserta nueva InteractionData 
-			// (y la relaciona con el MiRna y gene correspondientes)
-			
-			id.setMirnaPk(miRna.getPk());
-			id.setTargetPk(target.getPk());
-			session.save(id);
-			session.flush();
 
-			
-			// Relaciona transcript con target.
-			
-			transcript.setTargetPk(target.getPk());
-			session.save(transcript);
-			//TODO:session.flush();
-
-						
+					
 			stmt.close();
 		} catch (SQLException e) {
 			tx.rollback();

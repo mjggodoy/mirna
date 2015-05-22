@@ -64,6 +64,11 @@ public class ExpressionData extends ModelClass {
 	
 	@Column(name = "different_expression_location", nullable = true, length = 80)
 	private String differentExpressionLocation;
+	
+	@Column(name = "smallMolecule_pk", nullable = true, length = 80) // he inlcu’do la smallmolecule_Pk para la db SM2miR2N
+	private Integer smallMolecule_pk;
+	
+	
 //	private String journal; //ok
 //	private String reference; //ok
 //	private String resource; //ok
@@ -220,6 +225,14 @@ public class ExpressionData extends ModelClass {
 		this.differentExpressionLocation = differentExpressionLocation;
 	}
 
+	public Integer getSmallMolecule_pk() {
+		return smallMolecule_pk;
+	}
+
+	public void setSmallMolecule_pk(Integer smallMolecule_pk) {
+		this.smallMolecule_pk = smallMolecule_pk;
+	}
+
 	@Override
 	public String toString() {
 		return "ExpressionData [titleReference=" + titleReference
@@ -227,13 +240,16 @@ public class ExpressionData extends ModelClass {
 				+ foldchangeMax + ", provenanceId=" + provenanceId
 				+ ", provenance=" + provenance + ", studyDesign=" + studyDesign
 				+ ", method=" + method + ", treatment=" + treatment
-				+ ", evidence=" + evidence
-				+ ", year=" + year + ", description=" + description
-				+ ", cellularLine=" + cellularLine + ", condition=" + condition
-				+ ", mirnaPk=" + mirnaPk + ", diseasePk=" + diseasePk
+				+ ", evidence=" + evidence + ", year=" + year
+				+ ", description=" + description + ", cellularLine="
+				+ cellularLine + ", condition=" + condition + ", mirnaPk="
+				+ mirnaPk + ", diseasePk=" + diseasePk
 				+ ", environmentalFactorPk=" + environmentalFactorPk
-				+ ", type=" + dataType + ", different_expression_location="
+				+ ", dataType=" + dataType + ", smallMolecule_pk="
+				+ smallMolecule_pk + ", differentExpressionLocation="
 				+ differentExpressionLocation + ", pk=" + pk + "]";
 	}
+
+	
 
 }

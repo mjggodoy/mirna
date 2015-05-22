@@ -17,6 +17,7 @@ import mirna.beans.Transcript;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
 /**
@@ -115,8 +116,8 @@ public class Microcosm extends MirnaDatabase {
 	public void insertIntoSQLModel() throws Exception {
 
 		Connection con = null;
-		
 		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction tx = session.beginTransaction();
 
 		
 		try {
@@ -172,12 +173,14 @@ public class Microcosm extends MirnaDatabase {
 			target.setBinding_site_end(end);
 
 			Transcript transcript = new Transcript();
-			transcript.setId(transcriptId);
+			transcript.setTranscriptID(transcriptId);
 			transcript.setExternalName(externalName);
 
 			/*
-			 * System.out.println(miRna); System.out.println(id);
-			 * System.out.println(target); System.out.println(transcript);
+			 * System.out.println(miRna); 
+			 * System.out.println(id);
+			 * System.out.println(target); 
+			 * System.out.println(transcript);
 			 */
 
 			// Inserta MiRna (o recupera su id. si ya existe)
@@ -194,9 +197,53 @@ public class Microcosm extends MirnaDatabase {
 				session.update(miRnaToUpdate);
 				miRna = miRnaToUpdate;
 			}
+			
+			// Inserta Target (o recupera su id. si ya existe)
 
+			Object oldTarget = session.createCriteria(Target.class)
+					.add(Restrictions.eq("name", target.getName()))
+					.uniqueResult();
+			if (oldTarget == null) {
+				session.save(target);
+				session.flush(); // to get the PK
+			} else {
+				Target targetToUpdate = (Target) oldTarget;
+				targetToUpdate.update(target);
+				session.update(targetToUpdate);
+				target = targetToUpdate;
+			}
+			
+			// Inserta Transcript (o recupera su id. si ya existe)
+			
+			Object oldTranscript = session.createCriteria(Transcript.class)
+					.add(Restrictions.eq("name", transcript.getName()))
+					.uniqueResult();
+			if (oldTranscript == null) {
+				session.save(transcript);
+				session.flush(); // to get the PK
+			} else {
+				Transcript transcriptToUpdate = (Transcript) oldTranscript;
+				transcriptToUpdate.update(transcript);
+				session.update(transcriptToUpdate);
+				transcript = transcriptToUpdate;
+			}
+			
+			// Inserta nueva DataExpression
+			// (y la relaciona con el MiRna y Target)
+			
+			id.setMirnaPk(miRna.getPk());
+			id.setTargetPk(target.getPk());
+			session.save(id);
+			session.flush(); // to get the PK
+			
+			// Relaciona con el transcript y Target
+			
+			target.setTranscriptPk(transcript.getPk());
+			session.save(target);
+			
 			stmt.close();
 		} catch (SQLException e) {
+			tx.rollback();
 			e.printStackTrace();
 		} finally {
 			if (con != null)

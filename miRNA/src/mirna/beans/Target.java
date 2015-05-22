@@ -30,6 +30,7 @@ public class Target extends Transcript {
 	private String pubmed_id;
 	private String site_conservation_score;
 	private Integer specie;
+	private Integer transcriptPk;
 	
 	public Target() { }
 
@@ -242,17 +243,22 @@ public class Target extends Transcript {
 	}
 
 
-
 	public void setSpecie(Integer specie) {
 		this.specie = specie;
 	}
-
-
 
 	public void update(Target target) throws ConflictException {
 		this.update(target, true);
 	}
 	
+	public Integer getTranscriptPk() {
+		return transcriptPk;
+	}
+
+	public void setTranscriptPk(Integer transcriptPk) {
+		this.transcriptPk = transcriptPk;
+	}
+
 
 
 	public void update(Target target, boolean checkConflict) throws ConflictException {
@@ -284,6 +290,7 @@ public class Target extends Transcript {
 		if (target.getPubmed_id() != null) this.pubmed_id = target.getPubmed_id();
 		if (target.getSite_conservation_score() != null) this.site_conservation_score = target.getSite_conservation_score();
 		if (target.getSpecie()!= null) this.specie = target.getSpecie();
+		if(target.getTranscriptPk() !=null) this.transcriptPk = target.getTranscriptPk();
 	}
 	
 	
