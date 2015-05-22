@@ -277,6 +277,7 @@ public class TarBase extends MirnaDatabase {
 				
 			
 			// Inserta MiRna (o recupera su id. si ya existe)
+			
 			Object oldMiRna = session.createCriteria(MiRna.class)
 					.add( Restrictions.eq("name", mirna.getName()) )
 					.uniqueResult();
@@ -291,6 +292,7 @@ public class TarBase extends MirnaDatabase {
 			}
 			
 			// Inserta Disease (o recupera su id. si ya existe)
+			
 			Object oldDisease = session.createCriteria(Disease.class)
 					.add( Restrictions.eq("name", disease.getName()) )
 					.uniqueResult();
@@ -305,6 +307,7 @@ public class TarBase extends MirnaDatabase {
 			}
 			
 			// Inserta Gene (o recupera su id. si ya existe)
+			
 			Object oldGene = session.createCriteria(Gene.class)
 					.add( Restrictions.eq("name", gene.getName()) )
 					.uniqueResult();
@@ -404,12 +407,27 @@ public class TarBase extends MirnaDatabase {
 			
 			// Inserta nueva Organism
 			// (y la relaciona con el MiRna y Gene correspondiente)
-			//TODO: No estoy segura si esta relaci—n est‡ bien debido a que Organism apunta a mirna.
+			
 			
 			mirna.setOrganismPk(organism.getPk());
 			session.save(mirna);
 			session.flush();
+			
+			// Relaciona gene y Organism.
+						
+	
+			gene.setOrganism(organism.getPk());
+			session.save(gene);
 
+			// Relaciona transcript y gene. (No estoy segura de esta relaci—n)
+			
+			transcript.setGeneId(gene.getPk());
+			session.save(transcript);
+			
+			//TODO:Relaciona transcript y protein.
+
+			//protein.setTranscript_id(transcript.getPk());
+			
 			stmt.close();
 		} catch (SQLException e) {
 			tx.rollback();

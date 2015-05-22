@@ -15,13 +15,14 @@ public class Transcript extends ModelClass {
 	}
 
 	public Transcript(int pk, String transcriptID, String name, String isoform
-			, String externalName, int targetPk) {
+			, String externalName, int targetPk, int geneId) {
 		super(pk);
 		this.transcriptID = transcriptID;
 		this.name = name;
 		this.isoform = isoform;
 		this.externalName = externalName;
 		this.targetPk = targetPk;
+		this.geneId = geneId;
 	}
 
 	public String getTranscriptID() {
@@ -71,6 +72,7 @@ public class Transcript extends ModelClass {
 	public void setGeneId(Integer geneId) {
 		this.geneId = geneId;
 	}
+	
 
 	public int checkConflict(Transcript transcript) {
 
@@ -119,6 +121,8 @@ public class Transcript extends ModelClass {
 			return -1;	
 			}
 		}
+		
+		
 
 		return res;
 	}
@@ -127,12 +131,12 @@ public class Transcript extends ModelClass {
 		this.update(transcript, true);
 	}
 
-	public void update(Transcript transcript, boolean checkConflict)
-			throws ConflictException {
+	public void update(Transcript transcript, boolean checkConflict) throws ConflictException {
 		if (checkConflict) {
 			if (this.checkConflict(transcript) == -1)
 				throw new ConflictException(this, transcript);
 		}
+		
 		if (transcript.getPk() != null)
 			this.pk = transcript.getPk();
 		if (transcript.getIsoform() != null)
@@ -145,16 +149,17 @@ public class Transcript extends ModelClass {
 			this.targetPk = transcript.getTargetPk();
 		if (transcript.getGeneId()!= null)
 			this.geneId = transcript.getGeneId();
-
+		
 	}
 
 	@Override
 	public String toString() {
 		return "Transcript [transcriptID=" + transcriptID + ", name=" + name
-				+ ", isoform=" + isoform + ", externalName="
-				+ externalName + ", targetPk=" + targetPk + ", geneId="
-				+ geneId + ", pk=" + pk + "]";
+				+ ", isoform=" + isoform + ", externalName=" + externalName
+				+ ", targetPk=" + targetPk + ", geneId=" + geneId
+				+ " pk=" + pk + "]";
 	}
+
 
 	
 

@@ -7,6 +7,7 @@ public class Protein extends ModelClass {
 	private String Uniprot_id;
 	private String Swiss_prot_id;
 	private String Type;
+	private String Transcript_id;
 	
 	
 	public Protein() {
@@ -16,11 +17,12 @@ public class Protein extends ModelClass {
 	}
 	
 
-	public Protein(int pk,String uniprot_id, String swiss_prot_id, String type) {
+	public Protein(int pk,String uniprot_id, String swiss_prot_id, String type, String transcript_id) {
 		super(pk);
 		Uniprot_id = uniprot_id;
 		Swiss_prot_id = swiss_prot_id;
 		Type = type;
+		Transcript_id = transcript_id;
 		
 	}
 
@@ -51,8 +53,17 @@ public class Protein extends ModelClass {
 	public void setType(String type) {
 		this.Type = type;
 	}
-
 	
+	public String getTranscript_id() {
+		return Transcript_id;
+	}
+
+
+	public void setTranscript_id(String transcript_id) {
+		Transcript_id = transcript_id;
+	}
+
+
 	public int checkConflict(Protein protein) {
 		
 		int res = 0;
@@ -77,6 +88,12 @@ public class Protein extends ModelClass {
 			else if (!this.Uniprot_id.equals(protein.Uniprot_id)) return -1;
 		}
 		
+		if (this.Transcript_id !=null) {
+			if (protein.Transcript_id ==null) res++; 
+			else if (!this.Transcript_id.equals(protein.Transcript_id)) return -1;
+		}
+		
+		
 		return res;
 	}
 	
@@ -95,15 +112,19 @@ public class Protein extends ModelClass {
 		if (protein.getSwiss_prot_id() !=null) this.Swiss_prot_id = protein.getSwiss_prot_id();
 		if (protein.getType() !=null) this.Type = protein.getType();
 		if (protein.getUniprot_id()!=null) this.Uniprot_id = protein.getUniprot_id();	
+		if(protein.getTranscript_id() !=null) this.Transcript_id =protein.getTranscript_id();
 	}
-	
+
 
 	@Override
 	public String toString() {
 		return "Protein [Uniprot_id=" + Uniprot_id + ", Swiss_prot_id="
-				+ Swiss_prot_id + ", Type=" + Type + ", pk=" + pk + "]";
+				+ Swiss_prot_id + ", Type=" + Type + ", Transcript_id="
+				+ Transcript_id + ", pk=" + pk + "]";
 	}
+	
 
+	
 
 	
 
