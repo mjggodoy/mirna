@@ -312,7 +312,7 @@ public class TarBase extends MirnaDatabase {
 					.add( Restrictions.eq("name", gene.getName()) )
 					.uniqueResult();
 			if (oldGene==null) {
-				session.save(disease);
+				session.save(gene);
 				session.flush(); // to get the PK
 			} else {
 				Gene geneToUpdate = (Gene) oldGene;
@@ -387,7 +387,7 @@ public class TarBase extends MirnaDatabase {
 			session.save(ed);
 			session.flush();
 			
-			//Instera nueva DataExpression (y la relaciona con MiRna y Disease correspondiente)
+			//Inserta nueva DataExpression (y la relaciona con MiRna y Disease correspondiente)
 			
 			ed2.setMirnaPk(mirna.getPk());
 			ed2.setDiseasePk(disease.getPk());
@@ -397,17 +397,17 @@ public class TarBase extends MirnaDatabase {
 			//TODO: No sé si habría que relacionarlo con interaction data como en el modelo
 			
 			// Inserta nueva InteractionData 
-			// (y la relaciona con el MiRna, target y gene correspondiente)
+			// (y la relaciona con el MiRna, Target, ExpressionData y Gene correspondiente)
 						
 			id.setMirnaPk(mirna.getPk());
 			id.setGenePk(gene.getPk());
 			id.setTargetPk(target.getPk());
+			id.setExpressionDataPk(ed.getPk());
 			session.save(id);
 			session.flush();
 			
-			// Inserta nueva Organism
+			// Inserta nuevo Organism
 			// (y la relaciona con el MiRna y Gene correspondiente)
-			
 			
 			mirna.setOrganismPk(organism.getPk());
 			session.save(mirna);
@@ -415,7 +415,6 @@ public class TarBase extends MirnaDatabase {
 			
 			// Relaciona gene y Organism.
 						
-	
 			gene.setOrganism(organism.getPk());
 			session.save(gene);
 
@@ -424,9 +423,11 @@ public class TarBase extends MirnaDatabase {
 			transcript.setGeneId(gene.getPk());
 			session.save(transcript);
 			
-			//TODO:Relaciona transcript y protein.
+			// Relaciona transcript y protein.
 
-			//protein.setTranscript_id(transcript.getPk());
+			protein.setTranscript_id(transcript.getPk());
+			session.save(protein);
+
 			
 			stmt.close();
 		} catch (SQLException e) {

@@ -62,15 +62,10 @@ public class miRDB extends MirnaDatabase {
 				
 				tokens = StringUtils.splitPreserveAllTokens(line, "\t");
 	
-				
-					
 					String accesionNumber = tokens[0];
 					String target = tokens[1];
 					String score = tokens[2];
 					
-
-					
-
 					String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
 							+ accesionNumber + "','"
 							+ target + "','"
@@ -148,7 +143,6 @@ public class miRDB extends MirnaDatabase {
 			System.out.println(id);
 			System.out.println(target);
 			*/
-			// FIN DE CAMBIAR ESTO
 			
 			// Inserta MiRna (o recupera su id. si ya existe)
 
@@ -163,23 +157,8 @@ public class miRDB extends MirnaDatabase {
 				miRnaToUpdate.update(miRna);
 				session.update(miRnaToUpdate);
 				miRna = miRnaToUpdate;
-			}
-			
-			// Inserta InteractionData (o recupera su id. si ya existe)
+			}			
 		
-			Object oldInteractionData = session.createCriteria(InteractionData.class)
-					.add( Restrictions.eq("id", id.getPk()) )
-					.uniqueResult();
-			if (oldInteractionData==null) {
-				session.save(id);
-				session.flush();  // to get the PK
-			} else {
-				InteractionData interactionDataToUpdate = (InteractionData) oldInteractionData;
-				interactionDataToUpdate.update(id);
-				session.update(interactionDataToUpdate);
-				id = interactionDataToUpdate;
-			}
-			
 			// Inserta Target (o recupera su id. si ya existe)
 
 			Object oldTarget = session.createCriteria(Target.class)
@@ -213,6 +192,7 @@ public class miRDB extends MirnaDatabase {
 			stmt.close();
 			}
 		} catch (SQLException e) {
+			tx.rollback();
 			e.printStackTrace();
 		} finally {
 			if (con!=null) con.close();

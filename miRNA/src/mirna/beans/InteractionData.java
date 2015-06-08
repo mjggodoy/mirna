@@ -309,14 +309,12 @@ public class InteractionData extends ModelClass {
 		}
 		
 		if(this.genePk != null){
-			
 			if(id.genePk==null) res++;
 			else if(!this.targetPk.equals(id.genePk)) return -1;
 			
 		}
 		
 		if(this.expressionDataPk != null){
-			
 			if(id.getExpressionDataPk()==null) res++;
 			else if(!this.expressionDataPk.equals(id.expressionDataPk)) return -1;
 			

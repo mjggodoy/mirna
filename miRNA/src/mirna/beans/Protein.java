@@ -7,7 +7,7 @@ public class Protein extends ModelClass {
 	private String Uniprot_id;
 	private String Swiss_prot_id;
 	private String Type;
-	private String Transcript_id;
+	private Integer Transcript_id;
 	
 	
 	public Protein() {
@@ -17,7 +17,7 @@ public class Protein extends ModelClass {
 	}
 	
 
-	public Protein(int pk,String uniprot_id, String swiss_prot_id, String type, String transcript_id) {
+	public Protein(int pk,String uniprot_id, String swiss_prot_id, String type, Integer transcript_id) {
 		super(pk);
 		Uniprot_id = uniprot_id;
 		Swiss_prot_id = swiss_prot_id;
@@ -54,12 +54,13 @@ public class Protein extends ModelClass {
 		this.Type = type;
 	}
 	
-	public String getTranscript_id() {
+
+	public Integer getTranscript_id() {
 		return Transcript_id;
 	}
 
 
-	public void setTranscript_id(String transcript_id) {
+	public void setTranscript_id(Integer transcript_id) {
 		Transcript_id = transcript_id;
 	}
 
@@ -122,17 +123,5 @@ public class Protein extends ModelClass {
 				+ Swiss_prot_id + ", Type=" + Type + ", Transcript_id="
 				+ Transcript_id + ", pk=" + pk + "]";
 	}
-	
-
-	
-
-	
-
-
-
-
-
-
-
 
 }
