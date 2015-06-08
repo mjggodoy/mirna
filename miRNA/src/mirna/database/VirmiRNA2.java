@@ -294,15 +294,15 @@ public class VirmiRNA2 extends VirmiRNA {
 				biologicalprocess = biologicalProcessToUpdate;
 			}
 			
-			// Relaciona expression data con mirna  (o recupera su id. si ya existe)
+			// Relaciona expression data con mirna e interactiondata (o recupera su id. si ya existe)
 			
 			expressiondata.setMirnaPk(mirna.getPk());
+			expressiondata.setInteractionData_pk(interactiondata.getPk());
 			session.save(expressiondata);
 
 			
-			// Relaciona interactionData con ExpressionData y Target (o recupera su id. si ya existe)
+			// Relaciona interactionData con Target (o recupera su id. si ya existe)
 			
-			interactiondata.setExpressionDataPk(expressiondata.getPk());
 			interactiondata.setTargetPk(target.getTargetPk());
 			session.save(interactiondata);
 			

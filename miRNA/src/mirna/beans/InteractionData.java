@@ -362,9 +362,14 @@ public class InteractionData extends ModelClass {
 				+ reference + ", pubmedId=" + pubmedId + ", cellularLine="
 				+ cellularLine + ", pvalue_og=" + pvalue_og + ", type=" + type
 				+ ", description=" + description + ", algorithm=" + algorithm
-				+ ", mirnaPk=" + mirnaPk + ", targetPk=" + targetPk + ", pk="
-				+ pk + "]";
+				+ ", mirnaPk=" + mirnaPk + ", targetPk=" + targetPk
+				+ ", genePk=" + genePk + ", expressionDataPk="
+				+ expressionDataPk + ", pk=" + pk + "]";
 	}
+
+
+
+	
 
 }
 

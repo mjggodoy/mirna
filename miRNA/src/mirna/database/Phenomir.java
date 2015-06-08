@@ -218,7 +218,6 @@ public class Phenomir extends MirnaDatabase {
 				
 				ExpressionData ed = new ExpressionData();
 				ed.setProvenanceId(phenomicid);
-
 				ed.setEvidence(evidence);
 				ed.setFoldchangeMin(foldchangemin);
 				ed.setFoldchangeMax(foldchangemax);
