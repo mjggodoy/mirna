@@ -1,5 +1,7 @@
 package mirna.beans;
 
+import mirna.exception.ConflictException;
+
 public class SNP extends Mutation {
 	
 	protected String SNPid;
@@ -41,6 +43,32 @@ public class SNP extends Mutation {
 		this.position = position;
 	}
 
+	public void update(SNP snp) throws ConflictException {
+		this.update(snp, true);
+	}
+	
+	public void update(SNP snp, boolean checkConflict)
+			throws ConflictException {
+		if (checkConflict) {
+			if (this.checkConflict(snp) == -1)
+				throw new ConflictException(this, snp);
+		}
+		if (snp.getPk() != null)
+			this.pk = snp.getPk();
+	}
+	
+	public int checkConflict(SNP snp) {
+		int res = 0;
+		if (this.pk != null) {
+			if (snp.getPk() == null)
+				res++;
+			else if (!this.pk.equals(snp.getPk()))
+				return -1;
+		}
+		
+		return res;
+	}
+	
 
 	@Override
 	public String toString() {

@@ -8,12 +8,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
+
 import mirna.beans.Disease;
 import mirna.beans.ExpressionData;
 import mirna.beans.Gene;
 import mirna.beans.MiRna;
 import mirna.beans.SNP;
 import mirna.exception.MiRnaException;
+import mirna.utils.HibernateUtil;
 
 /**
  * Código para procesar los datos de miRdSNP
@@ -103,6 +108,10 @@ public class miRdSNP1 extends miRdSNP {
 	public void insertIntoSQLModel() throws Exception {
 
 		Connection con = null;
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction tx = session.beginTransaction();
+
+
 		
 		try {
 			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
@@ -131,11 +140,8 @@ public class miRdSNP1 extends miRdSNP {
 			String disease_name = rs.getString("disease").toLowerCase().trim();
 			String resource = rs.getString("link").toLowerCase().trim();
 
-			
 			Disease disease = new Disease();
 			disease.setName(disease_name);
-			
-			
 			
 			SNP snp = new SNP();
 			snp.setSNPid(snp_id);
@@ -146,9 +152,37 @@ public class miRdSNP1 extends miRdSNP {
 			snp.setDescription(description);
 			
 			
-			System.out.println(disease);
-			System.out.println(snp);
+			/*System.out.println(disease);
+			System.out.println(snp);*/
 
+			
+			// Inserta Disease (o recupera su id. si ya existe)
+
+			Object oldDisease = session.createCriteria(Disease.class)
+					.add( Restrictions.eq("name", disease.getName()) )
+					.uniqueResult();
+			if (oldDisease==null) {
+				session.save(disease);
+				session.flush();  // to get the PK
+			} else {
+				Disease diseaseToUpdate = (Disease) oldDisease;
+				diseaseToUpdate.update(disease);
+				session.update(diseaseToUpdate);
+				disease = diseaseToUpdate;
+			}
+			
+			Object oldSnp = session.createCriteria(SNP.class)
+					.add( Restrictions.eq("name", snp.getSNPid()) )
+					.uniqueResult();
+			if (oldSnp==null) {
+				session.save(snp);
+				session.flush();  // to get the PK
+			} else {
+				SNP snptoUpdate = (SNP) oldSnp;
+				snptoUpdate.update(snp); //incluir el update en la clase SNP
+				session.update(snptoUpdate);
+				snp = snptoUpdate;
+			}
 			
 			// FIN DE CAMBIAR ESTO
 			

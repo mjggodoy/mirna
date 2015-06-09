@@ -13,7 +13,7 @@ public class HibernateMain {
 	public static void main(String[] args) {
 		
 		 //Get Session
-        SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();// He cambiado de Annotation a SessionFactory method. Me daba error.,
         Session session = sessionFactory.getCurrentSession();
 
 		
