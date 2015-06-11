@@ -184,10 +184,14 @@ public class miRdSNP1 extends miRdSNP {
 				snp = snptoUpdate;
 			}
 			
-			// FIN DE CAMBIAR ESTO
+			// Relaciona SNP y Disease
 			
+			snp.setDisease_id(disease.getPk());
+			session.save(snp);
+			session.flush();			
 			stmt.close();
 		} catch (SQLException e) {
+			tx.rollback();
 			e.printStackTrace();
 		} finally {
 			if (con!=null) con.close();
