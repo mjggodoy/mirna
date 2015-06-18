@@ -130,9 +130,9 @@ public class miRdSNP5 extends miRdSNP {
 			snp.setPosition(position);
 			snp.setOrientation(orientation);
 			
-			System.out.println(disease);
+			/*System.out.println(disease);
 			System.out.println(snp);
-			
+			*/
 			
 			// FIN DE CAMBIAR ESTO
 			

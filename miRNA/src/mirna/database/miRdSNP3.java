@@ -159,10 +159,10 @@ public class miRdSNP3 extends miRdSNP {
 			Mutation mutation = new Mutation();
 			mutation.setDistance(distance);
 			
-			System.out.println(disease);
+			/*System.out.println(disease);
 			System.out.println(gene);
 			System.out.println(mirna);
-			System.out.println(snp);
+			System.out.println(snp);*/
 
 			// FIN DE CAMBIAR ESTO
 			

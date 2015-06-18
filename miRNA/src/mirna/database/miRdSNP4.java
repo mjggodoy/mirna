@@ -147,11 +147,11 @@ public class miRdSNP4 extends miRdSNP {
 			snp.setSNPid(snp_id);
 			snp.setDistance(distance);
 			
-			System.out.println(disease);
+			/*System.out.println(disease);
 			System.out.println(gene);
 			System.out.println(mirna);
 			System.out.println(snp);
-
+*/
 			
 			// FIN DE CAMBIAR ESTO
 			

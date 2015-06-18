@@ -11,13 +11,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mirna.beans.Disease;
-import mirna.beans.ExpressionData;
 import mirna.beans.Gene;
+import mirna.beans.InteractionData;
 import mirna.beans.MiRna;
 import mirna.beans.SNP;
 import mirna.exception.MiRnaException;
+import mirna.utils.HibernateUtil;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 /**
  * Código para procesar los datos de Phenomir
@@ -101,6 +104,8 @@ public class miRdSNP2 extends miRdSNP {
 	public void insertIntoSQLModel() throws Exception {
 
 		Connection con = null;
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction tx = session.beginTransaction();
 		
 		try {
 			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
@@ -119,12 +124,6 @@ public class miRdSNP2 extends miRdSNP {
 
 
 			rs.next();
-			rs.next();
-
-			
-			
-
-			
 			// CAMBIAR ESTO:
 			
 			String ref_seq = rs.getString("refseq").toLowerCase().trim();
@@ -144,8 +143,8 @@ public class miRdSNP2 extends miRdSNP {
 			MiRna mirna = new MiRna();
 			mirna.setName(mirna_name);
 			
-			
-			
+			InteractionData id = new InteractionData();
+
 			String[] snpTokens = StringUtils.splitPreserveAllTokens(snp_id, "|");
 			
 			List<SNP> snpList = new ArrayList<SNP>();
@@ -158,17 +157,20 @@ public class miRdSNP2 extends miRdSNP {
 			}
 			
 			
-			System.out.println(disease);
 						
 			for (SNP snp : snpList) {
+				
 				System.out.println(snp);
+				snp.setDisease_id(disease.getPk());
+				snp.setGene_id(gene.getPk());
+				session.save(snp);
+				
 			}
-			System.out.println(gene);
-			System.out.println(mirna);
-
-
 			
-			// FIN DE CAMBIAR ESTO
+			id.setMirnaPk(mirna.getPk());
+			session.save(id);
+			
+		
 			
 			stmt.close();
 		} catch (SQLException e) {

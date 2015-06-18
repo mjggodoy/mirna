@@ -13,9 +13,6 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
 import mirna.beans.Disease;
-import mirna.beans.ExpressionData;
-import mirna.beans.Gene;
-import mirna.beans.MiRna;
 import mirna.beans.SNP;
 import mirna.exception.MiRnaException;
 import mirna.utils.HibernateUtil;
@@ -152,6 +149,7 @@ public class miRdSNP1 extends miRdSNP {
 			snp.setDescription(description);
 			
 			
+			
 			/*System.out.println(disease);
 			System.out.println(snp);*/
 
@@ -188,7 +186,10 @@ public class miRdSNP1 extends miRdSNP {
 			
 			snp.setDisease_id(disease.getPk());
 			session.save(snp);
-			session.flush();			
+			session.flush();
+			
+			
+			
 			stmt.close();
 		} catch (SQLException e) {
 			tx.rollback();

@@ -124,6 +124,8 @@ public class SNP extends Mutation {
 		}
 		
 		
+		
+		
 		return res;
 	}
 
