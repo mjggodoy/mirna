@@ -124,7 +124,9 @@ public class miRDB extends MirnaDatabase {
 			int count = 0;
 
 
-			while (rs.next()){// antes estaba para que s�lo se hiciera una vez, en forma de condici�n
+			if (rs.next()){
+				
+			//Cambiar esto
 			
 			String miRNA = rs.getString("mir");
 			String target_name = rs.getString("target");

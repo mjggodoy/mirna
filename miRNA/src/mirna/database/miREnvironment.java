@@ -133,8 +133,8 @@ public class miREnvironment extends MirnaDatabase {
 			
 			// iterate through the java resultset
 			int count = 0;
-			while (rs.next()) {
-
+			if (rs.next()) {
+			// CAMBIAR ESTO
 			
 			String id = rs.getString("mir");
 			String name = rs.getString("name");

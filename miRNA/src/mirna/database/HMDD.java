@@ -118,7 +118,7 @@ public class HMDD extends MirnaDatabase {
 			
 			// iterate through the java resultset
 			int count = 0;
-			while (rs.next()) {
+			if (rs.next()) {
 				
 				String id = rs.getString("id");
 				String mir = rs.getString("mir").trim();

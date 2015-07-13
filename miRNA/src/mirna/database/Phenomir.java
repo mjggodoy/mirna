@@ -180,7 +180,8 @@ public class Phenomir extends MirnaDatabase {
 			
 			// iterate through the java resultset
 			int count = 0;
-			while (rs.next()) {
+			if (rs.next()) {
+				//CMABIAR ESTO
 				
 				String phenomicid = rs.getString("phenomicid");
 				String pmid = rs.getString("pmid");
