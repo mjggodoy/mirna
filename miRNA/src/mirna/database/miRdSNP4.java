@@ -8,12 +8,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
+
 import mirna.beans.Disease;
 import mirna.beans.ExpressionData;
 import mirna.beans.Gene;
+import mirna.beans.InteractionData;
 import mirna.beans.MiRna;
 import mirna.beans.SNP;
 import mirna.exception.MiRnaException;
+import mirna.utils.HibernateUtil;
 
 /**
  * Código para procesar los datos de Phenomir
@@ -105,6 +111,9 @@ public class miRdSNP4 extends miRdSNP {
 	public void insertIntoSQLModel() throws Exception {
 
 		Connection con = null;
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction tx = session.beginTransaction();
+
 		
 		try {
 			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
@@ -131,7 +140,7 @@ public class miRdSNP4 extends miRdSNP {
 			String snp_id = rs.getString("snp").toLowerCase().trim();
 			String disease_name = rs.getString("diseases").toLowerCase().trim();
 			String distance = rs.getString("distance").toLowerCase().trim();
-			String exp_config = rs.getString("expConf").toLowerCase().trim();
+			String exp_config = rs.getString("expConf").toLowerCase().trim(); //This database field is not to be used.
 			
 			Gene gene = new Gene();
 			gene.setName(gene_name);
@@ -147,16 +156,74 @@ public class miRdSNP4 extends miRdSNP {
 			snp.setSNPid(snp_id);
 			snp.setDistance(distance);
 			
-			/*System.out.println(disease);
-			System.out.println(gene);
-			System.out.println(mirna);
-			System.out.println(snp);
-*/
+			InteractionData id = new InteractionData();
 			
-			// FIN DE CAMBIAR ESTO
+			Object oldGene = session.createCriteria(Gene.class)
+					.add( Restrictions.eq("name", gene.getName()) )
+					.uniqueResult();
+			if (oldGene==null) {
+				session.save(gene);
+				session.flush();  // to get the PK
+			} else {
+				Gene geneToUpdate = (Gene) oldGene;
+				geneToUpdate.update(gene);
+				session.update(geneToUpdate);
+				gene = geneToUpdate;
+			}
+			
+			Object oldDisease = session.createCriteria(Disease.class)
+					.add( Restrictions.eq("name", disease.getName()) )
+					.uniqueResult();
+			if (oldDisease==null) {
+				session.save(disease);
+				session.flush();  // to get the PK
+			} else {
+				Disease diseaseToUpdate = (Disease) oldDisease;
+				diseaseToUpdate.update(disease);
+				session.update(diseaseToUpdate);
+				disease = diseaseToUpdate;
+			}
+			
+			Object oldMiRna = session.createCriteria(MiRna.class)
+					.add( Restrictions.eq("name", mirna.getName()) )
+					.uniqueResult();
+			if (oldMiRna==null) {
+				session.save(mirna);
+				session.flush();  // to get the PK
+			} else {
+				
+				MiRna mirnaToUpdate = (MiRna) oldMiRna;
+				mirnaToUpdate.update(mirna);
+				session.update(mirnaToUpdate);
+				mirna = mirnaToUpdate;
+			}
+			
+			Object oldSnp = session.createCriteria(SNP.class)
+					.add( Restrictions.eq("name", snp.getSNPid()))
+					.uniqueResult();
+			if (oldSnp==null) {
+				session.save(snp);
+				session.flush();  // to get the PK
+			} else {
+				SNP snpToUpdate = (SNP) oldSnp;
+				snpToUpdate.update(snp);
+				session.update(snpToUpdate);
+				snp = snpToUpdate;
+			}
+			
+			// Relaciona SNP y Disease
+			
+			snp.setDisease_id(disease.getPk());
+			snp.setGene_id(gene.getPk());
+			
+			// Relaciona interaction data con mirna.
+			
+			id.setMirnaPk(mirna.getPk());
+			session.save(id);
 			
 			stmt.close();
 		} catch (SQLException e) {
+			tx.rollback();
 			e.printStackTrace();
 		} finally {
 			if (con!=null) con.close();

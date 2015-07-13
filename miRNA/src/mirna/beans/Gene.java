@@ -22,6 +22,7 @@ public class Gene extends ModelClass {
 	private String pubmedId;
 	private String journal;
 	private Integer organism;
+	private Integer transcript_id;
 
 	public Gene() {
 
@@ -32,7 +33,7 @@ public class Gene extends ModelClass {
 			String geneId, String description, String year, String resource,
 			String start_strand, String end_strand, String hgnc_symbol,
 			String location, String expression_site, String kegg_id,
-			String arm, String distance, String journal, String isoform, Integer Organism) {
+			String arm, String distance, String journal, String isoform, Integer Organism, Integer transcript_id) {
 		super(pk);
 		this.name = name;
 		this.chromosome = chromosome;
@@ -51,6 +52,7 @@ public class Gene extends ModelClass {
 		this.distance = distance;
 		this.journal = journal;
 		this.organism = organism;
+		this.transcript_id = transcript_id;
 	}
 
 	public String getDistance() {
@@ -196,6 +198,15 @@ public class Gene extends ModelClass {
 	public void setOrganism(Integer organism) {
 		this.organism = organism;
 	}
+	
+
+	public Integer getTranscript_id() {
+		return transcript_id;
+	}
+
+	public void setTranscript_id(Integer transcript_id) {
+		this.transcript_id = transcript_id;
+	}
 
 	public int checkConflict(Gene gene) {
 		int res = 0;
@@ -315,6 +326,13 @@ public class Gene extends ModelClass {
 				return -1;
 		}
 		
+		if (this.transcript_id != null) {
+			if (gene.getTranscript_id()  == null)
+				res++;
+			else if (!this.transcript_id.equals(gene.getTranscript_id()))
+				return -1;
+		}
+		
 
 		return res;
 	}
@@ -361,6 +379,9 @@ public class Gene extends ModelClass {
 			this.distance = gene.getDistance();
 		if (gene.getJournal() != null)
 			this.journal = gene.getJournal();
+		if (gene.getTranscript_id() != null)
+			this.transcript_id = gene.getTranscript_id();
+	
 	}
 
 	@Override
@@ -373,6 +394,10 @@ public class Gene extends ModelClass {
 				+ ", location=" + location + ", expression_site="
 				+ expression_site + ", kegg_id=" + kegg_id + ", arm=" + arm
 				+ ", distance=" + distance + ", pubmedId=" + pubmedId
-				+ ", journal=" + journal + ", pk=" + pk + "]";
+				+ ", journal=" + journal + ", organism=" + organism
+				+ ", transcript_id=" + transcript_id + "]";
 	}
+	
+
+	
 }

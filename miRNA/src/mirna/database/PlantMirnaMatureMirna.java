@@ -8,12 +8,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import mirna.beans.InteractionData;
 import mirna.beans.Mature;
 import mirna.beans.MiRna;
 import mirna.beans.Organism;
 import mirna.exception.MiRnaException;
+import mirna.utils.HibernateUtil;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 
 public class PlantMirnaMatureMirna extends MirnaDatabase {
 
@@ -97,6 +102,12 @@ public class PlantMirnaMatureMirna extends MirnaDatabase {
 		
 		Connection con = null;
 		
+		// Get session
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		
+		//start transaction
+		Transaction tx = session.beginTransaction();
+		
 		try {
 			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			Statement stmt = (Statement) con.createStatement();
@@ -131,14 +142,71 @@ public class PlantMirnaMatureMirna extends MirnaDatabase {
 			Mature mature = new Mature();
 			mature.setSequence(sequence);
 			
-			System.out.println(miRna);
-			System.out.println(organism);
-			System.out.println(mature);
+			InteractionData id = new InteractionData();
 			
-			// FIN DE CAMBIAR ESTO
+			//System.out.println(miRna);
+			//System.out.println(organism);
+			//System.out.println(mature);
 			
+			
+			// Inserta MiRna (o recupera su id. si ya existe)
+			Object oldMiRna = session.createCriteria(MiRna.class)
+					.add( Restrictions.eq("name", miRna.getName()) )
+					.uniqueResult();
+			if (oldMiRna==null) {
+				session.save(miRna);
+				session.flush();  // to get the PK
+			} else {
+				MiRna miRnaToUpdate = (MiRna) oldMiRna;
+				miRnaToUpdate.update(miRna);
+				session.update(miRnaToUpdate);
+				miRna = miRnaToUpdate;
+			}
+			
+			// Inserta Organism (o recupera su id. si ya existe)
+			
+			Object oldOrganism = session.createCriteria(Organism.class)
+					.add( Restrictions.eq("name", organism.getName()) )
+					.uniqueResult();
+			if (oldOrganism==null) {
+				session.save(organism);
+				session.flush();  // to get the PK
+			} else {
+				Organism organismToUpdate = (Organism) oldMiRna;
+				organismToUpdate.update(organism);
+				session.update(organismToUpdate);
+				organism = organismToUpdate;
+			}
+	
+			// Inserta Mature (o recupera su id. si ya existe)
+			Object oldMature = session.createCriteria(Mature.class)
+					.add( Restrictions.eq("name", mature.getName()) )
+					.uniqueResult();
+			if (oldMature==null) {
+				session.save(mature);
+				session.flush();  // to get the PK
+			} else {
+				Mature matureToUpdate = (Mature) oldMiRna;
+				matureToUpdate.update(mature);
+				session.update(matureToUpdate);
+				mature = matureToUpdate;
+			}
+			
+			//Relaciona miRNA y organism
+			
+			miRna.setOrganismPk(organism.getPk());
+			
+			//Relaciona miRNA y mature
+			
+			miRna.setMaturePk(mature.getPk());
+			
+			// Relaciona interaction data con mirna
+			
+			id.setMirnaPk(miRna.getPk());
+	
 			stmt.close();
 		} catch (SQLException e) {
+			tx.rollback();
 			e.printStackTrace();
 		} finally {
 			if (con!=null) con.close();

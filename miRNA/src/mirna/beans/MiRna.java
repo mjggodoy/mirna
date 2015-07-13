@@ -51,7 +51,8 @@ public class MiRna extends ModelClass {
 //	private String title_reference;//ok
 //	private String year;
 	
-	private Integer hairpinPk;
+	private Integer hairpinPk; // He inclu’do estos dos atributos dado
+	private Integer maturePk;
 	
 	public MiRna() {}
 	
@@ -118,6 +119,14 @@ public class MiRna extends ModelClass {
 	public void setHairpinPk(Integer hairpinPk) {
 		this.hairpinPk = hairpinPk;
 	}
+	
+	public Integer getMaturePk() {
+		return hairpinPk;
+	}
+
+	public void setMaturePk(Integer hairpinPk) {
+		this.hairpinPk = hairpinPk;
+	}
 
 	public int checkConflict(MiRna mirna) {
 		int res = 0;
@@ -182,6 +191,7 @@ public class MiRna extends ModelClass {
 		if (mirna.getGC_proportion()!=null) this.GC_proportion = mirna.getGC_proportion();
 		if (mirna.getOrganismPk()!=null) this.organismPk = mirna.getOrganismPk();
 		if (mirna.getHairpinPk()!=null) this.hairpinPk = mirna.getHairpinPk();
+		if (mirna.getMaturePk()!=null) this.maturePk = mirna.getMaturePk();
 
 		
 	}
@@ -191,8 +201,11 @@ public class MiRna extends ModelClass {
 		return "MiRna [name=" + name + ", accessionNumber=" + accessionNumber
 				+ ", sequence=" + sequence + ", resource=" + resource
 				+ ", length=" + length + ", GC_proportion=" + GC_proportion
-				+ ", organismPk=" + organismPk + "]";
+				+ ", organismPk=" + organismPk + ", hairpinPk=" + hairpinPk
+				+ ", maturePk=" + maturePk + ", pk=" + pk + "]";
 	}
+
+	
 
 	
 

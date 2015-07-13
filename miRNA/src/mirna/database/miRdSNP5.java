@@ -11,8 +11,11 @@ import java.sql.Statement;
 import mirna.beans.Disease;
 import mirna.beans.SNP;
 import mirna.exception.MiRnaException;
+import mirna.utils.HibernateUtil;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 /**
  * Código para procesar los datos de Phenomir
@@ -94,6 +97,8 @@ public class miRdSNP5 extends miRdSNP {
 	public void insertIntoSQLModel() throws Exception {
 
 		Connection con = null;
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction tx = session.beginTransaction();
 		
 		try {
 			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
@@ -130,14 +135,16 @@ public class miRdSNP5 extends miRdSNP {
 			snp.setPosition(position);
 			snp.setOrientation(orientation);
 			
-			/*System.out.println(disease);
-			System.out.println(snp);
-			*/
 			
-			// FIN DE CAMBIAR ESTO
+			// Relaciona SNP y Disease
 			
+			snp.setDisease_id(disease.getPk());
+			session.save(snp);
+			session.flush();
+						
 			stmt.close();
 		} catch (SQLException e) {
+			tx.rollback();
 			e.printStackTrace();
 		} finally {
 			if (con!=null) con.close();

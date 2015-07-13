@@ -21,6 +21,7 @@ import mirna.utils.HibernateUtil;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 
 /**
  * Código para procesar los datos de Phenomir
@@ -156,24 +157,64 @@ public class miRdSNP2 extends miRdSNP {
 				snpList.add(snp);
 			}
 			
+			Object oldDisease = session.createCriteria(Disease.class)
+					.add( Restrictions.eq("name", disease.getName()) )
+					.uniqueResult();
+			if (oldDisease==null) {
+				session.save(disease);
+				session.flush();  // to get the PK
+			} else {
+				Disease diseaseToUpdate = (Disease) oldDisease;
+				diseaseToUpdate.update(disease);
+				session.update(diseaseToUpdate);
+				disease = diseaseToUpdate;
+			}
 			
-						
+			Object oldGene = session.createCriteria(Gene.class)
+					.add( Restrictions.eq("name", gene.getName()) )
+					.uniqueResult();
+			if (oldGene==null) {
+				session.save(gene);
+				session.flush();  // to get the PK
+			} else {
+				Gene geneToUpdate = (Gene) oldGene;
+				geneToUpdate.update(gene);
+				session.update(geneToUpdate);
+				gene = geneToUpdate;
+			}
+			
+			Object oldMiRna = session.createCriteria(MiRna.class)
+					.add( Restrictions.eq("name", mirna.getName()) )
+					.uniqueResult();
+			if (oldMiRna==null) {
+				session.save(mirna);
+				session.flush();  // to get the PK
+			} else {
+				MiRna miRnaToUpdate = (MiRna) oldDisease;
+				miRnaToUpdate.update(mirna);
+				session.update(miRnaToUpdate);
+				mirna = miRnaToUpdate;
+			}
+			
+			// Relaciona SNP y Disease
+			// Relaciona SNP y Gene_id
+			
 			for (SNP snp : snpList) {
 				
 				System.out.println(snp);
 				snp.setDisease_id(disease.getPk());
 				snp.setGene_id(gene.getPk());
-				session.save(snp);
-				
+				session.save(snp);	
 			}
+			
+			// Relaciona interaction data con mirna.
 			
 			id.setMirnaPk(mirna.getPk());
 			session.save(id);
 			
-		
-			
 			stmt.close();
 		} catch (SQLException e) {
+			tx.rollback();
 			e.printStackTrace();
 		} finally {
 			if (con!=null) con.close();

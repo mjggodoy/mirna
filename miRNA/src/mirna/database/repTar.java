@@ -15,8 +15,12 @@ import mirna.beans.MiRna;
 import mirna.beans.Target;
 import mirna.beans.Transcript;
 import mirna.exception.MiRnaException;
+import mirna.utils.HibernateUtil;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 
 public class repTar extends MirnaDatabase {
 	
@@ -142,6 +146,12 @@ public class repTar extends MirnaDatabase {
 		
 		Connection con = null;
 		
+		// Get session
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		
+		//start transaction
+		Transaction tx = session.beginTransaction();
+		
 		try {
 			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			Statement stmt = (Statement) con.createStatement();
@@ -200,16 +210,78 @@ public class repTar extends MirnaDatabase {
 			id.setAlgorithm(algorithm);
 			id.setProvenance("repTar");
 		
-			System.out.println(miRna);
+			/*System.out.println(miRna);
 			System.out.println(gene);
 			System.out.println(target);
 			System.out.println(complex);
-			System.out.println(id);
+			System.out.println(id);*/
 			
-			// FIN DE CAMBIAR ESTO
+			
+			Object oldMiRna = session.createCriteria(MiRna.class)
+					.add( Restrictions.eq("name", miRna.getName()) )
+					.uniqueResult();
+			if (oldMiRna==null) {
+				session.save(miRna);
+				session.flush();  // to get the PK
+			} else {
+				MiRna miRnaToUpdate = (MiRna) oldMiRna;
+				miRnaToUpdate.update(miRna);
+				session.update(miRnaToUpdate);
+				miRna = miRnaToUpdate;
+			}
+			
+			Object oldGene = session.createCriteria(Gene.class)
+					.add( Restrictions.eq("name", gene.getName()) )
+					.uniqueResult();
+			if (oldGene==null) {
+				session.save(gene);
+				session.flush();  // to get the PK
+			} else {
+				Gene geneToUpdate = (Gene) oldMiRna;
+				geneToUpdate.update(gene);
+				session.update(geneToUpdate);
+				gene = geneToUpdate;
+			}
+			
+			Object oldTarget = session.createCriteria(Target.class)
+					.add( Restrictions.eq("name", target.getName()) )
+					.uniqueResult();
+			if (oldTarget==null) {
+				session.save(target);
+				session.flush();  // to get the PK
+			} else {
+				Target targetToUpdate = (Target) oldTarget;
+				targetToUpdate.update(target);
+				session.update(targetToUpdate);
+				target = targetToUpdate;
+			}
+			
+			Object oldComplex = session.createCriteria(Complex.class)
+					.add( Restrictions.eq("name", complex.getPk()) )// No estoy segura del getPk() aqu’ para complex.
+					.uniqueResult();
+			if (oldComplex==null) {
+				session.save(complex);
+				session.flush();  // to get the PK
+			} else {
+				Complex complexToUpdate = (Complex) oldComplex;
+				complexToUpdate.update(complex);
+				session.update(complexToUpdate);
+				complex = complexToUpdate;
+			}
+			
+			// Relaciona interaction data con mirna
+			
+			id.setMirnaPk(miRna.getPk());
+			id.setTargetPk(target.getPk());
+			id.setComplexPk(complex.getPk());
+			
+			//Relaciona gene y transcript
+			
+			gene.setTranscript_id(target.getPk());
 			
 			stmt.close();
 		} catch (SQLException e) {
+			tx.rollback();
 			e.printStackTrace();
 		} finally {
 			if (con!=null) con.close();

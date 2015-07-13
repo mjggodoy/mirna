@@ -40,11 +40,5 @@ public class Mature extends MiRna {
 				+ ", name=" + name + ", sequence=" + sequence + ", pk=" + pk
 				+ "]";
 	}
-
-	
-	
-	
-	
-	
 	
 }

@@ -24,6 +24,7 @@ public class InteractionData extends ModelClass {
 	private Integer targetPk;
 	private Integer genePk;
 	private Integer expressionDataPk;
+	private Integer complexPk;
 
 	
 	public InteractionData() {
@@ -31,12 +32,11 @@ public class InteractionData extends ModelClass {
 	}
 	
 
-
 	public InteractionData(int pk,String score, String pvalue_log, String miTG_score,
 			String method, String feature, String phase, String rank,
 			String provenance, String reference, String pubmedId,
 			String cellularLine, String pvalue_og, String type, String description, String algorithm,
-			int mirnaPk, int targetPk, int genePk, int expressionDataPk) {
+			int mirnaPk, int targetPk, int genePk, int expressionDataPk, int complexPk) {
 		super(pk);
 		this.score = score;
 		this.pvalue_log = pvalue_log;
@@ -57,6 +57,7 @@ public class InteractionData extends ModelClass {
 		this.targetPk = targetPk;
 		this.genePk = genePk;
 		this.expressionDataPk = expressionDataPk;
+		this.complexPk = complexPk; // A–adido
 	}
 	
 	public String getDescription() {
@@ -214,6 +215,15 @@ public class InteractionData extends ModelClass {
 		this.expressionDataPk = expressionDataPk;
 	}
 
+	
+	public Integer getComplexPk() {
+		return complexPk;
+	}
+
+	public void setComplexPk(Integer complexPk) {
+		this.complexPk = complexPk;
+	}
+
 
 
 	public int checkConflict(InteractionData id) {
@@ -320,6 +330,12 @@ public class InteractionData extends ModelClass {
 			
 		}
 		
+		if(this.complexPk != null){
+			if(id.getComplexPk()==null) res++;
+			else if(!this.complexPk.equals(id.complexPk)) return -1;
+			
+		}
+		
 		return res;
 	}
 	
@@ -348,10 +364,8 @@ public class InteractionData extends ModelClass {
 		if (id.getMiTG_score()!=null) this.miTG_score = id.getCellularLine();
 		if (id.getProvenance()!=null) this.provenance = id.getProvenance();
 		if(id.getExpressionDataPk() != null) this.expressionDataPk = id.getExpressionDataPk();
-
+		if(id.getComplexPk() != null) this.complexPk = id.getComplexPk();
 	}
-
-
 
 	@Override
 	public String toString() {
@@ -364,8 +378,9 @@ public class InteractionData extends ModelClass {
 				+ ", description=" + description + ", algorithm=" + algorithm
 				+ ", mirnaPk=" + mirnaPk + ", targetPk=" + targetPk
 				+ ", genePk=" + genePk + ", expressionDataPk="
-				+ expressionDataPk + ", pk=" + pk + "]";
+				+ expressionDataPk + ", complexPk=" + complexPk + "]";
 	}
+
 
 
 

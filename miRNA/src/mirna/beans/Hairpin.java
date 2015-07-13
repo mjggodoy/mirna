@@ -17,14 +17,11 @@ public class Hairpin extends MiRna {
 		this.name = name;
 		this.sequence = sequence;
 	}
-
+	
+	
 	@Override
 	public String toString() {
 		return "Hairpin [name=" + name + ", sequence=" + sequence + ", pk="
 				+ pk + "]";
 	}
-
-	
-	
-
 }
