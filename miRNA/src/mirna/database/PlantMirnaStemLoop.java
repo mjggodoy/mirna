@@ -125,9 +125,7 @@ public class PlantMirnaStemLoop extends MirnaDatabase {
 			ResultSet rs = stmt.executeQuery(query);
 			
 			// iterate through the java resultset
-			//int count = 0;
-
-
+			int count = 0;
 			rs.next();
 			// CAMBIAR ESTO:
 			
@@ -207,6 +205,13 @@ public class PlantMirnaStemLoop extends MirnaDatabase {
 			// Relaciona interaction data con mirna
 			
 			id.setMirnaPk(miRna.getPk());
+			
+			count++;
+			if (count%100==0) {
+				System.out.println(count);
+				session.flush();
+		        session.clear();
+			}
 			
 			stmt.close();
 		} catch (SQLException e) {

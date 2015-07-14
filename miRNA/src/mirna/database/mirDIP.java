@@ -115,9 +115,7 @@ public class mirDIP extends MirnaDatabase {
 			ResultSet rs = stmt.executeQuery(query);
 			
 			// iterate through the java resultset
-			//int count = 0;
-
-
+			int count = 0;
 			rs.next();
 			// CAMBIAR ESTO:
 			

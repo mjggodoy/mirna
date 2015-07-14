@@ -127,9 +127,7 @@ public class VirmiRNA1 extends VirmiRNA{
 			ResultSet rs = stmt.executeQuery(query);
 			
 			// iterate through the java resultset
-			//int count = 0;
-
-
+			int count = 0;
 			rs.next();
 			// CAMBIAR ESTO:
 			
@@ -278,6 +276,13 @@ public class VirmiRNA1 extends VirmiRNA{
 			
 			// Relaciona PubmedDocument con ExpressionData
 			session.save(expresDataHasPubmedDocument);
+			
+			count++;
+			if (count%100==0) {
+				System.out.println(count);
+				session.flush();
+		        session.clear();
+			}
 
 			stmt.close();
 		} catch (SQLException e) {

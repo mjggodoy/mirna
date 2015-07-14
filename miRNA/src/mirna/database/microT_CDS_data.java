@@ -141,7 +141,7 @@ public class microT_CDS_data extends MirnaDatabase {
 			ResultSet rs = stmt.executeQuery(query);
 
 			// iterate through the java resultset
-			// int count = 0;
+			int count = 0;
 
 			rs.next();
 			rs.next();
@@ -253,6 +253,13 @@ public class microT_CDS_data extends MirnaDatabase {
 				target.setTranscriptPk(transcript.getPk());
 				session.save(target);
 				//TODO: session.flush()
+				
+				count++;
+				if (count%100==0) {
+					System.out.println(count);
+					session.flush();
+			        session.clear();
+				}
 
 			stmt.close();
 		} catch (SQLException e) {

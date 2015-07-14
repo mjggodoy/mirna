@@ -121,9 +121,8 @@ public class miRDB extends MirnaDatabase {
 			ResultSet rs = stmt.executeQuery(query);
 			
 			// iterate through the java resultset
+			
 			int count = 0;
-
-
 			if (rs.next()){
 				
 			//Cambiar esto

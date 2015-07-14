@@ -186,8 +186,7 @@ public class TarBase extends MirnaDatabase {
 			ResultSet rs = stmt.executeQuery(query);
 			
 			// iterate through the java resultset
-			//int count = 0;
-
+			int count = 0;
 			rs.next();
 			rs.next();
 			// CAMBIAR ESTO:
@@ -427,7 +426,13 @@ public class TarBase extends MirnaDatabase {
 
 			protein.setTranscript_id(transcript.getPk());
 			session.save(protein);
-
+			
+			count++;
+			if (count%100==0) {
+				System.out.println(count);
+				session.flush();
+		        session.clear();
+			}
 			
 			stmt.close();
 		} catch (SQLException e) {
