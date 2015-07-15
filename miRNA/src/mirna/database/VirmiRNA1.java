@@ -183,6 +183,17 @@ public class VirmiRNA1 extends VirmiRNA{
 				System.out.println(gene);
 				System.out.println(hairpin);*/
 				
+				Object oldSequence1 = session.createCriteria(Sequence.class)
+						.add(Restrictions.eq("pk", sequence1.getPk()))
+						.uniqueResult();
+				if (oldSequence1 == null) {
+					session.save(sequence1);
+					session.flush(); // to get the PK
+				} else {
+					sequence1 = (Sequence) oldSequence1;
+				}
+				mirna.setSequencePk(sequence1.getPk());
+				
 				// Inserta MiRna (o recupera su id. si ya existe)
 				
 				Object oldMiRna = session.createCriteria(MiRna.class)
@@ -228,6 +239,19 @@ public class VirmiRNA1 extends VirmiRNA{
 					gene = geneToUpdate;
 				}
 				
+				
+				Object oldSequence2 = session.createCriteria(Sequence.class)
+						.add(Restrictions.eq("pk", sequence2.getPk()))
+						.uniqueResult();
+				if (oldSequence2 == null) {
+					session.save(sequence2);
+					session.flush(); // to get the PK
+				} else {
+					sequence2 = (Sequence) oldSequence2;
+				}
+				hairpin.setSequence_pk(sequence2.getPk());
+				hairpin.setMirnaPk(mirna.getPk());
+				
 				// Inserta Hairpin (o recupera su id. si ya existe)
 				
 				Object oldHairpin = session.createCriteria(Hairpin.class)
@@ -243,23 +267,10 @@ public class VirmiRNA1 extends VirmiRNA{
 					hairpin = hairpinToUpdate;
 				}
 				
-				mirna.setSequencePk(sequence1.getPk());
-				Object oldSequence1 = session.createCriteria(Sequence.class)
-						.add(Restrictions.eq("pk", sequence1.getPk()))
-						.uniqueResult();
-				if (oldSequence1 == null) {
-					session.save(sequence1);
-					session.flush(); // to get the PK
-				} 
 				
-				hairpin.setSequence_pk(sequence2.getPk());
-				Object oldSequence2 = session.createCriteria(Sequence.class)
-						.add(Restrictions.eq("pk", sequence2.getPk()))
-						.uniqueResult();
-				if (oldSequence2 == null) {
-					session.save(sequence2);
-					session.flush(); // to get the PK
-				} 
+				 
+				
+				
 				
 				
 				// Inserta PubmedDocument (o recupera su id. si ya existe)
@@ -323,17 +334,16 @@ public class VirmiRNA1 extends VirmiRNA{
 			}
 
 			stmt.close();
+			tx.commit();
 			
 		} catch (SQLException e) {
 			tx.rollback();
 			e.printStackTrace();
 		} finally {
 			if (con!=null) con.close();
+			HibernateUtil.closeSession();
+			HibernateUtil.closeSessionFactory();
 		}
-		
-		tx.commit();
-		HibernateUtil.closeSession();
-		HibernateUtil.closeSessionFactory();
 		
 	}
 	
