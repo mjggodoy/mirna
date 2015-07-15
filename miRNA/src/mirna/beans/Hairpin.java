@@ -13,7 +13,6 @@ public class Hairpin extends ModelClass {
 	@Column(name = "name", nullable = false, length = 80, unique = true)
 	protected String name;
 	
-
 	@Column(name = "mirna_pk", nullable = false)
 	private Integer mirnaPk;
 	
@@ -21,7 +20,6 @@ public class Hairpin extends ModelClass {
 	private Integer sequence_pk;
 	
 	public Hairpin() { }
-
 	
 	public int checkConflict(Hairpin hairpin) {
 		int res = 0;
