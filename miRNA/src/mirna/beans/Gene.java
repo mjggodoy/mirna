@@ -316,6 +316,13 @@ public class Gene extends ModelClass {
 			else if (!this.distance.equals(gene.getDistance()))
 				return -1;
 		}
+		
+		if (this.organism != null) {
+			if (gene.getOrganism() == null)
+				res++;
+			else if (!this.organism.equals(gene.getOrganism()))
+				return -1;
+		}
 
 //		if (this.transcript_id != null) {
 //			if (gene.getTranscript_id()  == null)
@@ -343,7 +350,7 @@ public class Gene extends ModelClass {
 		if (gene.getName() != null)
 			this.name = gene.getName();
 		if (gene.getGeneId() != null)
-			this.name = gene.getGeneId();
+			this.geneId = gene.getGeneId();
 		if (gene.getDescription() != null)
 			this.description = gene.getDescription();
 		if (gene.getChromosome() != null)
@@ -357,7 +364,7 @@ public class Gene extends ModelClass {
 		if (gene.getEnd_strand() != null)
 			this.end_strand = gene.getEnd_strand();
 		if (gene.getHgnc_symbol() != null)
-			this.end_strand = gene.getEnd_strand();
+			this.hgnc_symbol = gene.getHgnc_symbol();
 		if (gene.getLocation() != null)
 			this.location = gene.getLocation();
 		if (gene.getExpression_site() != null)
@@ -368,6 +375,8 @@ public class Gene extends ModelClass {
 			this.arm = gene.getArm();
 		if (gene.getDistance() != null)
 			this.distance = gene.getDistance();
+		if (gene.getOrganism() != null)
+			this.organism = gene.getOrganism();
 //		if (gene.getTranscript_id() != null)
 //			this.transcript_id = gene.getTranscript_id();
 	
