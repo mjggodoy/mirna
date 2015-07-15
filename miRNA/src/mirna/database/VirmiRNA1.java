@@ -14,6 +14,7 @@ import mirna.beans.Hairpin;
 import mirna.beans.MiRna;
 import mirna.beans.Organism;
 import mirna.beans.PubmedDocument;
+import mirna.beans.Sequence;
 import mirna.beans.nToM.ExpressionDataHasPubmedDocument;
 import mirna.beans.nToM.MirnaHasPubmedDocument;
 import mirna.exception.MiRnaException;
@@ -152,16 +153,20 @@ public class VirmiRNA1 extends VirmiRNA{
 				
 				MiRna mirna = new MiRna();
 				mirna.setName(mirna_name);
-				mirna.setSequence(mirna_seq);
 				mirna.setGC_proportion(gc_proportion);
 				mirna.setLength(length);
+				
+				Sequence sequence1 = new Sequence();
+				sequence1.setSequence(mirna_seq);
 				
 				Gene gene = new Gene();
 				gene.setArm(arm);
 				
 				Hairpin hairpin = new Hairpin();
 				hairpin.setName(pre_mirna);
-				hairpin.setSequence(pre_mirna_seq);
+				
+				Sequence sequence2 = new Sequence();
+				sequence2.setSequence(pre_mirna_seq);
 				
 				ExpressionData expressiondata = new ExpressionData();
 				expressiondata.setCellularLine(cell_line);
@@ -224,7 +229,7 @@ public class VirmiRNA1 extends VirmiRNA{
 				}
 				
 				// Inserta Hairpin (o recupera su id. si ya existe)
-				hairpin.setMirnaPk(mirna.getPk());
+				
 				Object oldHairpin = session.createCriteria(Hairpin.class)
 						.add(Restrictions.eq("name", hairpin.getName()))
 						.uniqueResult();
@@ -237,6 +242,25 @@ public class VirmiRNA1 extends VirmiRNA{
 					session.update(hairpinToUpdate);
 					hairpin = hairpinToUpdate;
 				}
+				
+				mirna.setSequencePk(sequence1.getPk());
+				Object oldSequence1 = session.createCriteria(Sequence.class)
+						.add(Restrictions.eq("pk", sequence1.getPk()))
+						.uniqueResult();
+				if (oldSequence1 == null) {
+					session.save(sequence1);
+					session.flush(); // to get the PK
+				} 
+				
+				hairpin.setSequence_pk(sequence2.getPk());
+				Object oldSequence2 = session.createCriteria(Sequence.class)
+						.add(Restrictions.eq("pk", sequence2.getPk()))
+						.uniqueResult();
+				if (oldSequence2 == null) {
+					session.save(sequence2);
+					session.flush(); // to get the PK
+				} 
+				
 				
 				// Inserta PubmedDocument (o recupera su id. si ya existe)
 				Object oldPubmedDoc = session.createCriteria(PubmedDocument.class)
