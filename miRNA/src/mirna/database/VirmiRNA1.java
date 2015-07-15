@@ -184,7 +184,7 @@ public class VirmiRNA1 extends VirmiRNA{
 				System.out.println(hairpin);*/
 				
 				Object oldSequence1 = session.createCriteria(Sequence.class)
-						.add(Restrictions.eq("pk", sequence1.getPk()))
+						.add(Restrictions.eq("sequence", sequence1.getSequence()))
 						.uniqueResult();
 				if (oldSequence1 == null) {
 					session.save(sequence1);
@@ -193,21 +193,6 @@ public class VirmiRNA1 extends VirmiRNA{
 					sequence1 = (Sequence) oldSequence1;
 				}
 				mirna.setSequencePk(sequence1.getPk());
-				
-				// Inserta MiRna (o recupera su id. si ya existe)
-				
-				Object oldMiRna = session.createCriteria(MiRna.class)
-						.add(Restrictions.eq("name", mirna.getName()) )
-						.uniqueResult();
-				if (oldMiRna==null) {
-					session.save(mirna);
-					session.flush();  // to get the PK
-				} else {
-					MiRna miRnaToUpdate = (MiRna) oldMiRna;
-					miRnaToUpdate.update(mirna);
-					session.update(miRnaToUpdate);
-					mirna = miRnaToUpdate;
-				}
 				
 				// Inserta Organism (o recupera su id. si ya existe)
 				
@@ -224,10 +209,27 @@ public class VirmiRNA1 extends VirmiRNA{
 					organism = organismToUpdate;
 				}
 				
+				// Inserta MiRna (o recupera su id. si ya existe)
+				mirna.setOrganismPk(organism.getPk());
+				Object oldMiRna = session.createCriteria(MiRna.class)
+						.add(Restrictions.eq("name", mirna.getName()) )
+						.uniqueResult();
+				if (oldMiRna==null) {
+					session.save(mirna);
+					session.flush();  // to get the PK
+				} else {
+					MiRna miRnaToUpdate = (MiRna) oldMiRna;
+					miRnaToUpdate.update(mirna);
+					session.update(miRnaToUpdate);
+					mirna = miRnaToUpdate;
+				}
+				
 				// Inserta Gene (o recupera su id. si ya existe)
 				gene.setOrganism(organism.getPk());
 				Object oldGene = session.createCriteria(Gene.class)
-						.add(Restrictions.eq("name", gene.getName()))
+						.add(Restrictions.isNull("name"))
+						.add(Restrictions.eq("arm", gene.getArm()))
+						.add(Restrictions.eq("organism", gene.getOrganism()))
 						.uniqueResult();
 				if (oldGene == null) {
 					session.save(gene);
@@ -239,9 +241,8 @@ public class VirmiRNA1 extends VirmiRNA{
 					gene = geneToUpdate;
 				}
 				
-				
 				Object oldSequence2 = session.createCriteria(Sequence.class)
-						.add(Restrictions.eq("pk", sequence2.getPk()))
+						.add(Restrictions.eq("sequence", sequence2.getSequence()))
 						.uniqueResult();
 				if (oldSequence2 == null) {
 					session.save(sequence2);
@@ -267,12 +268,6 @@ public class VirmiRNA1 extends VirmiRNA{
 					hairpin = hairpinToUpdate;
 				}
 				
-				
-				 
-				
-				
-				
-				
 				// Inserta PubmedDocument (o recupera su id. si ya existe)
 				Object oldPubmedDoc = session.createCriteria(PubmedDocument.class)
 						.add( Restrictions.eq("id", pubmedDoc.getId()) )
@@ -292,20 +287,6 @@ public class VirmiRNA1 extends VirmiRNA{
 				expressiondata.setMirnaPk(mirna.getPk());
 				session.save(expressiondata);
 				session.flush(); // No estoy segura si hacer un flush aqu� y luego en el resto no.
-				
-				
-//				// Relaciona organism con gene  (o recupera su id. si ya existe)
-//				
-//				gene.setOrganism(organism.getPk());
-//				session.save(gene);
-//				//TODO:session.flush();
-	
-				
-//				// Relaciona mirna con hairpin  (o recupera su id. si ya existe)
-//	
-//				mirna.setHairpinPk(hairpin.getPk());	
-//				session.save(mirna);
-//				//TODO:session.flush();
 				
 				MirnaHasPubmedDocument mirnaHasPubmedDocument =
 						new MirnaHasPubmedDocument(mirna.getPk(), pubmedDoc.getPk());
