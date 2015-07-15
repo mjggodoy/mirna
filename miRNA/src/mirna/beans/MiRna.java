@@ -19,8 +19,8 @@ public class MiRna extends ModelClass {
 	@Column(name = "accession_number", nullable = true, length = 45)
 	private String accessionNumber;
 	
-	@Column(name = "sequence", nullable = true, length = 45)
-	protected String sequence;
+	@Column(name = "sequence_pk", nullable = true)
+	protected Integer sequencePk;
 	
 	@Column(name = "resource", nullable = true, length = 45)
 	private String resource;
@@ -31,7 +31,7 @@ public class MiRna extends ModelClass {
 	@Column(name = "gc_proportion", nullable = true, length = 10)
 	private String GC_proportion;//lo he puesto nuevo
 	
-	@Column(name = "organism_pk", nullable = true, length = 45)
+	@Column(name = "organism_pk", nullable = true)
 	private Integer organismPk;
 	
 	
@@ -59,12 +59,12 @@ public class MiRna extends ModelClass {
 		this.accessionNumber = accessionNumber;
 	}
 
-	public String getSequence() {
-		return sequence;
+	public Integer getSequencePk() {
+		return sequencePk;
 	}
 
-	public void setSequence(String sequence) {
-		this.sequence = sequence;
+	public void setSequencePk(Integer sequencePk) {
+		this.sequencePk = sequencePk;
 	}
 	
 	public String getResource() {
@@ -131,9 +131,9 @@ public class MiRna extends ModelClass {
 			if (mirna.getAccessionNumber()==null) res++;
 			else if (!this.accessionNumber.equals(mirna.getAccessionNumber())) return -1;
 		}
-		if (this.sequence!=null) {
-			if (mirna.getSequence()==null) res++;
-			else if (!this.sequence.equals(mirna.getSequence())) return -1;
+		if (this.sequencePk!=null) {
+			if (mirna.getSequencePk()==null) res++;
+			else if (!this.sequencePk.equals(mirna.getSequencePk())) return -1;
 		}
 		if (this.resource!=null) {
 			if (mirna.getResource()==null) res++;
@@ -172,7 +172,7 @@ public class MiRna extends ModelClass {
 		if (mirna.getPk()!=null) this.pk = mirna.getPk();
 		if (mirna.getName()!=null) this.name = mirna.getName();
 		if (mirna.getAccessionNumber()!=null) this.accessionNumber = mirna.getAccessionNumber();
-		if (mirna.getSequence()!=null) this.sequence = mirna.getSequence();
+		if (mirna.getSequencePk()!=null) this.sequencePk = mirna.getSequencePk();
 		if (mirna.getResource()!=null) this.resource = mirna.getResource();
 		if (mirna.getLength()!=null) this.length = mirna.getLength();
 		if (mirna.getGC_proportion()!=null) this.GC_proportion = mirna.getGC_proportion();
@@ -186,7 +186,7 @@ public class MiRna extends ModelClass {
 	@Override
 	public String toString() {
 		return "MiRna [name=" + name + ", accessionNumber=" + accessionNumber
-				+ ", sequence=" + sequence + ", resource=" + resource
+				+ ", sequencePk=" + sequencePk + ", resource=" + resource
 				+ ", length=" + length + ", GC_proportion=" + GC_proportion
 				+ ", organismPk=" + organismPk
 //				+ ", hairpinPk=" + hairpinPk
