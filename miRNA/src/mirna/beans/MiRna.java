@@ -34,25 +34,12 @@ public class MiRna extends ModelClass {
 	@Column(name = "organism_pk", nullable = true, length = 45)
 	private Integer organismPk;
 	
-//	private String journal;//ok X
-//	private String subName; //ok X
-//	private String provenance; //ok X
-//	private String length;//ok X
-//	private String binding_site_pattern;//ok X
-//	private String GC_proportion; //ok
-//	private String chromosome; //ok
-//	private String version; //ok 
-//	private String newName; //ok
-//	private String minimal_free_energy;//ok
-//	private String normalized_minimal_free_energy;//ok
-//	private String polarity;//ok
-//	private String pubmedId ;//ok
-//	private String start_strand;//ok
-//	private String title_reference;//ok
-//	private String year;
 	
-	private Integer hairpinPk; // He inclu’do estos dos atributos dado
-	private Integer maturePk;
+	/**
+	 * XUXA
+	 */
+//	private Integer hairpinPk; // He incluï¿½do estos dos atributos dado
+//	private Integer maturePk;
 	
 	public MiRna() {}
 	
@@ -112,21 +99,21 @@ public class MiRna extends ModelClass {
 		this.organismPk = organismPk;
 	}
 
-	public Integer getHairpinPk() {
-		return hairpinPk;
-	}
-
-	public void setHairpinPk(Integer hairpinPk) {
-		this.hairpinPk = hairpinPk;
-	}
-	
-	public Integer getMaturePk() {
-		return hairpinPk;
-	}
-
-	public void setMaturePk(Integer hairpinPk) {
-		this.hairpinPk = hairpinPk;
-	}
+//	public Integer getHairpinPk() {
+//		return hairpinPk;
+//	}
+//
+//	public void setHairpinPk(Integer hairpinPk) {
+//		this.hairpinPk = hairpinPk;
+//	}
+//	
+//	public Integer getMaturePk() {
+//		return hairpinPk;
+//	}
+//
+//	public void setMaturePk(Integer hairpinPk) {
+//		this.hairpinPk = hairpinPk;
+//	}
 
 	public int checkConflict(MiRna mirna) {
 		int res = 0;
@@ -165,10 +152,10 @@ public class MiRna extends ModelClass {
 			else if (!this.organismPk.equals(mirna.getOrganismPk())) return -1;
 		}
 		
-		if (this.hairpinPk!=null) {
-			if (mirna.getHairpinPk()==null) res++;
-			else if (!this.hairpinPk.equals(mirna.getHairpinPk())) return -1;
-		}
+//		if (this.hairpinPk!=null) {
+//			if (mirna.getHairpinPk()==null) res++;
+//			else if (!this.hairpinPk.equals(mirna.getHairpinPk())) return -1;
+//		}
 		return res;
 	}
 	
@@ -190,8 +177,8 @@ public class MiRna extends ModelClass {
 		if (mirna.getLength()!=null) this.length = mirna.getLength();
 		if (mirna.getGC_proportion()!=null) this.GC_proportion = mirna.getGC_proportion();
 		if (mirna.getOrganismPk()!=null) this.organismPk = mirna.getOrganismPk();
-		if (mirna.getHairpinPk()!=null) this.hairpinPk = mirna.getHairpinPk();
-		if (mirna.getMaturePk()!=null) this.maturePk = mirna.getMaturePk();
+//		if (mirna.getHairpinPk()!=null) this.hairpinPk = mirna.getHairpinPk();
+//		if (mirna.getMaturePk()!=null) this.maturePk = mirna.getMaturePk();
 
 		
 	}
@@ -201,8 +188,10 @@ public class MiRna extends ModelClass {
 		return "MiRna [name=" + name + ", accessionNumber=" + accessionNumber
 				+ ", sequence=" + sequence + ", resource=" + resource
 				+ ", length=" + length + ", GC_proportion=" + GC_proportion
-				+ ", organismPk=" + organismPk + ", hairpinPk=" + hairpinPk
-				+ ", maturePk=" + maturePk + ", pk=" + pk + "]";
+				+ ", organismPk=" + organismPk
+//				+ ", hairpinPk=" + hairpinPk
+//				+ ", maturePk=" + maturePk
+				+ ", pk=" + pk + "]";
 	}
 
 	

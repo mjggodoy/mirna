@@ -27,6 +27,9 @@
   <mapping class="mirna.beans.Disease" />
   <mapping class="mirna.beans.ExpressionData" />
   <mapping class="mirna.beans.PubmedDocument" />
+  <mapping class="mirna.beans.Organism" />
+  <mapping class="mirna.beans.Gene" />
+  <mapping class="mirna.beans.Hairpin" />
   <mapping class="mirna.beans.nToM.ExpressionDataHasPubmedDocument" />
   <mapping class="mirna.beans.nToM.MirnaHasPubmedDocument" />
   

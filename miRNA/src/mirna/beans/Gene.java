@@ -1,58 +1,73 @@
 package mirna.beans;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.Table;
+
 import mirna.exception.ConflictException;
 
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "gene")
 public class Gene extends ModelClass {
 
+	//TODO: HACER QUE GENE NO PUEDA TENER NAME NULL
+	@Column(name = "name", nullable = true, length = 45, unique = false)
 	private String name;// ok
+	
+	@Column(name = "chromosome", nullable = true, length = 45, unique = false)
 	private String chromosome;// ok
+	
+	@Column(name = "accession_number", nullable = true, length = 45, unique = false)
 	private String accessionumber;// ok
+	
+	@Column(name = "id", nullable = true, length = 100, unique = false)
 	private String geneId;// ok
+	
+	@Column(name = "description", nullable = true, length = 45, unique = false)
 	private String description;// ok
+	
+	@Column(name = "year", nullable = true, length = 4, unique = false)
 	private String year;// ok
+	
+	@Column(name = "resource", nullable = true, length = 45, unique = false)
 	private String resource;// ok
+	
+	@Column(name = "start_strand", nullable = true, length = 45, unique = false)
 	private String start_strand;// ok
+	
+	@Column(name = "end_strand", nullable = true, length = 45, unique = false)
 	private String end_strand;// ok
+	
+	@Column(name = "hgnc_symbol", nullable = true, length = 45, unique = false)
 	private String hgnc_symbol;
+	
+	@Column(name = "location", nullable = true, length = 45, unique = false)
 	private String location;// ok
+	
+	@Column(name = "expression_site", nullable = true, length = 45, unique = false)
 	private String expression_site;// ok
+	
+	@Column(name = "kegg_id", nullable = true, length = 45, unique = false)
 	private String kegg_id;// ok
+	
+	@Column(name = "arm", nullable = true, length = 45, unique = false)
 	private String arm;// ok
+	
+	@Column(name = "distance", nullable = true, length = 45, unique = false)
 	private String distance;// OK
-	private String pubmedId;
-	private String journal;
+	
+	@Column(name = "organism_pk")
 	private Integer organism;
-	private Integer transcript_id;
+	
+	// XUXA
+//	@Column(name = "chromosome", nullable = true, length = 45, unique = false)
+//	private Integer transcript_id;
 
 	public Gene() {
-
 		super();
-	}
-
-	public Gene(int pk, String name, String chromosome, String accessionumber,
-			String geneId, String description, String year, String resource,
-			String start_strand, String end_strand, String hgnc_symbol,
-			String location, String expression_site, String kegg_id,
-			String arm, String distance, String journal, String isoform, Integer Organism, Integer transcript_id) {
-		super(pk);
-		this.name = name;
-		this.chromosome = chromosome;
-		this.accessionumber = accessionumber;
-		this.geneId = geneId;
-		this.description = description;
-		this.year = year;
-		this.resource = resource;
-		this.start_strand = start_strand;
-		this.end_strand = end_strand;
-		this.hgnc_symbol = hgnc_symbol;
-		this.location = location;
-		this.expression_site = expression_site;
-		this.kegg_id = kegg_id;
-		this.arm = arm;
-		this.distance = distance;
-		this.journal = journal;
-		this.organism = organism;
-		this.transcript_id = transcript_id;
 	}
 
 	public String getDistance() {
@@ -175,22 +190,6 @@ public class Gene extends ModelClass {
 		this.name = name;
 	}
 
-	public String getJournal() {
-		return journal;
-	}
-
-	public void setJournal(String journal) {
-		this.journal = journal;
-	}
-
-	public String getPubmedId() {
-		return pubmedId;
-	}
-
-	public void setPubmedId(String pubmedId) {
-		this.pubmedId = pubmedId;
-	}
-	
 	public Integer getOrganism() {
 		return organism;
 	}
@@ -198,15 +197,14 @@ public class Gene extends ModelClass {
 	public void setOrganism(Integer organism) {
 		this.organism = organism;
 	}
-	
 
-	public Integer getTranscript_id() {
-		return transcript_id;
-	}
-
-	public void setTranscript_id(Integer transcript_id) {
-		this.transcript_id = transcript_id;
-	}
+//	public Integer getTranscript_id() {
+//		return transcript_id;
+//	}
+//
+//	public void setTranscript_id(Integer transcript_id) {
+//		this.transcript_id = transcript_id;
+//	}
 
 	public int checkConflict(Gene gene) {
 		int res = 0;
@@ -319,19 +317,12 @@ public class Gene extends ModelClass {
 				return -1;
 		}
 
-		if (this.journal != null) {
-			if (gene.getJournal() == null)
-				res++;
-			else if (!this.journal.equals(gene.getJournal()))
-				return -1;
-		}
-		
-		if (this.transcript_id != null) {
-			if (gene.getTranscript_id()  == null)
-				res++;
-			else if (!this.transcript_id.equals(gene.getTranscript_id()))
-				return -1;
-		}
+//		if (this.transcript_id != null) {
+//			if (gene.getTranscript_id()  == null)
+//				res++;
+//			else if (!this.transcript_id.equals(gene.getTranscript_id()))
+//				return -1;
+//		}
 		
 
 		return res;
@@ -377,10 +368,8 @@ public class Gene extends ModelClass {
 			this.arm = gene.getArm();
 		if (gene.getDistance() != null)
 			this.distance = gene.getDistance();
-		if (gene.getJournal() != null)
-			this.journal = gene.getJournal();
-		if (gene.getTranscript_id() != null)
-			this.transcript_id = gene.getTranscript_id();
+//		if (gene.getTranscript_id() != null)
+//			this.transcript_id = gene.getTranscript_id();
 	
 	}
 
@@ -393,11 +382,9 @@ public class Gene extends ModelClass {
 				+ ", end_strand=" + end_strand + ", hgnc_symbol=" + hgnc_symbol
 				+ ", location=" + location + ", expression_site="
 				+ expression_site + ", kegg_id=" + kegg_id + ", arm=" + arm
-				+ ", distance=" + distance + ", pubmedId=" + pubmedId
-				+ ", journal=" + journal + ", organism=" + organism
-				+ ", transcript_id=" + transcript_id + "]";
+				+ ", distance=" + distance + ", organism=" + organism + ", pk="
+				+ pk + "]";
 	}
-	
 
 	
 }

@@ -224,7 +224,8 @@ public class HMDD extends MirnaDatabase {
 		}
 		
 		tx.commit();
-		session.close();
+		HibernateUtil.closeSession();
+		HibernateUtil.closeSessionFactory();
 		
 	}
 	

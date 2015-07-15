@@ -1,25 +1,31 @@
 package mirna.beans;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 import mirna.exception.ConflictException;
 
+@Entity
+@Table(name = "organism")
 public class Organism extends ModelClass {
 
+	@Column(name = "specie", nullable = true, length = 45, unique = false)
 	private String specie;
+	
+	@Column(name = "name", nullable = false, length = 40, unique = true)
 	private String name;
+	
+	@Column(name = "resource", nullable = true, length = 80, unique = false)
 	private String resource;
-	private String short_name;
+	
+	@Column(name = "short_name", nullable = true, length = 45, unique = false)
+	private String shortName;
 
 	public Organism() {
 		super();
 	}
-
-	public Organism(int pk, String specie, String name, String resource) {
-		super(pk);
-		this.specie = specie;
-		this.name = name;
-		this.resource = resource;
-	}
-
+	
 	public String getResource() {
 		return resource;
 	}
@@ -44,12 +50,12 @@ public class Organism extends ModelClass {
 		this.specie = specie;
 	}
 
-	public String getShort_name() {
-		return short_name;
+	public String getShortName() {
+		return shortName;
 	}
 
-	public void setShort_name(String short_name) {
-		this.short_name = short_name;
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
 	}
 
 	public int checkConflict(Organism specie) {
@@ -66,6 +72,27 @@ public class Organism extends ModelClass {
 			if (specie.getName() == null)
 				res++;
 			else if (!this.name.equals(specie.getName()))
+				return -1;
+		}
+		
+		if (this.shortName != null) {
+			if (specie.getShortName() == null)
+				res++;
+			else if (!this.shortName.equals(specie.getShortName()))
+				return -1;
+		}
+		
+		if (this.specie != null) {
+			if (specie.getSpecie() == null)
+				res++;
+			else if (!this.specie.equals(specie.getSpecie()))
+				return -1;
+		}
+		
+		if (this.resource != null) {
+			if (specie.getResource() == null)
+				res++;
+			else if (!this.resource.equals(specie.getResource()))
 				return -1;
 		}
 
@@ -86,13 +113,18 @@ public class Organism extends ModelClass {
 			this.pk = specie.getPk();
 		if (specie.getName() != null)
 			this.name = specie.getName();
-
+		if (specie.getShortName() != null)
+			this.shortName = specie.getShortName();
+		if (specie.getSpecie() != null)
+			this.specie = specie.getSpecie();
+		if (specie.getResource() != null)
+			this.resource = specie.getResource();
 	}
 
 	@Override
 	public String toString() {
 		return "Organism [specie=" + specie + ", name=" + name + ", resource="
-				+ resource + ", short_name=" + short_name + ", pk=" + pk + "]";
+				+ resource + ", shortName=" + shortName + ", pk=" + pk + "]";
 	}
-
+	
 }

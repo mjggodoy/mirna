@@ -67,11 +67,12 @@ public class ExpressionData extends ModelClass {
 	@Column(name = "different_expression_location", nullable = true, length = 80)
 	private String differentExpressionLocation;
 	
-	@Column(name = "smallMolecule_pk", nullable = true, length = 80) // he inlcu’do la smallmolecule_Pk para la db SM2miR2N
-	private Integer smallMolecule_pk;
+	/* XUXA */
+//	@Column(name = "smallMolecule_pk", nullable = true, length = 80) // he inlcuï¿½do la smallmolecule_Pk para la db SM2miR2N
+//	private Integer smallMolecule_pk;
 	
-	@Column(name = "interactionData_pk", nullable = true, length = 80) // he inclu’do la interactionDataPk para la relaci—n interacionData/ExpressionData
-	private Integer interactionData_pk;
+//	@Column(name = "interactionData_pk", nullable = true, length = 80) // he incluï¿½do la interactionDataPk para la relaciï¿½n interacionData/ExpressionData
+//	private Integer interactionData_pk;
 	
 	
 //	private String journal; //ok
@@ -230,22 +231,22 @@ public class ExpressionData extends ModelClass {
 		this.differentExpressionLocation = differentExpressionLocation;
 	}
 
-	public Integer getSmallMolecule_pk() {
-		return smallMolecule_pk;
-	}
-
-	public void setSmallMolecule_pk(Integer smallMolecule_pk) {
-		this.smallMolecule_pk = smallMolecule_pk;
-	}
-	
-
-	public Integer getInteractionData_pk() {
-		return interactionData_pk;
-	}
-
-	public void setInteractionData_pk(Integer interactionData_pk) {
-		this.interactionData_pk = interactionData_pk;
-	}
+//	public Integer getSmallMolecule_pk() {
+//		return smallMolecule_pk;
+//	}
+//
+//	public void setSmallMolecule_pk(Integer smallMolecule_pk) {
+//		this.smallMolecule_pk = smallMolecule_pk;
+//	}
+//	
+//
+//	public Integer getInteractionData_pk() {
+//		return interactionData_pk;
+//	}
+//
+//	public void setInteractionData_pk(Integer interactionData_pk) {
+//		this.interactionData_pk = interactionData_pk;
+//	}
 
 	public void update(ExpressionData gene) throws ConflictException {
 		this.update(gene, true);
@@ -272,9 +273,9 @@ public class ExpressionData extends ModelClass {
 		if(ed.getMirnaPk() !=null) this.mirnaPk = ed.getMirnaPk(); 
 		if(ed.getProvenance() !=null) this.provenance = ed.getProvenance();
 		if(ed.getProvenanceId() !=null) this.provenanceId = ed.getProvenanceId();
-		if(ed.getSmallMolecule_pk() !=null) this.smallMolecule_pk = ed.getSmallMolecule_pk();
+//		if(ed.getSmallMolecule_pk() !=null) this.smallMolecule_pk = ed.getSmallMolecule_pk();
 		if(ed.getStudyDesign() !=null) this.studyDesign = ed.getStudyDesign();
-		if(ed.getInteractionData_pk() != null) this.interactionData_pk = ed.getInteractionData_pk();
+//		if(ed.getInteractionData_pk() != null) this.interactionData_pk = ed.getInteractionData_pk();
 		if(ed.getTitleReference() != null) this.titleReference = ed.getTitleReference();
 		if(ed.getTreatment() != null) this.treatment = ed.getTreatment();
 		if(ed.getYear() !=null) this.year = ed.getYear();	
@@ -337,10 +338,10 @@ public class ExpressionData extends ModelClass {
 			else if (!this.foldchangeMin.equals(ed.getFoldchangeMin())) return -1;	
 		}
 		
-		if (this.interactionData_pk !=null){
-			if(ed.getInteractionData_pk()== null) res++;
-			else if (!this.interactionData_pk.equals(ed.getInteractionData_pk())) return -1;	
-		}
+//		if (this.interactionData_pk !=null){
+//			if(ed.getInteractionData_pk()== null) res++;
+//			else if (!this.interactionData_pk.equals(ed.getInteractionData_pk())) return -1;	
+//		}
 		
 		if (this.method !=null){
 			if(ed.getMethod()== null) res++;
@@ -362,10 +363,10 @@ public class ExpressionData extends ModelClass {
 			else if (!this.provenanceId.equals(ed.getProvenanceId())) return -1;	
 		}
 		
-		if (this.smallMolecule_pk !=null){
-			if(ed.getSmallMolecule_pk()== null) res++;
-			else if (!this.smallMolecule_pk.equals(ed.getSmallMolecule_pk())) return -1;	
-		}
+//		if (this.smallMolecule_pk !=null){
+//			if(ed.getSmallMolecule_pk()== null) res++;
+//			else if (!this.smallMolecule_pk.equals(ed.getSmallMolecule_pk())) return -1;	
+//		}
 		
 		if (this.studyDesign !=null){
 			if(ed.getStudyDesign()== null) res++;
@@ -405,8 +406,10 @@ public class ExpressionData extends ModelClass {
 				+ mirnaPk + ", diseasePk=" + diseasePk
 				+ ", environmentalFactorPk=" + environmentalFactorPk
 				+ ", dataType=" + dataType + ", differentExpressionLocation="
-				+ differentExpressionLocation + ", smallMolecule_pk="
-				+ smallMolecule_pk + ", interactionData_pk="
-				+ interactionData_pk + "]";
+				+ differentExpressionLocation 
+//				+ ", smallMolecule_pk="
+//				+ smallMolecule_pk + ", interactionData_pk="
+//				+ interactionData_pk 
+				+ "]";
 	}
 }
