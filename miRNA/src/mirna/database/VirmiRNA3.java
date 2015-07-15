@@ -137,11 +137,10 @@ public class VirmiRNA3 extends VirmiRNA {
 			ResultSet rs = stmt.executeQuery(query);
 			
 			// iterate through the java resultset
-			//int count = 0;
-
-
+			int count = 0;
 			rs.next(); ///MUY IMPORTANTE: Target relacionado con organism
 			// CAMBIAR ESTO:
+			
 			String id_virus = rs.getString("vmt_id");
 			String virus_name = rs.getString("virus");
 			String virus_full_name = rs.getString("virus_full_name");
@@ -291,6 +290,13 @@ public class VirmiRNA3 extends VirmiRNA {
 			}
 			// Relaciona PubmedDocument con ExpressionData
 			session.save(expresDataHasPubmedDocument);
+			
+			count++;
+			if (count%100==0) {
+				System.out.println(count);
+				session.flush();
+		        session.clear();
+			}
 				
 			stmt.close();
 		} catch (SQLException e) {

@@ -305,6 +305,13 @@ public class Phenomir extends MirnaDatabase {
 				}
 				
 			}
+			count++;
+			if (count%100==0) {
+				System.out.println(count);
+				session.flush();
+		        session.clear();
+			}
+			
 			stmt.close();
 		} catch (SQLException e) {
 			tx.rollback();

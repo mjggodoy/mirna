@@ -121,9 +121,7 @@ public class PlantMirnaMatureMirna extends MirnaDatabase {
 			ResultSet rs = stmt.executeQuery(query);
 			
 			// iterate through the java resultset
-			//int count = 0;
-
-
+			int count = 0;
 			rs.next();
 			rs.next();
 
@@ -204,6 +202,13 @@ public class PlantMirnaMatureMirna extends MirnaDatabase {
 			
 			id.setMirnaPk(miRna.getPk());
 	
+			count++;
+			if (count%100==0) {
+				System.out.println(count);
+				session.flush();
+		        session.clear();
+			}
+			
 			stmt.close();
 		} catch (SQLException e) {
 			tx.rollback();

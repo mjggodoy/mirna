@@ -166,9 +166,7 @@ public class repTar extends MirnaDatabase {
 			ResultSet rs = stmt.executeQuery(query);
 			
 			// iterate through the java resultset
-			//int count = 0;
-
-
+			int count = 0;
 			rs.next();
 			// CAMBIAR ESTO:
 			
@@ -278,6 +276,13 @@ public class repTar extends MirnaDatabase {
 			//Relaciona gene y transcript
 			
 			gene.setTranscript_id(target.getPk());
+			
+			count++;
+			if (count%100==0) {
+				System.out.println(count);
+				session.flush();
+		        session.clear();
+			}
 			
 			stmt.close();
 		} catch (SQLException e) {

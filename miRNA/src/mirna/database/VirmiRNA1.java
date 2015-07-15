@@ -8,11 +8,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import mirna.beans.Disease;
 import mirna.beans.ExpressionData;
 import mirna.beans.Gene;
 import mirna.beans.Hairpin;
-import mirna.beans.Mature;
 import mirna.beans.MiRna;
 import mirna.beans.Organism;
 import mirna.beans.PubmedDocument;
@@ -127,8 +125,7 @@ public class VirmiRNA1 extends VirmiRNA{
 			ResultSet rs = stmt.executeQuery(query);
 			
 			// iterate through the java resultset
-			//int count = 0;
-
+			int count = 0;
 
 			if (rs.next()) {
 				// CAMBIAR ESTO:
@@ -275,14 +272,10 @@ public class VirmiRNA1 extends VirmiRNA{
 //				session.save(mirna);
 //				//TODO:session.flush();
 				
-				System.out.println("PUA1");
-	
 				MirnaHasPubmedDocument mirnaHasPubmedDocument =
 						new MirnaHasPubmedDocument(mirna.getPk(), pubmedDoc.getPk());
 				ExpressionDataHasPubmedDocument expresDataHasPubmedDocument =
 						new ExpressionDataHasPubmedDocument(expressiondata.getPk(), pubmedDoc.getPk());
-				
-				System.out.println("PUA2");
 				
 				// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
 				Object oldMirnaHasPubmedDocument = session.createCriteria(MirnaHasPubmedDocument.class)
@@ -293,16 +286,20 @@ public class VirmiRNA1 extends VirmiRNA{
 					session.save(mirnaHasPubmedDocument);
 				}
 				
-				System.out.println("PUA3");
-				
 				// Relaciona PubmedDocument con ExpressionData
 				session.save(expresDataHasPubmedDocument);
 				
-				System.out.println("PUA4");
 			}
+			
+			count++;
+			if (count%100==0) {
+				System.out.println(count);
+				session.flush();
+		        session.clear();
+			}
+
 			stmt.close();
 			
-			System.out.println("PUA5");
 		} catch (SQLException e) {
 			tx.rollback();
 			e.printStackTrace();
@@ -310,13 +307,9 @@ public class VirmiRNA1 extends VirmiRNA{
 			if (con!=null) con.close();
 		}
 		
-		System.out.println("PUA6");
-		
 		tx.commit();
 		HibernateUtil.closeSession();
 		HibernateUtil.closeSessionFactory();
-		
-		System.out.println("PUA7");
 		
 	}
 	

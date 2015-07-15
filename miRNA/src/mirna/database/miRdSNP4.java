@@ -128,9 +128,7 @@ public class miRdSNP4 extends miRdSNP {
 			ResultSet rs = stmt.executeQuery(query);
 			
 			// iterate through the java resultset
-			//int count = 0;
-
-
+			int count = 0;
 			rs.next();
 			// CAMBIAR ESTO:
 			
@@ -220,6 +218,13 @@ public class miRdSNP4 extends miRdSNP {
 			
 			id.setMirnaPk(mirna.getPk());
 			session.save(id);
+			
+			count++;
+			if (count%100==0) {
+				System.out.println(count);
+				session.flush();
+		        session.clear();
+			}
 			
 			stmt.close();
 		} catch (SQLException e) {

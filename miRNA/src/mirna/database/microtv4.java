@@ -128,8 +128,8 @@ public class microtv4 extends MirnaDatabase {
 		
 			Connection con = null;
 			Transaction tx = session.beginTransaction();
-			int count = 0;
-		try {
+		
+			try {
 			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			Statement stmt = (Statement) con.createStatement();
 			stmt.setFetchSize(Integer.MIN_VALUE);
@@ -143,9 +143,7 @@ public class microtv4 extends MirnaDatabase {
 			ResultSet rs = stmt.executeQuery(query);
 			
 			// iterate through the java resultset
-			//int count = 0;
-
-
+			int count = 0;
 			rs.next();
 			// CAMBIAR ESTO:
 			
