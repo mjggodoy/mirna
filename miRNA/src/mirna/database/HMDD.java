@@ -216,17 +216,15 @@ public class HMDD extends MirnaDatabase {
 				
 			}
 			stmt.close();
+			tx.commit();
 		} catch (SQLException e) {
 			tx.rollback();
 			e.printStackTrace();
 		} finally {
 			if (con!=null) con.close();
+			HibernateUtil.closeSession();
+			HibernateUtil.closeSessionFactory();
 		}
-		
-		tx.commit();
-		HibernateUtil.closeSession();
-		HibernateUtil.closeSessionFactory();
-		
 	}
 	
 	public static void main(String[] args) throws Exception {
