@@ -176,19 +176,17 @@ public class VirmiRNA2 extends VirmiRNA {
 			
 			MiRna mirna = new MiRna();
 			mirna.setName(mirna_name);
-			mirna.setSequence(mirna_seq);
 			mirna.setAccessionNumber(accesion_number);
 			
 			Organism organism = new Organism();
 			organism.setName(organism_name_full);
-			organism.setShort_name(organism_name);
+			organism.setShortName(organism_name);
 			organism.setResource(resource_organism);
 			
 			Organism organism2 = new Organism();
 			organism2.setSpecie(specie_target);// inclu’ set/get en la clase organism.
 			
 			Target target = new Target();
-			target.setSequence(target_sequence);
 			target.setRegion(target_region);
 			target.setCoordinates(target_coords);
 			target.setSeed_match(send_match);
