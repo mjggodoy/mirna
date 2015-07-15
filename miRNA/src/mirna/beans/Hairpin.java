@@ -13,20 +13,15 @@ public class Hairpin extends ModelClass {
 	@Column(name = "name", nullable = false, length = 80, unique = true)
 	protected String name;
 	
-	@Column(name = "sequence", nullable = true, length = 200)
-	protected String sequence;
-	
+
 	@Column(name = "mirna_pk", nullable = false)
 	private Integer mirnaPk;
 	
+	@Column(name = "sequence_pk", nullable = false)
+	private Integer sequence_pk;
+	
 	public Hairpin() { }
 
-	public Hairpin(int pk, String name, String sequence, int mirnaPk) {
-		this.pk = pk;
-		this.name = name;
-		this.sequence = sequence;
-		this.mirnaPk = mirnaPk;
-	}
 	
 	public int checkConflict(Hairpin hairpin) {
 		int res = 0;
@@ -40,9 +35,9 @@ public class Hairpin extends ModelClass {
 				return -1;
 			}
 		}
-		if (this.sequence!=null) {
-			if (hairpin.getSequence()==null) res++;
-			else if (!this.sequence.equals(hairpin.getSequence())) return -1;
+		if (this.sequence_pk!=null) {
+			if (hairpin.getSequence_pk()==null) res++;
+			else if (!this.sequence_pk.equals(hairpin.getSequence_pk())) return -1;
 		}
 		if (this.mirnaPk!=null) {
 			if (hairpin.getMirnaPk()==null) res++;
@@ -61,7 +56,7 @@ public class Hairpin extends ModelClass {
 		}
 		if (hairpin.getPk()!=null) this.pk = hairpin.getPk();
 		if (hairpin.getName()!=null) this.name = hairpin.getName();
-		if (hairpin.getSequence()!=null) this.sequence = hairpin.getSequence();
+		if (hairpin.getSequence_pk()!=null) this.sequence_pk = hairpin.getSequence_pk();
 		if (hairpin.getMirnaPk()!=null) this.mirnaPk = hairpin.getMirnaPk();
 	}
 	
@@ -73,13 +68,15 @@ public class Hairpin extends ModelClass {
 		this.name = name;
 	}
 
-	public String getSequence() {
-		return sequence;
+	public Integer getSequence_pk() {
+		return sequence_pk;
 	}
 
-	public void setSequence(String sequence) {
-		this.sequence = sequence;
+
+	public void setSequence_pk(Integer sequence_pk) {
+		this.sequence_pk = sequence_pk;
 	}
+
 
 	public Integer getMirnaPk() {
 		return mirnaPk;
@@ -91,7 +88,7 @@ public class Hairpin extends ModelClass {
 
 	@Override
 	public String toString() {
-		return "Hairpin [name=" + name + ", sequence=" + sequence
+		return "Hairpin [name=" + name + ", sequence=" + sequence_pk
 				+ ", mirnaPk=" + mirnaPk + ", pk=" + pk + "]";
 	}
 
