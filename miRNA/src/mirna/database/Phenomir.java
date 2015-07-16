@@ -305,26 +305,18 @@ public class Phenomir extends MirnaDatabase {
 				}
 				
 			}
-			count++;
-			if (count%100==0) {
-				System.out.println(count);
-				session.flush();
-		        session.clear();
-			}
 			
 			stmt.close();
+			tx.commit();
 		} catch (SQLException e) {
 			tx.rollback();
 			e.printStackTrace();
 		} finally {
 			if (con!=null) con.close();
+			HibernateUtil.closeSession();
+			HibernateUtil.closeSessionFactory();
 		}
-		
-		tx.commit();
-		session.close();
-		
 	}
-
 	
 	public static void main(String[] args) throws Exception {
 		
