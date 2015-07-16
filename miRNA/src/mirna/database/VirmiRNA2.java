@@ -14,7 +14,12 @@ import mirna.beans.Gene;
 import mirna.beans.InteractionData;
 import mirna.beans.MiRna;
 import mirna.beans.Organism;
+import mirna.beans.PubmedDocument;
+import mirna.beans.Sequence;
 import mirna.beans.Target;
+import mirna.beans.nToM.ExpressionDataHasPubmedDocument;
+import mirna.beans.nToM.MirnaHasPubmedDocument;
+import mirna.beans.nToM.MirnaInvolvesBiologicalProcess;
 import mirna.exception.MiRnaException;
 import mirna.utils.HibernateUtil;
 
@@ -178,6 +183,12 @@ public class VirmiRNA2 extends VirmiRNA {
 			mirna.setName(mirna_name);
 			mirna.setAccessionNumber(accesion_number);
 			
+			Sequence sequence1 = new Sequence();
+			sequence1.setSequence(mirna_seq);
+			
+			Sequence sequence2 = new Sequence();
+			sequence2.setSequence(target_sequence);
+			
 			Organism organism = new Organism();
 			organism.setName(organism_name_full);
 			organism.setShortName(organism_name);
@@ -188,10 +199,9 @@ public class VirmiRNA2 extends VirmiRNA {
 			
 			Target target = new Target();
 			target.setRegion(target_region);
-			target.setCoordinates(target_coords);
 			target.setSeed_match(send_match);
-			target.setResource(target_resource);
-			target.setPubmed_id(target_pubmedId);
+			target.setCoordinates(target_coords);
+			target.setTarget_ref(target_resource);
 				
 			BiologicalProcess biologicalprocess = new BiologicalProcess();
 			biologicalprocess.setName(target_process);
@@ -206,6 +216,12 @@ public class VirmiRNA2 extends VirmiRNA {
 			gene.setName(target1);
 			gene.setGeneId(uniprot);
 			
+			PubmedDocument pubmedDoc = new PubmedDocument();
+			int index1 = target_pubmedId.indexOf(">");
+			int index2 = target_pubmedId.indexOf("</a>");
+			target_pubmedId =  target_pubmedId.substring(index1+1,index2);
+			pubmedDoc.setId(target_pubmedId);
+			
 			InteractionData interactiondata = new InteractionData();
 			
 			/*System.out.println(mirna);
@@ -215,8 +231,39 @@ public class VirmiRNA2 extends VirmiRNA {
 			System.out.println(biologicalprocess);
 			System.out.println(organism2);*/			
 			
-			// Inserta MiRna (o recupera su id. si ya existe)
-
+			// Inserta Sequence (o recupera su id. si ya existe)
+			
+			Object oldSequence1 = session.createCriteria(Sequence.class)
+					.add(Restrictions.eq("sequence", sequence1.getSequence()))
+					.uniqueResult();
+			if (oldSequence1 == null) {
+				session.save(sequence1);
+				session.flush(); // to get the PK
+			} else {
+				sequence1 = (Sequence) oldSequence1;
+			}
+			
+			mirna.setSequencePk(sequence1.getPk());
+			
+			// Inserta Organism (o recupera su id. si ya existe)
+			
+			Object oldOrganism = session.createCriteria(Organism.class)
+					.add(Restrictions.eq("name", organism.getName()) )
+					.uniqueResult();
+			if (oldOrganism==null) {
+				session.save(organism);
+				session.flush(); // to get the PK
+			} else {
+			
+			Organism organismToUpdate = (Organism) oldOrganism;
+			organismToUpdate.update(organism);
+			session.update(organismToUpdate);
+			organism = organismToUpdate;
+			
+			}
+			
+			mirna.setOrganismPk(organism.getPk());
+			
 			Object oldMiRna = session.createCriteria(MiRna.class)
 					.add(Restrictions.eq("name", mirna.getName()) )
 					.uniqueResult();
@@ -230,40 +277,38 @@ public class VirmiRNA2 extends VirmiRNA {
 				mirna = miRnaToUpdate;
 			}
 			
-			// Inserta Organism (o recupera su id. si ya existe)
-			
-			Object oldOrganism = session.createCriteria(Organism.class)
-					.add(Restrictions.eq("name", organism.getName()) )
+			Object oldSequence2 = session.createCriteria(Sequence.class)
+					.add(Restrictions.eq("sequence", sequence2.getSequence()))
 					.uniqueResult();
-			if (oldOrganism==null) {
-				session.save(organism);
+			if (oldSequence2 == null) {
+				session.save(sequence2);
 				session.flush(); // to get the PK
 			} else {
-				Organism organismToUpdate = (Organism) oldOrganism;
-				organismToUpdate.update(organism);
-				session.update(organismToUpdate);
-				organism = organismToUpdate;
+				sequence2 = (Sequence) oldSequence2;
 			}
 			
+			target.setSequence_pk(sequence2.getPk());
 			// Inserta Target (o recupera su id. si ya existe)
-
+			target.setOrganism_pk(organism2.getPk());
 			Object oldTarget = session.createCriteria(Target.class)
 					.add(Restrictions.eq("name", organism.getName()) )
 					.uniqueResult();
 			if (oldTarget==null) {
-				session.save(organism);
+				session.save(target);
 				session.flush(); // to get the PK
 			} else {
-				Organism organismToUpdate = (Organism) oldOrganism;
-				organismToUpdate.update(organism);
-				session.update(organismToUpdate);
-				organism = organismToUpdate;
+				Target targetToUpdate = (Target) oldTarget;
+				targetToUpdate.update(target);
+				session.update(targetToUpdate);
+				target = targetToUpdate;
 			}
 			
 			// Inserta Gene (o recupera su id. si ya existe)
+			gene.setOrganism(organism.getPk());
 
 			Object oldGene = session.createCriteria(Gene.class)
 					.add(Restrictions.eq("name", gene.getName()) )
+					.add(Restrictions.eq("organism", gene.getOrganism()))
 					.uniqueResult();
 			if (oldGene==null) {
 				session.save(gene);
@@ -290,11 +335,31 @@ public class VirmiRNA2 extends VirmiRNA {
 				biologicalprocess = biologicalProcessToUpdate;
 			}
 			
-			// Relaciona expression data con mirna e interactiondata (o recupera su id. si ya existe)
+			Object oldPubmedDoc = session.createCriteria(PubmedDocument.class)
+					.add( Restrictions.eq("id", pubmedDoc.getId()) )
+					.uniqueResult();
+			if (oldPubmedDoc==null) {
+				session.save(pubmedDoc);
+				session.flush(); // to get the PK
+			} else {
+				PubmedDocument pubmedDocToUpdate = (PubmedDocument) oldPubmedDoc;
+				pubmedDocToUpdate.update(pubmedDoc);
+				session.update(pubmedDocToUpdate);
+				pubmedDoc = pubmedDocToUpdate;
+			}
+			
+			
+			// Relaciona expression data con mirna (o recupera su id. si ya existe)
 			
 			expressiondata.setMirnaPk(mirna.getPk());
-			expressiondata.setInteractionData_pk(interactiondata.getPk());
 			session.save(expressiondata);
+			
+			//Relaciona interaction data expressiondata
+			
+			interactiondata.setExpressionDataPk(expressiondata.getPk());
+			interactiondata.setTargetPk(target.getPk());
+			interactiondata.setMirnaPk(mirna.getPk());
+			interactiondata.setMirnaPk(gene.getPk());
 
 			
 			// Relaciona interactionData con Target (o recupera su id. si ya existe)
@@ -302,20 +367,38 @@ public class VirmiRNA2 extends VirmiRNA {
 			interactiondata.setTargetPk(target.getTargetPk());
 			session.save(interactiondata);
 			
-			// Relaciona mirna y organism  (o recupera su id. si ya existe)
 			
-			mirna.setOrganismPk(organism.getPk());
-			session.save(mirna);
+			MirnaHasPubmedDocument mirnaHasPubmedDocument =
+					new MirnaHasPubmedDocument(mirna.getPk(), pubmedDoc.getPk());
 			
-			// Relaciona gene y organism  (o recupera su id. si ya existe)
-
-			gene.setOrganism(organism.getPk());
-			session.save(gene);
+			ExpressionDataHasPubmedDocument expresDataHasPubmedDocument =
+					new ExpressionDataHasPubmedDocument(expressiondata.getPk(), pubmedDoc.getPk());
 			
-			// Relaciona target y organism2 (o recupera su id. si ya existe) (Ver modelo relaciones entre gene->organism/gene->Target)
-
-			target.setSpecie(organism2.getPk());
-			session.save(target);
+			// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
+			Object oldMirnaHasPubmedDocument = session.createCriteria(MirnaHasPubmedDocument.class)
+					.add( Restrictions.eq("mirnaPk", mirna.getPk()) )
+					.add( Restrictions.eq("pubmedDocumentPk", pubmedDoc.getPk()) )
+					.uniqueResult();
+			if (oldMirnaHasPubmedDocument==null) {
+				session.save(mirnaHasPubmedDocument);
+			}
+			
+			// Relaciona PubmedDocument con ExpressionData
+			session.save(expresDataHasPubmedDocument);
+			
+			
+			MirnaInvolvesBiologicalProcess mirnaInvolvesBiologicalProcess =
+					new MirnaInvolvesBiologicalProcess(mirna.getPk(), biologicalprocess.getPk());
+			
+			Object oldMirnInvolvesBiologicalProcess = session.createCriteria(MirnaInvolvesBiologicalProcess.class)
+					.add( Restrictions.eq("mirnaPk", mirna.getPk()) )
+					.add( Restrictions.eq("biologicalprocess", biologicalprocess.getPk()) )
+					.uniqueResult();
+			if (oldMirnInvolvesBiologicalProcess==null) {
+				session.save(mirnaInvolvesBiologicalProcess);
+			}
+			
+			session.save(mirnaInvolvesBiologicalProcess);
 			
 			count++;
 			if (count%100==0) {

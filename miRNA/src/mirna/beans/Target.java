@@ -29,36 +29,33 @@ public class Target extends Transcript {
 	protected String binding_site_end;
 	@Column(name = "repeated_motifs", nullable = false, length = 80, unique = true)
 	protected String repeated_motifs;
-	@Column(name = "utr3_conservation_site", nullable = false, length = 80, unique = true)
-	protected String utr3_conservation_site;
+	@Column(name = "utr3_conservation_score", nullable = false, length = 80, unique = true)
+	protected String utr3_conservation_score;
 	@Column(name = "region", nullable = false, length = 80, unique = true)
 	protected String region;
 	@Column(name = "seed_match", nullable = false, length = 80, unique = true)
 	protected String seed_match;
+	@Column(name = "coordinates", nullable = false, length = 80, unique = true)
+	protected String coordinates;
 	@Column(name = "gc_proportion", nullable = false, length = 80, unique = true)
 	protected String gc_proportion;
 	@Column(name = "transcript_pk", nullable = false, length = 80, unique = true)
-	protected String transcript_pk;
+	protected Integer transcript_pk;
 	@Column(name = "organism_pk", nullable = false, length = 80, unique = true)
-	protected String organism_pk;
+	protected Integer organism_pk;
 	@Column(name = "sequence_pk", nullable = false, length = 80, unique = true)
-	protected String sequence_pk;
-	
+	protected Integer sequence_pk;
+	@Column(name = "target_ref", nullable = false, length = 80, unique = true)
+	protected String target_ref;
 	
 	
 	public Target() { }
 
 	
-	
-	
-
 
 	public String getCds_start() {
 		return cds_start;
 	}
-
-
-
 
 
 
@@ -251,8 +248,10 @@ public class Target extends Transcript {
 
 
 
-	public String getUtr3_conservation_site() {
-		return utr3_conservation_site;
+
+
+	public String getUtr3_conservation_score() {
+		return utr3_conservation_score;
 	}
 
 
@@ -260,8 +259,8 @@ public class Target extends Transcript {
 
 
 
-	public void setUtr3_conservation_site(String utr3_conservation_site) {
-		this.utr3_conservation_site = utr3_conservation_site;
+	public void setUtr3_conservation_score(String utr3_conservation_score) {
+		this.utr3_conservation_score = utr3_conservation_score;
 	}
 
 
@@ -317,13 +316,29 @@ public class Target extends Transcript {
 	public void setGc_proportion(String gc_proportion) {
 		this.gc_proportion = gc_proportion;
 	}
+	
+	
+
+
+	public String getCoordinates() {
+		return coordinates;
+	}
 
 
 
 
 
 
-	public String getTranscript_pk() {
+	public void setCoordinates(String coordinates) {
+		this.coordinates = coordinates;
+	}
+
+
+
+
+
+
+	public Integer getTranscript_pk() {
 		return transcript_pk;
 	}
 
@@ -332,7 +347,7 @@ public class Target extends Transcript {
 
 
 
-	public void setTranscript_pk(String transcript_pk) {
+	public void setTranscript_pk(Integer transcript_pk) {
 		this.transcript_pk = transcript_pk;
 	}
 
@@ -341,41 +356,36 @@ public class Target extends Transcript {
 
 
 
-	public String getOrganism_pk() {
+	public Integer getOrganism_pk() {
 		return organism_pk;
 	}
 
 
-
-
-
-
-	public void setOrganism_pk(String organism_pk) {
+	public void setOrganism_pk(Integer organism_pk) {
 		this.organism_pk = organism_pk;
 	}
 
 
 
-
-
-
-	public String getSequence_pk() {
+	public Integer getSequence_pk() {
 		return sequence_pk;
 	}
 
 
-
-
-
-
-	public void setSequence_pk(String sequence_pk) {
+	public void setSequence_pk(Integer sequence_pk) {
 		this.sequence_pk = sequence_pk;
 	}
 
 
+	public String getTarget_ref() {
+		return target_ref;
+	}
 
 
 
+	public void setTarget_ref(String target_ref) {
+		this.target_ref = target_ref;
+	}
 
 	public void update(Target target, boolean checkConflict) throws ConflictException {
 		if (checkConflict) {
@@ -394,13 +404,16 @@ public class Target extends Transcript {
 		if (target.getBinding_site_start()!=null) this.binding_site_start = target.getBinding_site_start();
 		if (target.getBinding_site_end()!=null) this.binding_site_end = target.getBinding_site_end();
 		if (target.getRepeated_motifs() != null) this.repeated_motifs = target.getRepeated_motifs();
-		if (target.getUtr3_conservation_site() != null) this.utr3_conservation_site = target.getUtr3_conservation_site();
+		if (target.getUtr3_conservation_score() != null) this.utr3_conservation_score = target.getUtr3_conservation_score();
 		if (target.getRegion() != null) this.region = target.getRegion();
 		if (target.getSeed_match() != null) this.seed_match = target.getSeed_match();
 		if (target.getGc_proportion()   != null) this.gc_proportion = target.getGc_proportion();
 		if (target.getOrganism_pk()  != null) this.organism_pk = target.getOrganism_pk();		
 		if(target.getTranscript_pk() !=null) this.transcript_pk = target.getTranscript_pk();
 		if(target.getSequence_pk() !=null) this.sequence_pk = target.getSequence_pk();
+		if(target.getCoordinates() !=null) this.coordinates = target.getCoordinates();
+		if(target.getTarget_ref() !=null) this.target_ref = target.getTarget_ref();
+
 
 	}
 	
@@ -468,9 +481,9 @@ public class Target extends Transcript {
 			else if (!this.repeated_motifs.equals(target.getRepeated_motifs())) return -1;
 		}
 		
-		if (this.utr3_conservation_site!=null) {
-			if (target.getUtr3_conservation_site()==null) res++; 
-			else if (!this.utr3_conservation_site.equals(target.getUtr3_conservation_site())) return -1;
+		if (this.utr3_conservation_score!=null) {
+			if (target.getUtr3_conservation_score()==null) res++; 
+			else if (!this.utr3_conservation_score.equals(target.getUtr3_conservation_score())) return -1;
 		}
 		
 		if (this.region!=null) {
@@ -503,9 +516,20 @@ public class Target extends Transcript {
 			else if (!this.sequence_pk.equals(target.getSequence_pk())) return -1;
 		}
 		
+		if (this.coordinates!=null) {
+			if (target.getCoordinates()  ==null) res++; 
+			else if (!this.coordinates.equals(target.getCoordinates())) return -1;
+		}
+		
+		if (this.target_ref!=null) {
+			if (target.getTarget_ref()  ==null) res++; 
+			else if (!this.target_ref.equals(target.getCoordinates())) return -1;
+		}
 		
 		return res;
 	}
+
+
 
 	@Override
 	public String toString() {
@@ -516,23 +540,14 @@ public class Target extends Transcript {
 				+ polarity + ", binding_site_start=" + binding_site_start
 				+ ", binding_site_end=" + binding_site_end
 				+ ", repeated_motifs=" + repeated_motifs
-				+ ", utr3_conservation_site=" + utr3_conservation_site
+				+ ", utr3_conservation_score=" + utr3_conservation_score
 				+ ", region=" + region + ", seed_match=" + seed_match
-				+ ", gc_proportion=" + gc_proportion + ", transcript_pk="
-				+ transcript_pk + ", organism_pk=" + organism_pk
-				+ ", sequence_pk=" + sequence_pk + ", pk=" + pk + "]";
+				+ ", coordinates=" + coordinates + ", gc_proportion="
+				+ gc_proportion + ", transcript_pk=" + transcript_pk
+				+ ", organism_pk=" + organism_pk + ", sequence_pk="
+				+ sequence_pk + ", target_ref=" + target_ref + ", pk=" + pk
+				+ "]";
 	}
 
-
-
-	
-	
-
-
-	
-
-
-	
-	
 	
 }

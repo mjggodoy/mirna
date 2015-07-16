@@ -31,8 +31,11 @@
   <mapping class="mirna.beans.Organism" />
   <mapping class="mirna.beans.Gene" />
   <mapping class="mirna.beans.Hairpin" />
+  <mapping class="mirna.beans.Target" />
   <mapping class="mirna.beans.nToM.ExpressionDataHasPubmedDocument" />
   <mapping class="mirna.beans.nToM.MirnaHasPubmedDocument" />
+  <mapping class="mirna.beans.nToM.MirnaInvolvesBiologicalProcess" />
+  
   
  </session-factory>
 </hibernate-configuration>
