@@ -16,7 +16,7 @@ public class MiRna extends ModelClass {
 	@Column(name = "name", nullable = false, length = 80, unique = true)
 	protected String name;
 	
-	@Column(name = "accession_number", nullable = true, length = 45)
+	@Column(name = "accession_number", nullable = true, length = 100)
 	private String accessionNumber;
 	
 	@Column(name = "sequence_pk", nullable = true)

@@ -409,13 +409,22 @@ public class VirmiRNA2 extends VirmiRNA {
 
 			
 			stmt.close();
+			tx.commit();
+
 		} catch (SQLException e) {
 			tx.rollback();
 			e.printStackTrace();
 		} finally {
 			if (con!=null) con.close();
+			HibernateUtil.closeSession();
+			HibernateUtil.closeSessionFactory();
 		}
 		
+	}
+	
+	public static void main(String[] args) throws Exception {
+		VirmiRNA2 virmiRNA2 = new VirmiRNA2();
+		virmiRNA2.insertIntoSQLModel();
 	}
 
 }
