@@ -1,30 +1,50 @@
 package mirna.beans;
 
-import mirna.exception.ConflictException;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.Table;
 
+import mirna.exception.ConflictException;
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "interaction_data")
 public class InteractionData extends ModelClass {
 
 	
-	private String score;//ok
-	private String pvalue_log;//ok
-	private String miTG_score; //ok
-	private String method; //ok
-	private String feature; //ok
-	private String phase; //ok
-	private String rank;//ok
-	private String provenance;//ok
-	private String reference;//ok
-	private String pubmedId;//ok
-	private String cellularLine;//ok
-	private String pvalue_og;//ok
-	private String type;
-	private String description;
-	private String algorithm;
-	private Integer mirnaPk;
-	private Integer targetPk;
-	private Integer genePk;
-	private Integer expressionDataPk;
-	private Integer complexPk;
+	@Column(name = "score", nullable = true, length = 80, unique = true)
+	protected String score;
+	@Column(name = "pvalue_log", nullable = true, length = 80, unique = true)
+	protected String pvalue_log;
+	@Column(name = "miTG_score", nullable = true, length = 80, unique = true)
+	protected String miTG_score;
+	@Column(name = "method", nullable = true, length = 80, unique = true)
+	protected String method;
+	@Column(name = "feature", nullable = true, length = 80, unique = true)
+	protected String feature;
+	@Column(name = "phase", nullable = true, length = 80, unique = true)
+	protected String phase;
+	@Column(name = "rank", nullable = true, length = 80, unique = true)
+	protected String rank;
+	@Column(name = "provenance", nullable = true, length = 80, unique = true)
+	protected String provenance;
+	@Column(name = "reference", nullable = true, length = 80, unique = true)
+	protected String reference;
+	@Column(name = "cellular_line", nullable = true, length = 80, unique = true)
+	protected String cellular_line;
+	@Column(name = "pvalue_og", nullable = true, length = 80, unique = true)
+	protected String pvalue_og;
+	@Column(name = "type", nullable = true, length = 80, unique = true)
+	protected String type;
+	@Column(name = "mirna_pk", nullable = true, length = 80, unique = true)
+	protected Integer mirna_pk;
+	@Column(name = "target_pk", nullable = true, length = 80, unique = true)
+	protected Integer target_pk;
+	@Column(name = "gene_pk", nullable = true, length = 80, unique = true)
+	protected Integer gene_pk;
+	@Column(name = "expression_data_pk", nullable = false, length = 80, unique = true)
+	protected Integer expression_data_pk;
 
 	
 	public InteractionData() {
@@ -32,197 +52,360 @@ public class InteractionData extends ModelClass {
 	}
 	
 
-	public InteractionData(int pk,String score, String pvalue_log, String miTG_score,
-			String method, String feature, String phase, String rank,
-			String provenance, String reference, String pubmedId,
-			String cellularLine, String pvalue_og, String type, String description, String algorithm,
-			int mirnaPk, int targetPk, int genePk, int expressionDataPk, int complexPk) {
-		super(pk);
-		this.score = score;
-		this.pvalue_log = pvalue_log;
-		this.miTG_score = miTG_score;
-		this.method = method;
-		this.feature = feature;
-		this.phase = phase;
-		this.rank = rank;
-		this.provenance = provenance;
-		this.reference = reference;
-		this.pubmedId = pubmedId;
-		this.cellularLine = cellularLine;
-		this.pvalue_og = pvalue_og;
-		this.type = type;
-		this.description = description;
-		this.algorithm = algorithm;
-		this.mirnaPk = mirnaPk;
-		this.targetPk = targetPk;
-		this.genePk = genePk;
-		this.expressionDataPk = expressionDataPk;
-		this.complexPk = complexPk; // A–adido
-	}
 	
-	public String getDescription() {
-		return description;
-	}
+	
+	
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
 
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public String getPvalue_og() {
-		return pvalue_og;
-	}
-
-	public void setPvalue_og(String pvalue_og) {
-		this.pvalue_og = pvalue_og;
-	}
-
-	public String getCellularLine() {
-		return cellularLine;
-	}
-
-	public void setCellularLine(String cellularLine) {
-		this.cellularLine = cellularLine;
-	}
-
-	public String getPubmedId() {
-		return pubmedId;
-	}
-
-	public void setPubmedId(String pubmedId) {
-		this.pubmedId = pubmedId;
-	}
-
-	public String getReference() {
-		return reference;
-	}
-
-	public void setReference(String reference) {
-		this.reference = reference;
-	}
 
 	public String getScore() {
 		return score;
 	}
 
+
+
+
+
+
+
+
 	public void setScore(String score) {
 		this.score = score;
 	}
+
+
+
+
+
+
+
 
 	public String getPvalue_log() {
 		return pvalue_log;
 	}
 
-	public String getRank() {
-		return rank;
-	}
 
-	public void setRank(String rank) {
-		this.rank = rank;
-	}
 
-	public String getProvenance() {
-		return provenance;
-	}
 
-	public void setProvenance(String provenance) {
-		this.provenance = provenance;
-	}
+
+
+
 
 	public void setPvalue_log(String pvalue_log) {
 		this.pvalue_log = pvalue_log;
 	}
 
+
+
+
+
+
+
+
 	public String getMiTG_score() {
 		return miTG_score;
 	}
+
+
+
+
+
+
+
 
 	public void setMiTG_score(String miTG_score) {
 		this.miTG_score = miTG_score;
 	}
 
+
+
+
+
+
+
+
 	public String getMethod() {
 		return method;
 	}
+
+
+
+
+
+
+
 
 	public void setMethod(String method) {
 		this.method = method;
 	}
 
+
+
+
+
+
+
+
 	public String getFeature() {
 		return feature;
 	}
+
+
+
+
+
+
+
 
 	public void setFeature(String feature) {
 		this.feature = feature;
 	}
 
+
+
+
+
+
+
+
 	public String getPhase() {
 		return phase;
 	}
+
+
+
+
+
+
+
 
 	public void setPhase(String phase) {
 		this.phase = phase;
 	}
 
-	
-	public String getAlgorithm() {
-		return algorithm;
-	}
 
-	public void setAlgorithm(String algorithm) {
-		this.algorithm = algorithm;
-	}
 
-	public int getMirnaPk() {
-		return mirnaPk;
-	}
 
-	public void setMirnaPk(int mirnaPk) {
-		this.mirnaPk = mirnaPk;
-	}
 
-	public int getTargetPk() {
-		return targetPk;
-	}
 
-	public void setTargetPk(int targetPk) {
-		this.targetPk = targetPk;
-	}
-	
-	
-	public Integer getGenePk() {
-		return genePk;
-	}
 
-	public void setGenePk(Integer genePk) {
-		this.genePk = genePk;
+
+	public String getRank() {
+		return rank;
 	}
 
 
-	public Integer getExpressionDataPk() {
-		return expressionDataPk;
+
+
+
+
+
+
+	public void setRank(String rank) {
+		this.rank = rank;
 	}
 
-	public void setExpressionDataPk(Integer expressionDataPk) {
-		this.expressionDataPk = expressionDataPk;
+
+
+
+
+
+
+
+	public String getProvenance() {
+		return provenance;
 	}
 
-	
-	public Integer getComplexPk() {
-		return complexPk;
+
+
+
+
+
+
+
+	public void setProvenance(String provenance) {
+		this.provenance = provenance;
 	}
 
-	public void setComplexPk(Integer complexPk) {
-		this.complexPk = complexPk;
+
+
+
+
+
+
+
+	public String getReference() {
+		return reference;
 	}
+
+
+
+
+
+
+
+
+	public void setReference(String reference) {
+		this.reference = reference;
+	}
+
+
+
+
+
+
+
+
+	public String getCellular_line() {
+		return cellular_line;
+	}
+
+
+
+
+
+
+
+
+	public void setCellular_line(String cellular_line) {
+		this.cellular_line = cellular_line;
+	}
+
+
+
+
+
+
+
+
+	public String getPvalue_og() {
+		return pvalue_og;
+	}
+
+
+
+
+
+
+
+
+	public void setPvalue_og(String pvalue_og) {
+		this.pvalue_og = pvalue_og;
+	}
+
+
+
+
+
+
+
+
+	public String getType() {
+		return type;
+	}
+
+
+
+
+
+
+
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+
+
+
+
+
+
+
+	public Integer getMirna_pk() {
+		return mirna_pk;
+	}
+
+
+
+
+
+
+
+
+	public void setMirna_pk(Integer mirna_pk) {
+		this.mirna_pk = mirna_pk;
+	}
+
+
+
+
+
+
+
+
+	public Integer getTarget_pk() {
+		return target_pk;
+	}
+
+
+
+
+
+
+
+
+	public void setTarget_pk(Integer target_pk) {
+		this.target_pk = target_pk;
+	}
+
+
+
+
+
+
+
+
+	public Integer getGene_pk() {
+		return gene_pk;
+	}
+
+
+
+
+
+
+
+
+	public void setGene_pk(Integer gene_pk) {
+		this.gene_pk = gene_pk;
+	}
+
+
+
+
+
+
+
+	public Integer getExpression_data_pk() {
+		return expression_data_pk;
+	}
+
+
+
+
+
+
+
+
+	public void setExpression_data_pk(Integer expression_data_pk) {
+		this.expression_data_pk = expression_data_pk;
+	}
+
+
+
+
+
 
 
 
@@ -276,65 +459,52 @@ public class InteractionData extends ModelClass {
 			else if (!this.feature.equals(id.feature)) return -1;
 		}
 		
-		if (this.algorithm != null){
-			if (id.algorithm==null) res++;
-			else if (!this.algorithm.equals(id.algorithm)) return -1;
-		}
+		
 				
-		if (this.cellularLine != null){
-			if (id.cellularLine==null) res++;
-			else if (!this.cellularLine.equals(id.cellularLine)) return -1;
+		if (this.cellular_line != null){
+			if (id.cellular_line==null) res++;
+			else if (!this.cellular_line.equals(id.cellular_line)) return -1;
 		}
 		
-		if (this.pubmedId != null){
-			if (id.pubmedId==null) res++;
-			else if (!this.pubmedId.equals(id.pubmedId)) return -1;
-		}
+		
 		
 		if (this.type != null){
 			if (id.type==null) res++;
 			else if (!this.type.equals(id.type)) return -1;
 		}
 		
-		if (this.description != null){
-			if (id.description==null) res++;
-			else if (!this.description.equals(id.description)) return -1;
-		}
+		
 		
 		if (this.reference != null){
 			if (id.reference==null) res++;
 			else if (!this.reference.equals(id.reference)) return -1;
 		}
 		
-		if (this.mirnaPk != null){
-			if (id.mirnaPk==null) res++;
-			else if (!this.mirnaPk.equals(id.mirnaPk)) return -1;
+		if (this.mirna_pk != null){
+			if (id.mirna_pk==null) res++;
+			else if (!this.mirna_pk.equals(id.mirna_pk)) return -1;
 			
 		}
 		
-		if (this.targetPk != null){
-			if (id.targetPk==null) res++;
-			else if (!this.targetPk.equals(id.targetPk)) return -1;	
+		if (this.target_pk != null){
+			if (id.target_pk==null) res++;
+			else if (!this.target_pk.equals(id.target_pk)) return -1;	
 			
 		}
 		
-		if(this.genePk != null){
-			if(id.genePk==null) res++;
-			else if(!this.targetPk.equals(id.genePk)) return -1;
+		if(this.gene_pk != null){
+			if(id.gene_pk==null) res++;
+			else if(!this.gene_pk.equals(id.gene_pk)) return -1;
 			
 		}
 		
-		if(this.expressionDataPk != null){
-			if(id.getExpressionDataPk()==null) res++;
-			else if(!this.expressionDataPk.equals(id.expressionDataPk)) return -1;
+		if(this.expression_data_pk != null){
+			if(id.expression_data_pk==null) res++;
+			else if(!this.expression_data_pk.equals(id.expression_data_pk)) return -1;
 			
 		}
 		
-		if(this.complexPk != null){
-			if(id.getComplexPk()==null) res++;
-			else if(!this.complexPk.equals(id.complexPk)) return -1;
-			
-		}
+
 		
 		return res;
 	}
@@ -352,20 +522,23 @@ public class InteractionData extends ModelClass {
 		if (id.getPvalue_log()!=null) this.pvalue_log = id.getPvalue_log();
 		if (id.getPvalue_og()!=null) this.pvalue_og = id.getPvalue_og();
 		if (id.getRank()!=null) this.rank = id.getRank();
-		if (id.getDescription()!=null) this.description = id.getDescription();
 		if (id.getReference()!=null) this.reference = id.getReference();
-		if (id.getAlgorithm()!=null) this.algorithm = id.getAlgorithm();
-		if (id.getPubmedId()!=null) this.pubmedId = id.getPubmedId();
 		if (id.getType()!=null) this.type = id.getType();
 		if (id.getFeature()!=null) this.feature = id.getFeature();
 		if (id.getPhase()!=null) this.phase = id.getPhase();
 		if (id.getMethod()!=null) this.rank = id.getMethod();
-		if (id.getCellularLine()!=null) this.cellularLine = id.getCellularLine();
-		if (id.getMiTG_score()!=null) this.miTG_score = id.getCellularLine();
+		if (id.getCellular_line()!=null) this.cellular_line = id.getCellular_line();
+		if (id.getMiTG_score()!=null) this.miTG_score = id.getMiTG_score();
 		if (id.getProvenance()!=null) this.provenance = id.getProvenance();
-		if(id.getExpressionDataPk() != null) this.expressionDataPk = id.getExpressionDataPk();
-		if(id.getComplexPk() != null) this.complexPk = id.getComplexPk();
+		if(id.getTarget_pk() != null) this.target_pk = id.getTarget_pk();
+		if(id.getGene_pk() != null) this.gene_pk = id.getGene_pk();
+		if(id.getMirna_pk() != null) this.mirna_pk = id.getMirna_pk();
+		if(id.getExpression_data_pk() != null) this.expression_data_pk = id.getExpression_data_pk();
+
+
 	}
+
+
 
 	@Override
 	public String toString() {
@@ -373,18 +546,12 @@ public class InteractionData extends ModelClass {
 				+ ", miTG_score=" + miTG_score + ", method=" + method
 				+ ", feature=" + feature + ", phase=" + phase + ", rank="
 				+ rank + ", provenance=" + provenance + ", reference="
-				+ reference + ", pubmedId=" + pubmedId + ", cellularLine="
-				+ cellularLine + ", pvalue_og=" + pvalue_og + ", type=" + type
-				+ ", description=" + description + ", algorithm=" + algorithm
-				+ ", mirnaPk=" + mirnaPk + ", targetPk=" + targetPk
-				+ ", genePk=" + genePk + ", expressionDataPk="
-				+ expressionDataPk + ", complexPk=" + complexPk + "]";
+				+ reference + ", cellular_line=" + cellular_line
+				+ ", pvalue_og=" + pvalue_og + ", type=" + type + ", mirna_pk="
+				+ mirna_pk + ", target_pk=" + target_pk + ", gene_pk="
+				+ gene_pk + ", expressiondata_pk=" + expression_data_pk
+				+ ", pk=" + pk + "]";
 	}
-
-
-
-
-	
 
 }
 

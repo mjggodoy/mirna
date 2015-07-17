@@ -18,10 +18,7 @@ public class BiologicalProcess extends ModelClass {
 	
 	public BiologicalProcess() { }
 
-	public BiologicalProcess(int pk, String name) {
-		super(pk);
-		this.name = name;
-	}
+
 
 	public String getName() {
 		return name;

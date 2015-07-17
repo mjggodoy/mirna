@@ -1,35 +1,42 @@
 package mirna.beans;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.Table;
 
 import mirna.exception.ConflictException;
 
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "target")
 public class Target extends Transcript {
 	
 	
-	@Column(name = "cds_start", nullable = false, length = 80, unique = true)
+	@Column(name = "cds_start", nullable = true, length = 80, unique = true)
 	protected String cds_start;
-	@Column(name = "cds_end", nullable = false, length = 80, unique = true)
+	@Column(name = "cds_end", nullable = true, length = 80, unique = true)
 	protected String cds_end;
-	@Column(name = "utr3_start", nullable = false, length = 80, unique = true)
+	@Column(name = "utr3_start", nullable = true, length = 80, unique = true)
 	protected String utr3_start;
-	@Column(name = "utr3_end", nullable = false, length = 80, unique = true)
+	@Column(name = "utr3_end", nullable = true, length = 80, unique = true)
 	protected String utr3_end;
-	@Column(name = "strand_start", nullable = false, length = 80, unique = true)
+	@Column(name = "strand_start", nullable = true, length = 80, unique = true)
 	protected String strand_start;
-	@Column(name = "strand_end", nullable = false, length = 80, unique = true)
+	@Column(name = "strand_end", nullable = true, length = 80, unique = true)
 	protected String strand_end;
-	@Column(name = "chromosome", nullable = false, length = 80, unique = true)
+	@Column(name = "chromosome", nullable = true, length = 80, unique = true)
 	protected String chromosome;
-	@Column(name = "polarity", nullable = false, length = 80, unique = true)
+	@Column(name = "polarity", nullable = true, length = 80, unique = true)
 	protected String polarity;
-	@Column(name = "binding_site_start", nullable = false, length = 80, unique = true)
+	@Column(name = "binding_site_start", nullable = true, length = 80, unique = true)
 	protected String binding_site_start;
-	@Column(name = "binding_site_end", nullable = false, length = 80, unique = true)
+	@Column(name = "binding_site_end", nullable = true, length = 80, unique = true)
 	protected String binding_site_end;
-	@Column(name = "repeated_motifs", nullable = false, length = 80, unique = true)
+	@Column(name = "repeated_motifs", nullable = true, length = 80, unique = true)
 	protected String repeated_motifs;
-	@Column(name = "utr3_conservation_score", nullable = false, length = 80, unique = true)
+	@Column(name = "utr3_conservation_score", nullable = true, length = 80, unique = true)
 	protected String utr3_conservation_score;
 	@Column(name = "region", nullable = false, length = 80, unique = true)
 	protected String region;
@@ -37,11 +44,11 @@ public class Target extends Transcript {
 	protected String seed_match;
 	@Column(name = "coordinates", nullable = false, length = 80, unique = true)
 	protected String coordinates;
-	@Column(name = "gc_proportion", nullable = false, length = 80, unique = true)
+	@Column(name = "gc_proportion", nullable = true, length = 80, unique = true)
 	protected String gc_proportion;
-	@Column(name = "transcript_pk", nullable = false, length = 80, unique = true)
+	@Column(name = "transcript_pk", nullable = true, length = 80, unique = true)
 	protected Integer transcript_pk;
-	@Column(name = "organism_pk", nullable = false, length = 80, unique = true)
+	@Column(name = "organism_pk", nullable = true, length = 80, unique = true)
 	protected Integer organism_pk;
 	@Column(name = "sequence_pk", nullable = false, length = 80, unique = true)
 	protected Integer sequence_pk;
@@ -398,7 +405,6 @@ public class Target extends Transcript {
 		if (target.getUtr3_end()!=null) this.utr3_end = target.getUtr3_end();
 		if (target.getStrand_start() !=null) this.strand_start = target.getStrand_start();
 		if (target.getStrand_end()  !=null) this.strand_end = target.getStrand_end();
-		if (target.getSequence_pk() !=null) this.sequence_pk = target.getSequence_pk();
 		if (target.getChromosome()!=null) this.chromosome = target.getChromosome();
 		if (target.getPolarity()!=null) this.polarity = target.getPolarity();
 		if (target.getBinding_site_start()!=null) this.binding_site_start = target.getBinding_site_start();

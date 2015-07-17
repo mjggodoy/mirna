@@ -1,7 +1,6 @@
 package mirna.beans.nToM;
 
 import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -9,10 +8,10 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "mirna_involves_biological_process")
-
 public class MirnaInvolvesBiologicalProcess implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@Column(name = "mirna_pk", nullable = false, length = 11, unique = false)
 	private Integer mirnaPk;
@@ -22,11 +21,10 @@ public class MirnaInvolvesBiologicalProcess implements Serializable {
 	private Integer biological_process_pk;
 	
 	
-	public MirnaInvolvesBiologicalProcess(Integer mirnaPk, Integer biological_process_pk ){
+	public MirnaInvolvesBiologicalProcess(Integer mirna_pk, Integer biological_process_pk ){		
 		super();
-		this.mirnaPk = mirnaPk;
+		this.mirnaPk = mirna_pk;
 		this.biological_process_pk = biological_process_pk;
-		
 	}
 
 

@@ -291,7 +291,7 @@ public class VirmiRNA2 extends VirmiRNA {
 			// Inserta Target (o recupera su id. si ya existe)
 			target.setOrganism_pk(organism2.getPk());
 			Object oldTarget = session.createCriteria(Target.class)
-					.add(Restrictions.eq("name", organism.getName()) )
+					.add(Restrictions.eq("target_ref", target.getTarget_ref()))
 					.uniqueResult();
 			if (oldTarget==null) {
 				session.save(target);
@@ -323,7 +323,7 @@ public class VirmiRNA2 extends VirmiRNA {
 			// Inserta BiologicalProcess (o recupera su id. si ya existe)
 
 			Object oldBiologicalProcess = session.createCriteria(BiologicalProcess.class)
-					.add(Restrictions.eq("name", gene.getName()) )
+					.add(Restrictions.eq("name", biologicalprocess.getName()) )
 					.uniqueResult();
 			if (oldBiologicalProcess==null) {
 				session.save(biologicalprocess);
@@ -356,15 +356,10 @@ public class VirmiRNA2 extends VirmiRNA {
 			
 			//Relaciona interaction data expressiondata
 			
-			interactiondata.setExpressionDataPk(expressiondata.getPk());
-			interactiondata.setTargetPk(target.getPk());
-			interactiondata.setMirnaPk(mirna.getPk());
-			interactiondata.setMirnaPk(gene.getPk());
-
-			
-			// Relaciona interactionData con Target (o recupera su id. si ya existe)
-			
-			interactiondata.setTargetPk(target.getTargetPk());
+			interactiondata.setExpression_data_pk(expressiondata.getPk());
+			interactiondata.setTarget_pk(target.getPk());
+			interactiondata.setMirna_pk(mirna.getPk());
+			interactiondata.setGene_pk(gene.getPk());			
 			session.save(interactiondata);
 			
 			

@@ -31,7 +31,10 @@
   <mapping class="mirna.beans.Organism" />
   <mapping class="mirna.beans.Gene" />
   <mapping class="mirna.beans.Hairpin" />
+  <mapping class="mirna.beans.Transcript" />
   <mapping class="mirna.beans.Target" />
+  <mapping class="mirna.beans.BiologicalProcess" />
+  <mapping class="mirna.beans.InteractionData" />
   <mapping class="mirna.beans.nToM.ExpressionDataHasPubmedDocument" />
   <mapping class="mirna.beans.nToM.MirnaHasPubmedDocument" />
   <mapping class="mirna.beans.nToM.MirnaInvolvesBiologicalProcess" />
