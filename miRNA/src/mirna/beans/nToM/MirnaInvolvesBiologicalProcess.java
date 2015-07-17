@@ -17,8 +17,8 @@ public class MirnaInvolvesBiologicalProcess implements Serializable {
 	private Integer mirnaPk;
 
 	@Id
-	@Column(name = "biological_process_pk", nullable = false, length = 11, unique = false)
-	private Integer biological_process_pk;
+	@Column(name = "biological_process_pk", nullable = false, length = 11, unique = false) // Y LO TRADUCE POR ESTO
+	private Integer biological_process_pk; // BUSCA ESTO (EN ESTA CASO SON IGUALES :P)
 	
 	
 	public MirnaInvolvesBiologicalProcess(Integer mirna_pk, Integer biological_process_pk ){		

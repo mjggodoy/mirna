@@ -387,7 +387,7 @@ public class VirmiRNA2 extends VirmiRNA {
 			
 			Object oldMirnInvolvesBiologicalProcess = session.createCriteria(MirnaInvolvesBiologicalProcess.class)
 					.add( Restrictions.eq("mirnaPk", mirna.getPk()) )
-					.add( Restrictions.eq("biologicalprocess", biologicalprocess.getPk()) )
+					.add( Restrictions.eq("biological_process_pk", biologicalprocess.getPk()) )
 					.uniqueResult();
 			if (oldMirnInvolvesBiologicalProcess==null) {
 				session.save(mirnaInvolvesBiologicalProcess);
