@@ -141,6 +141,9 @@ public class VirmiRNA2 extends VirmiRNA {
 		Connection con = null;
 		Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
+        
+        
+      
 		
 		try {
 			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
@@ -217,10 +220,93 @@ public class VirmiRNA2 extends VirmiRNA {
 			gene.setGeneId(uniprot);
 			
 			PubmedDocument pubmedDoc = new PubmedDocument();
-			int index1 = target_pubmedId.indexOf(">");
-			int index2 = target_pubmedId.indexOf("</a>");
-			target_pubmedId =  target_pubmedId.substring(index1+1,index2);
-			pubmedDoc.setId(target_pubmedId);
+			
+			if(!target_pubmedId.contains(">,<") || !target_pubmedId.contains(",")){
+				
+				int index1 = target_pubmedId.indexOf(">");
+				int index2 = target_pubmedId.indexOf("</a>");
+				target_pubmedId =  target_pubmedId.substring(index1+1,index2);
+				pubmedDoc.setId(target_pubmedId);
+			
+			}if(target_pubmedId.contains(">&nbsp;,&nbsp; <")){
+				
+				int index1 = target_pubmedId.indexOf(",");
+				int index4 = target_pubmedId.indexOf("pubmed/");
+				int index2 = target_pubmedId.indexOf(">");
+				int index3 = target_pubmedId.indexOf("</a>");
+				String target_pubmedId1 =  target_pubmedId.substring(0,index1);
+				String target_pubmedId2 =  target_pubmedId.substring(index1+1);
+				target_pubmedId1 =  target_pubmedId1.substring(index4+7,index2-1);
+				target_pubmedId2 =  target_pubmedId2.substring(index4+14,index3-2);
+	    		String[] salida4 = {target_pubmedId1, target_pubmedId2};
+	    		System.out.println(salida4[0]+ " " + salida4[1]);
+	    		
+	    		for(int i = 0; i< salida4.length; i++){
+					
+					pubmedDoc.setId(salida4[i]);
+					
+				}
+	    		
+			}if(target_pubmedId.contains("&nbsp;,&nbsp;")){
+				
+				int index1 = target_pubmedId.indexOf(">");
+				int index2 = target_pubmedId.indexOf("</a>");
+				target_pubmedId =  target_pubmedId.substring(index1+1,index2);
+				pubmedDoc.setId(target_pubmedId);
+				
+				
+			}if(target_pubmedId.contains(",") && !target_pubmedId.contains(">,<")){
+				
+				int index1 = target_pubmedId.indexOf(">");
+				int index2 = target_pubmedId.indexOf("</a>");
+				target_pubmedId =  target_pubmedId.substring(index1+1,index2);
+				String target_pubmedId1 = target_pubmedId.substring(0,8);
+				System.out.println(target_pubmedId1);
+				String target_pubmedId2 = target_pubmedId.substring(10,18);
+				System.out.println(target_pubmedId2);
+				String[] salida5 = {target_pubmedId1, target_pubmedId2};
+				System.out.println(salida5[0]+ " " + salida5[1]);
+	    		
+					for(int i = 0; i< salida5.length; i++){
+					
+						pubmedDoc.setId(salida5[i]);
+					
+					}
+
+			
+			}if (target_pubmedId.contains("</a>,<a")){
+				
+				int index1 = target_pubmedId.indexOf(",");
+	    		int index4 = target_pubmedId.indexOf("pubmed/");
+	    		int index3 = target_pubmedId.indexOf("</a>");
+	    		String target_pubmedId1 =  target_pubmedId.substring(0,index1);
+	    		String target_pubmedId2 =  target_pubmedId.substring(index1+1);
+	    		target_pubmedId1 =  target_pubmedId1.substring(index4+7,index3-2);
+	    		target_pubmedId2 =  target_pubmedId2.substring(index4+7,index3-2);
+	    		String[] salida3 = {target_pubmedId1, target_pubmedId2};
+	    		System.out.println(salida3[0]+ " " + salida3[1]);
+				
+	    			for(int i = 0; i< salida3.length; i++){
+					
+	    				pubmedDoc.setId(salida3[i]);
+					
+	    		}
+	
+			}if(target_pubmedId.contains("patnums")){
+				
+				int index1 = target_pubmedId.indexOf(">");
+				int index2 = target_pubmedId.indexOf("</a>");
+				target_pubmedId =  target_pubmedId.substring(index1+1,index2);
+				System.out.println(target_pubmedId);
+				pubmedDoc.setId(target_pubmedId);
+				
+					
+			}else{
+				
+				System.out.println("Fail!, Fail!");
+				
+			}
+			
 			
 			InteractionData interactiondata = new InteractionData();
 			
@@ -334,6 +420,8 @@ public class VirmiRNA2 extends VirmiRNA {
 				session.update(biologicalProcessToUpdate);
 				biologicalprocess = biologicalProcessToUpdate;
 			}
+			
+			// Inserta PubmedDoc (o recupera su id. si ya existe)
 			
 			Object oldPubmedDoc = session.createCriteria(PubmedDocument.class)
 					.add( Restrictions.eq("id", pubmedDoc.getId()) )

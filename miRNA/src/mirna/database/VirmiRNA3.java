@@ -14,6 +14,7 @@ import mirna.beans.MiRna;
 import mirna.beans.Organism;
 import mirna.beans.Protein;
 import mirna.beans.PubmedDocument;
+import mirna.beans.Sequence;
 import mirna.beans.Target;
 import mirna.beans.nToM.ExpressionDataHasPubmedDocument;
 import mirna.beans.nToM.MirnaHasPubmedDocument;
@@ -184,11 +185,15 @@ public class VirmiRNA3 extends VirmiRNA {
 			
 			
 			Target target = new Target();
-			target.setSequence(target_sequence);
-			target.setStart_strand(target_start);
-			target.setEnd_strand(target_end);
+			target.setStrand_start(target_start); 
+			target.setStrand_end(target_end);
 			target.setRegion(target_region);
 			target.setExternalName(target_reference);
+			
+			
+			Sequence sequence = new Sequence();
+			sequence.setSequence(target_sequence);
+			
 
 			/*System.out.println(organism);
 			System.out.println(mirna);
@@ -201,17 +206,14 @@ public class VirmiRNA3 extends VirmiRNA {
 			
 			//Inserta MiRna (o recupera su id. si ya existe)
 			
-			Object oldMiRna = session.createCriteria(MiRna.class)
-					.add(Restrictions.eq("name", mirna.getName()) )
+			Object oldSequence = session.createCriteria(Sequence.class)
+					.add(Restrictions.eq("sequence", sequence.getSequence()))
 					.uniqueResult();
-			if (oldMiRna==null) {
-				session.save(mirna);
-				session.flush();  // to get the PK
+			if (oldSequence == null) {
+				session.save(sequence);
+				session.flush(); // to get the PK
 			} else {
-				MiRna miRnaToUpdate = (MiRna) oldMiRna;
-				miRnaToUpdate.update(mirna);
-				session.update(miRnaToUpdate);
-				mirna = miRnaToUpdate;
+				sequence = (Sequence) oldSequence;
 			}
 			
 			//Inserta Organism (o recupera su id. si ya existe)
@@ -229,8 +231,25 @@ public class VirmiRNA3 extends VirmiRNA {
 				organism = organismToUpdate;
 			}
 			
+			
+			mirna.setSequencePk(sequence.getPk());
+			mirna.setOrganismPk(organism.getPk());
+			Object oldMiRna = session.createCriteria(MiRna.class)
+					.add(Restrictions.eq("name", mirna.getName()) )
+					.uniqueResult();
+			if (oldMiRna==null) {
+				session.save(mirna);
+				session.flush();  // to get the PK
+			} else {
+				MiRna miRnaToUpdate = (MiRna) oldMiRna;
+				miRnaToUpdate.update(mirna);
+				session.update(miRnaToUpdate);
+				mirna = miRnaToUpdate;
+			}
+			
 			//Inserta Gene (o recupera su id. si ya existe)
 
+			gene.setOrganism(organism.getPk());
 			Object oldGene = session.createCriteria(Gene.class)
 					.add(Restrictions.eq("name", gene.getName()) )
 					.uniqueResult();
@@ -246,6 +265,7 @@ public class VirmiRNA3 extends VirmiRNA {
 		
 			//Inserta Target (o recupera su id. si ya existe)
 
+			target.setOrganism_pk(organism.getPk());
 			Object oldTarget = session.createCriteria(Target.class)
 					.add(Restrictions.eq("name", gene.getName()) )
 					.uniqueResult();
@@ -265,15 +285,8 @@ public class VirmiRNA3 extends VirmiRNA {
 			session.save(expressiondata);
 			session.flush(); // No estoy segura si hacer un flush aqu’ y luego en el resto no.
 			
-			// Relaciona organism con gene  (o recupera su id. si ya existe)
+		
 			
-			gene.setOrganism(organism.getPk());
-			session.save(gene);
-			//TODO:session.flush();
-			
-			//Relaciona target con organism2
-			target.setSpecie(organism2.getPk());
-			session.save(target);
 		
 			MirnaHasPubmedDocument mirnaHasPubmedDocument =
 					new MirnaHasPubmedDocument(mirna.getPk(), pubmedDoc.getPk());
