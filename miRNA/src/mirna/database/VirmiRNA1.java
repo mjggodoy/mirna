@@ -175,13 +175,18 @@ public class VirmiRNA1 extends VirmiRNA{
 				expressiondata.setProvenanceId(virus_id);
 			
 				PubmedDocument pubmedDoc = new PubmedDocument();
-				pubmedDoc.setId(pubmed);
 				
-				/*System.out.println(organism);
-				System.out.println(expressiondata);
-				System.out.println(mirna);
-				System.out.println(gene);
-				System.out.println(hairpin);*/
+				//Insertar c—digo
+				
+				while(pubmed != null){
+					
+					int index = pubmed.indexOf(",");
+					
+					String pubmed1 = pubmed.substring(0, index);
+					String pubmed2 = pubmed.substring(index);
+					pubmedDoc.setId(pubmed1);
+					pubmedDoc.setId(pubmed2);
+				}
 				
 				Object oldSequence1 = session.createCriteria(Sequence.class)
 						.add(Restrictions.eq("sequence", sequence1.getSequence()))
@@ -192,6 +197,7 @@ public class VirmiRNA1 extends VirmiRNA{
 				} else {
 					sequence1 = (Sequence) oldSequence1;
 				}
+				
 				mirna.setSequencePk(sequence1.getPk());
 				
 				// Inserta Organism (o recupera su id. si ya existe)
@@ -208,6 +214,8 @@ public class VirmiRNA1 extends VirmiRNA{
 					session.update(organismToUpdate);
 					organism = organismToUpdate;
 				}
+				
+				mirna.setOrganismPk(organism.getPk());
 				
 				// Inserta MiRna (o recupera su id. si ya existe)
 				mirna.setOrganismPk(organism.getPk());
@@ -329,6 +337,7 @@ public class VirmiRNA1 extends VirmiRNA{
 	}
 	
 	public static void main(String[] args) throws Exception {
+		
 		VirmiRNA1 virmiRNA1 = new VirmiRNA1();
 		virmiRNA1.insertIntoSQLModel();
 	}

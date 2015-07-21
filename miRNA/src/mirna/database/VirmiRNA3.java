@@ -10,9 +10,9 @@ import java.sql.Statement;
 
 import mirna.beans.ExpressionData;
 import mirna.beans.Gene;
+import mirna.beans.InteractionData;
 import mirna.beans.MiRna;
 import mirna.beans.Organism;
-import mirna.beans.Protein;
 import mirna.beans.PubmedDocument;
 import mirna.beans.Sequence;
 import mirna.beans.Target;
@@ -27,35 +27,35 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
 public class VirmiRNA3 extends VirmiRNA {
-	
+
 	private final String tableName = "virmirna3";
-	
+
 	public VirmiRNA3() throws MiRnaException {
 		super();
 	}
-	
+
 	public void insertInTable(String csvInputFile) throws Exception {
-		
+
 		Connection con = null;
 		String line = null;
 		String[] tokens = null;
-		
+
 		try {
 			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			Statement stmt = (Statement) con.createStatement(); 
-			
+
 			FileReader fr = new FileReader(csvInputFile);
 			BufferedReader br = new BufferedReader(fr);
-	
+
 			int count = 0;
-	
+
 			br.readLine();
-			
+
 			while (((line = br.readLine()) != null)) {
-	
+
 				count++;
 				System.out.println(count);
-				
+
 				tokens = StringUtils.splitPreserveAllTokens(line, "\t");
 				String VMT_id = tokens[0];
 				String virus = tokens[1];
@@ -73,12 +73,12 @@ public class VirmiRNA3 extends VirmiRNA {
 				String region_target = tokens[13];
 				String target_reference = tokens[14];
 				String pubmed_id = tokens[15];
-				
+
 				if (tokens.length>16) { //|| ((tokens.length==20) && (!"".equals(tokens[19])))) {
 					br.close();
 					throw new Exception(tokens.length + " tokens found!");
 				}
-				
+
 				String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
 						+ VMT_id + "','"
 						+ virus + "','"
@@ -96,8 +96,8 @@ public class VirmiRNA3 extends VirmiRNA {
 						+ region_target  + "','"
 						+ target_reference  + "','"
 						+ pubmed_id + "')";
-				
-				
+
+
 				stmt.executeUpdate(query);
 			}
 			fr.close();
@@ -115,33 +115,33 @@ public class VirmiRNA3 extends VirmiRNA {
 		} finally {
 			if (con!=null) con.close();
 		}
-		
+
 	}		
-	
+
 	@Override
 	public void insertIntoSQLModel() throws Exception {
 
 		Connection con = null;
 		Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = session.beginTransaction();
-		
+		Transaction tx = session.beginTransaction();
+
 		try {
 			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			Statement stmt = (Statement) con.createStatement();
-			
+
 			// our SQL SELECT query. 
 			// if you only need a few columns, specify them by name instead of using "*"
 			String query = "SELECT * FROM " + tableName;
 			System.out.println("STARTING: " + query);
-			
+
 			// execute the query, and get a java resultset
 			ResultSet rs = stmt.executeQuery(query);
-			
+
 			// iterate through the java resultset
 			int count = 0;
 			rs.next(); ///MUY IMPORTANTE: Target relacionado con organism
 			// CAMBIAR ESTO:
-			
+
 			String id_virus = rs.getString("vmt_id");
 			String virus_name = rs.getString("virus");
 			String virus_full_name = rs.getString("virus_full_name");
@@ -158,54 +158,62 @@ public class VirmiRNA3 extends VirmiRNA {
 			String target_region = rs.getString("region_target");
 			String target_reference = rs.getString("target_reference");
 			String pmid = rs.getString("pubmed_id");
-			
+
 			Organism organism = new Organism();
-			organism.setName(virus_name);
+			organism.setShortName(virus_name);
 			organism.setName(virus_full_name);
 			organism.setResource(taxonomy_resource);
-			
+
 			Organism organism2 = new Organism();
 			organism2.setSpecie(target_organism);
-			
+
 			MiRna mirna = new MiRna();
 			mirna.setName(mirna_name);
-			
+
 			ExpressionData expressiondata = new ExpressionData();
 			expressiondata.setMethod(method);
 			expressiondata.setCellularLine(cell_line);
 			expressiondata.setProvenance("VirmiRNA");
 			expressiondata.setProvenanceId(id_virus);
-			
-			PubmedDocument pubmedDoc = new PubmedDocument();
-			pubmedDoc.setId(pmid);
 
+		
 			Gene gene = new Gene();
 			gene.setName(gene_name);
 			gene.setGeneId(uniprot_id);
-			
-			
+
 			Target target = new Target();
 			target.setStrand_start(target_start); 
 			target.setStrand_end(target_end);
 			target.setRegion(target_region);
 			target.setExternalName(target_reference);
-			
-			
+
 			Sequence sequence = new Sequence();
 			sequence.setSequence(target_sequence);
-			
 
-			/*System.out.println(organism);
-			System.out.println(mirna);
-			System.out.println(expressiondata);
-			System.out.println(gene);
-			System.out.println(target);
-			System.out.println(organism2);*/
+			InteractionData id = new InteractionData();
 			
-			// FIN DE CAMBIAR ESTO
+			PubmedDocument pubmedDoc = new PubmedDocument();
+			pubmedDoc.setId(pmid);
+
 			
-			//Inserta MiRna (o recupera su id. si ya existe)
-			
+			while(pmid.contains("<a")){
+				
+				int startIndex = pmid.indexOf("<a");
+				int endIndex = pmid.indexOf("</a>");
+				
+				String link = pmid.substring(startIndex, endIndex);
+				
+				if (link.contains("http://www.ncbi.nlm.nih.gov/pubmed/")) {
+					
+					String pubmedId = link.substring(link.indexOf(">")+1);
+					pubmedDoc.setId(pubmedId);
+				}
+				
+				pmid = pmid.substring(link.length()+4);
+			}
+
+			//Inserta Sequence (o recupera su id. si ya existe)
+
 			Object oldSequence = session.createCriteria(Sequence.class)
 					.add(Restrictions.eq("sequence", sequence.getSequence()))
 					.uniqueResult();
@@ -215,9 +223,11 @@ public class VirmiRNA3 extends VirmiRNA {
 			} else {
 				sequence = (Sequence) oldSequence;
 			}
-			
+
+			mirna.setSequencePk(sequence.getPk());
+
 			//Inserta Organism (o recupera su id. si ya existe)
-			
+
 			Object oldOrganism = session.createCriteria(MiRna.class)
 					.add(Restrictions.eq("name", organism.getName()) )
 					.uniqueResult();
@@ -230,10 +240,9 @@ public class VirmiRNA3 extends VirmiRNA {
 				session.update(organismToUpdate);
 				organism = organismToUpdate;
 			}
-			
-			
-			mirna.setSequencePk(sequence.getPk());
+
 			mirna.setOrganismPk(organism.getPk());
+
 			Object oldMiRna = session.createCriteria(MiRna.class)
 					.add(Restrictions.eq("name", mirna.getName()) )
 					.uniqueResult();
@@ -246,10 +255,11 @@ public class VirmiRNA3 extends VirmiRNA {
 				session.update(miRnaToUpdate);
 				mirna = miRnaToUpdate;
 			}
-			
+
 			//Inserta Gene (o recupera su id. si ya existe)
 
 			gene.setOrganism(organism.getPk());
+
 			Object oldGene = session.createCriteria(Gene.class)
 					.add(Restrictions.eq("name", gene.getName()) )
 					.uniqueResult();
@@ -262,10 +272,11 @@ public class VirmiRNA3 extends VirmiRNA {
 				session.update(geneToUpdate);
 				gene = geneToUpdate;
 			}
-		
+
 			//Inserta Target (o recupera su id. si ya existe)
 
 			target.setOrganism_pk(organism.getPk());
+
 			Object oldTarget = session.createCriteria(Target.class)
 					.add(Restrictions.eq("name", gene.getName()) )
 					.uniqueResult();
@@ -278,21 +289,25 @@ public class VirmiRNA3 extends VirmiRNA {
 				session.update(targetToUpdate);
 				target = targetToUpdate;
 			}
-		
+
 			// Relaciona expression data con mirna  (o recupera su id. si ya existe)
 
 			expressiondata.setMirnaPk(mirna.getPk());
 			session.save(expressiondata);
-			session.flush(); // No estoy segura si hacer un flush aqu’ y luego en el resto no.
-			
-		
-			
-		
+
+			// Relaciona interaction data con mirna  (o recupera su id. si ya existe)		
+
+			id.setTarget_pk(target.getPk());
+			id.setMirna_pk(mirna.getPk());
+			id.setGene_pk(gene.getPk());
+			id.setExpression_data_pk(expressiondata.getPk());
+
+
 			MirnaHasPubmedDocument mirnaHasPubmedDocument =
 					new MirnaHasPubmedDocument(mirna.getPk(), pubmedDoc.getPk());
 			ExpressionDataHasPubmedDocument expresDataHasPubmedDocument =
 					new ExpressionDataHasPubmedDocument(expressiondata.getPk(), pubmedDoc.getPk());
-			
+
 			// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
 			Object oldMirnaHasPubmedDocument = session.createCriteria(MirnaHasPubmedDocument.class)
 					.add( Restrictions.eq("mirnaPk", mirna.getPk()) )
@@ -303,22 +318,32 @@ public class VirmiRNA3 extends VirmiRNA {
 			}
 			// Relaciona PubmedDocument con ExpressionData
 			session.save(expresDataHasPubmedDocument);
-			
+
 			count++;
 			if (count%100==0) {
 				System.out.println(count);
 				session.flush();
-		        session.clear();
+				session.clear();
 			}
-				
+
 			stmt.close();
+			tx.commit();		
 		} catch (SQLException e) {
 			tx.rollback();
 			e.printStackTrace();
 		} finally {
 			if (con!=null) con.close();
+			HibernateUtil.closeSession();
+			HibernateUtil.closeSessionFactory();
 		}
-		
+
 	}
 	
+	public static void main(String[] args) throws Exception {
+		
+		VirmiRNA3 virmiRNA3 = new VirmiRNA3();
+		virmiRNA3.insertIntoSQLModel();
+	}
+
+
 }

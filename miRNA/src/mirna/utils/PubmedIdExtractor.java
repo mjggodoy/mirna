@@ -1,14 +1,51 @@
 package mirna.utils;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
 public class PubmedIdExtractor{
 	
-	public static void main(String[] args) throws IOException {
+	
+public static void main(String[] args) throws IOException {
+	
+	
 		
-		FileReader fr = new FileReader("test.txt");
+		
+	FileReader fr = new FileReader("test2.txt");
+	BufferedReader br = new BufferedReader(fr);
+
+	String line;
+	
+	while((line = br.readLine()) !=null){
+		
+		while ((line.contains(","))) {
+			
+			int index1 = line.indexOf(",");
+			String pubmed = line.substring(1,index1);
+			System.out.println(pubmed);
+			line = line.substring(pubmed.length()+2, line.length()-1); 
+			//System.out.println(line);
+
+			
+        }	
+		
+		System.out.println(line);
+		
+							
+	}
+        
+        br.close();
+	}
+	
+	
+}
+	
+	
+	//public static void main(String[] args) throws IOException {
+		
+		/*FileReader fr = new FileReader("test.txt");
         BufferedReader br = new BufferedReader(fr);
         
 		String line;
@@ -25,9 +62,13 @@ public class PubmedIdExtractor{
 				
 				String link = line.substring(startIndex, endIndex);
 				
+				//System.out.println(link);
+				
 				if (link.contains("http://www.ncbi.nlm.nih.gov/pubmed/")) {
 				
 					String pubmedId = link.substring(link.indexOf(">")+1);
+					//System.out.println(pubmedId);
+
 					
 					// HACER COSITAS CON PUBMEDID
 					
@@ -38,6 +79,7 @@ public class PubmedIdExtractor{
 
 				
 				line = line.substring(link.length()+4);
+				System.out.println(line);
 				
 			}
 			
@@ -53,9 +95,9 @@ public class PubmedIdExtractor{
 		}
 		
 		br.close();
-	}
+	}*/
 	
 	
-}
+
 
 

@@ -159,9 +159,10 @@ public class VirmiRNA2 extends VirmiRNA {
 			
 			// iterate through the java resultset
 			int count = 0;
-			rs.next();
+			while(rs.next() && count < 10){
 			// CAMBIAR ESTO:
 			
+			count ++;
 			String id_virus = rs.getString("avm_id");
 			String mirna_name = rs.getString("mirna");
 			String mirna_seq = rs.getString("mirna_sequence");
@@ -221,101 +222,28 @@ public class VirmiRNA2 extends VirmiRNA {
 			
 			PubmedDocument pubmedDoc = new PubmedDocument();
 			
-			if(!target_pubmedId.contains(">,<") || !target_pubmedId.contains(",")){
+			while(target_pubmedId.contains("<a")){
 				
-				int index1 = target_pubmedId.indexOf(">");
-				int index2 = target_pubmedId.indexOf("</a>");
-				target_pubmedId =  target_pubmedId.substring(index1+1,index2);
-				pubmedDoc.setId(target_pubmedId);
-			
-			}if(target_pubmedId.contains(">&nbsp;,&nbsp; <")){
+				int startIndex = target_pubmedId.indexOf("<a");
+				int endIndex = target_pubmedId.indexOf("</a>");
 				
-				int index1 = target_pubmedId.indexOf(",");
-				int index4 = target_pubmedId.indexOf("pubmed/");
-				int index2 = target_pubmedId.indexOf(">");
-				int index3 = target_pubmedId.indexOf("</a>");
-				String target_pubmedId1 =  target_pubmedId.substring(0,index1);
-				String target_pubmedId2 =  target_pubmedId.substring(index1+1);
-				target_pubmedId1 =  target_pubmedId1.substring(index4+7,index2-1);
-				target_pubmedId2 =  target_pubmedId2.substring(index4+14,index3-2);
-	    		String[] salida4 = {target_pubmedId1, target_pubmedId2};
-	    		System.out.println(salida4[0]+ " " + salida4[1]);
-	    		
-	    		for(int i = 0; i< salida4.length; i++){
+				String link = target_pubmedId.substring(startIndex, endIndex);
+				
+				if (link.contains("http://www.ncbi.nlm.nih.gov/pubmed/")) {
 					
-					pubmedDoc.setId(salida4[i]);
-					
+					String pubmedId = link.substring(link.indexOf(">")+1);
+					pubmedDoc.setId(pubmedId);
 				}
-	    		
-			}if(target_pubmedId.contains("&nbsp;,&nbsp;")){
 				
-				int index1 = target_pubmedId.indexOf(">");
-				int index2 = target_pubmedId.indexOf("</a>");
-				target_pubmedId =  target_pubmedId.substring(index1+1,index2);
-				pubmedDoc.setId(target_pubmedId);
-				
-				
-			}if(target_pubmedId.contains(",") && !target_pubmedId.contains(">,<")){
-				
-				int index1 = target_pubmedId.indexOf(">");
-				int index2 = target_pubmedId.indexOf("</a>");
-				target_pubmedId =  target_pubmedId.substring(index1+1,index2);
-				String target_pubmedId1 = target_pubmedId.substring(0,8);
-				System.out.println(target_pubmedId1);
-				String target_pubmedId2 = target_pubmedId.substring(10,18);
-				System.out.println(target_pubmedId2);
-				String[] salida5 = {target_pubmedId1, target_pubmedId2};
-				System.out.println(salida5[0]+ " " + salida5[1]);
-	    		
-					for(int i = 0; i< salida5.length; i++){
-					
-						pubmedDoc.setId(salida5[i]);
-					
-					}
-
-			
-			}if (target_pubmedId.contains("</a>,<a")){
-				
-				int index1 = target_pubmedId.indexOf(",");
-	    		int index4 = target_pubmedId.indexOf("pubmed/");
-	    		int index3 = target_pubmedId.indexOf("</a>");
-	    		String target_pubmedId1 =  target_pubmedId.substring(0,index1);
-	    		String target_pubmedId2 =  target_pubmedId.substring(index1+1);
-	    		target_pubmedId1 =  target_pubmedId1.substring(index4+7,index3-2);
-	    		target_pubmedId2 =  target_pubmedId2.substring(index4+7,index3-2);
-	    		String[] salida3 = {target_pubmedId1, target_pubmedId2};
-	    		System.out.println(salida3[0]+ " " + salida3[1]);
-				
-	    			for(int i = 0; i< salida3.length; i++){
-					
-	    				pubmedDoc.setId(salida3[i]);
-					
-	    		}
-	
-			}if(target_pubmedId.contains("patnums")){
-				
-				int index1 = target_pubmedId.indexOf(">");
-				int index2 = target_pubmedId.indexOf("</a>");
-				target_pubmedId =  target_pubmedId.substring(index1+1,index2);
-				System.out.println(target_pubmedId);
-				pubmedDoc.setId(target_pubmedId);
-				
-					
-			}else{
-				
-				System.out.println("Fail!, Fail!");
-				
+				target_pubmedId = target_pubmedId.substring(link.length()+4);
 			}
 			
 			
-			InteractionData interactiondata = new InteractionData();
+			//pubmedDoc.setId(target_pubmedId);
 			
-			/*System.out.println(mirna);
-			System.out.println(organism);
-			System.out.println(expressiondata);
-			System.out.println(target);
-			System.out.println(biologicalprocess);
-			System.out.println(organism2);*/			
+			
+			InteractionData interactiondata = new InteractionData();
+					
 			
 			// Inserta Sequence (o recupera su id. si ya existe)
 			
@@ -374,6 +302,7 @@ public class VirmiRNA2 extends VirmiRNA {
 			}
 			
 			target.setSequence_pk(sequence2.getPk());
+			
 			// Inserta Target (o recupera su id. si ya existe)
 			target.setOrganism_pk(organism2.getPk());
 			Object oldTarget = session.createCriteria(Target.class)
@@ -481,18 +410,17 @@ public class VirmiRNA2 extends VirmiRNA {
 				session.save(mirnaInvolvesBiologicalProcess);
 			}
 			
-			session.save(mirnaInvolvesBiologicalProcess);
-			
+			}
 			count++;
 			if (count%100==0) {
 				System.out.println(count);
 				session.flush();
 		        session.clear();
-			}
-
+			}	
+		
 			
-			stmt.close();
-			tx.commit();
+		stmt.close();
+		tx.commit();
 
 		} catch (SQLException e) {
 			tx.rollback();
@@ -506,6 +434,7 @@ public class VirmiRNA2 extends VirmiRNA {
 	}
 	
 	public static void main(String[] args) throws Exception {
+		
 		VirmiRNA2 virmiRNA2 = new VirmiRNA2();
 		virmiRNA2.insertIntoSQLModel();
 	}

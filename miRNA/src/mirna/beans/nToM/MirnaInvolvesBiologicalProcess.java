@@ -20,6 +20,10 @@ public class MirnaInvolvesBiologicalProcess implements Serializable {
 	@Column(name = "biological_process_pk", nullable = false, length = 11, unique = false) // Y LO TRADUCE POR ESTO
 	private Integer biological_process_pk; // BUSCA ESTO (EN ESTA CASO SON IGUALES :P)
 	
+	public MirnaInvolvesBiologicalProcess(){		
+		super();
+		
+	}
 	
 	public MirnaInvolvesBiologicalProcess(Integer mirna_pk, Integer biological_process_pk ){		
 		super();
