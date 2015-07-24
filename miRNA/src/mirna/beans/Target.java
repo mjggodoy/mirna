@@ -40,9 +40,9 @@ public class Target extends Transcript {
 	protected String utr3_conservation_score;
 	@Column(name = "region", nullable = false, length = 80, unique = true)
 	protected String region;
-	@Column(name = "seed_match", nullable = false, length = 80, unique = true)
+	@Column(name = "seed_match", nullable = true, length = 80, unique = true)
 	protected String seed_match;
-	@Column(name = "coordinates", nullable = false, length = 80, unique = true)
+	@Column(name = "coordinates", nullable = true, length = 80, unique = true)
 	protected String coordinates;
 	@Column(name = "gc_proportion", nullable = true, length = 80, unique = true)
 	protected String gc_proportion;
@@ -50,7 +50,7 @@ public class Target extends Transcript {
 	protected Integer transcript_pk;
 	@Column(name = "organism_pk", nullable = true, length = 80, unique = true)
 	protected Integer organism_pk;
-	@Column(name = "sequence_pk", nullable = false, length = 80, unique = true)
+	@Column(name = "sequence_pk", nullable = false, length = 80, unique = true) //TODO: Sequence_pk no deber’a ser nulo.
 	protected Integer sequence_pk;
 	@Column(name = "target_ref", nullable = false, length = 80, unique = true)
 	protected String target_ref;

@@ -139,8 +139,8 @@ public class VirmiRNA3 extends VirmiRNA {
 
 			// iterate through the java resultset
 			int count = 0;
-			rs.next(); ///MUY IMPORTANTE: Target relacionado con organism
-			// CAMBIAR ESTO:
+			
+			if(rs.next()){
 
 			String id_virus = rs.getString("vmt_id");
 			String virus_name = rs.getString("virus");
@@ -176,7 +176,6 @@ public class VirmiRNA3 extends VirmiRNA {
 			expressiondata.setProvenance("VirmiRNA");
 			expressiondata.setProvenanceId(id_virus);
 
-		
 			Gene gene = new Gene();
 			gene.setName(gene_name);
 			gene.setGeneId(uniprot_id);
@@ -195,22 +194,6 @@ public class VirmiRNA3 extends VirmiRNA {
 			PubmedDocument pubmedDoc = new PubmedDocument();
 			pubmedDoc.setId(pmid);
 
-			
-			while(pmid.contains("<a")){
-				
-				int startIndex = pmid.indexOf("<a");
-				int endIndex = pmid.indexOf("</a>");
-				
-				String link = pmid.substring(startIndex, endIndex);
-				
-				if (link.contains("http://www.ncbi.nlm.nih.gov/pubmed/")) {
-					
-					String pubmedId = link.substring(link.indexOf(">")+1);
-					pubmedDoc.setId(pubmedId);
-				}
-				
-				pmid = pmid.substring(link.length()+4);
-			}
 
 			//Inserta Sequence (o recupera su id. si ya existe)
 
@@ -278,7 +261,7 @@ public class VirmiRNA3 extends VirmiRNA {
 			target.setOrganism_pk(organism.getPk());
 
 			Object oldTarget = session.createCriteria(Target.class)
-					.add(Restrictions.eq("name", gene.getName()) )
+					.add(Restrictions.eq("target_ref", target.getName()) )
 					.uniqueResult();
 			if (oldTarget==null) {
 				session.save(target);
@@ -325,7 +308,8 @@ public class VirmiRNA3 extends VirmiRNA {
 				session.flush();
 				session.clear();
 			}
-
+			}
+			
 			stmt.close();
 			tx.commit();		
 		} catch (SQLException e) {
