@@ -206,7 +206,7 @@ public class VirmiRNA3 extends VirmiRNA {
 				sequence = (Sequence) oldSequence;
 			}
 
-			mirna.setSequencePk(sequence.getPk());
+			mirna.setSequencePk(sequence.getPk()) ;
 
 			//Inserta Organism (o recupera su id. si ya existe)
 
@@ -301,13 +301,13 @@ public class VirmiRNA3 extends VirmiRNA {
 			// Relaciona PubmedDocument con ExpressionData
 			session.save(expresDataHasPubmedDocument);
 
+
 			count++;
 			if (count%100==0) {
 				System.out.println(count);
 				session.flush();
 				session.clear();
 			}
-			
 			}
 			
 			stmt.close();

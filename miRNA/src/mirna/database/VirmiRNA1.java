@@ -145,16 +145,6 @@ public class VirmiRNA1 extends VirmiRNA{
 				String cell_line = rs.getString("cell_line");
 				String method = rs.getString("method");
 				String pubmed = rs.getString("pubmed");
-				
-				while ((pubmed.contains(","))) {
-					
-					int index1 = pubmed.indexOf(",");
-					String pubmed1 = pubmed.substring(1,index1);
-					System.out.println(pubmed);
-					pubmed = pubmed.substring(pubmed1.length()+2, pubmed.length()-1); 
-					System.out.println(pubmed);
-					
-		        }	
 	
 				Organism organism = new Organism();
 				organism.setShortName(virus_name);
@@ -188,7 +178,7 @@ public class VirmiRNA1 extends VirmiRNA{
 				
 				//Insertar c—digo
 				
-				while(pubmed != null){
+				while(pubmed.contains(",")){
 					
 					int index = pubmed.indexOf(",");
 					

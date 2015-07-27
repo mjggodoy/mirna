@@ -50,9 +50,9 @@ public class Target extends Transcript {
 	protected Integer transcript_pk;
 	@Column(name = "organism_pk", nullable = true, length = 80, unique = true)
 	protected Integer organism_pk;
-	@Column(name = "sequence_pk", nullable = false, length = 80, unique = true) //TODO: Sequence_pk no deber’a ser nulo.
+	@Column(name = "sequence_pk", nullable = true, length = 80, unique = true) //TODO: Sequence_pk no deber’a ser nulo.
 	protected Integer sequence_pk;
-	@Column(name = "target_ref", nullable = false, length = 80, unique = true)
+	@Column(name = "target_ref", nullable = true, length = 80, unique = true)
 	protected String target_ref;
 	
 	

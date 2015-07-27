@@ -13,7 +13,7 @@ import mirna.exception.ConflictException;
 @Table(name = "pubmed_document")
 public class PubmedDocument extends ModelClass {
 	
-	@Column(name = "id", nullable = false, length = 10, unique = true)
+	@Column(name = "id", nullable = true, length = 10, unique = true)
 	private String id;
 	
 	public PubmedDocument() {}
