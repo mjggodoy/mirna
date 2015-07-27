@@ -140,8 +140,7 @@ public class VirmiRNA3 extends VirmiRNA {
 			// iterate through the java resultset
 			int count = 0;
 			
-			if(rs.next()){
-
+			if (rs.next()) {
 			String id_virus = rs.getString("vmt_id");
 			String virus_name = rs.getString("virus");
 			String virus_full_name = rs.getString("virus_full_name");
@@ -308,6 +307,7 @@ public class VirmiRNA3 extends VirmiRNA {
 				session.flush();
 				session.clear();
 			}
+			
 			}
 			
 			stmt.close();
