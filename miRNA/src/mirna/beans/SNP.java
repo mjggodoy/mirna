@@ -1,14 +1,30 @@
 package mirna.beans;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.Table;
+
 import mirna.exception.ConflictException;
+
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "snp")
 
 public class SNP extends Mutation {
 	
-	protected String SNPid;
-	protected String position;
-	protected String article_date;
-	protected Integer disease_id;
+	@Column(name = "snp_id", nullable = false, length = 80, unique = true)
+	private String snp_id;
 	
+	@Column(name = "position", nullable = true)
+	private Integer position;
+	
+	@Column(name = "article_date", nullable = true, length = 45)
+	private String article_date;
+	
+	@Column(name = "mutation_pk", nullable = true, length = 45) //mutation_pk puede ser nulo
+	private String mutation_pk;
 	
 	
 	public SNP(){
@@ -16,14 +32,34 @@ public class SNP extends Mutation {
 	}
 
 	
-	public String getSNPid() {
-		return SNPid;
+	
+	
+	public String getSnp_id() {
+		return snp_id;
 	}
 
 
-	public void setSNPid(String sNPid) {
-		SNPid = sNPid;
+
+
+	public void setSnp_id(String snp_id) {
+		this.snp_id = snp_id;
 	}
+
+
+
+
+	public Integer getPosition() {
+		return position;
+	}
+
+
+
+
+	public void setPosition(Integer position) {
+		this.position = position;
+	}
+
+
 
 
 	public String getArticle_date() {
@@ -31,34 +67,29 @@ public class SNP extends Mutation {
 	}
 
 
+
+
 	public void setArticle_date(String article_date) {
 		this.article_date = article_date;
 	}
 
 
-	
-	public String getPosition() {
-		return position;
+
+
+	public String getMutation_pk() {
+		return mutation_pk;
 	}
 
 
-	public void setPosition(String position) {
-		this.position = position;
-	}
 
-	public Integer getDisease_id() {
-		return disease_id;
-	}
 
-	public void setDisease_id(Integer disease_id) {
-		this.disease_id = disease_id;
+	public void setMutation_pk(String mutation_pk) {
+		this.mutation_pk = mutation_pk;
 	}
 
 
-	public void update(SNP snp) throws ConflictException {
-		this.update(snp, true);
-	}
-	
+
+
 	public void update(SNP snp, boolean checkConflict)
 			throws ConflictException {
 		if (checkConflict) {
@@ -69,26 +100,20 @@ public class SNP extends Mutation {
 			this.pk = snp.getPk();
 		}
 		
-		if(snp.getSNPid() != null){
-			this.SNPid = snp.getSNPid();
+		if(snp.getPosition() != null){
+			this.position = snp.getPosition();
 			
 		}
-		if(snp.getPosition() !=null)
-			this.position = snp.getPosition();
+		if(snp.getSnp_id()!=null)
+			this.snp_id = snp.getSnp_id();
 			
 		if(snp.getArticle_date() !=null){
 			this.article_date = snp.getArticle_date();
 		}
 		
-		if(snp.getDisease_id() !=null){
-			this.disease_id = snp.getDisease_id();
+		if(snp.mutation_pk !=null){
+			this.mutation_pk = snp.getMutation_pk();
 		}
-		
-		if(snp.getDisease_id() !=null){
-			
-			this.disease_id = snp.getDisease_id();
-		}
-
 		
 		
 	}
@@ -102,10 +127,10 @@ public class SNP extends Mutation {
 				return -1;
 		}
 		
-		if (this.SNPid != null) {
-			if (snp.getSNPid() == null)
+		if (this.snp_id != null) {
+			if (snp.getSnp_id() == null)
 				res++;
-			else if (!this.SNPid.equals(snp.getSNPid()))
+			else if (!this.snp_id.equals(snp.getSnp_id()))
 				return -1;
 		}
 		
@@ -116,31 +141,41 @@ public class SNP extends Mutation {
 				return -1;
 		}
 		
-		if (this.getDisease_id() != null) {
-			if (snp.getDisease_id() == null)
+		if (this.mutation_pk != null) {
+			if (snp.getMutation_pk() == null)
 				res++;
-			else if (!this.disease_id.equals(snp.getDisease_id()));
+			else if (!this.mutation_pk.equals(snp.getMutation_pk()));
 				return -1;
 		}
 		
-		
+		if (this.position != null) {
+			if (snp.getPosition() == null)
+				res++;
+			else if (!this.position.equals(snp.getPosition()));
+				return -1;
+		}
 		
 		
 		return res;
 	}
 
 
+
+
 	@Override
 	public String toString() {
-		return "SNP [SNPid=" + SNPid + ", position=" + position
-				+ ", article_date=" + article_date + ", disease_id="
-				+ disease_id + ", specie=" + specie + ", chromosome="
+		return "SNP [snp_id=" + snp_id + ", position=" + position
+				+ ", article_date=" + article_date + ", mutation_pk="
+				+ mutation_pk + ", specie=" + specie + ", chromosome="
 				+ chromosome + ", coordinates=" + coordinates
 				+ ", orientation=" + orientation + ", distance=" + distance
 				+ ", journal=" + journal + ", year=" + year + ", description="
 				+ description + ", pubmed_id=" + pubmed_id + ", resource="
-				+ resource + ", pk=" + pk + "]";
+				+ resource + ", gene_id=" + gene_id + ", pk=" + pk + "]";
 	}
+
+
+	
 	
 
 	

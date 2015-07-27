@@ -14,6 +14,8 @@ import org.hibernate.criterion.Restrictions;
 
 import mirna.beans.Disease;
 import mirna.beans.SNP;
+import mirna.beans.nToM.MirnaHasPubmedDocument;
+import mirna.beans.nToM.SnpHasDisease;
 import mirna.exception.MiRnaException;
 import mirna.utils.HibernateUtil;
 
@@ -125,7 +127,9 @@ public class miRdSNP1 extends miRdSNP {
 			// iterate through the java resultset
 			
 			int count = 0;
-			rs.next();
+			if(rs.next() && count<3){
+				
+			count++;
 			// CAMBIAR ESTO:
 			
 			String pubmedId = rs.getString("pubmed_id").toLowerCase().trim();
@@ -140,18 +144,13 @@ public class miRdSNP1 extends miRdSNP {
 			disease.setName(disease_name);
 			
 			SNP snp = new SNP();
-			snp.setSNPid(snp_id);
+			snp.setSnp_id(snp_id);
 			snp.setPubmed_id(pubmedId);
 			snp.setResource(resource);
 			snp.setJournal(journal);
 			snp.setYear(year);
 			snp.setDescription(description);
-			
-			
-			
-			/*System.out.println(disease);
-			System.out.println(snp);*/
-
+		
 			
 			// Inserta Disease (o recupera su id. si ya existe)
 
@@ -169,10 +168,10 @@ public class miRdSNP1 extends miRdSNP {
 			}
 			
 			Object oldSnp = session.createCriteria(SNP.class)
-					.add( Restrictions.eq("name", snp.getSNPid()) )
+					.add( Restrictions.eq("snp_id", snp.getSnp_id()) )
 					.uniqueResult();
 			if (oldSnp==null) {
-				session.save(snp);
+				session.save(snp); // mutation_pk puede ser nulo
 				session.flush();  // to get the PK
 			} else {
 				SNP snptoUpdate = (SNP) oldSnp;
@@ -183,15 +182,21 @@ public class miRdSNP1 extends miRdSNP {
 			
 			// Relaciona SNP y Disease
 			
-			snp.setDisease_id(disease.getPk());
-			session.save(snp);
-			session.flush();
+			SnpHasDisease snpHasDisease = new SnpHasDisease(snp.getPk(), disease.getPk());
+			Object oldSnphasDisease = session.createCriteria(SnpHasDisease.class)
+					.add( Restrictions.eq("snpPk", snp.getPk()) )
+					.add( Restrictions.eq("diseasePk", disease.getPk()) )
+					.uniqueResult();
+			if (oldSnphasDisease==null) {
+				session.save(snpHasDisease);
+			}
 			
 			count++;
 			if (count%100==0) {
 				System.out.println(count);
 				session.flush();
 		        session.clear();
+			}
 			}
 			
 			stmt.close();
@@ -200,7 +205,17 @@ public class miRdSNP1 extends miRdSNP {
 			e.printStackTrace();
 		} finally {
 			if (con!=null) con.close();
+			HibernateUtil.closeSession();
+			HibernateUtil.closeSessionFactory();
 		}
+		
+	}
+	
+	public static void main(String[] args) throws Exception {
+		
+		miRdSNP1 miRdSNP1 = new miRdSNP1();
+		miRdSNP1.insertIntoSQLModel();
+		
 		
 	}
 

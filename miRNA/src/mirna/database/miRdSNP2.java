@@ -123,9 +123,9 @@ public class miRdSNP2 extends miRdSNP {
 			// iterate through the java resultset
 			
 			int count = 0;
-			rs.next();
+			while(rs.next() && count <3){
 			// CAMBIAR ESTO:
-			
+			count ++;
 			String ref_seq = rs.getString("refseq").toLowerCase().trim();
 			String gene_name = rs.getString("gene").toLowerCase().trim();
 			String snp_id = rs.getString("snp_id").toLowerCase().trim();
@@ -206,10 +206,13 @@ public class miRdSNP2 extends miRdSNP {
 				session.save(snp);	
 			}
 			
-			// Relaciona interaction data con mirna.
+			// Relaciona interaction data con mirna y gene.
 			
-			id.setMirnaPk(mirna.getPk());
+			id.setMirna_pk(mirna.getPk());
+			id.setGene_pk(gene.getPk());
 			session.save(id);
+			
+			// Relaciona interaction data con mirna.
 			
 			count++;
 			if (count%100==0) {
@@ -217,7 +220,7 @@ public class miRdSNP2 extends miRdSNP {
 				session.flush();
 		        session.clear();
 			}
-			
+			}
 			stmt.close();
 		} catch (SQLException e) {
 			tx.rollback();
