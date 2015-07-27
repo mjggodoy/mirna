@@ -140,7 +140,10 @@ public class VirmiRNA3 extends VirmiRNA {
 			// iterate through the java resultset
 			int count = 0;
 			
-			if (rs.next()) {
+			if (rs.next() &&  count < 4) {
+				
+			count ++;
+
 			String id_virus = rs.getString("vmt_id");
 			String virus_name = rs.getString("virus");
 			String virus_full_name = rs.getString("virus_full_name");
@@ -192,8 +195,8 @@ public class VirmiRNA3 extends VirmiRNA {
 			
 			PubmedDocument pubmedDoc = new PubmedDocument();
 			pubmedDoc.setId(pmid);
-
-
+			
+			
 			//Inserta Sequence (o recupera su id. si ya existe)
 
 			Object oldSequence = session.createCriteria(Sequence.class)
@@ -210,11 +213,11 @@ public class VirmiRNA3 extends VirmiRNA {
 
 			//Inserta Organism (o recupera su id. si ya existe)
 
-			Object oldOrganism = session.createCriteria(MiRna.class)
+			Object oldOrganism = session.createCriteria(Organism.class)
 					.add(Restrictions.eq("name", organism.getName()) )
 					.uniqueResult();
 			if (oldOrganism==null) {
-				session.save(mirna);
+				session.save(organism);
 				session.flush();  // to get the PK
 			} else {
 				Organism organismToUpdate = (Organism) oldOrganism;
@@ -224,6 +227,8 @@ public class VirmiRNA3 extends VirmiRNA {
 			}
 
 			mirna.setOrganismPk(organism.getPk());
+			
+			//Inserta mirna (o recupera su id. si ya existe)
 
 			Object oldMiRna = session.createCriteria(MiRna.class)
 					.add(Restrictions.eq("name", mirna.getName()) )
@@ -271,6 +276,20 @@ public class VirmiRNA3 extends VirmiRNA {
 				session.update(targetToUpdate);
 				target = targetToUpdate;
 			}
+			
+			// Inserta PubmedDocument (o recupera su id. si ya existe)
+			Object oldPubmedDoc = session.createCriteria(PubmedDocument.class)
+					.add( Restrictions.eq("id", pubmedDoc.getId()) )
+					.uniqueResult();
+			if (oldPubmedDoc==null) {
+				session.save(pubmedDoc);
+				session.flush(); // to get the PK
+			} else {
+				PubmedDocument pubmedDocToUpdate = (PubmedDocument) oldPubmedDoc;
+				pubmedDocToUpdate.update(pubmedDoc);
+				session.update(pubmedDocToUpdate);
+				pubmedDoc = pubmedDocToUpdate;
+			}
 
 			// Relaciona expression data con mirna  (o recupera su id. si ya existe)
 
@@ -283,6 +302,7 @@ public class VirmiRNA3 extends VirmiRNA {
 			id.setMirna_pk(mirna.getPk());
 			id.setGene_pk(gene.getPk());
 			id.setExpression_data_pk(expressiondata.getPk());
+			session.save(id);
 
 
 			MirnaHasPubmedDocument mirnaHasPubmedDocument =
