@@ -15,6 +15,7 @@ import mirna.beans.Gene;
 import mirna.beans.InteractionData;
 import mirna.beans.MiRna;
 import mirna.beans.SNP;
+import mirna.beans.nToM.SnpHasDisease;
 import mirna.exception.MiRnaException;
 import mirna.utils.HibernateUtil;
 
@@ -123,7 +124,7 @@ public class miRdSNP2 extends miRdSNP {
 			// iterate through the java resultset
 			
 			int count = 0;
-			while(rs.next() && count <3){
+			while(rs.next() && count <2){
 			// CAMBIAR ESTO:
 			count ++;
 			String ref_seq = rs.getString("refseq").toLowerCase().trim();
@@ -151,10 +152,11 @@ public class miRdSNP2 extends miRdSNP {
 			
 			for (String token : snpTokens) {
 				SNP snp = new SNP();
-				snp.setSNPid(token);
-				
+				snp.setSnp_id(token);
 				snpList.add(snp);
 			}
+			
+
 			
 			Object oldDisease = session.createCriteria(Disease.class)
 					.add( Restrictions.eq("name", disease.getName()) )
@@ -195,15 +197,20 @@ public class miRdSNP2 extends miRdSNP {
 				mirna = miRnaToUpdate;
 			}
 			
-			// Relaciona SNP y Disease
-			// Relaciona SNP y Gene_id
-			
 			for (SNP snp : snpList) {
+					
+				SnpHasDisease snpHasDisease = new SnpHasDisease(snp.getPk(), disease.getPk());
+				Object oldSnphasDisease = session.createCriteria(SnpHasDisease.class)
+						.add( Restrictions.eq("snpPk", snp.getPk()) )
+						.add( Restrictions.eq("diseasePk", disease.getPk()) )
+						.uniqueResult();
+				if (oldSnphasDisease==null) {
+					session.save(snpHasDisease);
+				}
 				
-				System.out.println(snp);
-				snp.setDisease_id(disease.getPk());
 				snp.setGene_id(gene.getPk());
-				session.save(snp);	
+
+				
 			}
 			
 			// Relaciona interaction data con mirna y gene.
@@ -212,7 +219,6 @@ public class miRdSNP2 extends miRdSNP {
 			id.setGene_pk(gene.getPk());
 			session.save(id);
 			
-			// Relaciona interaction data con mirna.
 			
 			count++;
 			if (count%100==0) {
@@ -227,7 +233,18 @@ public class miRdSNP2 extends miRdSNP {
 			e.printStackTrace();
 		} finally {
 			if (con!=null) con.close();
+			HibernateUtil.closeSession();
+			HibernateUtil.closeSessionFactory();
+		
 		}
+		
+	}
+	
+	public static void main(String[] args) throws Exception {
+		
+		miRdSNP2 miRdSNP2 = new miRdSNP2();
+		miRdSNP2.insertIntoSQLModel();
+		
 		
 	}
 	

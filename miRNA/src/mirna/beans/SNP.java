@@ -100,10 +100,6 @@ public class SNP extends Mutation {
 			this.pk = snp.getPk();
 		}
 		
-		if(snp.getPosition() != null){
-			this.position = snp.getPosition();
-			
-		}
 		if(snp.getSnp_id()!=null)
 			this.snp_id = snp.getSnp_id();
 			
@@ -148,12 +144,7 @@ public class SNP extends Mutation {
 				return -1;
 		}
 		
-		if (this.position != null) {
-			if (snp.getPosition() == null)
-				res++;
-			else if (!this.position.equals(snp.getPosition()));
-				return -1;
-		}
+		
 		
 		
 		return res;
@@ -173,6 +164,16 @@ public class SNP extends Mutation {
 				+ description + ", pubmed_id=" + pubmed_id + ", resource="
 				+ resource + ", gene_id=" + gene_id + ", pk=" + pk + "]";
 	}
+
+
+
+
+	
+
+
+
+
+	
 
 
 	
