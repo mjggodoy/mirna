@@ -127,7 +127,7 @@ public class miRdSNP1 extends miRdSNP {
 			// iterate through the java resultset
 			
 			int count = 0;
-			if(rs.next() && count<3){
+			if(rs.next()){
 				
 			count++;
 			// CAMBIAR ESTO:
@@ -171,13 +171,21 @@ public class miRdSNP1 extends miRdSNP {
 					.add( Restrictions.eq("snp_id", snp.getSnp_id()) )
 					.uniqueResult();
 			if (oldSnp==null) {
+				
 				session.save(snp); // mutation_pk puede ser nulo
 				session.flush();  // to get the PK
+				System.out.println("SALVO ESTE SNP:");
+				System.out.println(snp);
+
 			} else {
+				
 				SNP snptoUpdate = (SNP) oldSnp;
 				snptoUpdate.update(snp); //incluir el update en la clase SNP
 				session.update(snptoUpdate);
 				snp = snptoUpdate;
+				System.out.println("RECUPERO ESTE SNP:");
+				System.out.println(snp);
+
 			}
 			
 			// Relaciona SNP y Disease
@@ -200,6 +208,7 @@ public class miRdSNP1 extends miRdSNP {
 			}
 			
 			stmt.close();
+			tx.commit();
 		} catch (SQLException e) {
 			tx.rollback();
 			e.printStackTrace();
