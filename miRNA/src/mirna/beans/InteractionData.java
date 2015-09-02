@@ -43,7 +43,7 @@ public class InteractionData extends ModelClass {
 	protected Integer target_pk;
 	@Column(name = "gene_pk", nullable = true, length = 80, unique = true)
 	protected Integer gene_pk;
-	@Column(name = "expression_data_pk", nullable = false, length = 80, unique = true)
+	@Column(name = "expression_data_pk", nullable = true, length = 80, unique = true)
 	protected Integer expression_data_pk;
 
 	
