@@ -98,8 +98,6 @@ public class Mir2Disease extends MirnaDatabase {
 	public void insertIntoSQLModel() throws Exception {
 		
 		Connection con = null;
-		String line = null;
-		String[] tokens = null;
 		
 		// Get session
 		Session session = HibernateUtil.getSessionFactory().openSession();
@@ -121,7 +119,7 @@ public class Mir2Disease extends MirnaDatabase {
 			
 			// iterate through the java resultset
 			int count = 0;
-			while (rs.next()) {
+			if (rs.next()) {
 				
 //				mirna -> miRNA.name
 //				disease  -> Disease.name
@@ -196,22 +194,15 @@ public class Mir2Disease extends MirnaDatabase {
 				
 			}
 			stmt.close();
+			tx.commit();
 		} catch (SQLException e) {
 			tx.rollback();
 			e.printStackTrace();
-			if (line!=null) {
-				System.out.println(line);
-				for (int j = 0; j < tokens.length; j++) {
-					System.out.println(j + ": " + tokens[j]);
-				}
-			}
-			e.printStackTrace();
 		} finally {
 			if (con!=null) con.close();
+			HibernateUtil.closeSession();
+			HibernateUtil.closeSessionFactory();
 		}
-		
-		tx.commit();
-		session.close();
 		
 	}
 
