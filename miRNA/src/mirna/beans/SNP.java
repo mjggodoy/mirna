@@ -18,7 +18,7 @@ public class SNP extends Mutation {
 	private String snp_id;
 	
 	@Column(name = "position", nullable = true)
-	private Integer position;
+	private String position;
 	
 	@Column(name = "article_date", nullable = true, length = 45)
 	private String article_date;
@@ -48,14 +48,14 @@ public class SNP extends Mutation {
 
 
 
-	public Integer getPosition() {
+	public String getPosition() {
 		return position;
 	}
 
 
 
 
-	public void setPosition(Integer position) {
+	public void setPosition(String position) {
 		this.position = position;
 	}
 

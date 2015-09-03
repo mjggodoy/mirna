@@ -18,6 +18,7 @@ import mirna.beans.Gene;
 import mirna.beans.InteractionData;
 import mirna.beans.MiRna;
 import mirna.beans.SNP;
+import mirna.beans.nToM.SnpHasDisease;
 import mirna.exception.MiRnaException;
 import mirna.utils.HibernateUtil;
 
@@ -151,10 +152,13 @@ public class miRdSNP4 extends miRdSNP {
 			mirna.setName(mirna_name);
 			
 			SNP snp = new SNP();
-			snp.setSNPid(snp_id);
+			snp.setSnp_id(snp_id);
 			snp.setDistance(distance);
 			
 			InteractionData id = new InteractionData();
+			
+			ExpressionData ed = new ExpressionData();
+			ed.setProvenance("mirdSNP");
 			
 			Object oldGene = session.createCriteria(Gene.class)
 					.add( Restrictions.eq("name", gene.getName()) )
@@ -175,11 +179,17 @@ public class miRdSNP4 extends miRdSNP {
 			if (oldDisease==null) {
 				session.save(disease);
 				session.flush();  // to get the PK
+				System.out.println("Salvo ESTE disease:");
+				System.out.println(snp);
+
 			} else {
 				Disease diseaseToUpdate = (Disease) oldDisease;
 				diseaseToUpdate.update(disease);
 				session.update(diseaseToUpdate);
 				disease = diseaseToUpdate;
+				System.out.println("Recupero ESTE disease:");
+				System.out.println(snp);
+
 			}
 			
 			Object oldMiRna = session.createCriteria(MiRna.class)
@@ -197,7 +207,7 @@ public class miRdSNP4 extends miRdSNP {
 			}
 			
 			Object oldSnp = session.createCriteria(SNP.class)
-					.add( Restrictions.eq("name", snp.getSNPid()))
+					.add( Restrictions.eq("snp_id", snp.getSnp_id()))
 					.uniqueResult();
 			if (oldSnp==null) {
 				session.save(snp);
@@ -209,14 +219,34 @@ public class miRdSNP4 extends miRdSNP {
 				snp = snpToUpdate;
 			}
 			
-			// Relaciona SNP y Disease
 			
-			snp.setDisease_id(disease.getPk());
+			//Relaciona SNP con disease
+			
+			SnpHasDisease snpHasDisease = new SnpHasDisease(snp.getPk(), disease.getPk());
+			Object oldSnphasDisease = session.createCriteria(SnpHasDisease.class)
+					.add( Restrictions.eq("snpPk", snp.getPk()) )
+					.add( Restrictions.eq("diseasePk", disease.getPk()) )
+					.uniqueResult();
+			if (oldSnphasDisease==null) {
+				session.save(snpHasDisease);
+			}
+			
+			// Relaciona SNP y Gene
+			
 			snp.setGene_id(gene.getPk());
 			
-			// Relaciona interaction data con mirna.
 			
-			id.setMirnaPk(mirna.getPk());
+			// Relaciona interaction data y expression data.
+			// Relaciona expressiondata y mirna
+			// Relaciona expressiondata y disease
+			// Relaciona expre
+			
+			ed.setMirnaPk(mirna.getPk());
+			ed.setDiseasePk(disease.getPk());
+			id.setMirna_pk(mirna.getPk());
+			id.setGene_pk(gene.getPk());
+			id.setExpression_data_pk(ed.getPk());
+			session.save(ed);
 			session.save(id);
 			
 			count++;
@@ -227,12 +257,23 @@ public class miRdSNP4 extends miRdSNP {
 			}
 			
 			stmt.close();
+			tx.commit();
 		} catch (SQLException e) {
 			tx.rollback();
 			e.printStackTrace();
 		} finally {
 			if (con!=null) con.close();
+			HibernateUtil.closeSession();
+			HibernateUtil.closeSessionFactory();
 		}
+		
+	}
+	
+	public static void main(String[] args) throws Exception {
+	
+		miRdSNP4 mirdsnp4 = new miRdSNP4();
+		mirdsnp4.insertIntoSQLModel();
+		
 		
 	}
 	
