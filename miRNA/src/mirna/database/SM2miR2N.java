@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import mirna.beans.EnvironmentalFactor;
 import mirna.beans.ExpressionData;
 import mirna.beans.InteractionData;
 import mirna.beans.MiRna;
@@ -33,39 +34,39 @@ import org.hibernate.criterion.Restrictions;
  *
  */
 public class SM2miR2N extends MirnaDatabase {
-	
+
 	private final String tableName = "sm2mir2n";
-	
+
 	public SM2miR2N() throws MiRnaException {
 		super();
 	}
-	
+
 	public void insertInTable(String csvInputFile) throws Exception {
-		
+
 		Connection con = null;
 		String line = null;
 		String[] tokens = null;
-		
+
 		String query = "";
-		
+
 		try {
 			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			Statement stmt = (Statement) con.createStatement(); 
-			
+
 			FileReader fr = new FileReader(csvInputFile);
 			BufferedReader br = new BufferedReader(fr);
-	
+
 			int count = 0;
-			
+
 			br.readLine();
-	
+
 			while ((line = br.readLine()) != null) {
-	
+
 				count++;
 				System.out.println(count + " : " + line);
-				
+
 				tokens = StringUtils.splitPreserveAllTokens(line, "\t");
-	
+
 				String mirna = tokens[0];
 				String mirbase = tokens[1];
 				String smallMolecule = tokens[2].replaceAll("'", "\\\\'");
@@ -96,9 +97,9 @@ public class SM2miR2N extends MirnaDatabase {
 						+ reference + "','"
 						+ support + "','"
 						+ expression + "')";
-				
+
 				stmt.executeUpdate(query);
-	
+
 			}
 			fr.close();
 			br.close();
@@ -116,33 +117,33 @@ public class SM2miR2N extends MirnaDatabase {
 		} finally {
 			if (con!=null) con.close();
 		}
-		
+
 	}
-	
+
 	@Override
 	public void insertIntoSQLModel() throws Exception {
 
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = session.beginTransaction();
 		Connection con = null;
-		
+
 		try {
 			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			Statement stmt = (Statement) con.createStatement();
-			
+
 			// our SQL SELECT query. 
 			// if you only need a few columns, specify them by name instead of using "*"
 			String query = "SELECT * FROM " + tableName;
 			System.out.println("STARTING: " + query);
-			
+
 			// execute the query, and get a java resultset
 			ResultSet rs = stmt.executeQuery(query);
-			
+
 			// iterate through the java resultset
 			int count = 0;
 			rs.next();
 			// CAMBIAR ESTO:
-			
+
 			String name = rs.getString("mirna");
 			String mirbase = rs.getString("mirbase");
 			String small_molecule = rs.getString("small_molecule").toLowerCase().trim();
@@ -157,17 +158,19 @@ public class SM2miR2N extends MirnaDatabase {
 			String reference = rs.getString("reference");
 			String support = rs.getString("support");
 			String evidence = rs.getString("expression");
-			
+
 			MiRna miRna = new MiRna();
 			miRna.setName(name);
 			miRna.setAccessionNumber(mirbase);
-			
+
 			SmallMolecule smallmolecule = new SmallMolecule();
-			smallmolecule.setName(small_molecule);
 			smallmolecule.setFda(fda);
 			smallmolecule.setCid(cid);
 			smallmolecule.setDb(db);
-			
+
+			EnvironmentalFactor ef = new EnvironmentalFactor();
+			ef.setName(small_molecule);
+
 			ExpressionData ed = new ExpressionData();
 			ed.setCondition(condition);
 			ed.setEvidence(evidence);
@@ -175,22 +178,33 @@ public class SM2miR2N extends MirnaDatabase {
 			ed.setTitleReference(reference);
 			ed.setYear(year);
 			ed.setDescription(support);
-			
+			ed.setProvenance("SMS2miR2N");
+
 			Organism organism = new Organism();
-			organism.setSpecie(specie);
-			
+			organism.setName(specie);
+
 			PubmedDocument pubmedDoc = new PubmedDocument();
 			pubmedDoc.setId(pmid);
-		
-			/*System.out.println(miRna);
-			System.out.println(ed);
-			System.out.println(smallmolecule);
-			System.out.println(organism);
-			*/
-			// FIN DE CAMBIAR ESTO
-			
+
+			// Inserta Organism (o recupera su id. si ya existe)
+			// Relaciona mirna y organism
+
 			// Inserta MiRna (o recupera su id. si ya existe)
 			
+			Object oldOrganism = session.createCriteria(Organism.class)
+					.add(Restrictions.eq("name", organism.getName()) )
+					.uniqueResult();
+			if (oldOrganism==null) {
+				session.save(organism);
+				session.flush(); // to get the PK
+			} else {
+				Organism organismToUpdate = (Organism) oldOrganism;
+				organismToUpdate.update(organism);
+				session.update(organismToUpdate);
+				organism = organismToUpdate;
+			}
+
+			miRna.setOrganismPk(organism.getPk());
 			Object oldMiRna = session.createCriteria(MiRna.class)
 					.add( Restrictions.eq("name", miRna.getName()) )
 					.uniqueResult();
@@ -203,11 +217,26 @@ public class SM2miR2N extends MirnaDatabase {
 				session.update(miRnaToUpdate);
 				miRna = miRnaToUpdate;
 			}
-			
-			// Inserta smallmolecule (o recupera su id. si ya existe)
+		
+			// Inserta EnvironmentalFactor (o recupera su id. si ya existe)
 
+			Object oldEf = session.createCriteria(EnvironmentalFactor.class)
+					.add( Restrictions.eq("name", ef.getName()) )
+					.uniqueResult();
+			if (oldEf==null) {
+				session.save(ef);
+				session.flush();  // to get the PK
+			} else {
+				EnvironmentalFactor efToUpdate = (EnvironmentalFactor) oldEf;
+				efToUpdate.update(ef);
+				session.update(efToUpdate);
+				ef = efToUpdate;
+			}
+
+			// Inserta smallmolecule (o recupera su id. si ya existe)
+			smallmolecule.setEnvironmental_factor_pk(ef.getPk());
 			Object oldSmallMolecule = session.createCriteria(SmallMolecule.class)
-					.add( Restrictions.eq("name", smallmolecule.getName()) )
+					.add( Restrictions.eq("db", smallmolecule.getDb()) )
 					.uniqueResult();
 			if (oldSmallMolecule==null) {
 				session.save(smallmolecule);
@@ -218,7 +247,15 @@ public class SM2miR2N extends MirnaDatabase {
 				session.update(smallmoleculeToUpdate);
 				smallmolecule = smallmoleculeToUpdate;
 			}
-			
+
+
+			// Inserta nueva DataExpression
+			// (y la relaciona con el MiRna y SmallMolecule)
+
+			ed.setMirnaPk(miRna.getPk());
+			ed.setEnvironmentalFactorPk(smallmolecule.getPk()); 
+			session.save(ed);			
+
 			// Inserta pubmedDocument (o recupera su id. si ya existe)
 
 			Object oldPubmedDoc = session.createCriteria(PubmedDocument.class)
@@ -233,23 +270,17 @@ public class SM2miR2N extends MirnaDatabase {
 				session.update(pubmedDocToUpdate);
 				pubmedDoc = pubmedDocToUpdate;
 			}
-			
-			
-			// Inserta nueva DataExpression
-			// (y la relaciona con el MiRna y SmallMolecule)
-			
-			ed.setMirnaPk(miRna.getPk());
-			ed.setSmallMolecule_pk(smallmolecule.getPk()); //relacionar expressiondata con smallMolecule
-			session.save(ed);
-			session.flush(); // to get the PK
-			
+
+
 			MirnaHasPubmedDocument mirnaHasPubmedDocument =
 					new MirnaHasPubmedDocument(miRna.getPk(), pubmedDoc.getPk());
 			ExpressionDataHasPubmedDocument expresDataHasPubmedDocument =
 					new ExpressionDataHasPubmedDocument(ed.getPk(), pubmedDoc.getPk());
-			
+
+
+
 			// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
-			
+
 			Object oldMirnaHasPubmedDocument = session.createCriteria(MirnaHasPubmedDocument.class)
 					.add( Restrictions.eq("mirnaPk", miRna.getPk()) )
 					.add( Restrictions.eq("pubmedDocumentPk", pubmedDoc.getPk()) )
@@ -257,36 +288,40 @@ public class SM2miR2N extends MirnaDatabase {
 			if (oldMirnaHasPubmedDocument==null) {
 				session.save(mirnaHasPubmedDocument);
 			}
-			
+
 			// Relaciona PubmedDocument con ExpressionData
-			
+
 			session.save(expresDataHasPubmedDocument);
-			
+
 			count++;
 			if (count%100==0) {
 				System.out.println(count);
 				session.flush();
-		        session.clear();
+				session.clear();
 			}
-			
+
 			stmt.close();
+			tx.commit();
+
 		} catch (SQLException e) {
 			tx.rollback();
 			e.printStackTrace();
 		} finally {
 			if (con!=null) con.close();
+			HibernateUtil.closeSession();
+			HibernateUtil.closeSessionFactory();
 		}
 	}
 
 	public static void main(String[] args) throws Exception {
-		
+
 		SM2miR2N sm2 = new SM2miR2N();
-		
+
 		//String inputFile = "/Users/esteban/Softw/miRNA/SM2miR2n.txt";
 		//sm2.insertInTable(inputFile);
-		
+
 		sm2.insertIntoSQLModel();
-		
+
 	}
 
 }

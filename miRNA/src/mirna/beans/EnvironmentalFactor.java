@@ -1,16 +1,25 @@
 package mirna.beans;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.Table;
+
 import mirna.exception.ConflictException;
 
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "environmental_factor")
 public class EnvironmentalFactor extends ModelClass  {
 	
-	protected String name;
+	@Column(name = "name", nullable = false, length = 300)
+	private String name;
 
-	public EnvironmentalFactor() { }
 	
-	public EnvironmentalFactor(int pk, String name) {
-		super(pk);
-		this.name = name;
+	
+	public EnvironmentalFactor() {
+		super();
 	}
 
 	public String getName() {

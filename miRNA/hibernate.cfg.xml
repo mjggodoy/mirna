@@ -41,8 +41,8 @@
   <mapping class="mirna.beans.nToM.MirnaHasPubmedDocument" />
   <mapping class="mirna.beans.nToM.MirnaInvolvesBiologicalProcess" />
   <mapping class="mirna.beans.nToM.SnpHasDisease" />
-  
-  
+  <mapping class="mirna.beans.SmallMolecule" />
+  <mapping class="mirna.beans.EnvironmentalFactor" />
   
  </session-factory>
 </hibernate-configuration>
