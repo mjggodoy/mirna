@@ -145,6 +145,7 @@ public class PlantMirnaMatureMirna extends MirnaDatabase {
 			Mature mature = new Mature();
 
 			ExpressionData ed = new ExpressionData();
+			ed.setProvenance("PlantMirna");
 
 			// Inserta Organism (o recupera su id. si ya existe)
 			Object oldOrganism = session.createCriteria(Organism.class)
@@ -215,6 +216,7 @@ public class PlantMirnaMatureMirna extends MirnaDatabase {
 			// Relaciona expressiondata data con mirna
 
 			ed.setMirnaPk(miRNA.getPk());
+			session.save(ed);
 
 
 			count++;
