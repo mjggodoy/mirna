@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import mirna.beans.ExpressionData;
 import mirna.beans.InteractionData;
 import mirna.beans.Mature;
 import mirna.beans.MiRna;
@@ -24,7 +25,7 @@ import org.hibernate.criterion.Restrictions;
 public class PlantMirnaMatureMirna extends MirnaDatabase {
 
 	private final String tableName = "plant_mirna_mature_mirna";
-	
+
 	public PlantMirnaMatureMirna() throws MiRnaException { super(); }
 
 	@Override
@@ -33,51 +34,51 @@ public class PlantMirnaMatureMirna extends MirnaDatabase {
 		Connection con = null;
 		String line = null;
 		String[] tokens = null;
-		
+
 		try {
 			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			Statement stmt = (Statement) con.createStatement(); 
-			
+
 			FileReader fr = new FileReader(csvInputFile);
 			BufferedReader br = new BufferedReader(fr);
-	
+
 			int count = 0;
-				
+
 			String specie = "", mirnaid = "";
-			
+
 			while (((line = br.readLine()) != null)) {
-				
+
 				count++;
 				System.out.println(count);
-				
+
 				tokens = StringUtils.splitPreserveAllTokens(line, "\n");
-				
+
 				if(line.startsWith (">")){
-	
+
 					String specie1 = tokens[0];
 					int index1 = specie1.indexOf(">");
 					int index2 = specie1.indexOf("-");
 					specie = specie1.substring(index1+1, index2);
 					mirnaid = specie1.substring(index2+1);
-					
-//					String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
-//							+ specie2 + "','"
-//							+ mirnaid + "')";
-//					
-//					stmt.executeUpdate(query);
-	
+
+					//					String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
+					//							+ specie2 + "','"
+					//							+ mirnaid + "')";
+					//					
+					//					stmt.executeUpdate(query);
+
 				}else{
-					
+
 					String sequence = tokens[0];
 					String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
 							+ specie + "','"
 							+ mirnaid + "','"
 							+ sequence + "')";
-					
+
 					stmt.executeUpdate(query);
-					
+
 				}
-	
+
 			}
 			fr.close();
 			br.close();
@@ -94,74 +95,94 @@ public class PlantMirnaMatureMirna extends MirnaDatabase {
 		} finally {
 			if (con!=null) con.close();
 		}		
-		
+
 	}
 
 
 	@Override
 	public void insertIntoSQLModel() throws Exception {
-		
+
 		Connection con = null;
-		
+
 		// Get session
 		Session session = HibernateUtil.getSessionFactory().openSession();
-		
+
 		//start transaction
 		Transaction tx = session.beginTransaction();
-		
+
 		try {
 			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			Statement stmt = (Statement) con.createStatement();
-			
+
 			// our SQL SELECT query. 
 			// if you only need a few columns, specify them by name instead of using "*"
 			String query = "SELECT * FROM " + tableName;
 			System.out.println("STARTING: " + query);
-			
+
 			// execute the query, and get a java resultset
 			ResultSet rs = stmt.executeQuery(query);
-			
+
 			// iterate through the java resultset
 			int count = 0;
 			rs.next();
 			rs.next();
 
 			// CAMBIAR ESTO:
-			
+
 			String specie = rs.getString("specie").toLowerCase().trim();
-			String mirna_id = rs.getString("mirna_id").toLowerCase().trim();
+			String mature_id = rs.getString("mirna_id").toLowerCase().trim();
 			String sequence_mature = rs.getString("sequence").toLowerCase().trim();
-		
-			MiRna miRna = new MiRna();
-			miRna.setName(mirna_id);
-			
+
+
 			Organism organism = new Organism();
 			organism.setShortName(specie);
-			
-			Mature mature = new Mature();
-			
+
+			MiRna miRNA = new MiRna();
+			miRNA.setName(mature_id);
+
 			Sequence sequence = new Sequence();
 			sequence.setSequence(sequence_mature);
-			
-			InteractionData id = new InteractionData();
-			
+
+			Mature mature = new Mature();
+
+			ExpressionData ed = new ExpressionData();
+
+
+
+			// Inserta Mature (o recupera su id. si ya existe)
+			Object oldMature = session.createCriteria(Mature.class)
+					.add( Restrictions.eq("name", mature.getName()) )
+					.uniqueResult();
+			if (oldMature==null) {
+				session.save(mature);
+				session.flush();  // to get the PK
+
+			} else {
+
+				Mature matureToUpdate = (Mature) oldMature;
+				matureToUpdate.update(mature);
+				session.update(matureToUpdate);
+				mature = matureToUpdate;
+			}
+
 			// Inserta MiRna (o recupera su id. si ya existe)
+			
+			mature.setMirnaPk(miRNA.getPk());
 			Object oldMiRna = session.createCriteria(MiRna.class)
-					.add( Restrictions.eq("name", miRna.getName()) )
+					.add(Restrictions.eq("name", miRNA.getName()) )
 					.uniqueResult();
 			if (oldMiRna==null) {
-				session.save(miRna);
+				session.save(miRNA);
 				session.flush();  // to get the PK
 			} else {
 				MiRna miRnaToUpdate = (MiRna) oldMiRna;
-				miRnaToUpdate.update(miRna);
+				miRnaToUpdate.update(miRNA);
 				session.update(miRnaToUpdate);
-				miRna = miRnaToUpdate;
+				miRNA = miRnaToUpdate;
 			}
-			
+
+			miRNA.setOrganismPk(organism.getPk());
 			// Inserta Organism (o recupera su id. si ya existe)
-			
-			miRna.setOrganismPk(organism.getPk());
 			Object oldOrganism = session.createCriteria(Organism.class)
 					.add( Restrictions.eq("name", organism.getName()) )
 					.uniqueResult();
@@ -174,25 +195,11 @@ public class PlantMirnaMatureMirna extends MirnaDatabase {
 				session.update(organismToUpdate);
 				organism = organismToUpdate;
 			}
-	
-			// Inserta Mature (o recupera su id. si ya existe)
-			Object oldMature = session.createCriteria(Mature.class)
-					.add( Restrictions.eq("name", mature.getName()) )
-					.uniqueResult();
-			if (oldMature==null) {
-				session.save(mature);
-				session.flush();  // to get the PK
-			} else {
-				Mature matureToUpdate = (Mature) oldMiRna;
-				matureToUpdate.update(mature);
-				session.update(matureToUpdate);
-				mature = matureToUpdate;
-			}
-			
-		
+
+
 			//Relaciona miRNA y sequence
-			
-			miRna.setSequencePk(sequence.getPk());
+
+			miRNA.setSequencePk(sequence.getPk());
 			Object oldSequence = session.createCriteria(Sequence.class)
 					.add( Restrictions.eq("sequence", sequence.getSequence()) )
 					.uniqueResult();
@@ -205,38 +212,43 @@ public class PlantMirnaMatureMirna extends MirnaDatabase {
 				session.update(sequence);
 				sequence = sequenceToUpdate;
 			}
+
+
+			// Relaciona expressiondata data con mirna
 			
-			
-			// Relaciona interaction data con mirna
-			
-			id.setMirna_pk(miRna.getPk());
-	
+			ed.setMirnaPk(miRNA.getPk());
+
+
 			count++;
 			if (count%100==0) {
 				System.out.println(count);
 				session.flush();
-		        session.clear();
+				session.clear();
 			}
-			
+
 			stmt.close();
+			tx.commit();
+
 		} catch (SQLException e) {
 			tx.rollback();
 			e.printStackTrace();
 		} finally {
 			if (con!=null) con.close();
+			HibernateUtil.closeSession();
+			HibernateUtil.closeSessionFactory();
 		}
-		
+
 	}
-	
+
 	public static void main(String[] args) throws Exception{
-		
+
 		PlantMirnaMatureMirna plant = new PlantMirnaMatureMirna();
-		
-//		String inputFile = "/Users/esteban/Softw/miRNA/plant_mirna/all_mature.txt";
-//		plant.insertInTable(inputFile);
-		
+
+		//		String inputFile = "/Users/esteban/Softw/miRNA/plant_mirna/all_mature.txt";
+		//		plant.insertInTable(inputFile);
+
 		plant.insertIntoSQLModel();
-	
+
 	}
-	
+
 }

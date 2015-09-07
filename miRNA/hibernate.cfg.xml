@@ -31,6 +31,7 @@
   <mapping class="mirna.beans.Organism" />
   <mapping class="mirna.beans.Gene" />
   <mapping class="mirna.beans.Hairpin" />
+  <mapping class="mirna.beans.Mature" />
   <mapping class="mirna.beans.Transcript" />
   <mapping class="mirna.beans.Target" />
   <mapping class="mirna.beans.Mutation" />
@@ -43,6 +44,7 @@
   <mapping class="mirna.beans.nToM.SnpHasDisease" />
   <mapping class="mirna.beans.SmallMolecule" />
   <mapping class="mirna.beans.EnvironmentalFactor" />
+  
   
  </session-factory>
 </hibernate-configuration>

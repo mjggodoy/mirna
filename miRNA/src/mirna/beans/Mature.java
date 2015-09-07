@@ -4,7 +4,7 @@ import javax.persistence.Column;
 
 import mirna.exception.ConflictException;
 
-public class Mature extends MiRna {
+public class Mature extends ModelClass {
 	
 	@Column(name = "name", nullable = false, length = 80, unique = true)
 	protected String name;
@@ -84,19 +84,12 @@ public class Mature extends MiRna {
 		if (mature.getSequence_pk()!=null) this.sequence_pk = mature.getSequence_pk();
 		if (mature.getMirnaPk()!=null) this.mirnaPk = mature.getMirnaPk();
 	}
-	
-	
+
 
 	@Override
 	public String toString() {
 		return "Mature [name=" + name + ", mirnaPk=" + mirnaPk
-				+ ", sequence_pk=" + sequence_pk + ", sequencePk=" + sequencePk
-				+ ", pk=" + pk + "]";
+				+ ", sequence_pk=" + sequence_pk + ", pk=" + pk + "]";
 	}
-
-	
-
-	
-	
-	
+		
 }
