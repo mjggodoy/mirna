@@ -209,7 +209,7 @@ public class PlantMirnaMatureMirna extends MirnaDatabase {
 			
 			// Relaciona interaction data con mirna
 			
-			id.setMirnaPk(miRna.getPk());
+			id.setMirna_pk(miRna.getPk());
 	
 			count++;
 			if (count%100==0) {
