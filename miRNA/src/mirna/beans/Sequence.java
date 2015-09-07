@@ -54,8 +54,7 @@ public class Sequence extends ModelClass {
 		this.update(sequence, true);
 	}
 	
-	
-	
+
 	
 	@Override
 	public String toString() {

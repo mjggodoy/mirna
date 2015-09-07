@@ -2,12 +2,21 @@ package mirna.beans;
 
 import javax.persistence.Column;
 
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.Table;
 import mirna.exception.ConflictException;
+
+
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "mature")
 
 public class Mature extends ModelClass {
 	
-	@Column(name = "name", nullable = false, length = 80, unique = true)
-	protected String name;
+	@Column(name = "proportion", nullable = true, length = 80, unique = true)
+	protected String proportion;
 	
 	@Column(name = "mirna_pk", nullable = false)
 	private Integer mirnaPk;
@@ -19,14 +28,23 @@ public class Mature extends ModelClass {
 	public Mature() { }
 
 
-	public String getName() {
-		return name;
+	
+
+
+	public String getProportion() {
+		return proportion;
 	}
 
 
-	public void setName(String name) {
-		this.name = name;
+
+
+
+	public void setProportion(String proportion) {
+		this.proportion = proportion;
 	}
+
+
+
 
 
 	public Integer getMirnaPk() {
@@ -54,9 +72,9 @@ public class Mature extends ModelClass {
 			if (mature.getPk()==null) res++;
 			else if (!this.pk.equals(mature.getPk())) return -1;
 		}
-		if (this.name!=null) {
-			if (mature.getName()==null) res++;
-			else if (!this.name.equals(mature.getName())) {
+		if (this.proportion!=null) {
+			if (mature.getProportion()==null) res++;
+			else if (!this.proportion.equals(mature.getProportion())) {
 				return -1;
 			}
 		}
@@ -80,7 +98,7 @@ public class Mature extends ModelClass {
 			if (this.checkConflict(mature)==-1) throw new ConflictException(this, mature);
 		}
 		if (mature.getPk()!=null) this.pk = mature.getPk();
-		if (mature.getName()!=null) this.name = mature.getName();
+		if (mature.getProportion()!=null) this.proportion = mature.getProportion();
 		if (mature.getSequence_pk()!=null) this.sequence_pk = mature.getSequence_pk();
 		if (mature.getMirnaPk()!=null) this.mirnaPk = mature.getMirnaPk();
 	}
@@ -88,7 +106,7 @@ public class Mature extends ModelClass {
 
 	@Override
 	public String toString() {
-		return "Mature [name=" + name + ", mirnaPk=" + mirnaPk
+		return "Mature [proportion=" + proportion + ", mirnaPk=" + mirnaPk
 				+ ", sequence_pk=" + sequence_pk + ", pk=" + pk + "]";
 	}
 		

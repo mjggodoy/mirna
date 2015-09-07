@@ -125,7 +125,6 @@ public class PlantMirnaMatureMirna extends MirnaDatabase {
 			// iterate through the java resultset
 			int count = 0;
 			rs.next();
-			rs.next();
 
 			// CAMBIAR ESTO:
 
@@ -135,7 +134,7 @@ public class PlantMirnaMatureMirna extends MirnaDatabase {
 
 
 			Organism organism = new Organism();
-			organism.setShortName(specie);
+			organism.setName(specie);
 
 			MiRna miRNA = new MiRna();
 			miRNA.setName(mature_id);
@@ -147,11 +146,59 @@ public class PlantMirnaMatureMirna extends MirnaDatabase {
 
 			ExpressionData ed = new ExpressionData();
 
+			// Inserta Organism (o recupera su id. si ya existe)
+			Object oldOrganism = session.createCriteria(Organism.class)
+					.add( Restrictions.eq("name", organism.getName()) )
+					.uniqueResult();
+			if (oldOrganism==null) {
+				session.save(organism);
+				session.flush();  // to get the PK
+			} else {
+				Organism organismToUpdate = (Organism) oldOrganism;
+				organismToUpdate.update(organism);
+				session.update(organismToUpdate);
+				organism = organismToUpdate;
+			}
+			
+			// Inserta MiRna (o recupera su id. si ya existe)
 
+			miRNA.setOrganismPk(organism.getPk());
+			Object oldMiRna = session.createCriteria(MiRna.class)
+					.add(Restrictions.eq("name", miRNA.getName()) )
+					.uniqueResult();
+			if (oldMiRna==null) {
+				session.save(miRNA);
+				session.flush();  // to get the PK
+				System.out.println("SAVE");
+			} else {
+				MiRna miRnaToUpdate = (MiRna) oldMiRna;
+				miRnaToUpdate.update(miRNA);
+				session.update(miRnaToUpdate);
+				miRNA = miRnaToUpdate;
+				System.out.println("UPDATE");
 
+			}
+			
+			Object oldSequence = session.createCriteria(Sequence.class)
+					.add( Restrictions.eq("sequence", sequence.getSequence()) )
+					.uniqueResult();
+			if (oldSequence==null) {
+				session.save(sequence);
+				session.flush();  // to get the PK
+			} else {
+				Sequence sequenceToUpdate = (Sequence) oldSequence;
+				sequenceToUpdate.update(sequence);
+				session.update(sequenceToUpdate);
+				sequence = sequenceToUpdate;
+				System.out.println(sequence);
+			}
+
+			mature.setMirnaPk(miRNA.getPk());
+			mature.setSequence_pk(sequence.getPk());
+			
 			// Inserta Mature (o recupera su id. si ya existe)
 			Object oldMature = session.createCriteria(Mature.class)
-					.add( Restrictions.eq("name", mature.getName()) )
+					.add( Restrictions.eq("sequence_pk", mature.getSequence_pk() ) )
 					.uniqueResult();
 			if (oldMature==null) {
 				session.save(mature);
@@ -165,57 +212,8 @@ public class PlantMirnaMatureMirna extends MirnaDatabase {
 				mature = matureToUpdate;
 			}
 
-			// Inserta MiRna (o recupera su id. si ya existe)
-			
-			mature.setMirnaPk(miRNA.getPk());
-			Object oldMiRna = session.createCriteria(MiRna.class)
-					.add(Restrictions.eq("name", miRNA.getName()) )
-					.uniqueResult();
-			if (oldMiRna==null) {
-				session.save(miRNA);
-				session.flush();  // to get the PK
-			} else {
-				MiRna miRnaToUpdate = (MiRna) oldMiRna;
-				miRnaToUpdate.update(miRNA);
-				session.update(miRnaToUpdate);
-				miRNA = miRnaToUpdate;
-			}
-
-			miRNA.setOrganismPk(organism.getPk());
-			// Inserta Organism (o recupera su id. si ya existe)
-			Object oldOrganism = session.createCriteria(Organism.class)
-					.add( Restrictions.eq("name", organism.getName()) )
-					.uniqueResult();
-			if (oldOrganism==null) {
-				session.save(organism);
-				session.flush();  // to get the PK
-			} else {
-				Organism organismToUpdate = (Organism) oldMiRna;
-				organismToUpdate.update(organism);
-				session.update(organismToUpdate);
-				organism = organismToUpdate;
-			}
-
-
-			//Relaciona miRNA y sequence
-
-			miRNA.setSequencePk(sequence.getPk());
-			Object oldSequence = session.createCriteria(Sequence.class)
-					.add( Restrictions.eq("sequence", sequence.getSequence()) )
-					.uniqueResult();
-			if (oldSequence==null) {
-				session.save(sequence);
-				session.flush();  // to get the PK
-			} else {
-				Sequence sequenceToUpdate = (Sequence) oldSequence;
-				sequenceToUpdate.update(sequence);
-				session.update(sequence);
-				sequence = sequenceToUpdate;
-			}
-
-
 			// Relaciona expressiondata data con mirna
-			
+
 			ed.setMirnaPk(miRNA.getPk());
 
 
