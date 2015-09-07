@@ -195,13 +195,17 @@ public class SM2miR2N extends MirnaDatabase {
 					.add(Restrictions.eq("name", organism.getName()) )
 					.uniqueResult();
 			if (oldOrganism==null) {
+				
 				session.save(organism);
 				session.flush(); // to get the PK
+				System.out.println("Save ORGANISM");
 			} else {
+				
 				Organism organismToUpdate = (Organism) oldOrganism;
 				organismToUpdate.update(organism);
 				session.update(organismToUpdate);
 				organism = organismToUpdate;
+				System.out.println("Update ORGANISM");
 			}
 
 			miRna.setOrganismPk(organism.getPk());
