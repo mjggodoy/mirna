@@ -1,27 +1,43 @@
 package mirna.beans;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.Table;
+
 import mirna.exception.ConflictException;
 
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "transcript")
 public class Transcript extends ModelClass {
 
+	@Column(name = "id", nullable = true, length = 20, unique = true)
 	private String transcriptID;// ok
+	
+	@Column(name = "name", nullable = true, length = 20, unique = false)
 	private String name;// ok
+	
+	@Column(name = "isoform", nullable = true, length = 45, unique = false)
 	private String isoform; // ok
+	
+	@Column(name = "external_name", nullable = true, length = 20, unique = true)
 	private String externalName;
-	private Integer targetPk;
+	
+	@Column(name = "gene_pk", nullable = true, unique = true)
 	private Integer geneId;
 
 	public Transcript() {
 	}
 
 	public Transcript(int pk, String transcriptID, String name, String isoform
-			, String externalName, int targetPk, int geneId) {
+			, String externalName, int geneId) {
 		super(pk);
 		this.transcriptID = transcriptID;
 		this.name = name;
 		this.isoform = isoform;
 		this.externalName = externalName;
-		this.targetPk = targetPk;
 		this.geneId = geneId;
 	}
 
@@ -55,14 +71,6 @@ public class Transcript extends ModelClass {
 
 	public void setExternalName(String externalName) {
 		this.externalName = externalName;
-	}
-	
-	public Integer getTargetPk() {
-		return targetPk;
-	}
-
-	public void setTargetPk(int targetPk) {
-		this.targetPk = targetPk;
 	}
 	
 	public Integer getGeneId() {
@@ -113,17 +121,6 @@ public class Transcript extends ModelClass {
 				return -1;
 		}
 		
-		if(this.targetPk !=null){
-			if (transcript.targetPk == null)res++;	
-			
-			else if (!this.targetPk.equals(transcript.targetPk)){
-				
-			return -1;	
-			}
-		}
-		
-		
-
 		return res;
 	}
 
@@ -145,8 +142,6 @@ public class Transcript extends ModelClass {
 			this.name = transcript.getName();
 		if (transcript.getExternalName() != null)
 			this.externalName = transcript.getExternalName();
-		if (transcript.getTargetPk() != null)
-			this.targetPk = transcript.getTargetPk();
 		if (transcript.getGeneId()!= null)
 			this.geneId = transcript.getGeneId();
 		
@@ -156,7 +151,7 @@ public class Transcript extends ModelClass {
 	public String toString() {
 		return "Transcript [transcriptID=" + transcriptID + ", name=" + name
 				+ ", isoform=" + isoform + ", externalName=" + externalName
-				+ ", targetPk=" + targetPk + ", geneId=" + geneId
+				+ ", geneId=" + geneId
 				+ " pk=" + pk + "]";
 	}
 

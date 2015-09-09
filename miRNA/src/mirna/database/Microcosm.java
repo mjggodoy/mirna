@@ -116,16 +116,16 @@ public class Microcosm extends MirnaDatabase {
 	public void insertIntoSQLModel() throws Exception {
 
 		Connection con = null;
+		Statement stmt = null;
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = session.beginTransaction();
-
 		
 		try {
 			System.out.println(dbUrl);
 			System.out.println(dbUser);
 			System.out.println(dbPassword);
 			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-			Statement stmt = (Statement) con.createStatement();
+			stmt = (Statement) con.createStatement();
 			stmt.setFetchSize(Integer.MIN_VALUE);
 
 			// our SQL SELECT query.
@@ -160,11 +160,12 @@ public class Microcosm extends MirnaDatabase {
 			miRna.setName(seq);
 
 			InteractionData id = new InteractionData();
-			id.setAlgorithm(method);
+			id.setMethod(method);
 			id.setFeature(feature);
 			id.setPhase(phase);
 			id.setScore(score);
 			id.setPvalue_og(pvalue_og);
+			id.setProvenance("Microcosm");
 
 			Target target = new Target();
 			target.setChromosome(chromosome);
@@ -189,6 +190,8 @@ public class Microcosm extends MirnaDatabase {
 					.add(Restrictions.eq("name", miRna.getName()))
 					.uniqueResult();
 			if (oldMiRna == null) {
+				System.out.println("SALVANDO:");
+				System.out.println(miRna);
 				session.save(miRna);
 				session.flush(); // to get the PK
 			} else {
@@ -198,25 +201,9 @@ public class Microcosm extends MirnaDatabase {
 				miRna = miRnaToUpdate;
 			}
 			
-			// Inserta Target (o recupera su id. si ya existe)
-
-			Object oldTarget = session.createCriteria(Target.class)
-					.add(Restrictions.eq("name", target.getName()))
-					.uniqueResult();
-			if (oldTarget == null) {
-				session.save(target);
-				session.flush(); // to get the PK
-			} else {
-				Target targetToUpdate = (Target) oldTarget;
-				targetToUpdate.update(target);
-				session.update(targetToUpdate);
-				target = targetToUpdate;
-			}
-			
 			// Inserta Transcript (o recupera su id. si ya existe)
-			
 			Object oldTranscript = session.createCriteria(Transcript.class)
-					.add(Restrictions.eq("name", transcript.getName()))
+					.add(Restrictions.eq("externalName", transcript.getExternalName()))
 					.uniqueResult();
 			if (oldTranscript == null) {
 				session.save(transcript);
@@ -228,18 +215,17 @@ public class Microcosm extends MirnaDatabase {
 				transcript = transcriptToUpdate;
 			}
 			
+			target.setTranscript_pk(transcript.getPk());
+			session.save(target);
+			session.flush(); // to get the PK
+			
 			// Inserta nueva DataExpression
 			// (y la relaciona con el MiRna y Target)
 			
-			id.setMirnaPk(miRna.getPk());
-			id.setTargetPk(target.getPk());
+			id.setMirna_pk(miRna.getPk());
+			id.setTarget_pk(target.getPk());
 			session.save(id);
 			session.flush(); // to get the PK
-			
-			// Relaciona con el transcript y Target
-			
-			target.setTranscriptPk(transcript.getPk());
-			session.save(target);
 			
 			count++;
 			if (count%100==0) {
@@ -249,12 +235,15 @@ public class Microcosm extends MirnaDatabase {
 			}
 			
 			stmt.close();
+			tx.commit();
+			
 		} catch (SQLException e) {
 			tx.rollback();
 			e.printStackTrace();
 		} finally {
-			if (con != null)
-				con.close();
+			if (con!=null) con.close();
+			HibernateUtil.closeSession();
+			HibernateUtil.closeSessionFactory();
 		}
 
 	}

@@ -11,8 +11,7 @@ import mirna.exception.ConflictException;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "target")
-public class Target extends Transcript {
-	
+public class Target extends ModelClass {
 	
 	@Column(name = "cds_start", nullable = true, length = 80, unique = true)
 	protected String cds_start;
@@ -38,7 +37,7 @@ public class Target extends Transcript {
 	protected String repeated_motifs;
 	@Column(name = "utr3_conservation_score", nullable = true, length = 80, unique = true)
 	protected String utr3_conservation_score;
-	@Column(name = "region", nullable = false, length = 80, unique = true)
+	@Column(name = "region", nullable = true, length = 80, unique = true)
 	protected String region;
 	@Column(name = "seed_match", nullable = true, length = 80, unique = true)
 	protected String seed_match;
@@ -50,345 +49,168 @@ public class Target extends Transcript {
 	protected Integer transcript_pk;
 	@Column(name = "organism_pk", nullable = true, length = 80, unique = true)
 	protected Integer organism_pk;
-	@Column(name = "sequence_pk", nullable = true, length = 80, unique = true) //TODO: Sequence_pk no deber’a ser nulo.
+	@Column(name = "sequence_pk", nullable = true, length = 80, unique = true) //TODO: Sequence_pk no deberï¿½a ser nulo.
 	protected Integer sequence_pk;
 	@Column(name = "target_ref", nullable = true, length = 80, unique = true)
 	protected String target_ref;
 	
-	
 	public Target() { }
-
-	
 
 	public String getCds_start() {
 		return cds_start;
 	}
 
-
-
 	public void setCds_start(String cds_start) {
 		this.cds_start = cds_start;
 	}
-
-
-
-
-
 
 	public String getCds_end() {
 		return cds_end;
 	}
 
-
-
-
-
-
 	public void setCds_end(String cds_end) {
 		this.cds_end = cds_end;
 	}
-
-
-
-
-
 
 	public String getUtr3_start() {
 		return utr3_start;
 	}
 
-
-
-
-
-
 	public void setUtr3_start(String utr3_start) {
 		this.utr3_start = utr3_start;
 	}
-
-
-
-
-
 
 	public String getUtr3_end() {
 		return utr3_end;
 	}
 
-
-
-
-
-
 	public void setUtr3_end(String utr3_end) {
 		this.utr3_end = utr3_end;
 	}
-
-
-
-
-
 
 	public String getStrand_start() {
 		return strand_start;
 	}
 
-
-
-
-
-
 	public void setStrand_start(String strand_start) {
 		this.strand_start = strand_start;
 	}
-
-
-
-
-
 
 	public String getStrand_end() {
 		return strand_end;
 	}
 
-
-
-
-
-
 	public void setStrand_end(String strand_end) {
 		this.strand_end = strand_end;
 	}
-
-
-
-
-
 
 	public String getChromosome() {
 		return chromosome;
 	}
 
-
-
-
-
-
 	public void setChromosome(String chromosome) {
 		this.chromosome = chromosome;
 	}
-
-
-
-
-
 
 	public String getPolarity() {
 		return polarity;
 	}
 
-
-
-
-
-
 	public void setPolarity(String polarity) {
 		this.polarity = polarity;
 	}
-
-
-
-
-
 
 	public String getBinding_site_start() {
 		return binding_site_start;
 	}
 
-
-
-
-
-
 	public void setBinding_site_start(String binding_site_start) {
 		this.binding_site_start = binding_site_start;
 	}
-
-
-
-
-
 
 	public String getBinding_site_end() {
 		return binding_site_end;
 	}
 
-
-
-
-
-
 	public void setBinding_site_end(String binding_site_end) {
 		this.binding_site_end = binding_site_end;
 	}
-
-
-
-
-
 
 	public String getRepeated_motifs() {
 		return repeated_motifs;
 	}
 
-
-
-
-
-
 	public void setRepeated_motifs(String repeated_motifs) {
 		this.repeated_motifs = repeated_motifs;
 	}
-
-
-
-
-
-
-
 
 	public String getUtr3_conservation_score() {
 		return utr3_conservation_score;
 	}
 
-
-
-
-
-
 	public void setUtr3_conservation_score(String utr3_conservation_score) {
 		this.utr3_conservation_score = utr3_conservation_score;
 	}
-
-
-
-
-
 
 	public String getRegion() {
 		return region;
 	}
 
-
-
-
-
-
 	public void setRegion(String region) {
 		this.region = region;
 	}
-
-
-
-
-
 
 	public String getSeed_match() {
 		return seed_match;
 	}
 
-
-
-
-
-
 	public void setSeed_match(String seed_match) {
 		this.seed_match = seed_match;
 	}
-
-
-
-
-
 
 	public String getGc_proportion() {
 		return gc_proportion;
 	}
 
-
-
-
-
-
 	public void setGc_proportion(String gc_proportion) {
 		this.gc_proportion = gc_proportion;
 	}
-	
-	
-
 
 	public String getCoordinates() {
 		return coordinates;
 	}
 
-
-
-
-
-
 	public void setCoordinates(String coordinates) {
 		this.coordinates = coordinates;
 	}
-
-
-
-
-
 
 	public Integer getTranscript_pk() {
 		return transcript_pk;
 	}
 
-
-
-
-
-
 	public void setTranscript_pk(Integer transcript_pk) {
 		this.transcript_pk = transcript_pk;
 	}
-
-
-
-
-
 
 	public Integer getOrganism_pk() {
 		return organism_pk;
 	}
 
-
 	public void setOrganism_pk(Integer organism_pk) {
 		this.organism_pk = organism_pk;
 	}
-
-
 
 	public Integer getSequence_pk() {
 		return sequence_pk;
 	}
 
-
 	public void setSequence_pk(Integer sequence_pk) {
 		this.sequence_pk = sequence_pk;
 	}
 
-
 	public String getTarget_ref() {
 		return target_ref;
 	}
-
-
 
 	public void setTarget_ref(String target_ref) {
 		this.target_ref = target_ref;
@@ -419,10 +241,11 @@ public class Target extends Transcript {
 		if(target.getSequence_pk() !=null) this.sequence_pk = target.getSequence_pk();
 		if(target.getCoordinates() !=null) this.coordinates = target.getCoordinates();
 		if(target.getTarget_ref() !=null) this.target_ref = target.getTarget_ref();
-
-
 	}
 	
+	public void update(Target target) throws ConflictException {
+		this.update(target, true);
+	}
 	
 	public int checkConflict(Target target) {
 		int res = 0;

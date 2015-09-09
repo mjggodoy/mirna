@@ -196,7 +196,6 @@ public class VirmiRNA3 extends VirmiRNA {
 			PubmedDocument pubmedDoc = new PubmedDocument();
 			pubmedDoc.setId(pmid);
 			
-			
 			//Inserta Sequence (o recupera su id. si ya existe)
 
 			Object oldSequence = session.createCriteria(Sequence.class)

@@ -95,8 +95,6 @@ public class MiRCancer extends MirnaDatabase {
 	public void insertIntoSQLModel() throws Exception {
 		
 		Connection con = null;
-		String line = null;
-		String[] tokens = null;
 		
 		// Get session
 		Session session = HibernateUtil.getSessionFactory().openSession();
@@ -181,22 +179,15 @@ public class MiRCancer extends MirnaDatabase {
 				
 			}
 			stmt.close();
+			tx.commit();
 		} catch (SQLException e) {
 			tx.rollback();
 			e.printStackTrace();
-			if (line!=null) {
-				System.out.println(line);
-				for (int j = 0; j < tokens.length; j++) {
-					System.out.println(j + ": " + tokens[j]);
-				}
-			}
-			e.printStackTrace();
 		} finally {
 			if (con!=null) con.close();
+			HibernateUtil.closeSession();
+			HibernateUtil.closeSessionFactory();
 		}
-		
-		tx.commit();
-		session.close();
 		
 	}
 	
