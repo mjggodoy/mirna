@@ -10,9 +10,6 @@ import mirna.exception.ConflictException;
 @Table(name = "hairpin")
 public class Hairpin extends ModelClass {
 	
-	@Column(name = "name", nullable = false, length = 80, unique = true)
-	protected String name;
-	
 	@Column(name = "mirna_pk", nullable = false)
 	private Integer mirnaPk;
 	
@@ -27,12 +24,8 @@ public class Hairpin extends ModelClass {
 			if (hairpin.getPk()==null) res++;
 			else if (!this.pk.equals(hairpin.getPk())) return -1;
 		}
-		if (this.name!=null) {
-			if (hairpin.getName()==null) res++;
-			else if (!this.name.equals(hairpin.getName())) {
-				return -1;
-			}
-		}
+		
+		
 		if (this.sequence_pk!=null) {
 			if (hairpin.getSequence_pk()==null) res++;
 			else if (!this.sequence_pk.equals(hairpin.getSequence_pk())) return -1;
@@ -53,18 +46,11 @@ public class Hairpin extends ModelClass {
 			if (this.checkConflict(hairpin)==-1) throw new ConflictException(this, hairpin);
 		}
 		if (hairpin.getPk()!=null) this.pk = hairpin.getPk();
-		if (hairpin.getName()!=null) this.name = hairpin.getName();
 		if (hairpin.getSequence_pk()!=null) this.sequence_pk = hairpin.getSequence_pk();
 		if (hairpin.getMirnaPk()!=null) this.mirnaPk = hairpin.getMirnaPk();
 	}
 	
-	public String getName() {
-		return name;
-	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
 
 	public Integer getSequence_pk() {
 		return sequence_pk;
@@ -86,7 +72,7 @@ public class Hairpin extends ModelClass {
 
 	@Override
 	public String toString() {
-		return "Hairpin [name=" + name + ", sequence=" + sequence_pk
+		return "Hairpin [ sequence=" + sequence_pk
 				+ ", mirnaPk=" + mirnaPk + ", pk=" + pk + "]";
 	}
 
