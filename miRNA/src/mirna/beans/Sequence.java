@@ -13,7 +13,7 @@ import mirna.exception.ConflictException;
 @Table(name = "sequence")
 public class Sequence extends ModelClass {
 	
-	@Column(name = "sequence", nullable = false, length = 200, unique = true)
+	@Column(name = "sequence", nullable = false, length = 400, unique = false)
 	private String sequence;
 	
 	public Sequence() { }

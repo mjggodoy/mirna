@@ -72,8 +72,10 @@ public class Hairpin extends ModelClass {
 
 	@Override
 	public String toString() {
-		return "Hairpin [ sequence=" + sequence_pk
-				+ ", mirnaPk=" + mirnaPk + ", pk=" + pk + "]";
+		return "Hairpin [mirnaPk=" + mirnaPk + ", sequence_pk=" + sequence_pk
+				+ ", pk=" + pk + "]";
 	}
+
+	
 
 }

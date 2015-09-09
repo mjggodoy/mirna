@@ -163,7 +163,9 @@ public class PlantMirnaStemLoop extends MirnaDatabase {
 				session.update(organismToUpdate);
 				organism = organismToUpdate;
 			}
-
+			
+			miRNA.setOrganismPk(organism.getPk());
+			
 			// Inserta MiRna (o recupera su id. si ya existe)
 			Object oldMiRna = session.createCriteria(MiRna.class)
 					.add(Restrictions.eq("name", miRNA.getName()))
@@ -176,17 +178,35 @@ public class PlantMirnaStemLoop extends MirnaDatabase {
 				miRnaToUpdate.update(miRNA);
 				session.update(miRnaToUpdate);
 				miRNA = miRnaToUpdate;
+				System.out.println("Mirna " + miRNA.getName());
+			}
+			
+			Object oldSequence = session.createCriteria(Sequence.class)
+					.add( Restrictions.eq("sequence", sequence.getSequence()) )
+					.uniqueResult();
+			if (oldSequence==null) {
+				//System.out.println("LENGTH = " + sequence.getSequence().length());
+				session.save(sequence);
+				session.flush();  // to get the PK
+			} else {
+				Sequence sequenceToUpdate = (Sequence) oldSequence;
+				sequenceToUpdate.update(sequence);
+				session.update(sequenceToUpdate);
+				sequence = sequenceToUpdate;
+				System.out.println(sequence);
 			}
 			
 			hairpin.setMirnaPk(miRNA.getPk());
 			hairpin.setSequence_pk(sequence.getPk());
 			
+			// Inserta Hairpin (o recupera su id. si ya existe)
 			Object oldHairpin = session.createCriteria(Hairpin.class)
 					.add( Restrictions.eq("sequence_pk", hairpin.getSequence_pk() ) )
 					.uniqueResult();
 			if (oldHairpin==null) {
 				session.save(hairpin);
 				session.flush();  // to get the PK
+				System.out.println("HAIRPIN has been saved");
 
 			} else {
 
@@ -194,10 +214,10 @@ public class PlantMirnaStemLoop extends MirnaDatabase {
 				hairpinToUpdate.update(hairpin);
 				session.update(hairpinToUpdate);
 				hairpin = hairpinToUpdate;
+				System.out.println("HAIRPIN has been updated");
 			}
 			
 			// Relaciona expressiondata data con mirna
-			
 			ed.setMirnaPk(miRNA.getPk());
 			session.save(ed);
 			
