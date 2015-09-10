@@ -8,8 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import mirna.beans.Disease;
-import mirna.beans.ExpressionData;
 import mirna.beans.Gene;
 import mirna.beans.InteractionData;
 import mirna.beans.MiRna;
@@ -164,6 +162,7 @@ public class microT_CDS_data extends MirnaDatabase {
 
 			InteractionData id = new InteractionData();
 			id.setMiTG_score(miTG_score);
+			id.setProvenance("microT-CDS");
 
 			Target target = new Target();
 			target.setRegion(region);
@@ -180,7 +179,6 @@ public class microT_CDS_data extends MirnaDatabase {
 			 */
 
 			// Inserta MiRna (o recupera su id. si ya existe)
-
 			Object oldMiRna = session.createCriteria(MiRna.class)
 					.add(Restrictions.eq("name", miRna.getName()))
 					.uniqueResult();
@@ -195,7 +193,6 @@ public class microT_CDS_data extends MirnaDatabase {
 			}
 
 			// Inserta gene (o recupera su id. si ya existe)
-
 			Object oldGene = session.createCriteria(Gene.class)
 					.add(Restrictions.eq("name", gene.getName()))
 					.uniqueResult();
@@ -208,66 +205,54 @@ public class microT_CDS_data extends MirnaDatabase {
 				session.update(geneToUpdate);
 				gene = geneToUpdate;
 			}
-
-			// Inserta Target (o recupera su id. si ya existe)
-
-			Object oldTarget = session.createCriteria(Target.class)
-					.add(Restrictions.eq("name", target.getName()))
-					.uniqueResult();
-			if (oldTarget == null) {
-				session.save(id);
-				session.flush(); // to get the PK
-			} else {
-				Target targetToUpdate = (Target) oldTarget;
-				targetToUpdate.update(target);
-				session.update(targetToUpdate);
-				target = targetToUpdate;
-			}
-
+			
+			transcript.setGeneId(gene.getPk());
+			
 			// Inserta Transcript (o recupera su id. si ya existe)
-
 			Object oldTranscript = session.createCriteria(Transcript.class)
-					.add(Restrictions.eq("name", transcript.getName()))
+					.add(Restrictions.eq("transcriptID", transcript.getTranscriptID()))
 					.uniqueResult();
 			if (oldTranscript == null) {
 				session.save(transcript);
 				session.flush(); // to get the PK
 			} else {
 				Transcript transcriptToUpdate = (Transcript) oldTranscript;
-				transcriptToUpdate.update(target);
+				transcriptToUpdate.update(transcript);
 				session.update(transcriptToUpdate);
 				transcript = transcriptToUpdate;
 			}
-			
+
+			// Inserta Target
+			target.setTranscript_pk(transcript.getPk());
+			session.save(target);
+			session.flush(); // to get the PK
+
 			//Inserta nueva interactionData
 			// (y la relaciona con el MiRna y Target correspondiente)
 		
-				id.setTargetPk(target.getPk());
-				id.setMirnaPk(miRna.getPk());
-				id.setGenePk(gene.getPk());
-				session.save(id);
+			id.setTarget_pk(target.getPk());
+			id.setMirna_pk(miRna.getPk());
+			id.setGene_pk(gene.getPk());
+			session.save(id);
+			session.flush();
+			
+			count++;
+			if (count%100==0) {
+				System.out.println(count);
 				session.flush();
-		
-				// (Relaciona transcript with target)
-				
-				target.setTranscriptPk(transcript.getPk());
-				session.save(target);
-				//TODO: session.flush()
-				
-				count++;
-				if (count%100==0) {
-					System.out.println(count);
-					session.flush();
-			        session.clear();
-				}
+		        session.clear();
+			}
 
 			stmt.close();
+			tx.commit();
+			
 		} catch (SQLException e) {
 			tx.rollback();
 			e.printStackTrace();
 		} finally {
-			if (con != null)
-				con.close();
+			if (con!=null) con.close();
+			HibernateUtil.closeSession();
+			HibernateUtil.closeSessionFactory();
 		}
 
 	}

@@ -120,16 +120,15 @@ public class microtv4 extends MirnaDatabase {
 	@Override
 	public void insertIntoSQLModel() throws Exception {
 		
+		Connection con = null;
+		
+		// Get session
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		
-		//Get Session
-//			SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
-//			Session session = sessionFactory.getCurrentSession();
+		//start transaction
+		Transaction tx = session.beginTransaction();
 		
-			Connection con = null;
-			Transaction tx = session.beginTransaction();
-		
-			try {
+		try {
 			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			Statement stmt = (Statement) con.createStatement();
 			stmt.setFetchSize(Integer.MIN_VALUE);
@@ -164,6 +163,7 @@ public class microtv4 extends MirnaDatabase {
 			
 			InteractionData id = new InteractionData();
 			id.setMiTG_score(miTG_score);
+			id.setProvenance("microT v4");
 			
 			Target target = new Target();
 			target.setRegion(region);
@@ -180,7 +180,6 @@ public class microtv4 extends MirnaDatabase {
 			System.out.println(target);*/
 						
 			// Inserta MiRna (o recupera su id. si ya existe)
-
 			Object oldMiRna = session.createCriteria(MiRna.class)
 					.add( Restrictions.eq("name", miRna.getName()) )
 					.uniqueResult();
@@ -195,14 +194,12 @@ public class microtv4 extends MirnaDatabase {
 			}
 			
 			// Inserta gene (o recupera su id. si ya existe)
-
-			
 			Object oldGene = session.createCriteria(Gene.class)
-					.add( Restrictions.eq("name", gene.getName()) )
+					.add(Restrictions.eq("name", gene.getName()))
 					.uniqueResult();
-			if (oldGene==null) {
+			if (oldGene == null) {
 				session.save(gene);
-				session.flush();  // to get the PK
+				session.flush(); // to get the PK
 			} else {
 				Gene geneToUpdate = (Gene) oldGene;
 				geneToUpdate.update(gene);
@@ -210,69 +207,79 @@ public class microtv4 extends MirnaDatabase {
 				gene = geneToUpdate;
 			}
 			
-			// Inserta Target (o recupera su id. si ya existe)
-
-			Object oldTarget = session.createCriteria(Target.class)
-					.add( Restrictions.eq("name", target.getName()) )
-					.uniqueResult();
-			if (oldTarget==null) {
-				session.save(id);
-				session.flush();  // to get the PK
-			} else {
-				Target targetToUpdate = (Target) oldTarget;
-				targetToUpdate.update(target);
-				session.update(targetToUpdate);
-				target = targetToUpdate;
-			}
+			transcript.setGeneId(gene.getPk());
 			
 			// Inserta Transcript (o recupera su id. si ya existe)
-
-			
 			Object oldTranscript = session.createCriteria(Transcript.class)
-					.add( Restrictions.eq("name", transcript.getName()) )
+					.add(Restrictions.eq("transcriptID", transcript.getTranscriptID()))
 					.uniqueResult();
-			if (oldTranscript==null) {
+			if (oldTranscript == null) {
 				session.save(transcript);
-				session.flush();  // to get the PK
+				session.flush(); // to get the PK
 			} else {
 				Transcript transcriptToUpdate = (Transcript) oldTranscript;
-				transcriptToUpdate.update(target);
+				transcriptToUpdate.update(transcript);
 				session.update(transcriptToUpdate);
 				transcript = transcriptToUpdate;
 			}
 			
+			// Inserta Target
+			target.setTranscript_pk(transcript.getPk());
+			session.save(target);
+			session.flush(); // to get the PK
 			
-			 //Inserta nueva interactionData
-				// (y la relaciona con el MiRna y Target correspondiente)
+			// Inserta nueva interactionData
+			// (y la relaciona con el MiRna y Target correspondiente)
 			
-			id.setTargetPk(target.getPk());
-			id.setMirnaPk(miRna.getPk());
+			id.setTarget_pk(target.getPk());
+			id.setMirna_pk(miRna.getPk());
 			//TODO: Solucionar fallo de compilacion ¡Pua!
-			id.setGenePk(gene.getPk());
+			id.setGene_pk(gene.getPk());
+			
+			System.out.println("PUA01!");
+
 			session.save(id);
+			System.out.println("PUA02!");
+
 			session.flush();
 			
-			// (Relaciona transcript with target)
-			
-			target.setTranscriptPk(transcript.getPk());
-			session.save(target);
-			//TODO: session.flush();
+			System.out.println("PUA03!");
+
 
 			count++;
 			if (count%100==0) {
+				System.out.println("PUA04!");
+
 				System.out.println(count);
 				session.flush();
 		        session.clear();
 			}
+			
+			System.out.println("PUA05!");
+
 		
 			stmt.close();
+			
+			System.out.println("PUA06!");
+
+			tx.commit();
+			
+			System.out.println("PUA1!");
 			
 		} catch (SQLException e) {
 			tx.rollback();
 			e.printStackTrace();
+			System.out.println("PUA2!");
+
 		} finally {
 			if (con!=null) con.close();
+			System.out.println("PUA3!");
+			HibernateUtil.closeSession();
+			System.out.println("PUA4!");
+			HibernateUtil.closeSessionFactory();
+			System.out.println("PUA5!");
 		}
+		System.out.println("PUA6!");
 		
 	}
 	
@@ -284,6 +291,9 @@ public class microtv4 extends MirnaDatabase {
 		//microtv4.insertInTable(inputFile));
 		
 		microtv4.insertIntoSQLModel();
+		
+		System.out.println("PUA7!");
+
 		
 	}
 
