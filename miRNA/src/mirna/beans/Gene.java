@@ -60,7 +60,7 @@ public class Gene extends ModelClass {
 	private String distance;// OK
 	
 	@Column(name = "organism_pk")
-	private Integer organism;
+	private Integer organism_pk;
 	
 	// XUXA
 //	@Column(name = "chromosome", nullable = true, length = 45, unique = false)
@@ -190,14 +190,6 @@ public class Gene extends ModelClass {
 		this.name = name;
 	}
 
-	public Integer getOrganism() {
-		return organism;
-	}
-
-	public void setOrganism(Integer organism) {
-		this.organism = organism;
-	}
-
 //	public Integer getTranscript_id() {
 //		return transcript_id;
 //	}
@@ -205,6 +197,14 @@ public class Gene extends ModelClass {
 //	public void setTranscript_id(Integer transcript_id) {
 //		this.transcript_id = transcript_id;
 //	}
+
+	public Integer getOrganism_pk() {
+		return organism_pk;
+	}
+
+	public void setOrganism_pk(Integer organism_pk) {
+		this.organism_pk = organism_pk;
+	}
 
 	public int checkConflict(Gene gene) {
 		int res = 0;
@@ -317,10 +317,10 @@ public class Gene extends ModelClass {
 				return -1;
 		}
 		
-		if (this.organism != null) {
-			if (gene.getOrganism() == null)
+		if (this.organism_pk != null) {
+			if (gene.getOrganism_pk() == null)
 				res++;
-			else if (!this.organism.equals(gene.getOrganism()))
+			else if (!this.organism_pk.equals(gene.getOrganism_pk()))
 				return -1;
 		}
 
@@ -375,8 +375,8 @@ public class Gene extends ModelClass {
 			this.arm = gene.getArm();
 		if (gene.getDistance() != null)
 			this.distance = gene.getDistance();
-		if (gene.getOrganism() != null)
-			this.organism = gene.getOrganism();
+		if (gene.getOrganism_pk() != null)
+			this.organism_pk = gene.getOrganism_pk();
 //		if (gene.getTranscript_id() != null)
 //			this.transcript_id = gene.getTranscript_id();
 	
@@ -391,9 +391,11 @@ public class Gene extends ModelClass {
 				+ ", end_strand=" + end_strand + ", hgnc_symbol=" + hgnc_symbol
 				+ ", location=" + location + ", expression_site="
 				+ expression_site + ", kegg_id=" + kegg_id + ", arm=" + arm
-				+ ", distance=" + distance + ", organism=" + organism + ", pk="
-				+ pk + "]";
+				+ ", distance=" + distance + ", organism_pk=" + organism_pk
+				+ ", pk=" + pk + "]";
 	}
+
+	
 
 	
 }
