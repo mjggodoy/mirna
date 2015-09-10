@@ -36,6 +36,7 @@
   <mapping class="mirna.beans.Target" />
   <mapping class="mirna.beans.Mutation" />
   <mapping class="mirna.beans.SNP" />
+  <mapping class="mirna.beans.Complex" />
   <mapping class="mirna.beans.BiologicalProcess" />
   <mapping class="mirna.beans.InteractionData" />
   <mapping class="mirna.beans.nToM.ExpressionDataHasPubmedDocument" />

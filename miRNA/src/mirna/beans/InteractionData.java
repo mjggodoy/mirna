@@ -7,6 +7,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
 import mirna.exception.ConflictException;
+
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "interaction_data")

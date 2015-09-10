@@ -53,6 +53,10 @@ public class Target extends ModelClass {
 	protected Integer sequence_pk;
 	@Column(name = "target_ref", nullable = true, length = 80, unique = true)
 	protected String target_ref;
+	@Column(name = "gu_proportion", nullable = true, length = 80, unique = true)
+	protected String gu_proportion;
+	@Column(name = "site_conservation_score", nullable = true, length = 80, unique = true)
+	protected String site_conservation_score;
 	
 	public Target() { }
 
@@ -216,6 +220,22 @@ public class Target extends ModelClass {
 		this.target_ref = target_ref;
 	}
 
+	public String getGu_proportion() {
+		return gu_proportion;
+	}
+
+	public void setGu_proportion(String gu_proportion) {
+		this.gu_proportion = gu_proportion;
+	}
+
+	public String getSite_conservation_score() {
+		return site_conservation_score;
+	}
+
+	public void setSite_conservation_score(String site_conservation_score) {
+		this.site_conservation_score = site_conservation_score;
+	}
+
 	public void update(Target target, boolean checkConflict) throws ConflictException {
 		if (checkConflict) {
 			if (this.checkConflict(target)==-1) throw new ConflictException(this, target);
@@ -241,6 +261,10 @@ public class Target extends ModelClass {
 		if(target.getSequence_pk() !=null) this.sequence_pk = target.getSequence_pk();
 		if(target.getCoordinates() !=null) this.coordinates = target.getCoordinates();
 		if(target.getTarget_ref() !=null) this.target_ref = target.getTarget_ref();
+		if(target.getGu_proportion() !=null) this.gu_proportion = target.getGu_proportion();
+		if(target.getSite_conservation_score() !=null) this.site_conservation_score = target.getSite_conservation_score();
+
+		
 	}
 	
 	public void update(Target target) throws ConflictException {
@@ -287,8 +311,6 @@ public class Target extends ModelClass {
 			if (target.getChromosome()==null) res++; 
 			else if (!this.chromosome.equals(target.getChromosome())) return -1;
 		}
-		
-		
 		
 		if (this.polarity!=null) {
 			if (target.getPolarity()==null) res++; 
@@ -355,10 +377,28 @@ public class Target extends ModelClass {
 			else if (!this.target_ref.equals(target.getCoordinates())) return -1;
 		}
 		
+		if (this.gu_proportion  !=null) {
+			if (target.getGu_proportion()  ==null) res++; 
+			else if (!this.gu_proportion.equals(target.getGu_proportion())) return -1;
+		}
+		
+		if (this.gu_proportion  !=null) {
+			if (target.getGu_proportion()  ==null) res++; 
+			else if (!this.gu_proportion.equals(target.getGu_proportion())) return -1;
+		}
+		
+		if (this.site_conservation_score  !=null) {
+			if (target.getSite_conservation_score()  ==null) res++; 
+			else if (!this.site_conservation_score.equals(target.getSite_conservation_score())) return -1;
+		}
+		
+		if (this.gu_proportion  !=null) {
+			if (target.getGu_proportion()  ==null) res++; 
+			else if (!this.gu_proportion.equals(target.getGu_proportion())) return -1;
+		}
+		
 		return res;
 	}
-
-
 
 	@Override
 	public String toString() {
@@ -374,9 +414,10 @@ public class Target extends ModelClass {
 				+ ", coordinates=" + coordinates + ", gc_proportion="
 				+ gc_proportion + ", transcript_pk=" + transcript_pk
 				+ ", organism_pk=" + organism_pk + ", sequence_pk="
-				+ sequence_pk + ", target_ref=" + target_ref + ", pk=" + pk
-				+ "]";
+				+ sequence_pk + ", target_ref=" + target_ref
+				+ ", gu_proportion=" + gu_proportion
+				+ ", site_conservation_score=" + site_conservation_score
+				+ ", pk=" + pk + "]";
 	}
-
 	
 }
