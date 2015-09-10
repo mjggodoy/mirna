@@ -277,7 +277,6 @@ public class VirmiRNA2 extends VirmiRNA {
 			}
 			
 			mirna.setOrganismPk(organism.getPk());
-			
 			Object oldMiRna = session.createCriteria(MiRna.class)
 					.add(Restrictions.eq("name", mirna.getName()) )
 					.uniqueResult();
@@ -301,29 +300,12 @@ public class VirmiRNA2 extends VirmiRNA {
 				sequence2 = (Sequence) oldSequence2;
 			}
 			
-			target.setSequence_pk(sequence2.getPk());
-			
-			// Inserta Target (o recupera su id. si ya existe)
-			target.setOrganism_pk(organism2.getPk());
-			Object oldTarget = session.createCriteria(Target.class)
-					.add(Restrictions.eq("target_ref", target.getTarget_ref()))
-					.uniqueResult();
-			if (oldTarget==null) {
-				session.save(target);
-				session.flush(); // to get the PK
-			} else {
-				Target targetToUpdate = (Target) oldTarget;
-				targetToUpdate.update(target);
-				session.update(targetToUpdate);
-				target = targetToUpdate;
-			}
 			
 			// Inserta Gene (o recupera su id. si ya existe)
-			gene.setOrganism(organism.getPk());
-
+			gene.setOrganism_pk(organism.getPk());
 			Object oldGene = session.createCriteria(Gene.class)
 					.add(Restrictions.eq("name", gene.getName()) )
-					.add(Restrictions.eq("organism", gene.getOrganism()))
+					.add(Restrictions.eq("organism_pk", gene.getOrganism_pk()))
 					.uniqueResult();
 			if (oldGene==null) {
 				session.save(gene);
@@ -366,6 +348,11 @@ public class VirmiRNA2 extends VirmiRNA {
 			}
 			
 			
+			// Relaciona target y sequence/ target y organism
+			target.setSequence_pk(sequence2.getPk());
+			target.setOrganism_pk(organism2.getPk());
+			session.save(target);
+			
 			// Relaciona expression data con mirna (o recupera su id. si ya existe)
 			
 			expressiondata.setMirnaPk(mirna.getPk());
@@ -376,7 +363,8 @@ public class VirmiRNA2 extends VirmiRNA {
 			interactiondata.setExpression_data_pk(expressiondata.getPk());
 			interactiondata.setTarget_pk(target.getPk());
 			interactiondata.setMirna_pk(mirna.getPk());
-			interactiondata.setGene_pk(gene.getPk());			
+			interactiondata.setGene_pk(gene.getPk());
+			interactiondata.setProvenance("VirmiRNA");
 			session.save(interactiondata);
 			
 			
@@ -397,6 +385,7 @@ public class VirmiRNA2 extends VirmiRNA {
 			
 			// Relaciona PubmedDocument con ExpressionData
 			session.save(expresDataHasPubmedDocument);
+			
 			
 			
 			MirnaInvolvesBiologicalProcess mirnaInvolvesBiologicalProcess =

@@ -195,7 +195,7 @@ public class repTar extends MirnaDatabase {
 			target.setBinding_site_start(binding_site_start_position);
 			target.setBinding_site_end(binding_site_end_position);
 			target.setGU_proportion(gu_proportion);
-			target.setUTR3conservation_score(UTR3_conservation_score);
+			target.setUtr3_conservation_score(UTR3_conservation_score);
 			target.setSite_conservation_score(site_conservation_score);
 			target.setRepeated_motifs(repeated_motifs);
 			

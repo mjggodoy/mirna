@@ -233,11 +233,9 @@ public class VirmiRNA1 extends VirmiRNA{
 				}
 				
 				// Inserta Gene (o recupera su id. si ya existe)
-				gene.setOrganism(organism.getPk());
+				gene.setOrganism_pk(organism.getPk());
 				Object oldGene = session.createCriteria(Gene.class)
-						.add(Restrictions.isNull("name"))
-						.add(Restrictions.eq("arm", gene.getArm()))
-						.add(Restrictions.eq("organism", gene.getOrganism()))
+						.add(Restrictions.eq("name", gene.getName()))
 						.uniqueResult();
 				if (oldGene == null) {
 					session.save(gene);
@@ -258,6 +256,7 @@ public class VirmiRNA1 extends VirmiRNA{
 				} else {
 					sequence2 = (Sequence) oldSequence2;
 				}
+				
 				hairpin.setSequence_pk(sequence2.getPk());
 				hairpin.setMirnaPk(mirna.getPk());
 				
