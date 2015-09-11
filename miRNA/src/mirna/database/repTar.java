@@ -145,13 +145,9 @@ public class repTar extends MirnaDatabase {
 	public void insertIntoSQLModel() throws Exception {
 
 		Connection con = null;
-
-		// Get session
 		Session session = HibernateUtil.getSessionFactory().openSession();
-
-		//start transaction
-		Transaction tx = session.beginTransaction();
-
+        Transaction tx = session.beginTransaction();
+        
 		try {
 			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			Statement stmt = (Statement) con.createStatement();
@@ -253,10 +249,6 @@ public class repTar extends MirnaDatabase {
 			complex.setMirna_pk(miRna.getPk());
 			session.save(complex);
 			session.flush();
-
-
-
-
 
 			count++;
 			if (count%100==0) {
