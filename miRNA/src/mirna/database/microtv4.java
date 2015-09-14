@@ -154,7 +154,6 @@ public class microtv4 extends MirnaDatabase {
 			String chromosome = rs.getString("chromosome");
 			String coordinates = rs.getString("coordinates");
 
-
 			MiRna miRna = new MiRna();
 			miRna.setName(miRNA);
 			
@@ -236,50 +235,28 @@ public class microtv4 extends MirnaDatabase {
 			//TODO: Solucionar fallo de compilacion ¡Pua!
 			id.setGene_pk(gene.getPk());
 			
-			System.out.println("PUA01!");
-
 			session.save(id);
-			System.out.println("PUA02!");
-
 			session.flush();
 			
-			System.out.println("PUA03!");
-
-
 			count++;
 			if (count%100==0) {
-				System.out.println("PUA04!");
-
-				System.out.println(count);
 				session.flush();
 		        session.clear();
 			}
 			
-			System.out.println("PUA05!");
-
-		
+			rs.close();
 			stmt.close();
-			
-			System.out.println("PUA06!");
-
 			tx.commit();
-			
-			System.out.println("PUA1!");
 			
 		} catch (SQLException e) {
 			tx.rollback();
 			e.printStackTrace();
-			System.out.println("PUA2!");
 
 		} finally {
 			if (con!=null) con.close();
-			System.out.println("PUA3!");
 			HibernateUtil.closeSession();
-			System.out.println("PUA4!");
 			HibernateUtil.closeSessionFactory();
-			System.out.println("PUA5!");
 		}
-		System.out.println("PUA6!");
 		
 	}
 	
@@ -291,9 +268,6 @@ public class microtv4 extends MirnaDatabase {
 		//microtv4.insertInTable(inputFile));
 		
 		microtv4.insertIntoSQLModel();
-		
-		System.out.println("PUA7!");
-
 		
 	}
 

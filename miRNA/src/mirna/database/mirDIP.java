@@ -8,16 +8,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import mirna.beans.Gene;
 import mirna.beans.InteractionData;
 import mirna.beans.MiRna;
-import mirna.beans.Target;
-import mirna.beans.Transcript;
 import mirna.exception.MiRnaException;
 import mirna.utils.HibernateUtil;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 
 /**
  * Código para procesar los datos de mirDIP
@@ -41,7 +41,7 @@ public class mirDIP extends MirnaDatabase {
 		
 		try {
 			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-			Statement stmt = (Statement) con.createStatement(); 
+			Statement stmt = (Statement) con.createStatement();
 			
 			FileReader fr = new FileReader(csvInputFile);
 			BufferedReader br = new BufferedReader(fr);
@@ -104,7 +104,10 @@ public class mirDIP extends MirnaDatabase {
 		
 		try {
 			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-			Statement stmt = (Statement) con.createStatement();
+			
+			Statement stmt = con.createStatement(java.sql.ResultSet.TYPE_FORWARD_ONLY, 
+					java.sql.ResultSet.CONCUR_READ_ONLY); 
+			stmt.setFetchSize(Integer.MIN_VALUE); 
 			
 			// our SQL SELECT query. 
 			// if you only need a few columns, specify them by name instead of using "*"
@@ -116,18 +119,78 @@ public class mirDIP extends MirnaDatabase {
 			
 			// iterate through the java resultset
 			int count = 0;
-			rs.next();
+			
 			// CAMBIAR ESTO:
+			rs.next();
 			
 			
+			String microrna = rs.getString("microrna");
+			String geneSymbol = rs.getString("gene_symbol");
+			String source = rs.getString("source");
+			String rank = rs.getString("rank");
+			
+			MiRna miRna = new MiRna();
+			miRna.setName(microrna);
+			
+			Gene gene = new Gene();
+			gene.setName(geneSymbol);
 
+			InteractionData id = new InteractionData();
+			id.setRank(rank);
+			id.setProvenance("mirDIP (" + source + ")");
+			
+			// Inserta MiRna (o recupera su id. si ya existe)
+			Object oldMiRna = session.createCriteria(MiRna.class)
+					.add( Restrictions.eq("name", miRna.getName()) )
+					.uniqueResult();
+			if (oldMiRna==null) {
+				session.save(miRna);
+				session.flush();  // to get the PK
+			} else {
+				MiRna miRnaToUpdate = (MiRna) oldMiRna;
+				miRnaToUpdate.update(miRna);
+				session.update(miRnaToUpdate);
+				miRna = miRnaToUpdate;
+			}
+			
+			// Inserta gene (o recupera su id. si ya existe)
+			Object oldGene = session.createCriteria(Gene.class)
+					.add(Restrictions.eq("name", gene.getName()))
+					.uniqueResult();
+			if (oldGene == null) {
+				session.save(gene);
+				session.flush(); // to get the PK
+			} else {
+				Gene geneToUpdate = (Gene) oldGene;
+				geneToUpdate.update(gene);
+				session.update(geneToUpdate);
+				gene = geneToUpdate;
+			}
+			
+			id.setMirna_pk(miRna.getPk());
+			id.setGene_pk(gene.getPk());
+			
+			session.save(id);
+			session.flush();
 					
+			count++;
+			if (count%100==0) {
+				session.flush();
+		        session.clear();
+			}
+			
+			rs.close();
 			stmt.close();
+			tx.commit();
+			
 		} catch (SQLException e) {
 			tx.rollback();
 			e.printStackTrace();
+
 		} finally {
 			if (con!=null) con.close();
+			HibernateUtil.closeSession();
+			HibernateUtil.closeSessionFactory();
 		}
 		
 	}

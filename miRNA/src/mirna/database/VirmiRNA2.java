@@ -199,7 +199,7 @@ public class VirmiRNA2 extends VirmiRNA {
 			organism.setResource(resource_organism);
 			
 			Organism organism2 = new Organism();
-			organism2.setSpecie(specie_target);// inclu’ set/get en la clase organism.
+			organism2.setSpecie(specie_target);// included (:P) set/get en la clase organism.
 			
 			Target target = new Target();
 			target.setRegion(target_region);
