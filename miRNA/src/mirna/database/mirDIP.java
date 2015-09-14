@@ -59,14 +59,14 @@ public class mirDIP extends MirnaDatabase {
 	
 				if (line != null) {
 					
-					String accesionnumber = tokens[0];
-					String gene = tokens[1];
-					String source = tokens[2];
-					String rank = tokens[3];
+					String microrna = tokens[0].replaceAll("'", "\\\\'");
+					String gene_symbol = tokens[1].replaceAll("'", "\\\\'");
+					String source = tokens[2].replaceAll("'", "\\\\'");
+					String rank = tokens[3].replaceAll("'", "\\\\'");
 
 					String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
-							+ accesionnumber + "','"
-							+ gene + "','"
+							+ microrna + "','"
+							+ gene_symbol + "','"
 							+ source + "','"
 							+ rank + "')";
 					
@@ -136,8 +136,8 @@ public class mirDIP extends MirnaDatabase {
 		
 		mirDIP mirdip = new mirDIP();
 		
-		//String inputFile = "/Users/esteban/Softw/miRNA/mirDIP/mirDIP-All-Data-Version1.0.txt";
-		//mirdip.insertInTable(inpuFile);
+		//String inputFile = "C:/Users/Esteban/Desktop/temp/mirDIP-All-Data-Version1.0.txt";
+		//mirdip.insertInTable(inputFile);
 		
 		mirdip.insertIntoSQLModel();
 		
