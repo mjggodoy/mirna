@@ -23,84 +23,84 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
 public class repTar extends MirnaDatabase {
-	
+
 	private String tableName;
-	
+
 	public repTar(String tableName) throws MiRnaException {
 		super();
 		this.tableName = tableName;
 	}
-	
+
 	public void insertInTable(String csvInputFile) throws Exception {
-		
+
 		Connection con = null;
 		String line = null;
 		String[] tokens = null, tokens2 = null, tokens3 = null, tokens4 = null, tokens5= null, tokens6 = null, tokens7 = null, tokens8 = null, tokens9 = null, tokens10 = null, tokens11 = null;
-//		String specie = "";
-		
+		//		String specie = "";
+
 		try {
 			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			Statement stmt = (Statement) con.createStatement(); 
-			
+
 			FileReader fr = new FileReader(csvInputFile);
 			BufferedReader br = new BufferedReader(fr);
-	
+
 			int count = 0;
-	
+
 			while (((line = br.readLine()) != null)) {
-	
+
 				count++;
 				System.out.println(count);
-				
+
 				tokens = StringUtils.splitPreserveAllTokens(line, "\t");
 				String gene_token = tokens[0];
-					
+
 				tokens2 = StringUtils.splitPreserveAllTokens(gene_token, ":::");
-				
+
 				String gene_symbol  = tokens2[0];
 				String gene_accesion = tokens2[3];
-				
+
 				String mirna = tokens[1];
-				
+
 				String sequence_start = tokens[2];
 				tokens3 = StringUtils.splitPreserveAllTokens(sequence_start, ":");
 				sequence_start = tokens3[1];
-				
+
 				String sequence_end = tokens[3];
 				tokens4 = StringUtils.splitPreserveAllTokens(sequence_end, ":");
 				sequence_end = tokens4[1];
-				
+
 				String minimal_free_energy = tokens[4];
 				tokens5 = StringUtils.splitPreserveAllTokens(minimal_free_energy, ":");
 				minimal_free_energy = tokens5[1];
-				
+
 				String normalized_free_energy = tokens[5];
 				tokens6 = StringUtils.splitPreserveAllTokens(normalized_free_energy, ":");	
 				normalized_free_energy = tokens6[1];
-				
+
 				String gu_proportion = tokens[6];	
 				tokens7 = StringUtils.splitPreserveAllTokens(gu_proportion, ":");	
 				gu_proportion = tokens7[1];		
-				
+
 				String binding_site_pattern = tokens[8].replaceAll("'", "\\\\'");	
 				tokens8 = StringUtils.splitPreserveAllTokens(binding_site_pattern, ":");
 				binding_site_pattern = tokens8[1];	
-				
+
 				String site_conservation_score = tokens[9];
 				tokens9 = StringUtils.splitPreserveAllTokens(site_conservation_score, ":");
 				site_conservation_score	= tokens9[1];
-						
+
 				String UTR_conservation_score = tokens[10];
 				tokens10 = StringUtils.splitPreserveAllTokens(UTR_conservation_score, ":");
 				UTR_conservation_score	= tokens10[1];
-				
+
 				String repeated_motifs = tokens[11];
 				tokens11 = StringUtils.splitPreserveAllTokens(repeated_motifs, ":");
 				repeated_motifs	= tokens11[1];
-						
+
 				String algorithm = tokens[12];
-				
-				
+
+
 				String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
 						+ gene_symbol + "','"
 						+ gene_accesion + "','"
@@ -115,16 +115,16 @@ public class repTar extends MirnaDatabase {
 						+ UTR_conservation_score + "','"
 						+ repeated_motifs + "','"
 						+ algorithm + "')";
-				
+
 				stmt.executeUpdate(query);
-	
-				
-	
+
+
+
 			}
 			fr.close();
 			br.close();
 			stmt.close();
-		
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			if (line!=null) {
@@ -137,39 +137,35 @@ public class repTar extends MirnaDatabase {
 		} finally {
 			if (con!=null) con.close();
 		}
-				
-		
+
+
 	}
-	
+
 	@Override
 	public void insertIntoSQLModel() throws Exception {
-		
+
 		Connection con = null;
-		
-		// Get session
 		Session session = HibernateUtil.getSessionFactory().openSession();
-		
-		//start transaction
-		Transaction tx = session.beginTransaction();
-		
+        Transaction tx = session.beginTransaction();
+        
 		try {
 			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			Statement stmt = (Statement) con.createStatement();
-			
-            stmt.setFetchSize(Integer.MIN_VALUE);
+
+			stmt.setFetchSize(Integer.MIN_VALUE);
 			// our SQL SELECT query. 
 			// if you only need a few columns, specify them by name instead of using "*"
 			String query = "SELECT * FROM " + tableName;
 			System.out.println("STARTING: " + query);
-			
+
 			// execute the query, and get a java resultset
 			ResultSet rs = stmt.executeQuery(query);
-			
+
 			// iterate through the java resultset
 			int count = 0;
 			rs.next();
 			// CAMBIAR ESTO:
-			
+
 			String gene_symbol = rs.getString("gene_symbol");
 			String gene_accesion = rs.getString("gene_accesion");
 			String mirna_name = rs.getString("mirna").toLowerCase().trim();
@@ -186,35 +182,27 @@ public class repTar extends MirnaDatabase {
 
 			MiRna miRna = new MiRna();
 			miRna.setName(mirna_name);
-			
+
 			Gene gene = new Gene();
 			gene.setAccessionumber(gene_accesion);
 			gene.setName(gene_symbol);
-			
+
 			Target target = new Target();
 			target.setBinding_site_start(binding_site_start_position);
 			target.setBinding_site_end(binding_site_end_position);
-			target.setGU_proportion(gu_proportion);
+			target.setGu_proportion(gu_proportion);
 			target.setUtr3_conservation_score(UTR3_conservation_score);
 			target.setSite_conservation_score(site_conservation_score);
 			target.setRepeated_motifs(repeated_motifs);
-			
+
 			Complex complex = new Complex();
 			complex.setMinimal_free_energy(minimal_free_energy);
 			complex.setNormalized_minimal_free_energy(normalized_free_energy);
 			complex.setBinding_site_pattern(binding_site_pattern);
-			
+
 			InteractionData id = new InteractionData();
-			id.setAlgorithm(algorithm);
 			id.setProvenance("repTar");
-		
-			/*System.out.println(miRna);
-			System.out.println(gene);
-			System.out.println(target);
-			System.out.println(complex);
-			System.out.println(id);*/
-			
-			
+
 			Object oldMiRna = session.createCriteria(MiRna.class)
 					.add( Restrictions.eq("name", miRna.getName()) )
 					.uniqueResult();
@@ -227,7 +215,7 @@ public class repTar extends MirnaDatabase {
 				session.update(miRnaToUpdate);
 				miRna = miRnaToUpdate;
 			}
-			
+
 			Object oldGene = session.createCriteria(Gene.class)
 					.add( Restrictions.eq("name", gene.getName()) )
 					.uniqueResult();
@@ -235,83 +223,72 @@ public class repTar extends MirnaDatabase {
 				session.save(gene);
 				session.flush();  // to get the PK
 			} else {
-				Gene geneToUpdate = (Gene) oldMiRna;
+				Gene geneToUpdate = (Gene) oldGene;
 				geneToUpdate.update(gene);
 				session.update(geneToUpdate);
 				gene = geneToUpdate;
 			}
 			
-			Object oldTarget = session.createCriteria(Target.class)
-					.add( Restrictions.eq("name", target.getName()) )
-					.uniqueResult();
-			if (oldTarget==null) {
-				session.save(target);
-				session.flush();  // to get the PK
-			} else {
-				Target targetToUpdate = (Target) oldTarget;
-				targetToUpdate.update(target);
-				session.update(targetToUpdate);
-				target = targetToUpdate;
-			}
-			
-			Object oldComplex = session.createCriteria(Complex.class)
-					.add( Restrictions.eq("name", complex.getPk()) )// No estoy segura del getPk() aqu’ para complex.
-					.uniqueResult();
-			if (oldComplex==null) {
-				session.save(complex);
-				session.flush();  // to get the PK
-			} else {
-				Complex complexToUpdate = (Complex) oldComplex;
-				complexToUpdate.update(complex);
-				session.update(complexToUpdate);
-				complex = complexToUpdate;
-			}
-			
-			// Relaciona interaction data con mirna
-			
-			id.setMirnaPk(miRna.getPk());
-			id.setTargetPk(target.getPk());
-			id.setComplexPk(complex.getPk());
-			
-			//Relaciona gene y transcript
-			
-			gene.setTranscript_id(target.getPk());
-			
+			session.save(target);
+			session.flush(); // to get the PK
+
+
+			// Relaciona interaction data con mirna y target
+
+			id.setMirna_pk(miRna.getPk());
+			id.setTarget_pk(target.getPk());
+			id.setGene_pk(gene.getPk());
+			session.save(id);
+			session.flush();
+
+
+			// Relaciona Complex con InteractionData/Target/miRNA
+
+			complex.setInteraction_data_pk(id.getPk());
+			complex.setTarget_pk(target.getPk());
+			complex.setMirna_pk(miRna.getPk());
+			session.save(complex);
+			session.flush();
+
 			count++;
 			if (count%100==0) {
 				System.out.println(count);
 				session.flush();
-		        session.clear();
+				session.clear();
 			}
-			
+
 			stmt.close();
+			tx.commit();
+
 		} catch (SQLException e) {
 			tx.rollback();
 			e.printStackTrace();
 		} finally {
 			if (con!=null) con.close();
+			HibernateUtil.closeSession();
+			HibernateUtil.closeSessionFactory();
 		}
-		
+
 	}
-		
+
 	public static void main(String[] args) throws Exception {
-		
+
 		/*
 		 * HUMAN
 		 */
 		repTar repTarHuman = new repTar("repTar_human");
 		//String inputFileHuman = "/Users/esteban/Softw/miRNA/repTar/human_pred.txt";
 		//repTarHuman.insertInTable(inputFileHuman);
-		repTarHuman.insertIntoSQLModel();
-		
+		//repTarHuman.insertIntoSQLModel();
+
 		/*
 		 * MOUSE
 		 */
 		repTar repTarMouse = new repTar("repTar_mouse");
 		//String inputFileMouse = "/Users/esteban/Softw/miRNA/repTar/mouse_pred.txt";
 		//repTarMouse.insertInTable(inputFileMouse);
-		//repTarMouse.insertIntoSQLModel();
-		
+		repTarMouse.insertIntoSQLModel();
+
 	}
 
 
