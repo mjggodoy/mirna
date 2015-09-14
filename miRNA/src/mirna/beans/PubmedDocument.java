@@ -16,6 +16,9 @@ public class PubmedDocument extends ModelClass {
 	@Column(name = "id", nullable = true, length = 10, unique = true)
 	private String id;
 	
+	@Column(name = "description", nullable = true, length = 300, unique = true)
+	private String description;
+	
 	public PubmedDocument() {}
 	
 	public String getId() {
@@ -26,6 +29,14 @@ public class PubmedDocument extends ModelClass {
 		this.id = id;
 	}
 	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	public int checkConflict(PubmedDocument pubmedDoc) {
 		int res = 0;
 		if (this.pk!=null) {
@@ -35,6 +46,10 @@ public class PubmedDocument extends ModelClass {
 		if (this.id!=null) {
 			if (pubmedDoc.getId()==null) res++;
 			else if (!this.id.equals(pubmedDoc.getId())) return -1;
+		}
+		if (this.description!=null) {
+			if (pubmedDoc.getDescription()  ==null) res++;
+			else if (!this.description.equals(pubmedDoc.getDescription())) return -1;
 		}
 		return res;
 	}
@@ -51,13 +66,17 @@ public class PubmedDocument extends ModelClass {
 		
 		if (pubmedDoc.getPk()!=null) this.pk = pubmedDoc.getPk();
 		if (pubmedDoc.getId()!=null) this.id = pubmedDoc.getId();
+		if (pubmedDoc.getDescription()!=null) this.id = pubmedDoc.getDescription();
 		
 	}
 
 	@Override
 	public String toString() {
-		return "PubmedDocument [id=" + id + ", pk=" + pk + "]";
+		return "PubmedDocument [id=" + id + ", description=" + description
+				+ ", pk=" + pk + "]";
 	}
+
+	
 
 	
 	
