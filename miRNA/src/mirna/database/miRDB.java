@@ -14,6 +14,7 @@ import mirna.beans.InteractionData;
 import mirna.beans.MiRna;
 import mirna.beans.PubmedDocument;
 import mirna.beans.Target;
+import mirna.beans.Transcript;
 import mirna.beans.nToM.ExpressionDataHasPubmedDocument;
 import mirna.beans.nToM.MirnaHasPubmedDocument;
 import mirna.exception.MiRnaException;
@@ -33,47 +34,47 @@ import org.hibernate.criterion.Restrictions;
  *
  */
 public class miRDB extends MirnaDatabase {
-	
+
 	private final String tableName = "miRDB";
-	
+
 	public miRDB() throws MiRnaException { super(); }
-	
+
 	public void insertInTable(String csvInputFile) throws Exception {
-		
+
 		Connection con = null;
 		String line = null;
 		String[] tokens = null;
-		
+
 		try {
 			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			Statement stmt = (Statement) con.createStatement(); 
-			
+
 			FileReader fr = new FileReader(csvInputFile);
 			BufferedReader br = new BufferedReader(fr);
-	
+
 			int count = 0;
-	
+
 			br.readLine();
-			
+
 			while (((line = br.readLine()) != null)) {
-	
+
 				count++;
 				System.out.println(count);
-				
+
 				tokens = StringUtils.splitPreserveAllTokens(line, "\t");
-	
-					String accesionNumber = tokens[0];
-					String target = tokens[1];
-					String score = tokens[2];
-					
-					String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
-							+ accesionNumber + "','"
-							+ target + "','"
-							+ score + "')";
-					
-					stmt.executeUpdate(query);
-		
-	
+
+				String accesionNumber = tokens[0];
+				String target = tokens[1];
+				String score = tokens[2];
+
+				String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
+						+ accesionNumber + "','"
+						+ target + "','"
+						+ score + "')";
+
+				stmt.executeUpdate(query);
+
+
 			}
 			fr.close();
 			br.close();
@@ -90,61 +91,54 @@ public class miRDB extends MirnaDatabase {
 		} finally {
 			if (con!=null) con.close();
 		}
-		
+
 	}
-	
+
 	@Override
 	public void insertIntoSQLModel() throws Exception {
-		
-		//Get Session
-//		SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
-//		Session session = sessionFactory.getCurrentSession();
+
+		Statement stmt = null;
 		Session session = HibernateUtil.getSessionFactory().openSession();
-
 		Connection con = null;
-		
-		//start transaction
 		Transaction tx = session.beginTransaction();
-		
-		try {
-			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-			Statement stmt = (Statement) con.createStatement();
-            stmt.setFetchSize(Integer.MIN_VALUE);
 
-			// our SQL SELECT query. 
-			// if you only need a few columns, specify them by name instead of using "*"
+		try {
+			System.out.println(dbUrl);
+			System.out.println(dbUser);
+			System.out.println(dbPassword);
+			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+			stmt = (Statement) con.createStatement();
+			stmt.setFetchSize(Integer.MIN_VALUE);
+
+			// our SQL SELECT query.
+			// if you only need a few columns, specify them by name instead of
+			// using "*"
 			String query = "SELECT * FROM " + tableName;
 			System.out.println("STARTING: " + query);
 
-
 			// execute the query, and get a java resultset
 			ResultSet rs = stmt.executeQuery(query);
-			
-			// iterate through the java resultset
-			
+
 			int count = 0;
-			if (rs.next()){
-				
-			//Cambiar esto
-			
+			rs.next();
+
 			String miRNA = rs.getString("mir");
 			String target_name = rs.getString("target");
 			String score = rs.getString("score");
-			
-			MiRna miRna = new MiRna();
-			miRna.setName(miRNA);
-			
+
 			InteractionData id = new InteractionData();
 			id.setScore(score);
-			
+			id.setProvenance("Microcosm");
+
 			Target target = new Target();
-			target.setName(target_name);
-			
-			/*System.out.println(miRna);
-			System.out.println(id);
-			System.out.println(target);
-			*/
-			
+
+			Transcript transcript = new Transcript();
+			transcript.setTranscriptID(target_name);
+
+			MiRna miRna = new MiRna();
+			miRna.setName(miRNA);
+
+		
 			// Inserta MiRna (o recupera su id. si ya existe)
 
 			Object oldMiRna = session.createCriteria(MiRna.class)
@@ -159,60 +153,63 @@ public class miRDB extends MirnaDatabase {
 				session.update(miRnaToUpdate);
 				miRna = miRnaToUpdate;
 			}			
-		
-			// Inserta Target (o recupera su id. si ya existe)
 
-			Object oldTarget = session.createCriteria(Target.class)
-					.add( Restrictions.eq("id", id.getPk()) )
+			// Inserta Transcript (o recupera su id. si ya existe)
+			Object oldTranscript = session.createCriteria(Transcript.class)
+					.add(Restrictions.eq("transcriptID", transcript.getTranscriptID()))
 					.uniqueResult();
-			if (oldTarget==null) {
-				session.save(id);
-				session.flush();  // to get the PK
+			if (oldTranscript == null) {
+				session.save(transcript);
+				session.flush(); // to get the PK
 			} else {
-				Target targetDataToUpdate = (Target) oldTarget;
-				targetDataToUpdate.update(target);
-				session.update(targetDataToUpdate);
-				target = targetDataToUpdate;
+				Transcript transcriptToUpdate = (Transcript) oldTranscript;
+				transcriptToUpdate.update(transcript);
+				session.update(transcriptToUpdate);
+				transcript = transcriptToUpdate;
 			}
-			
+
+			target.setTranscript_pk(transcript.getPk());
+			session.save(target);
+			session.flush(); // to get the PK
+
 			// Inserta nueva InteractinData
 			// (y la relaciona con el MiRna y Target correspondientes)
-			
-			id.setMirnaPk(miRna.getPk());
-			id.setTargetPk(target.getPk());
+
+			id.setMirna_pk(miRna.getPk());
+			id.setTarget_pk(target.getPk());
 			session.save(id);
-			session.flush();
-			
+			session.flush(); // to get the PK
+
 			count++;
 			if (count%100==0) {
 				System.out.println(count);
 				session.flush();
-		        session.clear();
+				session.clear();
 			}
-			
+
 			stmt.close();
-			}
+			tx.commit();
+
 		} catch (SQLException e) {
 			tx.rollback();
 			e.printStackTrace();
 		} finally {
 			if (con!=null) con.close();
+			HibernateUtil.closeSession();
+			HibernateUtil.closeSessionFactory();
 		}
-		
-		tx.commit();
-		session.close();
-		
+
 	}
-	
+
 	public static void main(String[] args) throws Exception {
-		
+
 		miRDB mirdb = new miRDB();
-		
+
 		//String inputFile = "/Users/esteban/Softw/miRNA/MirTarget2_v4.0_prediction_result.txt";
 		//mirdb.insertInTable(inputFile);
-		
+
 		mirdb.insertIntoSQLModel();
-		
+
 	}
 
 }
