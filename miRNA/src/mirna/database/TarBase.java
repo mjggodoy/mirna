@@ -225,8 +225,40 @@ public class TarBase extends MirnaDatabase {
 			Organism organism = new Organism();
 			organism.setName(specie);
 
+
 			MiRna mirna = new MiRna();
-			mirna.setName(miRna);
+
+			if(organism.getName().equals("C. elegans")){
+
+				miRna = "cel"+"-"+miRna;
+				mirna.setName(miRna);
+
+
+			}else if(organism.getName().equals("Human")){
+
+				miRna = "hsa"+"-"+miRna;
+				mirna.setName(miRna);
+
+			}else if (organism.getName().equals("Drosophila")){
+
+				miRna = "dme"+"-"+miRna;
+				mirna.setName(miRna);
+
+
+			}else if (organism.getName().equals("Mouse")){
+
+				miRna = "mmu"+"-"+miRna;
+				mirna.setName(miRna);
+
+
+
+			}else{
+
+				mirna.setName(miRna);
+
+
+			}
+
 
 			Gene gene = new Gene();
 			gene.setName(gene_name);
@@ -318,8 +350,6 @@ public class TarBase extends MirnaDatabase {
 				sequence_mirna = sequenceToUpdate;
 			}		
 
-
-
 			// Inserta MiRna (o recupera su id. si ya existe)
 
 			mirna.setOrganismPk(organism.getPk());
@@ -366,8 +396,6 @@ public class TarBase extends MirnaDatabase {
 				session.update(geneToUpdate);
 				gene2 = geneToUpdate;
 			}
-
-
 
 			// Insertar Sequence (o recupera su id. si ya existe)
 			Object oldSequence2 = session.createCriteria(Sequence.class)
@@ -426,7 +454,7 @@ public class TarBase extends MirnaDatabase {
 			/*ed2.setMirnaPk(mirna.getPk());
 			ed2.setDiseasePk(disease.getPk());
 			session.save(ed2);
-*/
+			 */
 			// Inserta nueva Target
 
 			target.setTranscript_pk(transcript.getPk());
@@ -493,6 +521,9 @@ public class TarBase extends MirnaDatabase {
 		//tarBase.insertInTable(inputFile);
 
 		tarBase.insertIntoSQLModel();
+
+		//select * from mirna.mirna where name='let-7';
+		//select * from mirna.expression_data where mirna_pk=115
 
 	}
 

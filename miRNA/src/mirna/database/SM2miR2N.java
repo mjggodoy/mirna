@@ -159,8 +159,53 @@ public class SM2miR2N extends MirnaDatabase {
 			String support = rs.getString("support");
 			String evidence = rs.getString("expression");
 
+			Organism organism = new Organism();
+			organism.setName(specie);
+
 			MiRna miRna = new MiRna();
-			miRna.setName(name);
+
+			if(!organism.getName().equals("Heifer") || !organism.getName().equals("Chinese yew") || !organism.getName().equals("Solanum") ){
+				String[] tokens = StringUtils.splitPreserveAllTokens(organism.getName(), " ");
+				String genus = tokens[0];
+				String specie_name = tokens[1];
+				//System.out.println(organism.getName() + " " + genus + " " + specie_name);
+				String substring_genus = genus.substring(0,1).toLowerCase();
+				String substring_specie_name = specie_name.substring(0, 2);
+				//System.out.println(substring_genus + substring_specie_name);
+				String name_organism = substring_genus + substring_specie_name;
+				miRna.setName(name_organism+"-"+name);
+				//System.out.println(miRna.getName());
+
+			}else if (organism.getName().equals("Populus trichocarpa")){
+
+				String[] tokens = StringUtils.splitPreserveAllTokens(organism.getName(), " ");
+				String genus = tokens[0];
+				String specie_name = tokens[1];
+				String substring_genus = genus.substring(0,1).toLowerCase();
+				String substring_specie_name = specie_name.substring(0, 1) + specie_name.substring(3, 4);
+				String name_organism = substring_genus + substring_specie_name;
+				//System.out.println(substring_genus + substring_specie_name);
+				miRna.setName(name_organism+"-"+name);
+				//System.out.println(miRna.getName());
+				
+				
+			}else if (organism.getName().equals("Heifer")){
+				
+				miRna.setName("bta"+"-"+name);
+
+				
+				
+			}else if (organism.getName().equals("Physcomitrella patens")){ 	
+			
+			
+				miRna.setName("ppt"+"-"+name);
+				
+
+			}else{
+
+				miRna.setName(name);
+			}
+
 			miRna.setAccessionNumber(mirbase);
 
 			SmallMolecule smallmolecule = new SmallMolecule();
@@ -180,9 +225,6 @@ public class SM2miR2N extends MirnaDatabase {
 			ed.setDescription(support);
 			ed.setProvenance("SMS2miR2N");
 
-			Organism organism = new Organism();
-			organism.setName(specie);
-
 			PubmedDocument pubmedDoc = new PubmedDocument();
 			pubmedDoc.setId(pmid);
 
@@ -190,17 +232,17 @@ public class SM2miR2N extends MirnaDatabase {
 			// Relaciona mirna y organism
 
 			// Inserta MiRna (o recupera su id. si ya existe)
-			
+
 			Object oldOrganism = session.createCriteria(Organism.class)
 					.add(Restrictions.eq("name", organism.getName()) )
 					.uniqueResult();
 			if (oldOrganism==null) {
-				
+
 				session.save(organism);
 				session.flush(); // to get the PK
 				System.out.println("Save ORGANISM");
 			} else {
-				
+
 				Organism organismToUpdate = (Organism) oldOrganism;
 				organismToUpdate.update(organism);
 				session.update(organismToUpdate);
@@ -221,7 +263,7 @@ public class SM2miR2N extends MirnaDatabase {
 				session.update(miRnaToUpdate);
 				miRna = miRnaToUpdate;
 			}
-		
+
 			// Inserta EnvironmentalFactor (o recupera su id. si ya existe)
 
 			Object oldEf = session.createCriteria(EnvironmentalFactor.class)
