@@ -125,7 +125,8 @@ public class miRdSNP2 extends miRdSNP {
 			// iterate through the java resultset
 
 			int count = 0;
-			if(rs.next()){
+			rs.next();
+			rs.next();
 				// CAMBIAR ESTO:
 				count ++;
 				String ref_seq = rs.getString("refseq").toLowerCase().trim();
@@ -149,6 +150,7 @@ public class miRdSNP2 extends miRdSNP {
 				ed.setProvenance("miRdSNP");
 
 				InteractionData id = new InteractionData();
+				id.setProvenance("miRdSNP");
 
 				String[] snpTokens = StringUtils.splitPreserveAllTokens(snp_id, "|");
 
@@ -252,7 +254,7 @@ public class miRdSNP2 extends miRdSNP {
 					session.flush();
 					session.clear();
 				}
-			}
+			
 			stmt.close();
 			tx.commit();
 		} catch (SQLException e) {

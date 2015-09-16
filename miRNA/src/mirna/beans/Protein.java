@@ -1,69 +1,63 @@
 package mirna.beans;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.Table;
+
 import mirna.exception.ConflictException;
+
+
+
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "protein")
 
 public class Protein extends ModelClass {
 	
-	private String Uniprot_id;
-	private String Swiss_prot_id;
-	private String Type;
-	private Integer Transcript_id;
+
+	@Column(name = "uniprot_id", nullable = false, length = 400, unique = false)
+	private String uniprot_id;
+	
+	@Column(name = "type", nullable = false, length = 400, unique = false)
+	private String type;
 	
 	
 	public Protein() {
-		
-		super();
-		
+		super();	
 	}
 	
 
-	public Protein(int pk,String uniprot_id, String swiss_prot_id, String type, Integer transcript_id) {
+	public Protein(int pk, String uniprot_id, String type) {
 		super(pk);
-		Uniprot_id = uniprot_id;
-		Swiss_prot_id = swiss_prot_id;
-		Type = type;
-		Transcript_id = transcript_id;
+		this.uniprot_id = uniprot_id;
+		this.type = type;
 		
 	}
 
+	
+
 	public String getUniprot_id() {
-		return Uniprot_id;
+		return uniprot_id;
 	}
+
 
 	public void setUniprot_id(String uniprot_id) {
-		Uniprot_id = uniprot_id;
-	}
-
-
-	public String getSwiss_prot_id() {
-		return Swiss_prot_id;
-	}
-
-
-	public void setSwiss_prot_id(String swiss_prot_id) {
-		Swiss_prot_id = swiss_prot_id;
+		this.uniprot_id = uniprot_id;
 	}
 
 
 	public String getType() {
-		return Type;
+		return type;
 	}
 
-
 	public void setType(String type) {
-		this.Type = type;
+		this.type = type;
 	}
 	
 
-	public Integer getTranscript_id() {
-		return Transcript_id;
-	}
-
-
-	public void setTranscript_id(Integer transcript_id) {
-		Transcript_id = transcript_id;
-	}
-
+	
 
 	public int checkConflict(Protein protein) {
 		
@@ -74,27 +68,18 @@ public class Protein extends ModelClass {
 			else if (!this.pk.equals(protein.getPk())) return -1;
 		}
 		
-		if (this.Swiss_prot_id!=null) {
-			if (protein.Swiss_prot_id ==null) res++; 
-			else if (!this.Swiss_prot_id.equals(protein.Swiss_prot_id  )) return -1;
+		
+		if (this.type!=null) {
+			if (protein.type ==null) res++; 
+			else if (!this.type.equals(protein.type)) return -1;
 		}
 		
-		if (this.Type!=null) {
-			if (protein.Type ==null) res++; 
-			else if (!this.Type.equals(protein.Type)) return -1;
+		if (this.uniprot_id!=null) {
+			if (protein.uniprot_id ==null) res++; 
+			else if (!this.uniprot_id.equals(protein.uniprot_id)) return -1;
 		}
 		
-		if (this.Uniprot_id!=null) {
-			if (protein.Uniprot_id ==null) res++; 
-			else if (!this.Uniprot_id.equals(protein.Uniprot_id)) return -1;
-		}
-		
-		if (this.Transcript_id !=null) {
-			if (protein.Transcript_id ==null) res++; 
-			else if (!this.Transcript_id.equals(protein.Transcript_id)) return -1;
-		}
-		
-		
+	
 		return res;
 	}
 	
@@ -110,18 +95,15 @@ public class Protein extends ModelClass {
 			if (this.checkConflict(protein)==-1) throw new ConflictException(this, protein);
 		}
 		if (protein.getPk() !=null) this.pk = protein.getPk();
-		if (protein.getSwiss_prot_id() !=null) this.Swiss_prot_id = protein.getSwiss_prot_id();
-		if (protein.getType() !=null) this.Type = protein.getType();
-		if (protein.getUniprot_id()!=null) this.Uniprot_id = protein.getUniprot_id();	
-		if(protein.getTranscript_id() !=null) this.Transcript_id =protein.getTranscript_id();
+		if (protein.getType() !=null) this.type = protein.getType();
+		if (protein.getUniprot_id()!=null) this.uniprot_id = protein.getUniprot_id();	
 	}
 
 
 	@Override
 	public String toString() {
-		return "Protein [Uniprot_id=" + Uniprot_id + ", Swiss_prot_id="
-				+ Swiss_prot_id + ", Type=" + Type + ", Transcript_id="
-				+ Transcript_id + ", pk=" + pk + "]";
+		return "Protein [uniprot_id=" + uniprot_id + ", type=" + type + ", pk="
+				+ pk + "]";
 	}
 
 }

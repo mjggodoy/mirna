@@ -66,7 +66,7 @@ public class PubmedDocument extends ModelClass {
 		
 		if (pubmedDoc.getPk()!=null) this.pk = pubmedDoc.getPk();
 		if (pubmedDoc.getId()!=null) this.id = pubmedDoc.getId();
-		if (pubmedDoc.getDescription()!=null) this.id = pubmedDoc.getDescription();
+		if (pubmedDoc.getDescription()!=null) this.description = pubmedDoc.getDescription();
 		
 	}
 

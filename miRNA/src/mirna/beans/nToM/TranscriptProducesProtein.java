@@ -1,5 +1,6 @@
 package mirna.beans.nToM;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -7,7 +8,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "transcript_produces_protein")
-public class TranscriptProducesProtein {
+public class TranscriptProducesProtein implements Serializable{
 	
 	@Id
 	@Column(name = "transcript_pk", nullable = false, length = 11, unique = false)
