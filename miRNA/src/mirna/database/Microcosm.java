@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import mirna.beans.Gene;
 import mirna.beans.InteractionData;
 import mirna.beans.MiRna;
 import mirna.exception.MiRnaException;
@@ -140,7 +141,7 @@ public class Microcosm extends MirnaDatabase {
 			// iterate through the java resultset
 			
 			int count = 0;
-			rs.next();
+			while(rs.next() && count <1){
 			// CAMBIAR ESTO:
 
 			String seq = rs.getString("seq");
@@ -175,14 +176,10 @@ public class Microcosm extends MirnaDatabase {
 
 			Transcript transcript = new Transcript();
 			transcript.setTranscriptID(transcriptId);
-			transcript.setExternalName(externalName);
+			
+			Gene gene = new Gene();
+			gene.setGeneId(externalName);
 
-			/*
-			 * System.out.println(miRna); 
-			 * System.out.println(id);
-			 * System.out.println(target); 
-			 * System.out.println(transcript);
-			 */
 
 			// Inserta MiRna (o recupera su id. si ya existe)
 
@@ -201,9 +198,23 @@ public class Microcosm extends MirnaDatabase {
 				miRna = miRnaToUpdate;
 			}
 			
+			Object oldGene = session.createCriteria(Gene.class)
+					.add(Restrictions.eq("geneId", gene.getGeneId()))
+					.uniqueResult();
+			if (oldGene == null) {
+				session.save(gene);
+				session.flush(); // to get the PK
+			} else {
+				Gene geneToUpdate = (Gene) oldGene;
+				geneToUpdate.update(gene);
+				session.update(geneToUpdate);
+				gene = geneToUpdate;
+			}
+			
 			// Inserta Transcript (o recupera su id. si ya existe)
+			transcript.setGeneId(gene.getPk());
 			Object oldTranscript = session.createCriteria(Transcript.class)
-					.add(Restrictions.eq("externalName", transcript.getExternalName()))
+					.add(Restrictions.eq("transcriptID", transcript.getTranscriptID()))
 					.uniqueResult();
 			if (oldTranscript == null) {
 				session.save(transcript);
@@ -224,6 +235,7 @@ public class Microcosm extends MirnaDatabase {
 			
 			id.setMirna_pk(miRna.getPk());
 			id.setTarget_pk(target.getPk());
+			id.setGene_pk(gene.getPk());
 			session.save(id);
 			session.flush(); // to get the PK
 			
@@ -234,6 +246,7 @@ public class Microcosm extends MirnaDatabase {
 		        session.clear();
 			}
 			
+			}
 			stmt.close();
 			tx.commit();
 			

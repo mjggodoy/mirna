@@ -177,6 +177,7 @@ public class miRDB extends MirnaDatabase {
 
 			id.setMirna_pk(miRna.getPk());
 			id.setTarget_pk(target.getPk());
+			//TODO: INCLUDE id.setGene(gene.getPk());
 			session.save(id);
 			session.flush(); // to get the PK
 

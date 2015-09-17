@@ -141,9 +141,8 @@ public class microT_CDS_data extends MirnaDatabase {
 			// iterate through the java resultset
 			int count = 0;
 
-			rs.next();
-			rs.next();
-			rs.next();
+			while(rs.next() && count<2){
+			
 			// CAMBIAR ESTO:
 
 			String transcriptId = rs.getString("transcript_id");
@@ -243,6 +242,7 @@ public class microT_CDS_data extends MirnaDatabase {
 		        session.clear();
 			}
 
+			}
 			stmt.close();
 			tx.commit();
 			

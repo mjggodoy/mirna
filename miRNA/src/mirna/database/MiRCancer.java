@@ -116,7 +116,7 @@ public class MiRCancer extends MirnaDatabase {
 			
 			// iterate through the java resultset
 			int count = 0;
-			if (rs.next()) { 
+			while (rs.next() && count<2) { 
 			//Cambiar esto
 				
 				String cancer = rs.getString("cancer").trim();

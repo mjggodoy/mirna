@@ -109,19 +109,22 @@ public class VirmiRNA1 extends VirmiRNA{
 	@Override
 	public void insertIntoSQLModel() throws Exception {
 
+		Statement stmt = null;
 		Connection con = null;
 		Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
 		
 		try {
 			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-			Statement stmt = (Statement) con.createStatement();
-			
-			// our SQL SELECT query. 
-			// if you only need a few columns, specify them by name instead of using "*"
+			stmt = (Statement) con.createStatement();
+			stmt.setFetchSize(Integer.MIN_VALUE);
+
+			// our SQL SELECT query.
+			// if you only need a few columns, specify them by name instead of
+			// using "*"
 			String query = "SELECT * FROM " + tableName;
 			System.out.println("STARTING: " + query);
-			
+
 			// execute the query, and get a java resultset
 			ResultSet rs = stmt.executeQuery(query);
 			

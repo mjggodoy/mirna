@@ -119,7 +119,7 @@ public class Mir2Disease extends MirnaDatabase {
 			
 			// iterate through the java resultset
 			int count = 0;
-			if (rs.next()) {
+			while (rs.next() && count<2) {
 				
 //				mirna -> miRNA.name
 //				disease  -> Disease.name
@@ -148,7 +148,6 @@ public class Mir2Disease extends MirnaDatabase {
 				ed.setYear(year);
 				ed.setProvenance("miR2Disease");
 				
-				//System.out.println("BUSCO: " + miRna.getName());
 				// Inserta MiRna (o recupera su id. si ya existe)
 				Object oldMiRna = session.createCriteria(MiRna.class)
 						.add( Restrictions.eq("name", miRna.getName()) )
@@ -180,10 +179,10 @@ public class Mir2Disease extends MirnaDatabase {
 				
 				// Inserta nueva DataExpression
 				// (y la relaciona con el MiRna y Disease correspondiente)
+				
 				ed.setMirnaPk(miRna.getPk());
 				ed.setDiseasePk(disease.getPk());
 				session.save(ed);
-				// ExpressionData igual (?)
 				
 				count++;
 				if (count%100==0) {
