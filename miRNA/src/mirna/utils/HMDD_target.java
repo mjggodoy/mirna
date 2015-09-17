@@ -56,9 +56,9 @@ public class HMDD_target {
 					MiRna miRna2 = new MiRna();
 					miRna2.setName(tokens[2]);
 					
+					@SuppressWarnings("unused")
 					Target target2 = new Target();
-					target2.setName(tokens[3]);
-					
+					//target2.setName(tokens[3]);
 					
 					Disease disease = new Disease();
 					disease.setName(tokens[4]);
@@ -107,9 +107,9 @@ public class HMDD_target {
 					model.createResource(
 							namespace + "Target_" + dataTarget)
 							
-								.addProperty(
-									ResourceFactory.createProperty(namespace
-											+ "Target"), target2.getName())
+//								.addProperty(
+//									ResourceFactory.createProperty(namespace
+//											+ "Target"), target2.getName())
 								.addProperty(
 									ResourceFactory.createProperty(namespace
 											+ "microRNAtarget"), miRNA)
