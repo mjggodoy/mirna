@@ -201,14 +201,9 @@ public class VirmiRNA1 extends VirmiRNA{
 					session.save(sequence1);
 					session.flush(); // to get the PK
 				} else {
-					Sequence sequenceToUpdate = (Sequence) oldSequence1;
-					sequenceToUpdate.update(sequence1);
-					session.update(sequenceToUpdate);
-					sequence1 = sequenceToUpdate;
+					sequence1 = (Sequence) oldSequence1;
+					
 				}
-
-				mirna.setSequencePk(sequence1.getPk());
-				// Inserta Organism (o recupera su id. si ya existe)
 
 				Object oldOrganism = session.createCriteria(Organism.class)
 						.add(Restrictions.eq("name", organism.getName()) )
@@ -223,10 +218,10 @@ public class VirmiRNA1 extends VirmiRNA{
 					organism = organismToUpdate;
 				}
 
-				mirna.setOrganismPk(organism.getPk());
 
 				// Inserta MiRna (o recupera su id. si ya existe)
 				mirna.setOrganismPk(organism.getPk());
+				mirna.setSequencePk(sequence1.getPk());
 				Object oldMiRna = session.createCriteria(MiRna.class)
 						.add(Restrictions.eq("name", mirna.getName()) )
 						.uniqueResult();
@@ -262,10 +257,8 @@ public class VirmiRNA1 extends VirmiRNA{
 					session.save(sequence2);
 					session.flush(); // to get the PK
 				} else {
-					Sequence sequenceToUpdate = (Sequence) oldSequence2;
-					sequenceToUpdate.update(sequence2);
-					session.update(sequenceToUpdate);
-					sequence2 = sequenceToUpdate;
+					sequence2 = (Sequence) oldSequence2;
+					
 				}
 
 				hairpin.setSequence_pk(sequence2.getPk());
