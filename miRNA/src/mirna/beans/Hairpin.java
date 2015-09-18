@@ -10,7 +10,7 @@ import mirna.exception.ConflictException;
 @Table(name = "hairpin")
 public class Hairpin extends ModelClass {
 	
-	@Column(name = "name", nullable = false)
+	@Column(name = "name", nullable = true)
 	private String name;
 	
 	@Column(name = "mirna_pk", nullable = false)

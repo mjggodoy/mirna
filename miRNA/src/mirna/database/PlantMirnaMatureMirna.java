@@ -124,8 +124,8 @@ public class PlantMirnaMatureMirna extends MirnaDatabase {
 
 			// iterate through the java resultset
 			int count = 0;
-			rs.next();
 
+			while(count<2 && rs.next()){
 			// CAMBIAR ESTO:
 
 			String specie = rs.getString("specie").toLowerCase().trim();
@@ -224,6 +224,8 @@ public class PlantMirnaMatureMirna extends MirnaDatabase {
 				System.out.println(count);
 				session.flush();
 				session.clear();
+			}
+			
 			}
 
 			stmt.close();

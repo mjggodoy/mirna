@@ -143,8 +143,7 @@ public class microtv4 extends MirnaDatabase {
 			
 			// iterate through the java resultset
 			int count = 0;
-			rs.next();
-			// CAMBIAR ESTO:
+			while(count<2 && rs.next()){			// CAMBIAR ESTO:
 			
 			String transcript_id = rs.getString("transcript_id");
 			String gene_id = rs.getString("gene_id");
@@ -162,7 +161,7 @@ public class microtv4 extends MirnaDatabase {
 			
 			InteractionData id = new InteractionData();
 			id.setMiTG_score(miTG_score);
-			id.setProvenance("microT v4");
+			id.setProvenance("microTv4");
 			
 			Target target = new Target();
 			target.setRegion(region);
@@ -172,11 +171,6 @@ public class microtv4 extends MirnaDatabase {
 			Transcript transcript = new Transcript();
 			transcript.setTranscriptID(transcript_id);
 
-			/*System.out.println(miRna);
-			System.out.println(gene);
-			System.out.println(id);
-			System.out.println(transcript);
-			System.out.println(target);*/
 						
 			// Inserta MiRna (o recupera su id. si ya existe)
 			Object oldMiRna = session.createCriteria(MiRna.class)
@@ -207,7 +201,6 @@ public class microtv4 extends MirnaDatabase {
 			}
 			
 			transcript.setGeneId(gene.getPk());
-			
 			// Inserta Transcript (o recupera su id. si ya existe)
 			Object oldTranscript = session.createCriteria(Transcript.class)
 					.add(Restrictions.eq("transcriptID", transcript.getTranscriptID()))
@@ -242,6 +235,8 @@ public class microtv4 extends MirnaDatabase {
 			if (count%100==0) {
 				session.flush();
 		        session.clear();
+			}
+			
 			}
 			
 			rs.close();

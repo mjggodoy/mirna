@@ -129,7 +129,7 @@ public class PlantMirnaStemLoop extends MirnaDatabase {
 
 			// iterate through the java resultset
 			int count = 0;
-			rs.next();
+			while(count<2 && rs.next()){
 			// CAMBIAR ESTO:
 
 			String specie = rs.getString("specie").toLowerCase().trim();
@@ -165,7 +165,6 @@ public class PlantMirnaStemLoop extends MirnaDatabase {
 			}
 			
 			miRNA.setOrganismPk(organism.getPk());
-			
 			// Inserta MiRna (o recupera su id. si ya existe)
 			Object oldMiRna = session.createCriteria(MiRna.class)
 					.add(Restrictions.eq("name", miRNA.getName()))
@@ -198,7 +197,6 @@ public class PlantMirnaStemLoop extends MirnaDatabase {
 			
 			hairpin.setMirnaPk(miRNA.getPk());
 			hairpin.setSequence_pk(sequence.getPk());
-			
 			// Inserta Hairpin (o recupera su id. si ya existe)
 			Object oldHairpin = session.createCriteria(Hairpin.class)
 					.add( Restrictions.eq("sequence_pk", hairpin.getSequence_pk() ) )
@@ -227,7 +225,7 @@ public class PlantMirnaStemLoop extends MirnaDatabase {
 				session.flush();
 				session.clear();
 			}
-
+			}
 			stmt.close();
 			tx.commit();
 
