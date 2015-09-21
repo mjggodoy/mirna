@@ -12,28 +12,28 @@ import mirna.exception.ConflictException;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "snp")
 
-public class SNP extends Mutation {
-	
+public class SNP extends ModelClass {
+
 	@Column(name = "snp_id", nullable = false, length = 80, unique = true)
 	private String snp_id;
-	
+
 	@Column(name = "position", nullable = true)
 	private String position;
-	
+
 	@Column(name = "article_date", nullable = true, length = 45)
 	private String article_date;
-	
+
 	@Column(name = "mutation_pk", nullable = true, length = 45) //mutation_pk puede ser nulo
 	private String mutation_pk;
-	
-	
+
+
 	public SNP(){
 		super();
 	}
 
-	
-	
-	
+
+
+
 	public String getSnp_id() {
 		return snp_id;
 	}
@@ -88,6 +88,9 @@ public class SNP extends Mutation {
 	}
 
 
+	public void update(SNP snp) throws ConflictException {
+		this.update(snp, true);
+	}
 
 
 	public void update(SNP snp, boolean checkConflict)
@@ -99,21 +102,21 @@ public class SNP extends Mutation {
 		if (snp.getPk() != null){
 			this.pk = snp.getPk();
 		}
-		
+
 		if(snp.getSnp_id()!=null)
 			this.snp_id = snp.getSnp_id();
-			
+
 		if(snp.getArticle_date() !=null){
 			this.article_date = snp.getArticle_date();
 		}
-		
+
 		if(snp.mutation_pk !=null){
 			this.mutation_pk = snp.getMutation_pk();
 		}
-		
-		
+
+
 	}
-	
+
 	public int checkConflict(SNP snp) {
 		int res = 0;
 		if (this.pk != null) {
@@ -122,31 +125,31 @@ public class SNP extends Mutation {
 			else if (!this.pk.equals(snp.getPk()))
 				return -1;
 		}
-		
+
 		if (this.snp_id != null) {
 			if (snp.getSnp_id() == null)
 				res++;
 			else if (!this.snp_id.equals(snp.getSnp_id()))
 				return -1;
 		}
-		
+
 		if (this.article_date != null) {
 			if (snp.getArticle_date() == null)
 				res++;
 			else if (!this.article_date.equals(snp.getArticle_date()))
 				return -1;
 		}
-		
+
 		if (this.mutation_pk != null) {
 			if (snp.getMutation_pk() == null)
 				res++;
 			else if (!this.mutation_pk.equals(snp.getMutation_pk()));
-				return -1;
+			return -1;
 		}
-		
-		
-		
-		
+
+
+
+
 		return res;
 	}
 
@@ -157,31 +160,7 @@ public class SNP extends Mutation {
 	public String toString() {
 		return "SNP [snp_id=" + snp_id + ", position=" + position
 				+ ", article_date=" + article_date + ", mutation_pk="
-				+ mutation_pk + ", specie=" + specie + ", chromosome="
-				+ chromosome + ", coordinates=" + coordinates
-				+ ", orientation=" + orientation + ", distance=" + distance
-				+ ", journal=" + journal + ", year=" + year + ", description="
-				+ description + ", pubmed_id=" + pubmed_id + ", resource="
-				+ resource + ", gene_id=" + gene_id + ", pk=" + pk + "]";
+				+ mutation_pk + ", pk=" + pk + "]";
 	}
 
-
-
-
-	
-
-
-
-	
-
-
-
-
-	
-
-
-	
-	
-
-	
 }

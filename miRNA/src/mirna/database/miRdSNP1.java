@@ -13,9 +13,11 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
 import mirna.beans.Disease;
+import mirna.beans.PubmedDocument;
 import mirna.beans.SNP;
 import mirna.beans.nToM.MirnaHasPubmedDocument;
 import mirna.beans.nToM.SnpHasDisease;
+import mirna.beans.nToM.SnpHasPubmedDocument;
 import mirna.exception.MiRnaException;
 import mirna.utils.HibernateUtil;
 
@@ -133,8 +135,8 @@ public class miRdSNP1 extends miRdSNP {
 			// CAMBIAR ESTO:
 			
 			String pubmedId = rs.getString("pubmed_id").toLowerCase().trim();
-			String year = rs.getString("year").toLowerCase().trim();
-			String journal = rs.getString("journal").toLowerCase().trim();
+			String year = rs.getString("year").toLowerCase().trim(); // I'm not going to use this field.
+			String journal = rs.getString("journal").toLowerCase().trim(); // I'm not going to use this field.
 			String description = rs.getString("title").toLowerCase().trim();
 			String snp_id = rs.getString("snp_id").toLowerCase().trim();
 			String disease_name = rs.getString("disease").toLowerCase().trim();
@@ -145,12 +147,13 @@ public class miRdSNP1 extends miRdSNP {
 			
 			SNP snp = new SNP();
 			snp.setSnp_id(snp_id);
-			snp.setPubmed_id(pubmedId);
-			snp.setResource(resource);
-			snp.setJournal(journal);
-			snp.setYear(year);
-			snp.setDescription(description);
-		
+			
+			
+			PubmedDocument pubmedDoc = new PubmedDocument();
+			pubmedDoc.setId(pubmedId);
+			pubmedDoc.setDescription(description);
+			pubmedDoc.setResource(resource);
+
 			
 			// Inserta Disease (o recupera su id. si ya existe)
 
@@ -167,6 +170,9 @@ public class miRdSNP1 extends miRdSNP {
 				disease = diseaseToUpdate;
 			}
 			
+			
+			// Inserta SNP (o recupera su id. si ya existe)
+
 			Object oldSnp = session.createCriteria(SNP.class)
 					.add( Restrictions.eq("snp_id", snp.getSnp_id()) )
 					.uniqueResult();
@@ -183,9 +189,22 @@ public class miRdSNP1 extends miRdSNP {
 				snptoUpdate.update(snp); //incluir el update en la clase SNP
 				session.update(snptoUpdate);
 				snp = snptoUpdate;
-				System.out.println("RECUPERO ESTE SNP:");
-				System.out.println(snp);
-
+			
+			}
+			
+			// Inserta PubmedDoc (o recupera su id. si ya existe)
+			
+			Object oldPubmedDoc = session.createCriteria(PubmedDocument.class)
+					.add( Restrictions.eq("id", pubmedDoc.getId()) )
+					.uniqueResult();
+			if (oldPubmedDoc==null) {
+				session.save(pubmedDoc);
+				session.flush(); // to get the PK
+			} else {
+				PubmedDocument pubmedDocToUpdate = (PubmedDocument) oldPubmedDoc;
+				pubmedDocToUpdate.update(pubmedDoc);
+				session.update(pubmedDocToUpdate);
+				pubmedDoc = pubmedDocToUpdate;
 			}
 			
 			// Relaciona SNP y Disease
@@ -198,6 +217,19 @@ public class miRdSNP1 extends miRdSNP {
 			if (oldSnphasDisease==null) {
 				session.save(snpHasDisease);
 			}
+			
+			
+			// Relaciona SNP y Pubmed document
+
+			SnpHasPubmedDocument snpHasPubmedDocument = new SnpHasPubmedDocument(snp.getPk(), pubmedDoc.getPk());
+			Object oldSnpHasPubmedDocument = session.createCriteria(SnpHasPubmedDocument.class)
+					.add( Restrictions.eq("snpPk", snp.getPk()) )
+					.add( Restrictions.eq("pubmedDocumentPk", pubmedDoc.getPk()) )
+					.uniqueResult();
+			if (oldSnpHasPubmedDocument==null) {
+				session.save(snpHasPubmedDocument);
+			}
+			
 			
 			count++;
 			if (count%100==0) {
