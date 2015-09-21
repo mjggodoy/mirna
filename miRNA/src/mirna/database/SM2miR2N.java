@@ -164,19 +164,7 @@ public class SM2miR2N extends MirnaDatabase {
 
 			MiRna miRna = new MiRna();
 
-			if(!organism.getName().equals("Heifer") || !organism.getName().equals("Chinese yew") || !organism.getName().equals("Solanum") ){
-				String[] tokens = StringUtils.splitPreserveAllTokens(organism.getName(), " ");
-				String genus = tokens[0];
-				String specie_name = tokens[1];
-				//System.out.println(organism.getName() + " " + genus + " " + specie_name);
-				String substring_genus = genus.substring(0,1).toLowerCase();
-				String substring_specie_name = specie_name.substring(0, 2);
-				//System.out.println(substring_genus + substring_specie_name);
-				String name_organism = substring_genus + substring_specie_name;
-				miRna.setName(name_organism+"-"+name);
-				//System.out.println(miRna.getName());
-
-			}else if (organism.getName().equals("Populus trichocarpa")){
+			if (organism.getName().equals("Populus trichocarpa")){
 
 				String[] tokens = StringUtils.splitPreserveAllTokens(organism.getName(), " ");
 				String genus = tokens[0];
@@ -201,9 +189,23 @@ public class SM2miR2N extends MirnaDatabase {
 				miRna.setName("ppt"+"-"+name);
 				
 
-			}else{
+			}else if (!organism.getName().equals("Heifer") || !organism.getName().equals("Chinese yew") 
+						|| !organism.getName().equals("Solanum")){
+					String[] tokens = StringUtils.splitPreserveAllTokens(organism.getName(), " ");
+					String genus = tokens[0];
+					String specie_name = tokens[1];
+					//System.out.println(organism.getName() + " " + genus + " " + specie_name);
+					String substring_genus = genus.substring(0,1).toLowerCase();
+					String substring_specie_name = specie_name.substring(0, 2);
+					//System.out.println(substring_genus + substring_specie_name);
+					String name_organism = substring_genus + substring_specie_name;
+					miRna.setName(name_organism+"-"+name);
+					System.out.println(miRna.getName());
 
+			}else{
+				
 				miRna.setName(name);
+
 			}
 
 			miRna.setAccessionNumber(mirbase);
