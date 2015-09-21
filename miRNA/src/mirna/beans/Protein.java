@@ -20,7 +20,7 @@ public class Protein extends ModelClass {
 	@Column(name = "uniprot_id", nullable = false, length = 400, unique = false)
 	private String uniprot_id;
 	
-	@Column(name = "type", nullable = false, length = 400, unique = false)
+	@Column(name = "type", nullable = true, length = 400, unique = false)
 	private String type;
 	
 	

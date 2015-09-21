@@ -247,6 +247,12 @@ public class TarBase extends MirnaDatabase {
 
 				miRna = "cel"+"-"+miRna;
 				mirna.setName(miRna);
+				
+			}else if (organism.getName().equals("D.rerio")){ 
+				
+				miRna = "dre"+"-"+miRna;
+				mirna.setName(miRna);
+
 
 			}else if(organism.getName().equals("Human")){
 
@@ -261,6 +267,11 @@ public class TarBase extends MirnaDatabase {
 			}else if (organism.getName().equals("Mouse")){
 
 				miRna = "mmu"+"-"+miRna;
+				mirna.setName(miRna);
+				
+			}else if(organism.getName().equals("Rat")){
+				
+				miRna = "rno"+"-"+miRna;
 				mirna.setName(miRna);
 				
 			}else{
@@ -435,6 +446,8 @@ public class TarBase extends MirnaDatabase {
 			//Inserta transcript (o recupera us id. si ya existe)
 
 			transcript.setGeneId(gene.getPk());
+			transcript.setGeneId(gene2.getPk());
+
 			Object oldTranscript = session.createCriteria(Transcript.class)
 					.add( Restrictions.eq("isoform", transcript.getIsoform()))
 					.uniqueResult();
@@ -450,22 +463,7 @@ public class TarBase extends MirnaDatabase {
 				System.out.println("Retrieve transcript");
 			}
 			
-			transcript.setGeneId(gene2.getPk());
-			Object oldTranscript2 = session.createCriteria(Transcript.class)
-					.add( Restrictions.eq("isoform", transcript.getIsoform()))
-					.uniqueResult();
-			if (oldTranscript2==null) {
-				session.save(transcript);
-				session.flush(); // to get the PK
-				System.out.println("Save transcript");
-			} else {
-				Transcript transcriptToUpdate = (Transcript) oldTranscript;
-				transcriptToUpdate.update(transcript);
-				session.update(transcriptToUpdate);
-				transcript = transcriptToUpdate;
-				System.out.println("Retrieve transcript");
-			}
-			
+		
 			// Inserta PubmedDocument (o recupera su id. si ya existe)
 			
 			Object oldPubmedDoc = session.createCriteria(PubmedDocument.class)
