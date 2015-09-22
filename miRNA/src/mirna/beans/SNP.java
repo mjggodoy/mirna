@@ -25,73 +25,57 @@ public class SNP extends ModelClass {
 
 	@Column(name = "mutation_pk", nullable = true, length = 45) //mutation_pk puede ser nulo
 	private String mutation_pk;
+	
+	@Column(name = "gene_pk", nullable = true, length = 45) //mutation_pk puede ser nulo
+	private Integer gene_pk;
 
 
-	public SNP(){
-		super();
-	}
-
-
+	public SNP(){	}
 
 
 	public String getSnp_id() {
 		return snp_id;
 	}
 
-
-
-
 	public void setSnp_id(String snp_id) {
 		this.snp_id = snp_id;
 	}
-
-
-
-
+	
 	public String getPosition() {
 		return position;
 	}
-
-
-
 
 	public void setPosition(String position) {
 		this.position = position;
 	}
 
-
-
-
 	public String getArticle_date() {
 		return article_date;
 	}
-
-
-
-
+	
 	public void setArticle_date(String article_date) {
 		this.article_date = article_date;
 	}
-
-
-
 
 	public String getMutation_pk() {
 		return mutation_pk;
 	}
 
-
-
-
 	public void setMutation_pk(String mutation_pk) {
 		this.mutation_pk = mutation_pk;
 	}
 
+	public Integer getGene_pk() {
+		return gene_pk;
+	}
+
+	public void setGene_pk(Integer gene_pk) {
+		this.gene_pk = gene_pk;
+	}
 
 	public void update(SNP snp) throws ConflictException {
 		this.update(snp, true);
 	}
-
 
 	public void update(SNP snp, boolean checkConflict)
 			throws ConflictException {
@@ -114,7 +98,9 @@ public class SNP extends ModelClass {
 			this.mutation_pk = snp.getMutation_pk();
 		}
 
-
+		if(snp.gene_pk !=null){
+			this.gene_pk = snp.getGene_pk() ;
+		}
 	}
 
 	public int checkConflict(SNP snp) {
@@ -146,21 +132,22 @@ public class SNP extends ModelClass {
 			else if (!this.mutation_pk.equals(snp.getMutation_pk()));
 			return -1;
 		}
-
-
-
+		
+		if (this.gene_pk != null) {
+			if (snp.getGene_pk() == null)
+				res++;
+			else if (!this.gene_pk.equals(snp.getGene_pk()));
+			return -1;
+		}
 
 		return res;
 	}
-
-
-
 
 	@Override
 	public String toString() {
 		return "SNP [snp_id=" + snp_id + ", position=" + position
 				+ ", article_date=" + article_date + ", mutation_pk="
-				+ mutation_pk + ", pk=" + pk + "]";
+				+ mutation_pk + ", gene_pk=" + gene_pk + ", pk=" + pk + "]";
 	}
 
 }

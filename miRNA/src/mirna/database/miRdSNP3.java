@@ -164,7 +164,7 @@ public class miRdSNP3 extends miRdSNP {
 			
 			SNP snp = new SNP();
 			snp.setSnp_id(snp_id);
-			snp.setDistance(distance);
+			//snp.set
 			
 			InteractionData id = new InteractionData();
 			
