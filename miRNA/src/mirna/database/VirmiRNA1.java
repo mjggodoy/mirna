@@ -16,10 +16,10 @@ import mirna.beans.Hairpin;
 import mirna.beans.MiRna;
 import mirna.beans.Organism;
 import mirna.beans.PubmedDocument;
-import mirna.beans.SNP;
 import mirna.beans.Sequence;
 import mirna.beans.nToM.ExpressionDataHasPubmedDocument;
 import mirna.beans.nToM.MirnaHasPubmedDocument;
+import mirna.beans.nToM.MirnaHasSequence;
 import mirna.exception.MiRnaException;
 import mirna.utils.HibernateUtil;
 
@@ -159,11 +159,11 @@ public class VirmiRNA1 extends VirmiRNA{
 
 				MiRna mirna = new MiRna();
 				mirna.setName(mirna_name);
-				mirna.setGC_proportion(gc_proportion);
-				mirna.setLength(length);
 
 				Sequence sequence1 = new Sequence();
 				sequence1.setSequence(mirna_seq);
+				sequence1.setGC_proportion(gc_proportion);
+				sequence1.setLength(length);
 
 				Gene gene = new Gene();
 				gene.setArm(arm);
@@ -221,7 +221,6 @@ public class VirmiRNA1 extends VirmiRNA{
 
 				// Inserta MiRna (o recupera su id. si ya existe)
 				mirna.setOrganismPk(organism.getPk());
-				mirna.setSequencePk(sequence1.getPk());
 				Object oldMiRna = session.createCriteria(MiRna.class)
 						.add(Restrictions.eq("name", mirna.getName()) )
 						.uniqueResult();
@@ -233,6 +232,18 @@ public class VirmiRNA1 extends VirmiRNA{
 					miRnaToUpdate.update(mirna);
 					session.update(miRnaToUpdate);
 					mirna = miRnaToUpdate;
+				}
+				
+				MirnaHasSequence mirnaHasSequence =
+						new MirnaHasSequence(mirna.getPk(), sequence1.getPk());
+				
+				// Relaciona Sequence con Mirna (si no lo estaba ya)
+				Object oldMirnaHasSequence = session.createCriteria(MirnaHasSequence.class)
+						.add( Restrictions.eq("mirnaPk", mirna.getPk()) )
+						.add( Restrictions.eq("sequencePk", sequence1.getPk()) )
+						.uniqueResult();
+				if (oldMirnaHasSequence==null) {
+					session.save(mirnaHasSequence);
 				}
 
 				// Inserta Gene (o recupera su id. si ya existe)
@@ -347,7 +358,6 @@ public class VirmiRNA1 extends VirmiRNA{
 	}
 
 	public static void main(String[] args) throws Exception {
-
 		VirmiRNA1 virmiRNA1 = new VirmiRNA1();
 		virmiRNA1.insertIntoSQLModel();
 	}

@@ -19,17 +19,8 @@ public class MiRna extends ModelClass {
 	@Column(name = "accession_number", nullable = true, length = 100)
 	private String accessionNumber;
 	
-	@Column(name = "sequence_pk", nullable = true)
-	protected Integer sequencePk;
-	
 	@Column(name = "resource", nullable = true, length = 45)
 	private String resource;
-	
-	@Column(name = "length", nullable = true, length = 10)
-	private String length; //lo he puesto nuevo
-	
-	@Column(name = "gc_proportion", nullable = true, length = 10)
-	private String GC_proportion;//lo he puesto nuevo
 	
 	@Column(name = "organism_pk", nullable = true)
 	private Integer organismPk;
@@ -59,36 +50,12 @@ public class MiRna extends ModelClass {
 		this.accessionNumber = accessionNumber;
 	}
 
-	public Integer getSequencePk() {
-		return sequencePk;
-	}
-
-	public void setSequencePk(Integer sequencePk) {
-		this.sequencePk = sequencePk;
-	}
-	
 	public String getResource() {
 		return resource;
 	}
 
 	public void setResource(String resource) {
 		this.resource = resource;
-	}
-	
-	public String getLength() {
-		return length;
-	}
-
-	public void setLength(String length) {
-		this.length = length;
-	}
-
-	public String getGC_proportion() {
-		return GC_proportion;
-	}
-
-	public void setGC_proportion(String gC_proportion) {
-		GC_proportion = gC_proportion;
 	}
 
 	public Integer getOrganismPk() {
@@ -131,21 +98,9 @@ public class MiRna extends ModelClass {
 			if (mirna.getAccessionNumber()==null) res++;
 			else if (!this.accessionNumber.equals(mirna.getAccessionNumber())) return -1;
 		}
-		if (this.sequencePk!=null) {
-			if (mirna.getSequencePk()==null) res++;
-			else if (!this.sequencePk.equals(mirna.getSequencePk())) return -1;
-		}
 		if (this.resource!=null) {
 			if (mirna.getResource()==null) res++;
 			else if (!this.resource.equals(mirna.getResource())) return -1;
-		}
-		if (this.length!=null) {
-			if (mirna.getLength()==null) res++;
-			else if (!this.length.equals(mirna.getLength())) return -1;
-		}
-		if (this.GC_proportion!=null) {
-			if (mirna.getGC_proportion()==null) res++;
-			else if (!this.GC_proportion.equals(mirna.getGC_proportion())) return -1;
 		}
 		if (this.organismPk!=null) {
 			if (mirna.getOrganismPk()==null) res++;
@@ -172,30 +127,21 @@ public class MiRna extends ModelClass {
 		if (mirna.getPk()!=null) this.pk = mirna.getPk();
 		if (mirna.getName()!=null) this.name = mirna.getName();
 		if (mirna.getAccessionNumber()!=null) this.accessionNumber = mirna.getAccessionNumber();
-		if (mirna.getSequencePk()!=null) this.sequencePk = mirna.getSequencePk();
 		if (mirna.getResource()!=null) this.resource = mirna.getResource();
-		if (mirna.getLength()!=null) this.length = mirna.getLength();
-		if (mirna.getGC_proportion()!=null) this.GC_proportion = mirna.getGC_proportion();
 		if (mirna.getOrganismPk()!=null) this.organismPk = mirna.getOrganismPk();
 //		if (mirna.getHairpinPk()!=null) this.hairpinPk = mirna.getHairpinPk();
 //		if (mirna.getMaturePk()!=null) this.maturePk = mirna.getMaturePk();
-
 		
 	}
 
 	@Override
 	public String toString() {
 		return "MiRna [name=" + name + ", accessionNumber=" + accessionNumber
-				+ ", sequencePk=" + sequencePk + ", resource=" + resource
-				+ ", length=" + length + ", GC_proportion=" + GC_proportion
+				+ ", resource=" + resource
 				+ ", organismPk=" + organismPk
 //				+ ", hairpinPk=" + hairpinPk
 //				+ ", maturePk=" + maturePk
 				+ ", pk=" + pk + "]";
 	}
-
-	
-
-	
 
 }
