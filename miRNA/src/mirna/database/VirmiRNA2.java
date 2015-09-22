@@ -19,6 +19,7 @@ import mirna.beans.Sequence;
 import mirna.beans.Target;
 import mirna.beans.nToM.ExpressionDataHasPubmedDocument;
 import mirna.beans.nToM.MirnaHasPubmedDocument;
+import mirna.beans.nToM.MirnaHasSequence;
 import mirna.beans.nToM.MirnaInvolvesBiologicalProcess;
 import mirna.exception.MiRnaException;
 import mirna.utils.HibernateUtil;
@@ -257,8 +258,6 @@ public class VirmiRNA2 extends VirmiRNA {
 				sequence1 = (Sequence) oldSequence1;
 			}
 			
-			mirna.setSequencePk(sequence1.getPk());
-			
 			// Inserta Organism (o recupera su id. si ya existe)
 			
 			Object oldOrganism = session.createCriteria(Organism.class)
@@ -288,6 +287,17 @@ public class VirmiRNA2 extends VirmiRNA {
 				miRnaToUpdate.update(mirna);
 				session.update(miRnaToUpdate);
 				mirna = miRnaToUpdate;
+			}
+			
+			MirnaHasSequence mirnaHasSequence =
+					new MirnaHasSequence(mirna.getPk(), sequence1.getPk());
+			// Relaciona Sequence con Mirna (si no lo estaba ya)
+			Object oldMirnaHasSequence = session.createCriteria(MirnaHasSequence.class)
+					.add( Restrictions.eq("mirnaPk", mirna.getPk()) )
+					.add( Restrictions.eq("sequencePk", sequence1.getPk()) )
+					.uniqueResult();
+			if (oldMirnaHasSequence==null) {
+				session.save(mirnaHasSequence);
 			}
 			
 			Object oldSequence2 = session.createCriteria(Sequence.class)
