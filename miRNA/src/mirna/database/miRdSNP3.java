@@ -150,7 +150,7 @@ public class miRdSNP3 extends miRdSNP {
 			String mirna_name = rs.getString("miR").toLowerCase().trim();
 			String snp_id = rs.getString("snp").toLowerCase().trim();
 			String disease_name = rs.getString("diseases").toLowerCase().trim();
-			String distance = rs.getString("distance").toLowerCase().trim();
+			String distance = rs.getString("distance").toLowerCase().trim();// I'm not going to use this field! 
 			
 			Disease disease = new Disease();
 			disease.setName(disease_name);
@@ -164,9 +164,9 @@ public class miRdSNP3 extends miRdSNP {
 			
 			SNP snp = new SNP();
 			snp.setSnp_id(snp_id);
-			//snp.set
 			
 			InteractionData id = new InteractionData();
+			id.setProvenance("miRdSNP");
 			
 			ExpressionData ed = new ExpressionData();
 			ed.setProvenance("miRdSNP");
@@ -217,6 +217,7 @@ public class miRdSNP3 extends miRdSNP {
 				mirna = mirnaToUpdate;
 			}
 			
+			snp.setGene_pk(gene.getPk());		
 			Object oldSnp = session.createCriteria(SNP.class)
 					.add( Restrictions.eq("snp_id", snp.getSnp_id()))
 					.uniqueResult();
@@ -242,14 +243,12 @@ public class miRdSNP3 extends miRdSNP {
 				session.save(snpHasDisease);
 			}
 						
-			snp.setGene_id(gene.getPk());
-						
 			ed.setMirnaPk(mirna.getPk());
 			ed.setDiseasePk(disease.getPk());
+			session.save(ed);
 			id.setMirna_pk(mirna.getPk());
 			id.setGene_pk(gene.getPk());
 			id.setExpression_data_pk(ed.getPk());
-			session.save(ed);
 			session.save(id);
 			
 			count++;

@@ -104,40 +104,52 @@ public class SNP extends ModelClass {
 	}
 
 	public int checkConflict(SNP snp) {
+		//System.out.println(snp);
+		//System.out.println(this);
+		
 		int res = 0;
 		if (this.pk != null) {
 			if (snp.getPk() == null)
 				res++;
-			else if (!this.pk.equals(snp.getPk()))
+			else if (!this.pk.equals(snp.getPk())) {
+				System.out.println("PK PUTO");
 				return -1;
+			}
+				
 		}
 
 		if (this.snp_id != null) {
 			if (snp.getSnp_id() == null)
 				res++;
-			else if (!this.snp_id.equals(snp.getSnp_id()))
+			else if (!this.snp_id.equals(snp.getSnp_id())) {
+				System.out.println("SNP ID PUTO");
 				return -1;
+			}
 		}
 
 		if (this.article_date != null) {
 			if (snp.getArticle_date() == null)
 				res++;
-			else if (!this.article_date.equals(snp.getArticle_date()))
+			else if (!this.article_date.equals(snp.getArticle_date())) {
+				//System.out.println("ARTICLE PUTO");
 				return -1;
+			}
 		}
 
 		if (this.mutation_pk != null) {
 			if (snp.getMutation_pk() == null)
 				res++;
-			else if (!this.mutation_pk.equals(snp.getMutation_pk()));
+			else if (!this.mutation_pk.equals(snp.getMutation_pk())){
 			return -1;
+		}
 		}
 		
 		if (this.gene_pk != null) {
 			if (snp.getGene_pk() == null)
 				res++;
-			else if (!this.gene_pk.equals(snp.getGene_pk()));
+			else if (!this.gene_pk.equals(snp.getGene_pk())){
 			return -1;
+		}
 		}
 
 		return res;

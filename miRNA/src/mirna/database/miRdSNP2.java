@@ -136,14 +136,24 @@ public class miRdSNP2 extends miRdSNP {
 			String disease_name = rs.getString("disease").toLowerCase().trim();
 
 
-			Disease disease = new Disease();
-			disease.setName(disease_name);
+			String[] diseaseTokens = StringUtils.splitPreserveAllTokens(disease_name, "|");
+
+
+			List<Disease> diseaseList = new ArrayList<Disease>();
+
+			for (String token : diseaseTokens) {
+
+				Disease disease = new Disease();
+				disease.setName(token);
+				diseaseList.add(disease);
+			}
 
 			Gene gene = new Gene();
 			gene.setName(gene_name);
 			gene.setGeneId(ref_seq);
 
 
+			//Recorrer los mirnas
 			String[] mirnaTokens = StringUtils.splitPreserveAllTokens(mirna_name, "|");
 
 			List<MiRna> mirnaList = new ArrayList<MiRna>();
@@ -153,6 +163,7 @@ public class miRdSNP2 extends miRdSNP {
 				MiRna mirna_list = new MiRna();
 				mirna_list.setName(token);
 				mirnaList.add(mirna_list);
+				System.out.println("mirna: " + mirnaList.get(0));
 			}
 
 
@@ -162,28 +173,16 @@ public class miRdSNP2 extends miRdSNP {
 			InteractionData id = new InteractionData();
 			id.setProvenance("miRdSNP");
 
+			//Recorrer SNPs
 			String[] snpTokens = StringUtils.splitPreserveAllTokens(snp_id, "|");
 
 			List<SNP> snpList = new ArrayList<SNP>();
 
 			for (String token : snpTokens) {
+
 				SNP snp = new SNP();
 				snp.setSnp_id(token);
 				snpList.add(snp);
-			}
-
-
-			Object oldDisease = session.createCriteria(Disease.class)
-					.add( Restrictions.eq("name", disease.getName()) )
-					.uniqueResult();
-			if (oldDisease==null) {
-				session.save(disease);
-				session.flush();  // to get the PK
-			} else {
-				Disease diseaseToUpdate = (Disease) oldDisease;
-				diseaseToUpdate.update(disease);
-				session.update(diseaseToUpdate);
-				disease = diseaseToUpdate;
 			}
 
 			Object oldGene = session.createCriteria(Gene.class)
@@ -198,6 +197,9 @@ public class miRdSNP2 extends miRdSNP {
 				session.update(geneToUpdate);
 				gene = geneToUpdate;
 			}
+
+			
+			id.setGene_pk(gene.getPk());
 
 			for (MiRna mirna : mirnaList) {
 
@@ -216,12 +218,14 @@ public class miRdSNP2 extends miRdSNP {
 
 				ed.setMirnaPk(mirna.getPk());
 				id.setMirna_pk(mirna.getPk());
-
-
+				session.save(ed);
 			}
+			
+			
 
 			for (SNP snp : snpList) {
 
+				snp.setGene_pk(gene.getPk());
 				Object oldSnp = session.createCriteria(SNP.class)
 						.add( Restrictions.eq("snp_id", snp.getSnp_id()))
 						.uniqueResult();
@@ -239,30 +243,43 @@ public class miRdSNP2 extends miRdSNP {
 					System.out.println(snp);
 				}
 
-				SnpHasDisease snpHasDisease = new SnpHasDisease(snp.getPk(), disease.getPk());
-				Object oldSnphasDisease = session.createCriteria(SnpHasDisease.class)
-						.add( Restrictions.eq("snpPk", snp.getPk()) )
-						.add( Restrictions.eq("diseasePk", disease.getPk()) )
-						.uniqueResult();
-				if (oldSnphasDisease==null) {
-					session.save(snpHasDisease);
-				}
 
 				// SI ESTO ES IMPORTANTE; HAZLO ANTES DE METER EL SNP EN LA BD
-				snp.setGene_pk(gene.getPk());
+
+				for (Disease disease : diseaseList) {
+
+					Object oldDisease = session.createCriteria(Disease.class)
+							.add( Restrictions.eq("name", disease.getName()) )
+							.uniqueResult();
+					if (oldDisease==null) {
+						session.save(disease);
+						session.flush();  // to get the PK
+					} else {
+						Disease diseaseToUpdate = (Disease) oldDisease;
+						diseaseToUpdate.update(disease);
+						session.update(diseaseToUpdate);
+						disease = diseaseToUpdate;
+					}
+
+					ed.setDiseasePk(disease.getPk());
+					session.save(ed);
 
 
+					SnpHasDisease snpHasDisease = new SnpHasDisease(snp.getPk(), disease.getPk());
+					Object oldSnphasDisease = session.createCriteria(SnpHasDisease.class)
+							.add( Restrictions.eq("snpPk", snp.getPk()) )
+							.add( Restrictions.eq("diseasePk", disease.getPk()) )
+							.uniqueResult();
+					if (oldSnphasDisease==null) {
+						session.save(snpHasDisease);
+					}
+
+				}
+				
+				
+				id.setExpression_data_pk(ed.getPk());
+				session.save(id);
 			}
-
-			// Relaciona interaction data con mirna y gene.
-
-
-			ed.setDiseasePk(disease.getPk());
-			id.setGene_pk(gene.getPk());
-			id.setExpression_data_pk(ed.getPk());
-			session.save(ed);
-			session.save(id);
-
 
 			count++;
 			if (count%100==0) {
