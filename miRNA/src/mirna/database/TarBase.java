@@ -23,6 +23,7 @@ import mirna.beans.Target;
 import mirna.beans.Transcript;
 import mirna.beans.nToM.ExpressionDataHasPubmedDocument;
 import mirna.beans.nToM.MirnaHasPubmedDocument;
+import mirna.beans.nToM.MirnaHasSequence;
 import mirna.beans.nToM.TranscriptProducesProtein;
 import mirna.exception.MiRnaException;
 import mirna.utils.HibernateUtil;
@@ -363,24 +364,7 @@ public class TarBase extends MirnaDatabase {
 				organism = organismToUpdate;
 
 			}
-
-			// Inserta Sequence (o recupera su id. si ya existe)
-			if (sequence_mirna.getSequence().length()>0) {
-				Object oldSequence1 = session.createCriteria(Sequence.class)
-						.add(Restrictions.eq("sequence", sequence_mirna.getSequence()))
-						.uniqueResult();
-				if (oldSequence1 == null) {
-					session.save(sequence_mirna);
-					session.flush(); // to get the PK
-				} else {
-					Sequence sequenceToUpdate = (Sequence) oldSequence1;
-					sequenceToUpdate.update(sequence_mirna);
-					session.update(sequenceToUpdate);
-					sequence_mirna = sequenceToUpdate;
-				}
-				mirna.setSequencePk(sequence_mirna.getPk());
-			}
-
+			
 			// Inserta MiRna (o recupera su id. si ya existe)
 			mirna.setOrganismPk(organism.getPk());
 			Object oldMiRna = session.createCriteria(MiRna.class)
@@ -396,8 +380,33 @@ public class TarBase extends MirnaDatabase {
 				mirna = miRnaToUpdate;
 			}
 
+			// Inserta Sequence (o recupera su id. si ya existe)
+			if (sequence_mirna.getSequence().length()>0) {
+				Object oldSequence1 = session.createCriteria(Sequence.class)
+						.add(Restrictions.eq("sequence", sequence_mirna.getSequence()))
+						.uniqueResult();
+				if (oldSequence1 == null) {
+					session.save(sequence_mirna);
+					session.flush(); // to get the PK
+				} else {
+					Sequence sequenceToUpdate = (Sequence) oldSequence1;
+					sequenceToUpdate.update(sequence_mirna);
+					session.update(sequenceToUpdate);
+					sequence_mirna = sequenceToUpdate;
+				}
+				MirnaHasSequence mirnaHasSequence =
+						new MirnaHasSequence(mirna.getPk(), sequence_mirna.getPk());
+				// Relaciona Sequence con Mirna (si no lo estaba ya)
+				Object oldMirnaHasSequence = session.createCriteria(MirnaHasSequence.class)
+						.add( Restrictions.eq("mirnaPk", mirna.getPk()) )
+						.add( Restrictions.eq("sequencePk", sequence_mirna.getPk()) )
+						.uniqueResult();
+				if (oldMirnaHasSequence==null) {
+					session.save(mirnaHasSequence);
+				}
+			}
+
 			// Inserta Gene (o recupera su id. si ya existe)
-			
 			gene.setOrganism_pk(organism.getPk());
 			Object oldGene = session.createCriteria(Gene.class)
 					.add( Restrictions.eq("geneId", gene.getGeneId()) )
