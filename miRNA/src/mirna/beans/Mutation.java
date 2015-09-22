@@ -23,7 +23,7 @@ public class Mutation extends ModelClass {
 	private String distance;
 
 	@Column(name = "gene_pk", nullable = true, length = 45) //mutation_pk puede ser nulo
-	private String gene_pk;
+	private Integer gene_pk;
 
 
 
@@ -32,7 +32,7 @@ public class Mutation extends ModelClass {
 	}
 
 
-	public Mutation(int pk, String specie, String chromosome, String coordinates, String orientation, String distance, String gene_pk) {
+	public Mutation(int pk, String specie, String chromosome, String coordinates, String orientation, String distance, Integer gene_pk) {
 		super(pk);
 		this.specie = specie;
 		this.chromosome = chromosome;
@@ -85,12 +85,12 @@ public class Mutation extends ModelClass {
 	}
 
 
-	public String getGene_pk() {
+	public Integer getGene_pk() {
 		return gene_pk;
 	}
 
 
-	public void setGene_pk(String gene_pk) {
+	public void setGene_pk(Integer gene_pk) {
 		this.gene_pk = gene_pk;
 	}
 

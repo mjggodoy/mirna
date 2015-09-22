@@ -24,7 +24,7 @@ public class SNP extends ModelClass {
 	private String article_date;
 
 	@Column(name = "mutation_pk", nullable = true, length = 45) //mutation_pk puede ser nulo
-	private String mutation_pk;
+	private Integer mutation_pk;
 	
 	@Column(name = "gene_pk", nullable = true, length = 45) //mutation_pk puede ser nulo
 	private Integer gene_pk;
@@ -57,11 +57,11 @@ public class SNP extends ModelClass {
 		this.article_date = article_date;
 	}
 
-	public String getMutation_pk() {
+	public Integer getMutation_pk() {
 		return mutation_pk;
 	}
 
-	public void setMutation_pk(String mutation_pk) {
+	public void setMutation_pk(Integer mutation_pk) {
 		this.mutation_pk = mutation_pk;
 	}
 
