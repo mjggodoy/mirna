@@ -5,7 +5,6 @@ import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 
 import mirna.beans.Disease;
@@ -15,11 +14,9 @@ import mirna.beans.PubmedDocument;
 import mirna.beans.nToM.ExpressionDataHasPubmedDocument;
 import mirna.beans.nToM.MirnaHasPubmedDocument;
 import mirna.exception.MiRnaException;
-import mirna.utils.HibernateUtil;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
 /**
@@ -28,11 +25,15 @@ import org.hibernate.criterion.Restrictions;
  * @author Esteban López Camacho
  *
  */
-public class HMDD extends MirnaDatabase {
+public class HMDD extends NewMirnaDatabase {
 	
 	private final String tableName = "hmdd";
 	
 	public HMDD() throws MiRnaException { super(); }
+	
+	protected String getTableName() {
+		return tableName;
+	}
 	
 	public void insertInTable(String csvInputFile) throws Exception {
 		
@@ -95,136 +96,94 @@ public class HMDD extends MirnaDatabase {
 	}
 	
 	@Override
-	public void insertIntoSQLModel() throws Exception {
-		Connection con = null;
+	protected void processRow(Session session, ResultSet rs) throws Exception {
+		String id = rs.getString("id");
+		String mir = rs.getString("mir").trim();
+		String diseaseField = rs.getString("disease").toLowerCase().trim();
+		String pubmedid = rs.getString("pubmedid").trim();
+		String description = rs.getString("description").trim();
 		
-		// Get session
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		MiRna miRna = new MiRna();
+		miRna.setName(mir);
 		
-		//start transaction
-		Transaction tx = session.beginTransaction();
+		Disease disease = new Disease();
+		disease.setName(diseaseField);
 		
-		try {
-			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-			Statement stmt = (Statement) con.createStatement();
-			
-			// our SQL SELECT query. 
-			// if you only need a few columns, specify them by name instead of using "*"
-			String query = "SELECT * FROM " + tableName;
-			System.out.println("STARTING: " + query);
-			
-			// execute the query, and get a java resultset
-			ResultSet rs = stmt.executeQuery(query);
-			
-			// iterate through the java resultset
-			int count = 0;
-			while (rs.next() && count<3) {
-				
-				String id = rs.getString("id");
-				String mir = rs.getString("mir").trim();
-				String diseaseField = rs.getString("disease").toLowerCase().trim();
-				String pubmedid = rs.getString("pubmedid").trim();
-				String description = rs.getString("description").trim();
-				
-				MiRna miRna = new MiRna();
-				miRna.setName(mir);
-				
-				Disease disease = new Disease();
-				disease.setName(diseaseField);
-				
-				ExpressionData expressionData = new ExpressionData();
-				expressionData.setDescription(description);
-				expressionData.setProvenanceId(id);
-				expressionData.setProvenance("hmdd");
-				
-				PubmedDocument pubmedDoc = new PubmedDocument();
-				pubmedDoc.setId(pubmedid);
-				
-				// Inserta MiRna (o recupera su id. si ya existe)
-				Object oldMiRna = session.createCriteria(MiRna.class)
-						.add( Restrictions.eq("name", miRna.getName()) )
-						.uniqueResult();
-				if (oldMiRna==null) {
-					session.save(miRna);
-					session.flush();  // to get the PK
-				} else {
-					MiRna miRnaToUpdate = (MiRna) oldMiRna;
-					miRnaToUpdate.update(miRna);
-					session.update(miRnaToUpdate);
-					miRna = miRnaToUpdate;
-				}
-				
-				// Inserta Disease (o recupera su id. si ya existe)
-				Object oldDisease = session.createCriteria(Disease.class)
-						.add( Restrictions.eq("name", disease.getName()) )
-						.uniqueResult();
-				if (oldDisease==null) {
-					session.save(disease);
-					session.flush(); // to get the PK
-				} else {
-					Disease diseaseToUpdate = (Disease) oldDisease;
-					diseaseToUpdate.update(disease);
-					session.update(diseaseToUpdate);
-					disease = diseaseToUpdate;
-				}
-				
-				// Inserta PubmedDocument (o recupera su id. si ya existe)
-				Object oldPubmedDoc = session.createCriteria(PubmedDocument.class)
-						.add( Restrictions.eq("id", pubmedDoc.getId()) )
-						.uniqueResult();
-				if (oldPubmedDoc==null) {
-					session.save(pubmedDoc);
-					session.flush(); // to get the PK
-				} else {
-					PubmedDocument pubmedDocToUpdate = (PubmedDocument) oldPubmedDoc;
-					pubmedDocToUpdate.update(pubmedDoc);
-					session.update(pubmedDocToUpdate);
-					pubmedDoc = pubmedDocToUpdate;
-				}
-				
-				// Inserta nueva DataExpression
-				// (y la relaciona con el MiRna y Disease correspondiente)
-				expressionData.setMirnaPk(miRna.getPk());
-				expressionData.setDiseasePk(disease.getPk());
-				session.save(expressionData);
-				session.flush(); // to get the PK
-				// ExpressionData igual (?)
-				
-				MirnaHasPubmedDocument mirnaHasPubmedDocument =
-						new MirnaHasPubmedDocument(miRna.getPk(), pubmedDoc.getPk());
-				ExpressionDataHasPubmedDocument expresDataHasPubmedDocument =
-						new ExpressionDataHasPubmedDocument(expressionData.getPk(), pubmedDoc.getPk());
-				
-				// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
-				Object oldMirnaHasPubmedDocument = session.createCriteria(MirnaHasPubmedDocument.class)
-						.add( Restrictions.eq("mirnaPk", miRna.getPk()) )
-						.add( Restrictions.eq("pubmedDocumentPk", pubmedDoc.getPk()) )
-						.uniqueResult();
-				if (oldMirnaHasPubmedDocument==null) {
-					session.save(mirnaHasPubmedDocument);
-				}
-				
-				// Relaciona PubmedDocument con ExpressionData
-				session.save(expresDataHasPubmedDocument);
-				
-				count++;
-				if (count%100==0) {
-					System.out.println(count);
-					session.flush();
-			        session.clear();
-				}
-				
-			}
-			stmt.close();
-			tx.commit();
-		} catch (SQLException e) {
-			tx.rollback();
-			e.printStackTrace();
-		} finally {
-			if (con!=null) con.close();
-			HibernateUtil.closeSession();
-			HibernateUtil.closeSessionFactory();
+		ExpressionData expressionData = new ExpressionData();
+		expressionData.setDescription(description);
+		expressionData.setProvenanceId(id);
+		expressionData.setProvenance("hmdd");
+		
+		PubmedDocument pubmedDoc = new PubmedDocument();
+		pubmedDoc.setId(pubmedid);
+		
+		// Inserta MiRna (o recupera su id. si ya existe)
+		Object oldMiRna = session.createCriteria(MiRna.class)
+				.add( Restrictions.eq("name", miRna.getName()) )
+				.uniqueResult();
+		if (oldMiRna==null) {
+			session.save(miRna);
+			session.flush();  // to get the PK
+		} else {
+			MiRna miRnaToUpdate = (MiRna) oldMiRna;
+			miRnaToUpdate.update(miRna);
+			session.update(miRnaToUpdate);
+			miRna = miRnaToUpdate;
 		}
+		
+		// Inserta Disease (o recupera su id. si ya existe)
+		Object oldDisease = session.createCriteria(Disease.class)
+				.add( Restrictions.eq("name", disease.getName()) )
+				.uniqueResult();
+		if (oldDisease==null) {
+			session.save(disease);
+			session.flush(); // to get the PK
+		} else {
+			Disease diseaseToUpdate = (Disease) oldDisease;
+			diseaseToUpdate.update(disease);
+			session.update(diseaseToUpdate);
+			disease = diseaseToUpdate;
+		}
+		
+		// Inserta PubmedDocument (o recupera su id. si ya existe)
+		Object oldPubmedDoc = session.createCriteria(PubmedDocument.class)
+				.add( Restrictions.eq("id", pubmedDoc.getId()) )
+				.uniqueResult();
+		if (oldPubmedDoc==null) {
+			session.save(pubmedDoc);
+			session.flush(); // to get the PK
+		} else {
+			PubmedDocument pubmedDocToUpdate = (PubmedDocument) oldPubmedDoc;
+			pubmedDocToUpdate.update(pubmedDoc);
+			session.update(pubmedDocToUpdate);
+			pubmedDoc = pubmedDocToUpdate;
+		}
+		
+		// Inserta nueva DataExpression
+		// (y la relaciona con el MiRna y Disease correspondiente)
+		expressionData.setMirnaPk(miRna.getPk());
+		expressionData.setDiseasePk(disease.getPk());
+		session.save(expressionData);
+		session.flush(); // to get the PK
+		// ExpressionData igual (?)
+		
+		MirnaHasPubmedDocument mirnaHasPubmedDocument =
+				new MirnaHasPubmedDocument(miRna.getPk(), pubmedDoc.getPk());
+		ExpressionDataHasPubmedDocument expresDataHasPubmedDocument =
+				new ExpressionDataHasPubmedDocument(expressionData.getPk(), pubmedDoc.getPk());
+		
+		// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
+		Object oldMirnaHasPubmedDocument = session.createCriteria(MirnaHasPubmedDocument.class)
+				.add( Restrictions.eq("mirnaPk", miRna.getPk()) )
+				.add( Restrictions.eq("pubmedDocumentPk", pubmedDoc.getPk()) )
+				.uniqueResult();
+		if (oldMirnaHasPubmedDocument==null) {
+			session.save(mirnaHasPubmedDocument);
+		}
+		
+		// Relaciona PubmedDocument con ExpressionData
+		session.save(expresDataHasPubmedDocument);
+		
 	}
 	
 	public static void main(String[] args) throws Exception {
@@ -237,7 +196,6 @@ public class HMDD extends MirnaDatabase {
 		
 		/* 2. meter datos en mirna */
 		hmdd.insertIntoSQLModel();
-		HibernateUtil.closeSessionFactory();
 		
 	}
 
