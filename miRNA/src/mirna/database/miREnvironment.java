@@ -5,7 +5,6 @@ import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 
 import mirna.beans.Disease;
@@ -17,12 +16,9 @@ import mirna.beans.PubmedDocument;
 import mirna.beans.nToM.ExpressionDataHasPubmedDocument;
 import mirna.beans.nToM.MirnaHasPubmedDocument;
 import mirna.exception.MiRnaException;
-import mirna.utils.HibernateUtil;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
 /**
@@ -31,12 +27,16 @@ import org.hibernate.criterion.Restrictions;
  * @author Esteban LÃ³pez Camacho
  *
  */
-public class miREnvironment extends MirnaDatabase {
+public class miREnvironment extends NewMirnaDatabase {
 
 	private final String tableName = "miREnvironment";
 
 	public miREnvironment() throws MiRnaException {
 		super();
+	}
+	
+	protected String getTableName() {
+		return tableName;
 	}
 
 	public void insertInTable(String csvInputFile) throws Exception {
@@ -107,212 +107,162 @@ public class miREnvironment extends MirnaDatabase {
 	}
 
 	@Override
-	public void insertIntoSQLModel() throws Exception {
+	protected void processRow(Session session, ResultSet rs) throws Exception {
+		
+		String id = rs.getString("mir");
+		String name = rs.getString("name");
+		@SuppressWarnings("unused")
+		String name2 = rs.getString("name2"); // He puesto el mirna especï¿½fico, ï¿½ste hace referencia al de su familia
+		@SuppressWarnings("unused")
+		String name3 = rs.getString("name3").toLowerCase().trim();// esta columna hace referencia al mirna del segundo nombre
+		String disease_name = rs.getString("disease").toLowerCase().trim();
+		String environmentalFactor_name = rs.getString("enviromentalFactor").toLowerCase().trim();
+		String treatment = rs.getString("treatment").toLowerCase().trim();
+		String cellularLine = rs.getString("cellularLine").toLowerCase().trim();
+		String specie_name = rs.getString("specie");
+		String description = rs.getString("description");
+		String pubmedId = rs.getString("pubmedId");
 
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		Transaction tx = session.beginTransaction();
-		Connection con = null;
+		MiRna miRna = new MiRna();
+		miRna.setName(name);
 
-		try {
-			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-			Statement stmt = (Statement) con.createStatement();
+		Disease disease = new Disease();
+		disease.setName(disease_name);
 
-			// our SQL SELECT query. 
-			// if you only need a few columns, specify them by name instead of using "*"
-			String query = "SELECT * FROM " + tableName;
-			System.out.println("STARTING: " + query);
+		EnvironmentalFactor environmentalFactor = new EnvironmentalFactor();
+		environmentalFactor.setName(environmentalFactor_name);
 
-			// execute the query, and get a java resultset
-			ResultSet rs = stmt.executeQuery(query);
+		ExpressionData ed = new ExpressionData();
+		ed.setTreatment(treatment);
+		ed.setCellularLine(cellularLine);
+		ed.setDescription(description);
+		ed.setProvenanceId(id);
+		ed.setProvenance("miREnvironment");
 
-			// iterate through the java resultset
-			int count = 0;
-			if (count <2 && rs.next()) {
-				// CAMBIAR ESTO
+		Organism organism = new Organism();
+		organism.setName(specie_name);
 
-				String id = rs.getString("mir");
-				String name = rs.getString("name");
-				String name2 = rs.getString("name2"); // He puesto el mirna espec’fico, Žste hace referencia al de su familia
-				String name3 = rs.getString("name3").toLowerCase().trim();// esta columna hace referencia al mirna del segundo nombre
-				String disease_name = rs.getString("disease").toLowerCase().trim();
-				String environmentalFactor_name = rs.getString("enviromentalFactor").toLowerCase().trim();
-				String treatment = rs.getString("treatment").toLowerCase().trim();
-				String cellularLine = rs.getString("cellularLine").toLowerCase().trim();
-				String specie_name = rs.getString("specie");
-				String description = rs.getString("description");
-				String pubmedId = rs.getString("pubmedId");
+		PubmedDocument pubmedDoc = new PubmedDocument();
+		pubmedDoc.setId(pubmedId);
 
-
-				MiRna miRna = new MiRna();
-				miRna.setName(name);
-
-				Disease disease = new Disease();
-				disease.setName(disease_name);
-
-				EnvironmentalFactor environmentalFactor = new EnvironmentalFactor();
-				environmentalFactor.setName(environmentalFactor_name);
-
-				ExpressionData ed = new ExpressionData();
-				ed.setTreatment(treatment);
-				ed.setCellularLine(cellularLine);
-				ed.setDescription(description);
-				ed.setProvenanceId(id);
-				ed.setProvenance("miREnvironment");
-
-
-				Organism organism = new Organism();
-				organism.setName(specie_name);
-
-				PubmedDocument pubmedDoc = new PubmedDocument();
-				pubmedDoc.setId(pubmedId);
-
-				// Inserta Disease (o recupera su id. si ya existe)
-				Object oldDisease = session.createCriteria(Disease.class)
-						.add( Restrictions.eq("name", disease.getName()) )
-						.uniqueResult();
-				if (oldDisease==null) {
-					session.save(disease);
-					session.flush(); // to get the PK
-				} else {
-					Disease diseaseToUpdate = (Disease) oldDisease;
-					diseaseToUpdate.update(disease);
-					session.update(diseaseToUpdate);
-					disease = diseaseToUpdate;
-				}
-
-				// Inserta EnvironmentalFactor (o recupera su id. si ya existe)
-
-				Object oldEnvironmentalFactor = session.createCriteria(EnvironmentalFactor.class)
-						.add(Restrictions.eq("name", environmentalFactor.getName()) )
-						.uniqueResult();
-				if (oldEnvironmentalFactor==null) {
-					session.save(environmentalFactor);
-					session.flush(); // to get the PK
-				} else {
-					EnvironmentalFactor environmentalFactorToUpdate = (EnvironmentalFactor) oldEnvironmentalFactor;
-					environmentalFactorToUpdate.update(environmentalFactor);
-					session.update(environmentalFactorToUpdate);
-					environmentalFactor = environmentalFactorToUpdate;
-				}
-
-				Object oldOrganism = session.createCriteria(Organism.class)
-						.add(Restrictions.eq("name", organism.getName()) )
-						.uniqueResult();
-				if (oldOrganism==null) {
-					session.save(organism);
-					session.flush(); // to get the PK
-					System.out.println("Save Organism");
-				} else {
-					Organism organismToUpdate = (Organism) oldOrganism;
-					organismToUpdate.update(organism);
-					session.update(organismToUpdate);
-					organism = organismToUpdate;
-					System.out.println("Retrieve Organism");
-
-				}
-
-				miRna.setOrganismPk(organism.getPk());
-				// Inserta MiRna (o recupera su id. si ya existe)
-				Object oldMiRna = session.createCriteria(MiRna.class)
-						.add( Restrictions.eq("name", miRna.getName()) )
-						.uniqueResult();
-				if (oldMiRna==null) {
-					session.save(miRna);
-					session.flush();  // to get the PK
-				} else {
-					MiRna miRnaToUpdate = (MiRna) oldMiRna;
-					miRnaToUpdate.update(miRna);
-					System.out.println("mirna "+ miRna);
-					session.update(miRnaToUpdate);
-					miRna = miRnaToUpdate;
-				}
-
-
-				
-
-				// Inserta PubmedDocument (o recupera su id. si ya existe)
-
-				Object oldPubmedDoc = session.createCriteria(PubmedDocument.class)
-						.add( Restrictions.eq("id", pubmedDoc.getId()) )
-						.uniqueResult();
-				if (oldPubmedDoc==null) {
-					session.save(pubmedDoc);
-					session.flush(); // to get the PK
-					//System.out.println("Save Pubmed document");
-
-				} else {
-					PubmedDocument pubmedDocToUpdate = (PubmedDocument) oldPubmedDoc;
-					pubmedDocToUpdate.update(pubmedDoc);
-					session.update(pubmedDocToUpdate);
-					pubmedDoc = pubmedDocToUpdate;
-					//System.out.println("Updated Pubmed document");
-				}
-
-				// Inserta nueva DataExpression
-				// (y la relaciona con el MiRna y Disease correspondiente)
-
-				// y con enviromentalFactor
-
-				ed.setMirnaPk(miRna.getPk());
-				ed.setDiseasePk(disease.getPk());
-				ed.setEnvironmentalFactorPk(environmentalFactor.getPk());
-				session.save(ed);
-
-			
-
-				// Relaciona miRNa con Organism. No estoy segura. La entidad-relacion es de one-to-many segun el modelo.
-				MirnaHasPubmedDocument mirnaHasPubmedDocument =
-						new MirnaHasPubmedDocument(miRna.getPk(), pubmedDoc.getPk());
-
-
-				ExpressionDataHasPubmedDocument expresDataHasPubmedDocument =
-						new ExpressionDataHasPubmedDocument(ed.getPk(), pubmedDoc.getPk());
-
-
-				// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
-				Object oldMirnaHasPubmedDocument = session.createCriteria(MirnaHasPubmedDocument.class)
-						.add( Restrictions.eq("mirnaPk", miRna.getPk()) )
-						.uniqueResult();
-				if (oldMirnaHasPubmedDocument==null) {
-					session.save(mirnaHasPubmedDocument);
-
-				}
-
-
-				// Relaciona PubmedDocument con ExpressionData
-				session.save(expresDataHasPubmedDocument);
-				
-
-				count++;
-				if (count%100==0) {
-					System.out.println(count);
-					session.flush();
-					session.clear();
-				}
-
-
-				stmt.close();
-				tx.commit();
-
-			}
-		} catch (SQLException e) {
-			tx.rollback();
-			e.printStackTrace();
-		} finally {
-			if (con!=null) con.close();
-			HibernateUtil.closeSession();
-			HibernateUtil.closeSessionFactory();
+		// Inserta Disease (o recupera su id. si ya existe)
+		Object oldDisease = session.createCriteria(Disease.class)
+				.add( Restrictions.eq("name", disease.getName()) )
+				.uniqueResult();
+		if (oldDisease==null) {
+			session.save(disease);
+			session.flush(); // to get the PK
+		} else {
+			Disease diseaseToUpdate = (Disease) oldDisease;
+			diseaseToUpdate.update(disease);
+			session.update(diseaseToUpdate);
+			disease = diseaseToUpdate;
 		}
 
-	}
+		// Inserta EnvironmentalFactor (o recupera su id. si ya existe)
 
+		Object oldEnvironmentalFactor = session.createCriteria(EnvironmentalFactor.class)
+				.add(Restrictions.eq("name", environmentalFactor.getName()) )
+				.uniqueResult();
+		if (oldEnvironmentalFactor==null) {
+			session.save(environmentalFactor);
+			session.flush(); // to get the PK
+		} else {
+			EnvironmentalFactor environmentalFactorToUpdate = (EnvironmentalFactor) oldEnvironmentalFactor;
+			environmentalFactorToUpdate.update(environmentalFactor);
+			session.update(environmentalFactorToUpdate);
+			environmentalFactor = environmentalFactorToUpdate;
+		}
+
+		Object oldOrganism = session.createCriteria(Organism.class)
+				.add(Restrictions.eq("name", organism.getName()) )
+				.uniqueResult();
+		if (oldOrganism==null) {
+			session.save(organism);
+			session.flush(); // to get the PK
+			System.out.println("Save Organism");
+		} else {
+			Organism organismToUpdate = (Organism) oldOrganism;
+			organismToUpdate.update(organism);
+			session.update(organismToUpdate);
+			organism = organismToUpdate;
+			System.out.println("Retrieve Organism");
+		}
+
+		miRna.setOrganismPk(organism.getPk());
+		// Inserta MiRna (o recupera su id. si ya existe)
+		Object oldMiRna = session.createCriteria(MiRna.class)
+				.add( Restrictions.eq("name", miRna.getName()) )
+				.uniqueResult();
+		if (oldMiRna==null) {
+			session.save(miRna);
+			session.flush();  // to get the PK
+		} else {
+			MiRna miRnaToUpdate = (MiRna) oldMiRna;
+			miRnaToUpdate.update(miRna);
+			System.out.println("mirna "+ miRna);
+			session.update(miRnaToUpdate);
+			miRna = miRnaToUpdate;
+		}
+
+		// Inserta PubmedDocument (o recupera su id. si ya existe)
+
+		Object oldPubmedDoc = session.createCriteria(PubmedDocument.class)
+				.add( Restrictions.eq("id", pubmedDoc.getId()) )
+				.uniqueResult();
+		if (oldPubmedDoc==null) {
+			session.save(pubmedDoc);
+			session.flush(); // to get the PK
+			//System.out.println("Save Pubmed document");
+
+		} else {
+			PubmedDocument pubmedDocToUpdate = (PubmedDocument) oldPubmedDoc;
+			pubmedDocToUpdate.update(pubmedDoc);
+			session.update(pubmedDocToUpdate);
+			pubmedDoc = pubmedDocToUpdate;
+			//System.out.println("Updated Pubmed document");
+		}
+
+		// Inserta nueva DataExpression
+		// (y la relaciona con el MiRna y Disease correspondiente)
+
+		// y con enviromentalFactor
+
+		ed.setMirnaPk(miRna.getPk());
+		ed.setDiseasePk(disease.getPk());
+		ed.setEnvironmentalFactorPk(environmentalFactor.getPk());
+		session.save(ed);
+
+		// Relaciona miRNa con Organism. No estoy segura. La entidad-relacion es de one-to-many segun el modelo.
+		MirnaHasPubmedDocument mirnaHasPubmedDocument =
+				new MirnaHasPubmedDocument(miRna.getPk(), pubmedDoc.getPk());
+
+		ExpressionDataHasPubmedDocument expresDataHasPubmedDocument =
+				new ExpressionDataHasPubmedDocument(ed.getPk(), pubmedDoc.getPk());
+
+		// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
+		Object oldMirnaHasPubmedDocument = session.createCriteria(MirnaHasPubmedDocument.class)
+				.add( Restrictions.eq("mirnaPk", miRna.getPk()) )
+				.uniqueResult();
+		if (oldMirnaHasPubmedDocument==null) {
+			session.save(mirnaHasPubmedDocument);
+
+		}
+
+		// Relaciona PubmedDocument con ExpressionData
+		session.save(expresDataHasPubmedDocument);
+		
+	}
+	
 	public static void main(String[] args) throws Exception {
 
 		miREnvironment mirEnvironment = new miREnvironment();
 
+		// /* 1. meter datos en mirna_raw */
 		//String inputFile = "/Users/esteban/Softw/miRNA/mirendata.txt";
 		//mirEnvironment.insertInTable(inputFile);
 
+		/* 2. meter datos en mirna */
 		mirEnvironment.insertIntoSQLModel();
 
 	}

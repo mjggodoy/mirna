@@ -7,18 +7,15 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 
 import mirna.beans.Disease;
 import mirna.beans.ExpressionData;
 import mirna.beans.MiRna;
 import mirna.exception.MiRnaException;
-import mirna.utils.HibernateUtil;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
 /**
@@ -27,11 +24,15 @@ import org.hibernate.criterion.Restrictions;
  * @author Esteban López Camacho
  *
  */
-public class Mir2Disease extends MirnaDatabase {
+public class Mir2Disease extends NewMirnaDatabase {
 	
 	private final String tableName = "mir2disease";
 	
 	public Mir2Disease() throws MiRnaException { super(); }
+	
+	protected String getTableName() {
+		return tableName;
+	}
 	
 	public void insertInTable(String csvInputFile) throws Exception {
 		
@@ -95,116 +96,73 @@ public class Mir2Disease extends MirnaDatabase {
 	}
 	
 	@Override
-	public void insertIntoSQLModel() throws Exception {
+	protected void processRow(Session session, ResultSet rs) throws Exception {
 		
-		Connection con = null;
+//		mirna -> miRNA.name
+//		disease  -> Disease.name
+//		expression	-> ExpressionData.evidence
+//		method -> ExpressionData.method
+//		date -> ExpressionData.year
+//		description -> ExpressionData.description
 		
-		// Get session
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		String mirna = rs.getString("mirna").trim();
+		String diseaseField = rs.getString("disease").toLowerCase().trim();
+		String evidence = rs.getString("expression").trim();
+		String method = rs.getString("method").trim();
+		String year = rs.getString("date").trim();
+		String description = rs.getString("reference").trim();
 		
-		//start transaction
-		Transaction tx = session.beginTransaction();
+		MiRna miRna = new MiRna();
+		miRna.setName(mirna);
 		
-		try {
-			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-			Statement stmt = (Statement) con.createStatement();
-			
-			// our SQL SELECT query. 
-			// if you only need a few columns, specify them by name instead of using "*"
-			String query = "SELECT * FROM " + tableName;
-			System.out.println("STARTING: " + query);
-			
-			// execute the query, and get a java resultset
-			ResultSet rs = stmt.executeQuery(query);
-			
-			// iterate through the java resultset
-			int count = 0;
-			while (rs.next() && count<2) {
-				
-//				mirna -> miRNA.name
-//				disease  -> Disease.name
-//				expression	-> ExpressionData.evidence
-//				method -> ExpressionData.method
-//				date -> ExpressionData.year
-//				description -> ExpressionData.description
-				
-				String mirna = rs.getString("mirna").trim();
-				String diseaseField = rs.getString("disease").toLowerCase().trim();
-				String evidence = rs.getString("expression").trim();
-				String method = rs.getString("method").trim();
-				String year = rs.getString("date").trim();
-				String description = rs.getString("reference").trim();
-				
-				MiRna miRna = new MiRna();
-				miRna.setName(mirna);
-				
-				Disease disease = new Disease();
-				disease.setName(diseaseField);
-				
-				ExpressionData ed = new ExpressionData();
-				ed.setDescription(description);
-				ed.setEvidence(evidence);
-				ed.setMethod(method);
-				ed.setYear(year);
-				ed.setProvenance("miR2Disease");
-				
-				// Inserta MiRna (o recupera su id. si ya existe)
-				Object oldMiRna = session.createCriteria(MiRna.class)
-						.add( Restrictions.eq("name", miRna.getName()) )
-						.uniqueResult();
-				if (oldMiRna==null) {
-					session.save(miRna);
-					session.flush();  // to get the PK
-				} else {
-					//System.out.println("Encuentro: " + );
-					MiRna miRnaToUpdate = (MiRna) oldMiRna;
-					miRnaToUpdate.update(miRna);
-					session.update(miRnaToUpdate);
-					miRna = miRnaToUpdate;
-				}
-				
-				// Inserta Disease (o recupera su id. si ya existe)
-				Object oldDisease = session.createCriteria(Disease.class)
-						.add( Restrictions.eq("name", disease.getName()) )
-						.uniqueResult();
-				if (oldDisease==null) {
-					session.save(disease);
-					session.flush(); // to get the PK
-				} else {
-					Disease diseaseToUpdate = (Disease) oldDisease;
-					diseaseToUpdate.update(disease);
-					session.update(diseaseToUpdate);
-					disease = diseaseToUpdate;
-				}
-				
-				// Inserta nueva DataExpression
-				// (y la relaciona con el MiRna y Disease correspondiente)
-				
-				ed.setMirnaPk(miRna.getPk());
-				ed.setDiseasePk(disease.getPk());
-				session.save(ed);
-				
-				count++;
-				if (count%100==0) {
-					System.out.println(count);
-					session.flush();
-			        session.clear();
-				}
-				
-			}
-			stmt.close();
-			tx.commit();
-		} catch (SQLException e) {
-			tx.rollback();
-			e.printStackTrace();
-		} finally {
-			if (con!=null) con.close();
-			HibernateUtil.closeSession();
-			HibernateUtil.closeSessionFactory();
+		Disease disease = new Disease();
+		disease.setName(diseaseField);
+		
+		ExpressionData ed = new ExpressionData();
+		ed.setDescription(description);
+		ed.setEvidence(evidence);
+		ed.setMethod(method);
+		ed.setYear(year);
+		ed.setProvenance("miR2Disease");
+		
+		// Inserta MiRna (o recupera su id. si ya existe)
+		Object oldMiRna = session.createCriteria(MiRna.class)
+				.add( Restrictions.eq("name", miRna.getName()) )
+				.uniqueResult();
+		if (oldMiRna==null) {
+			session.save(miRna);
+			session.flush();  // to get the PK
+		} else {
+			//System.out.println("Encuentro: " + );
+			MiRna miRnaToUpdate = (MiRna) oldMiRna;
+			miRnaToUpdate.update(miRna);
+			session.update(miRnaToUpdate);
+			miRna = miRnaToUpdate;
 		}
 		
+		// Inserta Disease (o recupera su id. si ya existe)
+		Object oldDisease = session.createCriteria(Disease.class)
+				.add( Restrictions.eq("name", disease.getName()) )
+				.uniqueResult();
+		if (oldDisease==null) {
+			session.save(disease);
+			session.flush(); // to get the PK
+		} else {
+			Disease diseaseToUpdate = (Disease) oldDisease;
+			diseaseToUpdate.update(disease);
+			session.update(diseaseToUpdate);
+			disease = diseaseToUpdate;
+		}
+		
+		// Inserta nueva DataExpression
+		// (y la relaciona con el MiRna y Disease correspondiente)
+		
+		ed.setMirnaPk(miRna.getPk());
+		ed.setDiseasePk(disease.getPk());
+		session.save(ed);
+		
 	}
-
+	
 	public String specificFileFix(String csvInputFile) throws IOException {
 		
 		String newFile = csvInputFile + ".new";
@@ -248,7 +206,6 @@ public class Mir2Disease extends MirnaDatabase {
 		
 		/* 2. meter datos en mirna */
 		mir2disease.insertIntoSQLModel();
-		HibernateUtil.closeSessionFactory();
 
 	}
 

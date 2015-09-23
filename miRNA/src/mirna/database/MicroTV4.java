@@ -70,13 +70,10 @@ public class MicroTV4 extends NewMirnaDatabase {
 	
 				if (line != null && !line.startsWith("UTR3") && !line.startsWith("CDS")) {
 					
-					
 					transcript_id = tokens[0].replaceAll("'", "\\\\'");
 					gene_id = tokens[1].replaceAll("'", "\\\\'");;
 					miRNA = tokens[2].replaceAll("'", "\\\\'");;
 					miTG_score = tokens[3].replaceAll("'", "\\\\'");;
-					
-			
 	
 				}else{
 					
