@@ -128,202 +128,196 @@ public class miRdSNP2 extends miRdSNP {
 			// iterate through the java resultset
 
 			int count = 0;
-			rs.next();
+
 			// CAMBIAR ESTO:
-			count ++;
-			String ref_seq = rs.getString("refseq").toLowerCase().trim();
-			String gene_name = rs.getString("gene").toLowerCase().trim();
-			String snp_id = rs.getString("snp_id").toLowerCase().trim();
-			String mirna_name = rs.getString("mirna").toLowerCase().trim();
-			String disease_name = rs.getString("disease").toLowerCase().trim();
 
-
-			String[] diseaseTokens = StringUtils.splitPreserveAllTokens(disease_name, "|");
-			List<Disease> diseaseList = new ArrayList<Disease>();
-
-			for (String token : diseaseTokens) {
-
-				Disease disease = new Disease();
-				disease.setName(token);
-				diseaseList.add(disease);
-			}
-
-			Gene gene = new Gene();
-			gene.setName(gene_name);
-
-
-			Transcript transcript = new Transcript();
-			transcript.setTranscriptID(ref_seq);
-			
-			Target target = new Target();
-
-			Mutation mutation = new Mutation();
-
-
-			String[] mirnaTokens = StringUtils.splitPreserveAllTokens(mirna_name, "|");
-			List<MiRna> mirnaList = new ArrayList<MiRna>();
-
-			for (String token : mirnaTokens) {
-
-				MiRna mirna_list = new MiRna();
-				mirna_list.setName(token);
-				mirnaList.add(mirna_list);
-			}
-
-			ExpressionData ed = new ExpressionData();
-			ed.setProvenance("miRdSNP");
-
-			InteractionData id = new InteractionData();
-			id.setProvenance("miRdSNP");
-
-
-			String[] snpTokens = StringUtils.splitPreserveAllTokens(snp_id, "|");
-			List<SNP> snpList = new ArrayList<SNP>();
-
-			for (String token : snpTokens) {
-
-				SNP snp = new SNP();
-				snp.setSnp_id(token);
-				snpList.add(snp);
-			}
-			
-			
-			
-			// ======
-			
-			Object oldGene = session.createCriteria(Gene.class)
-					.add( Restrictions.eq("name", gene.getName()) )
-					.uniqueResult();
-			if (oldGene==null) {
-				session.save(gene);
-				session.flush();  // to get the PK
-			} else {
-				Gene geneToUpdate = (Gene) oldGene;
-				geneToUpdate.update(gene);
-				session.update(geneToUpdate);
-				gene = geneToUpdate;
-			}
-
-			transcript.setGeneId(gene.getPk());
-			Object oldTranscript = session.createCriteria(Transcript.class)
-					.add( Restrictions.eq("transcriptID", transcript.getTranscriptID()) )
-					.uniqueResult();
-			if (oldTranscript==null) {
-				session.save(transcript);
-				session.flush();  // to get the PK
-			} else {
-				Transcript transcriptToUpdate = (Transcript) oldGene;
-				transcriptToUpdate.update(transcript);
-				session.update(transcriptToUpdate);
-				transcript = transcriptToUpdate;
-			}
-
-			for(SNP snp : snpList){
-
-				mutation.setGene_pk(gene.getPk());
-				session.save(mutation);
-				session.flush();
-				snp.setMutation_pk(mutation.getPk());
-				
-				Object oldSnp = session.createCriteria(SNP.class)
-						.add( Restrictions.eq("snp_id", snp.getSnp_id()))
-						.uniqueResult();
-				if (oldSnp==null) {
-					session.save(snp);
-					session.flush();  // to get the PK
-				} else {
-					SNP snpToUpdate = (SNP) oldSnp;
-					snpToUpdate.update(snp);
-					session.update(snpToUpdate);
-					snp = snpToUpdate;
-				}
+			if(rs.next()){
 				
 				
-			}
-			
-			target.setTranscript_pk(transcript.getPk());
-			session.save(target);
-			session.flush();
-		
-			for (MiRna mirna : mirnaList) {
+				String ref_seq = rs.getString("refseq").toLowerCase().trim();
+				String gene_name = rs.getString("gene").toLowerCase().trim();
+				String snp_id = rs.getString("snp_id").toLowerCase().trim();
+				String mirna_name = rs.getString("mirna").toLowerCase().trim();
+				String disease_name = rs.getString("disease").toLowerCase().trim();
+				
+				String[] diseaseTokens = StringUtils.splitPreserveAllTokens(disease_name, "|");
+				List<Disease> diseaseList = new ArrayList<Disease>();
 
-				Object oldMiRna = session.createCriteria(MiRna.class)
-						.add( Restrictions.eq("name", mirna.getName()) )
-						.uniqueResult();
-				if (oldMiRna==null) {
-					session.save(mirna);
-					session.flush();  // to get the PK
-				} else {
-					MiRna miRnaToUpdate = (MiRna) oldMiRna;
-					miRnaToUpdate.update(mirna);
-					session.update(miRnaToUpdate);
-					mirna = miRnaToUpdate;
+				for (String token : diseaseTokens) {
+
+					Disease disease = new Disease();
+					disease.setName(token);
+					diseaseList.add(disease);
 				}
 
-				id.setMirna_pk(mirna.getPk());
-				id.setTarget_pk(target.getPk());
-				session.save(id);
+				Gene gene = new Gene();
+				gene.setName(gene_name);
 
-			}
+				Transcript transcript = new Transcript();
+				transcript.setTranscriptID(ref_seq);
 
-				// SI ESTO ES IMPORTANTE; HAZLO ANTES DE METER EL SNP EN LA BD
+				Target target = new Target();
 
-			
-			for(SNP snp : snpList){
+				MiRna miRna = new MiRna();
+				miRna.setName(mirna_name);
+
+				String[] snpTokens = StringUtils.splitPreserveAllTokens(snp_id, "|");
+				List<SNP> snpList = new ArrayList<SNP>();
+
+				for (String token : snpTokens) {
+
+					SNP snp = new SNP();
+					snp.setSnp_id(token);
+					snpList.add(snp);
+
+				}
+
+				InteractionData id = new InteractionData();
+				id.setProvenance("mirdSNP");
 				
-				Object oldSnp = session.createCriteria(SNP.class)
-						.add( Restrictions.eq("snp_id", snp.getSnp_id()))
+				ExpressionData ed = new ExpressionData();
+				ed.setProvenance("mirdSNP");
+
+
+					String[] mirnaTokens = StringUtils.splitPreserveAllTokens(mirna_name, "|");
+					List<MiRna> mirnaList = new ArrayList<MiRna>();
+
+					for (String token : mirnaTokens) {
+
+						MiRna mirna_list = new MiRna();
+						mirna_list.setName(token);
+						mirnaList.add(mirna_list);
+						//System.out.println(mirnaList.get(0));
+
+
+						for (MiRna mirna : mirnaList) {
+
+							Object oldMiRna = session.createCriteria(MiRna.class)
+									.add( Restrictions.eq("name", mirna.getName()) )
+									.uniqueResult();
+							if (oldMiRna==null) {
+								session.save(mirna);
+								session.flush();  // to get the PK
+							} else {
+								MiRna miRnaToUpdate = (MiRna) oldMiRna;
+								miRnaToUpdate.update(mirna);
+								session.update(miRnaToUpdate);
+								mirna = miRnaToUpdate;
+							}
+
+							id.setMirna_pk(mirna.getPk());
+							id.setTarget_pk(target.getPk());
+							ed.setMirnaPk(mirna.getPk());
+							id.setExpression_data_pk(ed.getPk());
+							session.save(id);
+							session.save(ed);
+
+						}
+
+				}
+
+				target.setTranscript_pk(transcript.getPk());
+				session.save(target);
+				
+
+				Object oldGene = session.createCriteria(Gene.class)
+						.add( Restrictions.eq("name", gene.getName()) )
 						.uniqueResult();
-				if (oldSnp==null) {
-					session.save(snp);
+				if (oldGene==null) {
+					session.save(gene);
 					session.flush();  // to get the PK
 				} else {
-					SNP snpToUpdate = (SNP) oldSnp;
-					snpToUpdate.update(snp);
-					session.update(snpToUpdate);
-					snp = snpToUpdate;
+					Gene geneToUpdate = (Gene) oldGene;
+					geneToUpdate.update(gene);
+					session.update(geneToUpdate);
+					gene = geneToUpdate;
 				}
-				
-				for (Disease disease : diseaseList) {
 
-					Object oldDisease = session.createCriteria(Disease.class)
-							.add( Restrictions.eq("name", disease.getName()) )
+				transcript.setGeneId(gene.getPk());
+				Object oldTranscript = session.createCriteria(Transcript.class)
+						.add( Restrictions.eq("transcriptID", transcript.getTranscriptID()) )
+						.uniqueResult();
+				if (oldTranscript==null) {
+					session.save(transcript);
+					session.flush();  // to get the PK
+				} else {
+					Transcript transcriptToUpdate = (Transcript) oldTranscript;
+					transcriptToUpdate.update(transcript);
+					session.update(transcriptToUpdate);
+					transcript = transcriptToUpdate;
+				}
+
+				for(SNP snp : snpList){
+
+					//mutation.setGene_pk(gene.getPk());
+					//session.save(mutation);
+					//session.flush();
+					snp.setGene_pk(gene.getPk());
+
+					Object oldSnp = session.createCriteria(SNP.class)
+							.add( Restrictions.eq("snp_id", snp.getSnp_id()))
 							.uniqueResult();
-					if (oldDisease==null) {
-						session.save(disease);
+					if (oldSnp==null) {
+						session.save(snp);
 						session.flush();  // to get the PK
 					} else {
-						Disease diseaseToUpdate = (Disease) oldDisease;
-						diseaseToUpdate.update(disease);
-						session.update(diseaseToUpdate);
-						disease = diseaseToUpdate;
+						SNP snpToUpdate = (SNP) oldSnp;
+						snpToUpdate.update(snp);
+						session.update(snpToUpdate);
+						snp = snpToUpdate;
 					}
+				}
 
-					SnpHasDisease snpHasDisease = new SnpHasDisease(snp.getPk(), disease.getPk());
-					Object oldSnphasDisease = session.createCriteria(SnpHasDisease.class)
-							.add( Restrictions.eq("snpPk", snp.getPk()) )
-							.add( Restrictions.eq("diseasePk", disease.getPk()) )
+				for(SNP snp : snpList){
+
+					Object oldSnp = session.createCriteria(SNP.class)
+							.add( Restrictions.eq("snp_id", snp.getSnp_id()))
 							.uniqueResult();
-					if (oldSnphasDisease==null) {
-						session.save(snpHasDisease);
+					if (oldSnp==null) {
+						session.save(snp);
+						session.flush();  // to get the PK
+					} else {
+						SNP snpToUpdate = (SNP) oldSnp;
+						snpToUpdate.update(snp);
+						session.update(snpToUpdate);
+						snp = snpToUpdate;
 					}
 
-					ed.setDiseasePk(disease.getPk());
-					session.save(ed);
+					for (Disease disease : diseaseList) {
 
+						Object oldDisease = session.createCriteria(Disease.class)
+								.add( Restrictions.eq("name", disease.getName()) )
+								.uniqueResult();
+						if (oldDisease==null) {
+							session.save(disease);
+							session.flush();  // to get the PK
+						} else {
+							Disease diseaseToUpdate = (Disease) oldDisease;
+							diseaseToUpdate.update(disease);
+							session.update(diseaseToUpdate);
+							disease = diseaseToUpdate;
+						}
+
+						SnpHasDisease snpHasDisease = new SnpHasDisease(snp.getPk(), disease.getPk());
+						Object oldSnphasDisease = session.createCriteria(SnpHasDisease.class)
+								.add( Restrictions.eq("snpPk", snp.getPk()) )
+								.add( Restrictions.eq("diseasePk", disease.getPk()) )
+								.uniqueResult();
+						if (oldSnphasDisease==null) {
+							session.save(snpHasDisease);
+						}
+
+					}
+				}
+
+				count++;
+
+				if (count%100==0) {
+					System.out.println(count);
+					session.flush();
+					session.clear();
 				}
 			}
-
-			id.setGene_pk(gene.getPk());
-			id.setExpression_data_pk(ed.getPk());
-
-			count++;
-			if (count%100==0) {
-				System.out.println(count);
-				session.flush();
-				session.clear();
-			}
-
 			stmt.close();
 			tx.commit();
 		} catch (SQLException e) {

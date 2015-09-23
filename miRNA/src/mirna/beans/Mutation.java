@@ -1,8 +1,15 @@
 package mirna.beans;
 
 import javax.persistence.Column;
-
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.Table;
 import mirna.exception.ConflictException;
+
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "mutation")
 
 public class Mutation extends ModelClass {
 
@@ -27,20 +34,7 @@ public class Mutation extends ModelClass {
 
 
 
-	public Mutation() {
-		super();
-	}
-
-
-	public Mutation(int pk, String specie, String chromosome, String coordinates, String orientation, String distance, Integer gene_pk) {
-		super(pk);
-		this.specie = specie;
-		this.chromosome = chromosome;
-		this.coordinates = coordinates;
-		this.orientation = orientation;
-		this.distance = distance;
-		this.gene_pk = gene_pk;
-	}
+	public Mutation() {	}
 
 	public String getOrientation() {
 		return orientation;
@@ -135,51 +129,60 @@ public class Mutation extends ModelClass {
 		if (this.pk != null) {
 			if (mutation.getPk() == null)
 				res++;
-			else if (!this.pk.equals(mutation.getPk()))
+			else if (!this.pk.equals(mutation.getPk())){
 				return -1;
+			}
 		}
 
 		if (this.chromosome != null) {
 			if (mutation.getChromosome() == null)
 				res++;
-			else if (!this.chromosome.equals(mutation.getChromosome()))
+			else if (!this.chromosome.equals(mutation.getChromosome())){
 				return -1;
+			}
 		}
 
 		if (this.coordinates != null) {
 			if (mutation.getCoordinates() == null)
 				res++;
-			else if (!this.coordinates.equals(mutation.getCoordinates()))
+			else if (!this.coordinates.equals(mutation.getCoordinates())){
 				return -1;
+			}
 		}
 
 		if (this.distance != null) {
 			if (mutation.getDistance() == null)
 				res++;
-			else if (!this.distance.equals(mutation.getDistance()))
+			else if (!this.distance.equals(mutation.getDistance())){
 				return -1;
+			}
 		}
 
 		if (this.specie != null) {
 			if (mutation.getSpecie() == null)
 				res++;
-			else if (!this.specie.equals(mutation.getSpecie()))
+			else if (!this.specie.equals(mutation.getSpecie())){
 				return -1;
+			}
+
 		}
 
 
 		if (this.gene_pk != null) {
 			if (mutation.getGene_pk() == null)
 				res++;
-			else if (!this.gene_pk.equals(mutation.getGene_pk()))
+			else if (!this.gene_pk.equals(mutation.getGene_pk())){
 				return -1;
+			}
 		}
 
 		if (this.orientation != null) {
 			if (mutation.getOrientation() == null)
 				res++;
-			else if (!this.orientation.equals(mutation.getOrientation()))
+			else if (!this.orientation.equals(mutation.getOrientation())){
 				return -1;
+
+			}
 		}
 
 		return res;

@@ -25,7 +25,7 @@ public class SNP extends ModelClass {
 
 	@Column(name = "mutation_pk", nullable = true, length = 45) //mutation_pk puede ser nulo
 	private Integer mutation_pk;
-	
+
 	@Column(name = "gene_pk", nullable = true, length = 45) //mutation_pk puede ser nulo
 	private Integer gene_pk;
 
@@ -40,7 +40,7 @@ public class SNP extends ModelClass {
 	public void setSnp_id(String snp_id) {
 		this.snp_id = snp_id;
 	}
-	
+
 	public String getPosition() {
 		return position;
 	}
@@ -52,7 +52,7 @@ public class SNP extends ModelClass {
 	public String getArticle_date() {
 		return article_date;
 	}
-	
+
 	public void setArticle_date(String article_date) {
 		this.article_date = article_date;
 	}
@@ -106,7 +106,7 @@ public class SNP extends ModelClass {
 	public int checkConflict(SNP snp) {
 		//System.out.println(snp);
 		//System.out.println(this);
-		
+
 		int res = 0;
 		if (this.pk != null) {
 			if (snp.getPk() == null)
@@ -115,7 +115,7 @@ public class SNP extends ModelClass {
 				System.out.println("PK PUTO");
 				return -1;
 			}
-				
+
 		}
 
 		if (this.snp_id != null) {
@@ -140,16 +140,16 @@ public class SNP extends ModelClass {
 			if (snp.getMutation_pk() == null)
 				res++;
 			else if (!this.mutation_pk.equals(snp.getMutation_pk())){
-			return -1;
+				return -1;
+			}
 		}
-		}
-		
+
 		if (this.gene_pk != null) {
 			if (snp.getGene_pk() == null)
 				res++;
 			else if (!this.gene_pk.equals(snp.getGene_pk())){
-			return -1;
-		}
+				return -1;
+			}
 		}
 
 		return res;
