@@ -15,10 +15,8 @@ import mirna.beans.ExpressionData;
 import mirna.beans.Gene;
 import mirna.beans.InteractionData;
 import mirna.beans.MiRna;
-import mirna.beans.Mutation;
 import mirna.beans.SNP;
 import mirna.beans.Target;
-import mirna.beans.Transcript;
 import mirna.beans.nToM.SnpHasDisease;
 import mirna.exception.MiRnaException;
 import mirna.utils.HibernateUtil;
@@ -152,10 +150,9 @@ public class miRdSNP2 extends miRdSNP {
 
 				Gene gene = new Gene();
 				gene.setName(gene_name);
+				gene.setAccessionumber(ref_seq);;
 
-				Transcript transcript = new Transcript();
-				transcript.setTranscriptID(ref_seq);
-
+				
 				Target target = new Target();
 
 				MiRna miRna = new MiRna();
@@ -207,6 +204,7 @@ public class miRdSNP2 extends miRdSNP {
 
 							id.setMirna_pk(mirna.getPk());
 							id.setTarget_pk(target.getPk());
+							id.setGene_pk(gene.getPk());
 							ed.setMirnaPk(mirna.getPk());
 							id.setExpression_data_pk(ed.getPk());
 							session.save(id);
@@ -215,10 +213,6 @@ public class miRdSNP2 extends miRdSNP {
 						}
 
 				}
-
-				target.setTranscript_pk(transcript.getPk());
-				session.save(target);
-				
 
 				Object oldGene = session.createCriteria(Gene.class)
 						.add( Restrictions.eq("name", gene.getName()) )
@@ -233,20 +227,7 @@ public class miRdSNP2 extends miRdSNP {
 					gene = geneToUpdate;
 				}
 
-				transcript.setGeneId(gene.getPk());
-				Object oldTranscript = session.createCriteria(Transcript.class)
-						.add( Restrictions.eq("transcriptID", transcript.getTranscriptID()) )
-						.uniqueResult();
-				if (oldTranscript==null) {
-					session.save(transcript);
-					session.flush();  // to get the PK
-				} else {
-					Transcript transcriptToUpdate = (Transcript) oldTranscript;
-					transcriptToUpdate.update(transcript);
-					session.update(transcriptToUpdate);
-					transcript = transcriptToUpdate;
-				}
-
+				
 				for(SNP snp : snpList){
 
 					//mutation.setGene_pk(gene.getPk());

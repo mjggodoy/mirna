@@ -157,7 +157,7 @@ public class miRdSNP3 extends miRdSNP {
 			
 			Gene gene = new Gene();
 			gene.setName(gene_name);
-			gene.setGeneId(ref_seq);
+			gene.setAccessionumber(ref_seq);
 			
 			MiRna mirna = new MiRna();
 			mirna.setName(mirna_name);
