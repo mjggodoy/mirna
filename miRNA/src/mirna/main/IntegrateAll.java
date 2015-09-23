@@ -15,6 +15,7 @@ public class IntegrateAll {
 		(new miREnvironment()).insertIntoSQLModel();
 		(new SM2miR2N()).insertIntoSQLModel();
 		(new TarBase()).insertIntoSQLModel();
+		(new MiRDB()).insertIntoSQLModel();
 	}
 
 }
