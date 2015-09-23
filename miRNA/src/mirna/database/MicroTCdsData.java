@@ -18,11 +18,11 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-public class microT_CDS_data extends NewMirnaDatabase {
+public class MicroTCdsData extends NewMirnaDatabase {
 
 	private final String tableName = "microt_cds";
 
-	public microT_CDS_data() throws MiRnaException {
+	public MicroTCdsData() throws MiRnaException {
 		super();
 		this.fetchSizeMin = true;
 	}
@@ -119,7 +119,6 @@ public class microT_CDS_data extends NewMirnaDatabase {
 
 	}
 
-	
 	@Override
 	protected void processRow(Session session, ResultSet rs) throws Exception {
 		
@@ -217,7 +216,7 @@ public class microT_CDS_data extends NewMirnaDatabase {
 	
 	public static void main(String[] args) throws Exception {
 
-		microT_CDS_data microT_CDS_data = new microT_CDS_data();
+		MicroTCdsData microT_CDS_data = new MicroTCdsData();
 		
 		// /* 1. meter datos en mirna_raw */
 		// String inputFile = "/Users/esteban/Softw/miRNA/microalgo/microT_CDS_data.csv";
