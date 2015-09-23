@@ -24,26 +24,24 @@ public abstract class NewMirnaDatabase implements IMirnaDatabase {
 	// Use -1 to read all the rows.
 	protected final int ROWS_TO_READ = 5;
 	
-	protected final String TABLE_NAME;
+	protected String tableName;
 	
 	protected boolean fetchSizeMin = false;
 	
-	public NewMirnaDatabase() throws MiRnaException {
+	protected NewMirnaDatabase(String tableName) throws MiRnaException {
 		try {
 			Properties props = new Properties();
 			props.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("MiRna-mysql.properties"));
-			dbUrl = props.getProperty("url");
-			dbUser = props.getProperty("user");
-			dbPassword = props.getProperty("password");
-			TABLE_NAME = getTableName();
+			this.dbUrl = props.getProperty("url");
+			this.dbUser = props.getProperty("user");
+			this.dbPassword = props.getProperty("password");
+			this.tableName = tableName;
 		} catch (FileNotFoundException e) {
 			throw new MiRnaException("FileNotFoundException:" + e.getMessage() + " " + e.toString());
 		} catch (java.io.IOException e) {
 			throw new MiRnaException("java.io.IOException:" + e.getMessage() + " " + e.toString());
 		}
 	}
-	
-	protected abstract String getTableName();
 	
 	protected abstract void processRow(Session session, ResultSet rs) throws Exception; 
 	
@@ -64,7 +62,7 @@ public abstract class NewMirnaDatabase implements IMirnaDatabase {
 			
 			// our SQL SELECT query. 
 			// if you only need a few columns, specify them by name instead of using "*"
-			String query = "SELECT * FROM " + TABLE_NAME;
+			String query = "SELECT * FROM " + tableName;
 			System.out.println("STARTING: " + query);
 			
 			// execute the query, and get a java resultset
@@ -78,7 +76,7 @@ public abstract class NewMirnaDatabase implements IMirnaDatabase {
 				
 				count++;
 				if (count%100==0) {
-					System.out.println(TABLE_NAME + ": " + count);
+					System.out.println(tableName + ": " + count);
 					session.flush();
 			        session.clear();
 				}

@@ -20,15 +20,11 @@ import org.hibernate.criterion.Restrictions;
 
 public class MicroTV4 extends NewMirnaDatabase {
 	
-	private final String tableName = "microtv4";
+	private final static String TABLE_NAME = "microtv4";
 	
 	public MicroTV4() throws MiRnaException {
-		super();
+		super(TABLE_NAME);
 		this.fetchSizeMin = true;
-	}
-	
-	protected String getTableName() {
-		return tableName;
 	}
 	
 	public void insertInTable(String csvInputFile) throws Exception {

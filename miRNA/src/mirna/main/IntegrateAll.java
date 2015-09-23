@@ -10,6 +10,9 @@ public class IntegrateAll {
 		(new Microcosm()).insertIntoSQLModel();
 		(new MicroTCdsData()).insertIntoSQLModel();
 		(new MicroTV4()).insertIntoSQLModel();
+		(new Mir2Disease()).insertIntoSQLModel();
+		(new MiRCancer()).insertIntoSQLModel();
+		(new miREnvironment()).insertIntoSQLModel();
 	}
 
 }

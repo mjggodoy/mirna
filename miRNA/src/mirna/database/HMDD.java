@@ -27,13 +27,9 @@ import org.hibernate.criterion.Restrictions;
  */
 public class HMDD extends NewMirnaDatabase {
 	
-	private final String tableName = "hmdd";
+	private static final String TABLE_NAME = "hmdd";
 	
-	public HMDD() throws MiRnaException { super(); }
-	
-	protected String getTableName() {
-		return tableName;
-	}
+	public HMDD() throws MiRnaException { super(TABLE_NAME); }
 	
 	public void insertInTable(String csvInputFile) throws Exception {
 		

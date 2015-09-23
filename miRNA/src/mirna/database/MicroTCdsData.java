@@ -20,17 +20,13 @@ import org.hibernate.criterion.Restrictions;
 
 public class MicroTCdsData extends NewMirnaDatabase {
 
-	private final String tableName = "microt_cds";
+	private final static String TABLE_NAME = "microt_cds";
 
 	public MicroTCdsData() throws MiRnaException {
-		super();
+		super(TABLE_NAME);
 		this.fetchSizeMin = true;
 	}
 	
-	protected String getTableName() {
-		return tableName;
-	}
-
 	public void insertInTable(String csvInputFile) throws Exception {
 
 		Connection con = null;

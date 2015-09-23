@@ -26,13 +26,9 @@ import org.hibernate.criterion.Restrictions;
  */
 public class Microcosm extends NewMirnaDatabase {
 	
-	private final String tableName = "microcosm_homo_sapiens";
+	private final static String TABLE_NAME = "microcosm_homo_sapiens";
 	
-	public Microcosm() throws MiRnaException { super(); }
-	
-	protected String getTableName() {
-		return tableName;
-	}
+	public Microcosm() throws MiRnaException { super(TABLE_NAME); }
 	
 	public void insertInTable(String csvInputFile) throws Exception {
 		

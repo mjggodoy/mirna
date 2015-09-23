@@ -29,16 +29,12 @@ import org.hibernate.criterion.Restrictions;
  */
 public class miREnvironment extends NewMirnaDatabase {
 
-	private final String tableName = "miREnvironment";
+	private final static String TABLE_NAME = "miREnvironment";
 
 	public miREnvironment() throws MiRnaException {
-		super();
+		super(TABLE_NAME);
 	}
 	
-	protected String getTableName() {
-		return tableName;
-	}
-
 	public void insertInTable(String csvInputFile) throws Exception {
 
 		Connection con = null;

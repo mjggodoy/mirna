@@ -26,13 +26,9 @@ import org.hibernate.criterion.Restrictions;
  */
 public class Mir2Disease extends NewMirnaDatabase {
 	
-	private final String tableName = "mir2disease";
+	private final static String TABLE_NAME = "mir2disease";
 	
-	public Mir2Disease() throws MiRnaException { super(); }
-	
-	protected String getTableName() {
-		return tableName;
-	}
+	public Mir2Disease() throws MiRnaException { super(TABLE_NAME); }
 	
 	public void insertInTable(String csvInputFile) throws Exception {
 		

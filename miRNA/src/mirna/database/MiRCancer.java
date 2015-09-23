@@ -26,13 +26,9 @@ import org.hibernate.criterion.Restrictions;
  */
 public class MiRCancer extends NewMirnaDatabase {
 	
-	private final String tableName = "miRCancer";
+	private final static String TABLE_NAME = "miRCancer";
 	
-	public MiRCancer() throws MiRnaException { super(); }
-	
-	protected String getTableName() {
-		return tableName;
-	}
+	public MiRCancer() throws MiRnaException { super(TABLE_NAME); }
 	
 	public void insertInTable(String csvInputFile) throws Exception {
 		
