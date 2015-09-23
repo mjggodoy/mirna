@@ -10,6 +10,7 @@ import java.sql.Statement;
 
 import mirna.beans.Disease;
 import mirna.beans.ExpressionData;
+import mirna.beans.Gene;
 import mirna.beans.InteractionData;
 import mirna.beans.MiRna;
 import mirna.beans.PubmedDocument;
@@ -128,15 +129,31 @@ public class miRDB extends MirnaDatabase {
 
 			InteractionData id = new InteractionData();
 			id.setScore(score);
-			id.setProvenance("Microcosm");
-
-			Target target = new Target();
+			id.setProvenance("miRDB");
+			
+			Gene gene = new Gene();
+			gene.setAccessionumber(target_name);
+			
 
 			Transcript transcript = new Transcript();
-			transcript.setTranscriptID(target_name);
 
 			MiRna miRna = new MiRna();
 			miRna.setName(miRNA);
+			
+			// Inserta el gene (o recupera su id. si ya existe)
+			
+			Object oldGene = session.createCriteria(Gene.class)
+					.add( Restrictions.eq("name", gene.getName()) )
+					.uniqueResult();
+			if (oldGene==null) {
+				session.save(gene);
+				session.flush();  // to get the PK
+			} else {
+				Gene geneToUpdate = (Gene) oldGene;
+				geneToUpdate.update(gene);
+				session.update(geneToUpdate);
+				gene = geneToUpdate;
+			}
 
 		
 			// Inserta MiRna (o recupera su id. si ya existe)
@@ -153,31 +170,13 @@ public class miRDB extends MirnaDatabase {
 				session.update(miRnaToUpdate);
 				miRna = miRnaToUpdate;
 			}			
-
-			// Inserta Transcript (o recupera su id. si ya existe)
-			Object oldTranscript = session.createCriteria(Transcript.class)
-					.add(Restrictions.eq("transcriptID", transcript.getTranscriptID()))
-					.uniqueResult();
-			if (oldTranscript == null) {
-				session.save(transcript);
-				session.flush(); // to get the PK
-			} else {
-				Transcript transcriptToUpdate = (Transcript) oldTranscript;
-				transcriptToUpdate.update(transcript);
-				session.update(transcriptToUpdate);
-				transcript = transcriptToUpdate;
-			}
-
-			target.setTranscript_pk(transcript.getPk());
-			session.save(target);
-			session.flush(); // to get the PK
+		
 
 			// Inserta nueva InteractinData
 			// (y la relaciona con el MiRna y Target correspondientes)
 
 			id.setMirna_pk(miRna.getPk());
-			id.setTarget_pk(target.getPk());
-			//TODO: INCLUDE id.setGene(gene.getPk());
+			id.setGene_pk(gene.getPk());
 			session.save(id);
 			session.flush(); // to get the PK
 
