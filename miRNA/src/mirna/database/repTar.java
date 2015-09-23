@@ -279,7 +279,7 @@ public class repTar extends MirnaDatabase {
 		repTar repTarHuman = new repTar("repTar_human");
 		//String inputFileHuman = "/Users/esteban/Softw/miRNA/repTar/human_pred.txt";
 		//repTarHuman.insertInTable(inputFileHuman);
-		//repTarHuman.insertIntoSQLModel();
+		repTarHuman.insertIntoSQLModel();
 
 		/*
 		 * MOUSE
@@ -287,7 +287,7 @@ public class repTar extends MirnaDatabase {
 		repTar repTarMouse = new repTar("repTar_mouse");
 		//String inputFileMouse = "/Users/esteban/Softw/miRNA/repTar/mouse_pred.txt";
 		//repTarMouse.insertInTable(inputFileMouse);
-		repTarMouse.insertIntoSQLModel();
+		//repTarMouse.insertIntoSQLModel();
 
 	}
 
