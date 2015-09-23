@@ -13,6 +13,8 @@ public class IntegrateAll {
 		(new Mir2Disease()).insertIntoSQLModel();
 		(new MiRCancer()).insertIntoSQLModel();
 		(new miREnvironment()).insertIntoSQLModel();
+		(new SM2miR2N()).insertIntoSQLModel();
+		(new TarBase()).insertIntoSQLModel();
 	}
 
 }
