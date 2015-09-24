@@ -18,11 +18,11 @@ import mirna.beans.MiRna;
 import mirna.beans.Target;
 import mirna.exception.MiRnaException;
 
-public class repTar extends NewMirnaDatabase {
+public class RepTar extends NewMirnaDatabase {
 
 	private String tableName;
 
-	public repTar(String tableName) throws MiRnaException {
+	public RepTar(String tableName) throws MiRnaException {
 		super(tableName);
 		this.fetchSizeMin = true;
 	}
@@ -229,7 +229,7 @@ public class repTar extends NewMirnaDatabase {
 		 * HUMAN
 		 */
 		
-		repTar repTarHuman = new repTar("repTar_human");
+		RepTar repTarHuman = new RepTar("repTar_human");
 		
 		// /* 1. meter datos en mirna_raw */
 		//String inputFileHuman = "/Users/esteban/Softw/miRNA/repTar/human_pred.txt";
@@ -242,7 +242,7 @@ public class repTar extends NewMirnaDatabase {
 		 * MOUSE
 		 */
 		
-		//repTar repTarMouse = new repTar("repTar_mouse");
+		//RepTar repTarMouse = new RepTar("repTar_mouse");
 		
 		// /* 1. meter datos en mirna_raw */
 		//String inputFileMouse = "/Users/esteban/Softw/miRNA/repTar/mouse_pred.txt";
