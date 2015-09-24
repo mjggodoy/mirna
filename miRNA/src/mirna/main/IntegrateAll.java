@@ -12,12 +12,15 @@ public class IntegrateAll {
 		(new MicroTV4()).insertIntoSQLModel();
 		(new Mir2Disease()).insertIntoSQLModel();
 		(new MiRCancer()).insertIntoSQLModel();
-		(new miREnvironment()).insertIntoSQLModel();
+		(new MiREnvironment()).insertIntoSQLModel();
 		(new SM2miR2N()).insertIntoSQLModel();
 		(new TarBase()).insertIntoSQLModel();
 		(new MiRDB()).insertIntoSQLModel();
 		(new PlantMirnaMatureMirna()).insertIntoSQLModel();
 		(new PlantMirnaStemLoop()).insertIntoSQLModel();
+		(new Phenomir()).insertIntoSQLModel();
+		(new RepTar()).insertIntoSQLModel();
+
 	}
 
 }

@@ -20,10 +20,10 @@ import mirna.exception.MiRnaException;
 
 public class RepTar extends NewMirnaDatabase {
 
-	private String tableName;
+	private static final String TABLE_NAME = "reptar";
 
-	public RepTar(String tableName) throws MiRnaException {
-		super(tableName);
+	public RepTar() throws MiRnaException {
+		super(TABLE_NAME);
 		this.fetchSizeMin = true;
 	}
 
@@ -223,35 +223,5 @@ public class RepTar extends NewMirnaDatabase {
 		
 	}
 	
-	public static void main(String[] args) throws Exception {
-
-		/*
-		 * HUMAN
-		 */
-		
-		RepTar repTarHuman = new RepTar("repTar_human");
-		
-		// /* 1. meter datos en mirna_raw */
-		//String inputFileHuman = "/Users/esteban/Softw/miRNA/repTar/human_pred.txt";
-		//repTarHuman.insertInTable(inputFileHuman);
-		
-		/* 2. meter datos en mirna */
-		repTarHuman.insertIntoSQLModel();
-
-		/*
-		 * MOUSE
-		 */
-		
-		//RepTar repTarMouse = new RepTar("repTar_mouse");
-		
-		// /* 1. meter datos en mirna_raw */
-		//String inputFileMouse = "/Users/esteban/Softw/miRNA/repTar/mouse_pred.txt";
-		//repTarMouse.insertInTable(inputFileMouse);
-		
-		/* 2. meter datos en mirna */
-		//repTarMouse.insertIntoSQLModel();
-
-	}
-
 
 }
