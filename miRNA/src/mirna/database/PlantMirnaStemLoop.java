@@ -8,27 +8,23 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
+
 import mirna.beans.ExpressionData;
 import mirna.beans.Hairpin;
-import mirna.beans.InteractionData;
-import mirna.beans.Mature;
 import mirna.beans.MiRna;
 import mirna.beans.Organism;
 import mirna.beans.Sequence;
 import mirna.exception.MiRnaException;
-import mirna.utils.HibernateUtil;
 
-import org.apache.commons.lang.StringUtils;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.criterion.Restrictions;
+public class PlantMirnaStemLoop extends NewMirnaDatabase {
 
-public class PlantMirnaStemLoop extends MirnaDatabase {
-
-	private final String tableName = "plant_mirna_stem_loop";
+	private final static String TABLE_NAME = "plant_mirna_stem_loop";
 
 	public PlantMirnaStemLoop() throws MiRnaException {
-		super();
+		super(TABLE_NAME);
 	}
 
 	@Override
@@ -102,153 +98,108 @@ public class PlantMirnaStemLoop extends MirnaDatabase {
 		}
 
 	}
-
+	
 	@Override
-	public void insertIntoSQLModel() throws Exception {
+	protected void processRow(Session session, ResultSet rs) throws Exception {
+		
+		String specie = rs.getString("specie").toLowerCase().trim();
+		String stemloop_id = rs.getString("mirna_id").toLowerCase().trim();
+		String sequence_hairpin = rs.getString("sequence").toLowerCase().trim();
 
-		Connection con = null;
+		MiRna miRNA = new MiRna();
+		miRNA.setName(stemloop_id);
 
-		// Get session
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Organism organism = new Organism();
+		organism.setName(specie);
 
-		// start transaction
-		Transaction tx = session.beginTransaction();
+		Sequence sequence = new Sequence();
+		sequence.setSequence(sequence_hairpin);
 
-		try {
-			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-			Statement stmt = (Statement) con.createStatement();
+		Hairpin hairpin = new Hairpin();
 
-			// our SQL SELECT query.
-			// if you only need a few columns, specify them by name instead of
-			// using "*"
-			String query = "SELECT * FROM " + tableName;
-			System.out.println("STARTING: " + query);
+		ExpressionData ed = new ExpressionData();
+		ed.setProvenance("PlantMirna");
 
-			// execute the query, and get a java resultset
-			ResultSet rs = stmt.executeQuery(query);
-
-			// iterate through the java resultset
-			int count = 0;
-			while(count<2 && rs.next()){
-			// CAMBIAR ESTO:
-
-			String specie = rs.getString("specie").toLowerCase().trim();
-			String stemloop_id = rs.getString("mirna_id").toLowerCase().trim();
-			String sequence_hairpin = rs.getString("sequence").toLowerCase().trim();
-
-			MiRna miRNA = new MiRna();
-			miRNA.setName(stemloop_id);
-
-			Organism organism = new Organism();
-			organism.setName(specie);
-
-			Sequence sequence = new Sequence();
-			sequence.setSequence(sequence_hairpin);
-
-			Hairpin hairpin = new Hairpin();
-
-			ExpressionData ed = new ExpressionData();
-			ed.setProvenance("PlantMirna");
-
-			// Inserta Organism (o recupera su id. si ya existe)
-			Object oldOrganism = session.createCriteria(Organism.class)
-					.add(Restrictions.eq("name", organism.getName()))
-					.uniqueResult();
-			if (oldOrganism == null) {
-				session.save(organism);
-				session.flush(); // to get the PK
-			} else {
-				Organism organismToUpdate = (Organism) oldOrganism;
-				organismToUpdate.update(organism);
-				session.update(organismToUpdate);
-				organism = organismToUpdate;
-			}
-			
-			miRNA.setOrganismPk(organism.getPk());
-			// Inserta MiRna (o recupera su id. si ya existe)
-			Object oldMiRna = session.createCriteria(MiRna.class)
-					.add(Restrictions.eq("name", miRNA.getName()))
-					.uniqueResult();
-			if (oldMiRna == null) {
-				session.save(miRNA);
-				session.flush(); // to get the PK
-			} else {
-				MiRna miRnaToUpdate = (MiRna) oldMiRna;
-				miRnaToUpdate.update(miRNA);
-				session.update(miRnaToUpdate);
-				miRNA = miRnaToUpdate;
-				System.out.println("Mirna " + miRNA.getName());
-			}
-			
-			Object oldSequence = session.createCriteria(Sequence.class)
-					.add( Restrictions.eq("sequence", sequence.getSequence()) )
-					.uniqueResult();
-			if (oldSequence==null) {
-				//System.out.println("LENGTH = " + sequence.getSequence().length());
-				session.save(sequence);
-				session.flush();  // to get the PK
-			} else {
-				Sequence sequenceToUpdate = (Sequence) oldSequence;
-				sequenceToUpdate.update(sequence);
-				session.update(sequenceToUpdate);
-				sequence = sequenceToUpdate;
-				System.out.println(sequence);
-			}
-			
-			hairpin.setMirnaPk(miRNA.getPk());
-			hairpin.setSequence_pk(sequence.getPk());
-			// Inserta Hairpin (o recupera su id. si ya existe)
-			Object oldHairpin = session.createCriteria(Hairpin.class)
-					.add( Restrictions.eq("sequence_pk", hairpin.getSequence_pk() ) )
-					.uniqueResult();
-			if (oldHairpin==null) {
-				session.save(hairpin);
-				session.flush();  // to get the PK
-				System.out.println("HAIRPIN has been saved");
-
-			} else {
-
-				Hairpin hairpinToUpdate = (Hairpin) oldHairpin;
-				hairpinToUpdate.update(hairpin);
-				session.update(hairpinToUpdate);
-				hairpin = hairpinToUpdate;
-				System.out.println("HAIRPIN has been updated");
-			}
-			
-			// Relaciona expressiondata data con mirna
-			ed.setMirnaPk(miRNA.getPk());
-			session.save(ed);
-			
-			count++;
-			if (count %100 == 0) {
-				System.out.println(count);
-				session.flush();
-				session.clear();
-			}
-			}
-			stmt.close();
-			tx.commit();
-
-		} catch (SQLException e) {
-			tx.rollback();
-			e.printStackTrace();
-		} finally {
-			if (con != null)
-				con.close();
-			HibernateUtil.closeSession();
-			HibernateUtil.closeSessionFactory();
+		// Inserta Organism (o recupera su id. si ya existe)
+		Object oldOrganism = session.createCriteria(Organism.class)
+				.add(Restrictions.eq("name", organism.getName()))
+				.uniqueResult();
+		if (oldOrganism == null) {
+			session.save(organism);
+			session.flush(); // to get the PK
+		} else {
+			Organism organismToUpdate = (Organism) oldOrganism;
+			organismToUpdate.update(organism);
+			session.update(organismToUpdate);
+			organism = organismToUpdate;
 		}
+		
+		miRNA.setOrganismPk(organism.getPk());
+		// Inserta MiRna (o recupera su id. si ya existe)
+		Object oldMiRna = session.createCriteria(MiRna.class)
+				.add(Restrictions.eq("name", miRNA.getName()))
+				.uniqueResult();
+		if (oldMiRna == null) {
+			session.save(miRNA);
+			session.flush(); // to get the PK
+		} else {
+			MiRna miRnaToUpdate = (MiRna) oldMiRna;
+			miRnaToUpdate.update(miRNA);
+			session.update(miRnaToUpdate);
+			miRNA = miRnaToUpdate;
+			System.out.println("Mirna " + miRNA.getName());
+		}
+		
+		Object oldSequence = session.createCriteria(Sequence.class)
+				.add( Restrictions.eq("sequence", sequence.getSequence()) )
+				.uniqueResult();
+		if (oldSequence==null) {
+			//System.out.println("LENGTH = " + sequence.getSequence().length());
+			session.save(sequence);
+			session.flush();  // to get the PK
+		} else {
+			Sequence sequenceToUpdate = (Sequence) oldSequence;
+			sequenceToUpdate.update(sequence);
+			session.update(sequenceToUpdate);
+			sequence = sequenceToUpdate;
+			System.out.println(sequence);
+		}
+		
+		hairpin.setMirnaPk(miRNA.getPk());
+		hairpin.setSequence_pk(sequence.getPk());
+		// Inserta Hairpin (o recupera su id. si ya existe)
+		Object oldHairpin = session.createCriteria(Hairpin.class)
+				.add( Restrictions.eq("sequence_pk", hairpin.getSequence_pk() ) )
+				.uniqueResult();
+		if (oldHairpin==null) {
+			session.save(hairpin);
+			session.flush();  // to get the PK
+			System.out.println("HAIRPIN has been saved");
 
+		} else {
+
+			Hairpin hairpinToUpdate = (Hairpin) oldHairpin;
+			hairpinToUpdate.update(hairpin);
+			session.update(hairpinToUpdate);
+			hairpin = hairpinToUpdate;
+			System.out.println("HAIRPIN has been updated");
+		}
+		
+		// Relaciona expressiondata data con mirna
+		ed.setMirnaPk(miRNA.getPk());
+		session.save(ed);
+		
 	}
-
+	
 	public static void main(String[] args) throws Exception {
 
 		PlantMirnaStemLoop plant = new PlantMirnaStemLoop();
 
-		// String inputFile =
-		// "/Users/esteban/Softw/miRNA/plant_mirna/all_stem_loop.txt";
+		// /* 1. meter datos en mirna_raw */
+		// String inputFile = "/Users/esteban/Softw/miRNA/plant_mirna/all_stem_loop.txt";
 		// plant.insertInTable(inputFile);
 
+		/* 2. meter datos en mirna */
 		plant.insertIntoSQLModel();
 
 	}

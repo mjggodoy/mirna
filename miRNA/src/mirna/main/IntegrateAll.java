@@ -16,6 +16,8 @@ public class IntegrateAll {
 		(new SM2miR2N()).insertIntoSQLModel();
 		(new TarBase()).insertIntoSQLModel();
 		(new MiRDB()).insertIntoSQLModel();
+		(new PlantMirnaMatureMirna()).insertIntoSQLModel();
+		(new PlantMirnaStemLoop()).insertIntoSQLModel();
 	}
 
 }
