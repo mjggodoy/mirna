@@ -5,24 +5,17 @@ import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
-
-import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
-
 import mirna.beans.Disease;
 import mirna.beans.ExpressionData;
 import mirna.beans.Gene;
 import mirna.beans.InteractionData;
 import mirna.beans.MiRna;
-import mirna.beans.Mutation;
 import mirna.beans.SNP;
 import mirna.beans.nToM.SnpHasDisease;
 import mirna.exception.MiRnaException;
-import mirna.utils.HibernateUtil;
 
 /**
  * Código para procesar los datos de Phenomir
@@ -30,64 +23,64 @@ import mirna.utils.HibernateUtil;
  * @author Esteban López Camacho
  *
  */
-public class miRdSNP3 extends miRdSNP {
-	
-	private final String tableName = "miRdSNP3";
-	
-	public miRdSNP3() throws MiRnaException { super(); }
-	
+public class MiRdSNP3 extends MiRdSNP {
+
+	private static final String TABLE_NAME = "miRdSNP3";
+
+	public MiRdSNP3() throws MiRnaException { super(TABLE_NAME); }
+
 	public void insertInTable(String csvInputFile) throws Exception {
 
 		Connection con = null;
 		String line = null;
 		String[] tokens = null;
-		
+
 		try {
 			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			Statement stmt = (Statement) con.createStatement(); 
-			
+
 			FileReader fr = new FileReader(csvInputFile);
 			BufferedReader br = new BufferedReader(fr);
-	
+
 			int count = 0;
-	
+
 			br.readLine();
-			
+
 			while (((line = br.readLine()) != null)) {
-	
+
 				count++;
 				System.out.println(count);
-				
+
 				//tokens = StringUtils.splitPreserveAllTokens(line, ",");
 				tokens = line.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
-				
+
 				for (int i=0; i<tokens.length; i++) {
 					tokens[i] = quitarComillas(tokens[i]);
 				}
-	
+
 				String geneName = tokens[0];
 				String refseqId = tokens[1];
 				String miR = tokens[2];
 				String SNP = tokens[3];
 				String diseases = tokens[4].replaceAll("'", "\\\\'");
 				String distance = tokens[5];
-				
+
 				String expConf = "";//tokens[6];
-				
+
 				if (tokens.length==7) {
 					expConf = tokens[6];
-					
+
 					if (!"Yes".equals(expConf)) {
 						br.close();
 						throw new Exception(tokens.length + " tokens found!");
 					}
 				}
-					
+
 				if (tokens.length>7) {
 					br.close();
 					throw new Exception(tokens.length + " tokens found!");
 				}
-			
+
 				String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
 						+ geneName + "','"
 						+ refseqId + "','"
@@ -96,7 +89,7 @@ public class miRdSNP3 extends miRdSNP {
 						+ diseases + "','"
 						+ distance + "','"
 						+ expConf + "')";
-				
+
 				stmt.executeUpdate(query);
 			}
 			fr.close();
@@ -114,64 +107,38 @@ public class miRdSNP3 extends miRdSNP {
 		} finally {
 			if (con!=null) con.close();
 		}
-			
-	}	
-		
-	public void insertIntoSQLModel() throws Exception {
 
-		Connection con = null;
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		Transaction tx = session.beginTransaction();
-		
-		
-		try {
-			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-			Statement stmt = (Statement) con.createStatement();
-			
-			// our SQL SELECT query. 
-			// if you only need a few columns, specify them by name instead of using "*"
-			String query = "SELECT * FROM " + tableName;
-			System.out.println("STARTING: " + query);
-			
-            stmt.setFetchSize(Integer.MIN_VALUE);
-			
-			// execute the query, and get a java resultset
-			ResultSet rs = stmt.executeQuery(query);
-			
-			// iterate through the java resultset
-		
-			
-			int count = 0;
-			rs.next();
-			// CAMBIAR ESTO:
-			
+	}	
+
+	public void processRow(Session session, ResultSet rs) throws Exception{
+
 			String gene_name = rs.getString("gene").toLowerCase().trim();
 			String ref_seq = rs.getString("refseq").toLowerCase().trim();
 			String mirna_name = rs.getString("miR").toLowerCase().trim();
 			String snp_id = rs.getString("snp").toLowerCase().trim();
 			String disease_name = rs.getString("diseases").toLowerCase().trim();
 			String distance = rs.getString("distance").toLowerCase().trim();// I'm not going to use this field! 
-			
+
 			Disease disease = new Disease();
 			disease.setName(disease_name);
-			
+
 			Gene gene = new Gene();
 			gene.setName(gene_name);
 			gene.setAccessionumber(ref_seq);
-			
+
 			MiRna mirna = new MiRna();
 			mirna.setName(mirna_name);
-			
+
 			SNP snp = new SNP();
 			snp.setSnp_id(snp_id);
-			
+
 			InteractionData id = new InteractionData();
 			id.setProvenance("miRdSNP");
-			
+
 			ExpressionData ed = new ExpressionData();
 			ed.setProvenance("miRdSNP");
 
-			
+
 			Object oldDisease = session.createCriteria(Disease.class)
 					.add( Restrictions.eq("name", disease.getName()) )
 					.uniqueResult();
@@ -189,7 +156,7 @@ public class miRdSNP3 extends miRdSNP {
 				System.out.println(snp);
 
 			}
-			
+
 			Object oldGene = session.createCriteria(Gene.class)
 					.add( Restrictions.eq("name", gene.getName()) )
 					.uniqueResult();
@@ -202,7 +169,7 @@ public class miRdSNP3 extends miRdSNP {
 				session.update(geneToUpdate);
 				gene = geneToUpdate;
 			}
-			
+
 			Object oldMiRna = session.createCriteria(MiRna.class)
 					.add( Restrictions.eq("name", mirna.getName()) )
 					.uniqueResult();
@@ -210,13 +177,13 @@ public class miRdSNP3 extends miRdSNP {
 				session.save(mirna);
 				session.flush();  // to get the PK
 			} else {
-				
+
 				MiRna mirnaToUpdate = (MiRna) oldMiRna;
 				mirnaToUpdate.update(mirna);
 				session.update(mirnaToUpdate);
 				mirna = mirnaToUpdate;
 			}
-			
+
 			snp.setGene_pk(gene.getPk());		
 			Object oldSnp = session.createCriteria(SNP.class)
 					.add( Restrictions.eq("snp_id", snp.getSnp_id()))
@@ -230,10 +197,10 @@ public class miRdSNP3 extends miRdSNP {
 				session.update(snpToUpdate);
 				snp = snpToUpdate;
 			}
-		
+
 			// Relaciona SNP y Disease
 			// Relaciona SNP y Gene_id
-			
+
 			SnpHasDisease snpHasDisease = new SnpHasDisease(snp.getPk(), disease.getPk());
 			Object oldSnphasDisease = session.createCriteria(SnpHasDisease.class)
 					.add( Restrictions.eq("snpPk", snp.getPk()) )
@@ -242,7 +209,7 @@ public class miRdSNP3 extends miRdSNP {
 			if (oldSnphasDisease==null) {
 				session.save(snpHasDisease);
 			}
-						
+
 			ed.setMirnaPk(mirna.getPk());
 			ed.setDiseasePk(disease.getPk());
 			session.save(ed);
@@ -250,34 +217,6 @@ public class miRdSNP3 extends miRdSNP {
 			id.setGene_pk(gene.getPk());
 			id.setExpression_data_pk(ed.getPk());
 			session.save(id);
-			
-			count++;
-			if (count%100==0) {
-				System.out.println(count);
-				session.flush();
-		        session.clear();
-			}
-			
-			
-			stmt.close();
-			tx.commit();
-		} catch (SQLException e) {
-			tx.rollback();
-			e.printStackTrace();
-		} finally {
-			if (con!=null) con.close();
-			HibernateUtil.closeSession();
-			HibernateUtil.closeSessionFactory();
-		}
-		
 	}
-	
-	public static void main(String[] args) throws Exception {
-		
-		miRdSNP3 miRdSNP3 = new miRdSNP3();
-		miRdSNP3.insertIntoSQLModel();
-		
-		
-	}
-	
+
 }

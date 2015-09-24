@@ -2,9 +2,9 @@ package mirna.database;
 
 import mirna.exception.MiRnaException;
 
-public abstract class VirmiRNA extends MirnaDatabase {
+public abstract class VirmiRNA extends NewMirnaDatabase {
 
-	public VirmiRNA() throws MiRnaException { super(); }
+	protected VirmiRNA(String tableName) throws MiRnaException { super(tableName); }
 
 	public static void main(String[] args) throws Exception {
 
@@ -12,9 +12,5 @@ public abstract class VirmiRNA extends MirnaDatabase {
 		(new VirmiRNA2()).insertIntoSQLModel();
 		(new VirmiRNA3()).insertIntoSQLModel();
 
-
-
 	}
-
-
 }
