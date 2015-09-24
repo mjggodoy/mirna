@@ -19,7 +19,9 @@ public class IntegrateAll {
 		(new PlantMirnaMatureMirna()).insertIntoSQLModel();
 		(new PlantMirnaStemLoop()).insertIntoSQLModel();
 		(new Phenomir()).insertIntoSQLModel();
-		(new RepTar()).insertIntoSQLModel();
+		(new RepTar("repTar_Human")).insertIntoSQLModel();
+		(new RepTar("repTar_Mouse")).insertIntoSQLModel();
+
 
 	}
 

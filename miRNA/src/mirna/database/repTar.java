@@ -20,10 +20,10 @@ import mirna.exception.MiRnaException;
 
 public class RepTar extends NewMirnaDatabase {
 
-	private static final String TABLE_NAME = "reptar";
+	private String tableName;
 
-	public RepTar() throws MiRnaException {
-		super(TABLE_NAME);
+	public RepTar(String tableName) throws MiRnaException {
+		super(tableName);
 		this.fetchSizeMin = true;
 	}
 
