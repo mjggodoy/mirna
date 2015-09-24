@@ -27,11 +27,11 @@ import org.hibernate.criterion.Restrictions;
  * @author Esteban López Camacho
  *
  */
-public class miREnvironment extends NewMirnaDatabase {
+public class MiREnvironment extends NewMirnaDatabase {
 
 	private final static String TABLE_NAME = "miREnvironment";
 
-	public miREnvironment() throws MiRnaException {
+	public MiREnvironment() throws MiRnaException {
 		super(TABLE_NAME);
 	}
 	
@@ -252,7 +252,7 @@ public class miREnvironment extends NewMirnaDatabase {
 	
 	public static void main(String[] args) throws Exception {
 
-		miREnvironment mirEnvironment = new miREnvironment();
+		MiREnvironment mirEnvironment = new MiREnvironment();
 
 		// /* 1. meter datos en mirna_raw */
 		//String inputFile = "/Users/esteban/Softw/miRNA/mirendata.txt";
