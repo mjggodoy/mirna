@@ -5,9 +5,7 @@ import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
-
 import mirna.beans.ExpressionData;
 import mirna.beans.Gene;
 import mirna.beans.InteractionData;
@@ -19,19 +17,16 @@ import mirna.beans.Target;
 import mirna.beans.nToM.ExpressionDataHasPubmedDocument;
 import mirna.beans.nToM.MirnaHasPubmedDocument;
 import mirna.exception.MiRnaException;
-import mirna.utils.HibernateUtil;
-
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
-public class VirmiRNA3 extends VirmiRNA {
+public class VirmiRNA3 extends NewMirnaDatabase {
 
-	private final String tableName = "virmirna3";
+	private static final String TABLE_NAME = "virmirna3";
 
 	public VirmiRNA3() throws MiRnaException {
-		super();
+		super(TABLE_NAME);
 	}
 
 	public void insertInTable(String csvInputFile) throws Exception {
@@ -119,228 +114,180 @@ public class VirmiRNA3 extends VirmiRNA {
 	}		
 
 	@Override
-	public void insertIntoSQLModel() throws Exception {
+	public void processRow(Session session, ResultSet rs) throws Exception {
 
-		Connection con = null;
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		Transaction tx = session.beginTransaction();
+		String id_virus = rs.getString("vmt_id");
+		String virus_name = rs.getString("virus");
+		String virus_full_name = rs.getString("virus_full_name");
+		String taxonomy_resource = rs.getString("taxonomy");
+		String mirna_name = rs.getString("mirna");
+		String gene_name = rs.getString("gene");
+		String uniprot_id = rs.getString("uniprot");
+		String target_organism = rs.getString("organism");
+		String cell_line = rs.getString("cell_line");
+		String method = rs.getString("method");
+		String target_sequence = rs.getString("sequence_target");
+		String target_start = rs.getString("start_target");
+		String target_end = rs.getString("end_target");
+		String target_region = rs.getString("region_target");
+		String target_reference = rs.getString("target_reference");
+		String pmid = rs.getString("pubmed_id");
 
-		try {
-			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-			Statement stmt = (Statement) con.createStatement();
+		Organism organism = new Organism();
+		organism.setShortName(virus_name);
+		organism.setName(virus_full_name);
+		organism.setResource(taxonomy_resource);
 
-			// our SQL SELECT query. 
-			// if you only need a few columns, specify them by name instead of using "*"
-			String query = "SELECT * FROM " + tableName;
-			System.out.println("STARTING: " + query);
+		Organism organism2 = new Organism();
+		organism2.setName(target_organism);
 
-			// execute the query, and get a java resultset
-			ResultSet rs = stmt.executeQuery(query);
+		MiRna mirna = new MiRna();
+		mirna.setName(mirna_name);
 
-			// iterate through the java resultset
-			int count = 0;
-			
-			if (rs.next() &&  count < 4) {
-				
-			count ++;
+		ExpressionData ed = new ExpressionData();
+		ed.setMethod(method);
+		ed.setCellularLine(cell_line);
+		ed.setProvenanceId(id_virus);
+		ed.setProvenance("VirmiRNA");
 
-			String id_virus = rs.getString("vmt_id");
-			String virus_name = rs.getString("virus");
-			String virus_full_name = rs.getString("virus_full_name");
-			String taxonomy_resource = rs.getString("taxonomy");
-			String mirna_name = rs.getString("mirna");
-			String gene_name = rs.getString("gene");
-			String uniprot_id = rs.getString("uniprot");
-			String target_organism = rs.getString("organism");
-			String cell_line = rs.getString("cell_line");
-			String method = rs.getString("method");
-			String target_sequence = rs.getString("sequence_target");
-			String target_start = rs.getString("start_target");
-			String target_end = rs.getString("end_target");
-			String target_region = rs.getString("region_target");
-			String target_reference = rs.getString("target_reference");
-			String pmid = rs.getString("pubmed_id");
+		Gene gene = new Gene();
+		gene.setName(gene_name);
+		gene.setGeneId(uniprot_id);
 
-			Organism organism = new Organism();
-			organism.setShortName(virus_name);
-			organism.setName(virus_full_name);
-			organism.setResource(taxonomy_resource);
+		Target target = new Target();
+		target.setStrand_start(target_start); 
+		target.setStrand_end(target_end);
+		target.setRegion(target_region);
+		target.setTarget_ref(target_reference);
 
-			Organism organism2 = new Organism();
-			organism2.setName(target_organism);
+		Sequence sequence = new Sequence();
+		sequence.setSequence(target_sequence);
 
-			MiRna mirna = new MiRna();
-			mirna.setName(mirna_name);
+		InteractionData id = new InteractionData();
+		id.setProvenance("VirmiRNA");
 
-			ExpressionData ed = new ExpressionData();
-			ed.setMethod(method);
-			ed.setCellularLine(cell_line);
-			ed.setProvenanceId(id_virus);
-			ed.setProvenance("VirmiRNA");
+		PubmedDocument pubmedDoc = new PubmedDocument();
+		pubmedDoc.setId(pmid);
 
-			Gene gene = new Gene();
-			gene.setName(gene_name);
-			gene.setGeneId(uniprot_id);
+		//Inserta Sequence (o recupera su id. si ya existe)
 
-			Target target = new Target();
-			target.setStrand_start(target_start); 
-			target.setStrand_end(target_end);
-			target.setRegion(target_region);
-			target.setTarget_ref(target_reference);
-
-			Sequence sequence = new Sequence();
-			sequence.setSequence(target_sequence);
-
-			InteractionData id = new InteractionData();
-			id.setProvenance("VirmiRNA");
-			
-			PubmedDocument pubmedDoc = new PubmedDocument();
-			pubmedDoc.setId(pmid);
-			
-			//Inserta Sequence (o recupera su id. si ya existe)
-
-			Object oldSequence = session.createCriteria(Sequence.class)
-					.add(Restrictions.eq("sequence", sequence.getSequence()))
-					.uniqueResult();
-			if (oldSequence == null) {
-				session.save(sequence);
-				session.flush(); // to get the PK
-			} else {
-				Sequence sequenceUpToDate = (Sequence) oldSequence;
-				sequenceUpToDate.update(sequenceUpToDate);
-				session.update(sequenceUpToDate);
-				sequence = sequenceUpToDate;
-			}
-
-			//Inserta Organism (o recupera su id. si ya existe)
-
-			Object oldOrganism = session.createCriteria(Organism.class)
-					.add(Restrictions.eq("name", organism.getName()) )
-					.uniqueResult();
-			if (oldOrganism==null) {
-				session.save(organism);
-				session.flush();  // to get the PK
-			} else {
-				Organism organismToUpdate = (Organism) oldOrganism;
-				organismToUpdate.update(organism);
-				session.update(organismToUpdate);
-				organism = organismToUpdate;
-				System.out.println("AQUI");
-			}
-			
-		
-			//Inserta mirna (o recupera su id. si ya existe)
-			
-			mirna.setOrganismPk(organism.getPk());
-			Object oldMiRna = session.createCriteria(MiRna.class)
-					.add(Restrictions.eq("name", mirna.getName()) )
-					.uniqueResult();
-			if (oldMiRna==null) {
-				session.save(mirna);
-				session.flush();  // to get the PK
-			} else {
-				MiRna miRnaToUpdate = (MiRna) oldMiRna;
-				miRnaToUpdate.update(mirna);
-				session.update(miRnaToUpdate);
-				mirna = miRnaToUpdate;
-			}
-
-			//Inserta Gene (o recupera su id. si ya existe)
-
-			gene.setOrganism_pk(organism2.getPk());
-			Object oldGene = session.createCriteria(Gene.class)
-					.add(Restrictions.eq("name", gene.getName()) )
-					.uniqueResult();
-			if (oldGene==null) {
-				session.save(gene);
-				session.flush();  // to get the PK
-			} else {
-				Gene geneToUpdate = (Gene) oldGene;
-				geneToUpdate.update(gene);
-				session.update(geneToUpdate);
-				gene = geneToUpdate;
-			}
-			
-			// Inserta PubmedDocument (o recupera su id. si ya existe)
-			Object oldPubmedDoc = session.createCriteria(PubmedDocument.class)
-					.add( Restrictions.eq("id", pubmedDoc.getId()) )
-					.uniqueResult();
-			if (oldPubmedDoc==null) {
-				session.save(pubmedDoc);
-				session.flush(); // to get the PK
-				System.out.println("SAVE pubmed document");
-
-			} else {
-				PubmedDocument pubmedDocToUpdate = (PubmedDocument) oldPubmedDoc;
-				pubmedDocToUpdate.update(pubmedDoc);
-				session.update(pubmedDocToUpdate);
-				pubmedDoc = pubmedDocToUpdate;
-				System.out.println("UPDATE pubmed document");
-			}
-			
-			
-			//Inserta Target (o recupera su id. si ya existe)
-
-			target.setOrganism_pk(organism2.getPk());
-			target.setSequence_pk(sequence.getPk()) ;
-			session.save(target);
-
-			// Relaciona expression data con mirna  (o recupera su id. si ya existe)
-
-			ed.setMirnaPk(mirna.getPk());
-			session.save(ed);
-
-			// Relaciona interaction data con mirna  (o recupera su id. si ya existe)		
-
-			id.setTarget_pk(target.getPk());
-			id.setMirna_pk(mirna.getPk());
-			id.setGene_pk(gene.getPk());
-			id.setExpression_data_pk(ed.getPk());
-			session.save(id);
-
-
-			MirnaHasPubmedDocument mirnaHasPubmedDocument =
-					new MirnaHasPubmedDocument(mirna.getPk(), pubmedDoc.getPk());
-			ExpressionDataHasPubmedDocument expresDataHasPubmedDocument =
-					new ExpressionDataHasPubmedDocument(ed.getPk(), pubmedDoc.getPk());
-
-			// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
-			Object oldMirnaHasPubmedDocument = session.createCriteria(MirnaHasPubmedDocument.class)
-					.add( Restrictions.eq("mirnaPk", mirna.getPk()) )
-					.add( Restrictions.eq("pubmedDocumentPk", pubmedDoc.getPk()) )
-					.uniqueResult();
-			if (oldMirnaHasPubmedDocument==null) {
-				session.save(mirnaHasPubmedDocument);
-			}
-			// Relaciona PubmedDocument con ExpressionData
-			session.save(expresDataHasPubmedDocument);
-
-
-			count++;
-			if (count%100==0) {
-				System.out.println(count);
-				session.flush();
-				session.clear();
-			}
-			}
-			
-			stmt.close();
-			tx.commit();		
-		} catch (SQLException e) {
-			tx.rollback();
-			e.printStackTrace();
-		} finally {
-			if (con!=null) con.close();
-			HibernateUtil.closeSession();
-			HibernateUtil.closeSessionFactory();
+		Object oldSequence = session.createCriteria(Sequence.class)
+				.add(Restrictions.eq("sequence", sequence.getSequence()))
+				.uniqueResult();
+		if (oldSequence == null) {
+			session.save(sequence);
+			session.flush(); // to get the PK
+		} else {
+			Sequence sequenceUpToDate = (Sequence) oldSequence;
+			sequenceUpToDate.update(sequenceUpToDate);
+			session.update(sequenceUpToDate);
+			sequence = sequenceUpToDate;
 		}
 
-	}
-	
-	public static void main(String[] args) throws Exception {
-		
-		VirmiRNA3 virmiRNA3 = new VirmiRNA3();
-		virmiRNA3.insertIntoSQLModel();
+		//Inserta Organism (o recupera su id. si ya existe)
+
+		Object oldOrganism = session.createCriteria(Organism.class)
+				.add(Restrictions.eq("name", organism.getName()) )
+				.uniqueResult();
+		if (oldOrganism==null) {
+			session.save(organism);
+			session.flush();  // to get the PK
+		} else {
+			Organism organismToUpdate = (Organism) oldOrganism;
+			organismToUpdate.update(organism);
+			session.update(organismToUpdate);
+			organism = organismToUpdate;
+			System.out.println("AQUI");
+		}
+
+
+		//Inserta mirna (o recupera su id. si ya existe)
+
+		mirna.setOrganismPk(organism.getPk());
+		Object oldMiRna = session.createCriteria(MiRna.class)
+				.add(Restrictions.eq("name", mirna.getName()) )
+				.uniqueResult();
+		if (oldMiRna==null) {
+			session.save(mirna);
+			session.flush();  // to get the PK
+		} else {
+			MiRna miRnaToUpdate = (MiRna) oldMiRna;
+			miRnaToUpdate.update(mirna);
+			session.update(miRnaToUpdate);
+			mirna = miRnaToUpdate;
+		}
+
+		//Inserta Gene (o recupera su id. si ya existe)
+
+		gene.setOrganism_pk(organism2.getPk());
+		Object oldGene = session.createCriteria(Gene.class)
+				.add(Restrictions.eq("name", gene.getName()) )
+				.uniqueResult();
+		if (oldGene==null) {
+			session.save(gene);
+			session.flush();  // to get the PK
+		} else {
+			Gene geneToUpdate = (Gene) oldGene;
+			geneToUpdate.update(gene);
+			session.update(geneToUpdate);
+			gene = geneToUpdate;
+		}
+
+		// Inserta PubmedDocument (o recupera su id. si ya existe)
+		Object oldPubmedDoc = session.createCriteria(PubmedDocument.class)
+				.add( Restrictions.eq("id", pubmedDoc.getId()) )
+				.uniqueResult();
+		if (oldPubmedDoc==null) {
+			session.save(pubmedDoc);
+			session.flush(); // to get the PK
+			System.out.println("SAVE pubmed document");
+
+		} else {
+			PubmedDocument pubmedDocToUpdate = (PubmedDocument) oldPubmedDoc;
+			pubmedDocToUpdate.update(pubmedDoc);
+			session.update(pubmedDocToUpdate);
+			pubmedDoc = pubmedDocToUpdate;
+			System.out.println("UPDATE pubmed document");
+		}
+
+
+		//Inserta Target (o recupera su id. si ya existe)
+
+		target.setOrganism_pk(organism2.getPk());
+		target.setSequence_pk(sequence.getPk()) ;
+		session.save(target);
+
+		// Relaciona expression data con mirna  (o recupera su id. si ya existe)
+
+		ed.setMirnaPk(mirna.getPk());
+		session.save(ed);
+
+		// Relaciona interaction data con mirna  (o recupera su id. si ya existe)		
+
+		id.setTarget_pk(target.getPk());
+		id.setMirna_pk(mirna.getPk());
+		id.setGene_pk(gene.getPk());
+		id.setExpression_data_pk(ed.getPk());
+		session.save(id);
+
+
+		MirnaHasPubmedDocument mirnaHasPubmedDocument =
+				new MirnaHasPubmedDocument(mirna.getPk(), pubmedDoc.getPk());
+		ExpressionDataHasPubmedDocument expresDataHasPubmedDocument =
+				new ExpressionDataHasPubmedDocument(ed.getPk(), pubmedDoc.getPk());
+
+		// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
+		Object oldMirnaHasPubmedDocument = session.createCriteria(MirnaHasPubmedDocument.class)
+				.add( Restrictions.eq("mirnaPk", mirna.getPk()) )
+				.add( Restrictions.eq("pubmedDocumentPk", pubmedDoc.getPk()) )
+				.uniqueResult();
+		if (oldMirnaHasPubmedDocument==null) {
+			session.save(mirnaHasPubmedDocument);
+		}
+		// Relaciona PubmedDocument con ExpressionData
+		session.save(expresDataHasPubmedDocument);
+
+
 	}
 
 
