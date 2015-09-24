@@ -5,30 +5,26 @@ import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
+
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
 import mirna.beans.Complex;
 import mirna.beans.Gene;
 import mirna.beans.InteractionData;
 import mirna.beans.MiRna;
 import mirna.beans.Target;
-import mirna.beans.Transcript;
 import mirna.exception.MiRnaException;
-import mirna.utils.HibernateUtil;
 
-import org.apache.commons.lang.StringUtils;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.criterion.Restrictions;
-
-public class repTar extends MirnaDatabase {
+public class RepTar extends NewMirnaDatabase {
 
 	private String tableName;
 
-	public repTar(String tableName) throws MiRnaException {
-		super();
-		this.tableName = tableName;
+	public RepTar(String tableName) throws MiRnaException {
+		super(tableName);
+		this.fetchSizeMin = true;
 	}
 
 	public void insertInTable(String csvInputFile) throws Exception {
@@ -142,151 +138,117 @@ public class repTar extends MirnaDatabase {
 	}
 
 	@Override
-	public void insertIntoSQLModel() throws Exception {
+	protected void processRow(Session session, ResultSet rs) throws Exception {
+	
+		String gene_symbol = rs.getString("gene_symbol");
+		String gene_accesion = rs.getString("gene_accesion");
+		String mirna_name = rs.getString("mirna").toLowerCase().trim();
+		String binding_site_start_position = rs.getString("sequence_start").toLowerCase().trim();
+		String binding_site_end_position = rs.getString("sequence_end").toLowerCase().trim();
+		String minimal_free_energy = rs.getString("minimal_free_energy").toLowerCase().trim();
+		String normalized_free_energy = rs.getString("normalized_free_energy").toLowerCase().trim();
+		String site_conservation_score = rs.getString("site_conservation_score");
+		String binding_site_pattern = rs.getString("binding_site_pattern");
+		String gu_proportion = rs.getString("gu_proportion");
+		String UTR3_conservation_score = rs.getString("UTR_conservation_score");
+		String repeated_motifs = rs.getString("repeated_motifs");
+		@SuppressWarnings("unused")
+		String algorithm = rs.getString("algorithm");
 
-		Connection con = null;
-		Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = session.beginTransaction();
-        
-		try {
-			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-			Statement stmt = (Statement) con.createStatement();
+		MiRna miRna = new MiRna();
+		miRna.setName(mirna_name);
 
-			stmt.setFetchSize(Integer.MIN_VALUE);
-			// our SQL SELECT query. 
-			// if you only need a few columns, specify them by name instead of using "*"
-			String query = "SELECT * FROM " + tableName;
-			System.out.println("STARTING: " + query);
+		Gene gene = new Gene();
+		gene.setAccessionumber(gene_accesion);
+		gene.setName(gene_symbol);
 
-			// execute the query, and get a java resultset
-			ResultSet rs = stmt.executeQuery(query);
+		Target target = new Target();
+		target.setBinding_site_start(binding_site_start_position);
+		target.setBinding_site_end(binding_site_end_position);
+		target.setGu_proportion(gu_proportion);
+		target.setUtr3_conservation_score(UTR3_conservation_score);
+		target.setSite_conservation_score(site_conservation_score);
+		target.setRepeated_motifs(repeated_motifs);
 
-			// iterate through the java resultset
-			int count = 0;
-			rs.next();
-			// CAMBIAR ESTO:
+		Complex complex = new Complex();
+		complex.setMinimal_free_energy(minimal_free_energy);
+		complex.setNormalized_minimal_free_energy(normalized_free_energy);
+		complex.setBinding_site_pattern(binding_site_pattern);
 
-			String gene_symbol = rs.getString("gene_symbol");
-			String gene_accesion = rs.getString("gene_accesion");
-			String mirna_name = rs.getString("mirna").toLowerCase().trim();
-			String binding_site_start_position = rs.getString("sequence_start").toLowerCase().trim();
-			String binding_site_end_position = rs.getString("sequence_end").toLowerCase().trim();
-			String minimal_free_energy = rs.getString("minimal_free_energy").toLowerCase().trim();
-			String normalized_free_energy = rs.getString("normalized_free_energy").toLowerCase().trim();
-			String site_conservation_score = rs.getString("site_conservation_score");
-			String binding_site_pattern = rs.getString("binding_site_pattern");
-			String gu_proportion = rs.getString("gu_proportion");
-			String UTR3_conservation_score = rs.getString("UTR_conservation_score");
-			String repeated_motifs = rs.getString("repeated_motifs");
-			String algorithm = rs.getString("algorithm");
+		InteractionData id = new InteractionData();
+		id.setProvenance("repTar");
 
-			MiRna miRna = new MiRna();
-			miRna.setName(mirna_name);
-
-			Gene gene = new Gene();
-			gene.setAccessionumber(gene_accesion);
-			gene.setName(gene_symbol);
-
-			Target target = new Target();
-			target.setBinding_site_start(binding_site_start_position);
-			target.setBinding_site_end(binding_site_end_position);
-			target.setGu_proportion(gu_proportion);
-			target.setUtr3_conservation_score(UTR3_conservation_score);
-			target.setSite_conservation_score(site_conservation_score);
-			target.setRepeated_motifs(repeated_motifs);
-
-			Complex complex = new Complex();
-			complex.setMinimal_free_energy(minimal_free_energy);
-			complex.setNormalized_minimal_free_energy(normalized_free_energy);
-			complex.setBinding_site_pattern(binding_site_pattern);
-
-			InteractionData id = new InteractionData();
-			id.setProvenance("repTar");
-
-			Object oldMiRna = session.createCriteria(MiRna.class)
-					.add( Restrictions.eq("name", miRna.getName()) )
-					.uniqueResult();
-			if (oldMiRna==null) {
-				session.save(miRna);
-				session.flush();  // to get the PK
-			} else {
-				MiRna miRnaToUpdate = (MiRna) oldMiRna;
-				miRnaToUpdate.update(miRna);
-				session.update(miRnaToUpdate);
-				miRna = miRnaToUpdate;
-			}
-
-			Object oldGene = session.createCriteria(Gene.class)
-					.add( Restrictions.eq("name", gene.getName()) )
-					.uniqueResult();
-			if (oldGene==null) {
-				session.save(gene);
-				session.flush();  // to get the PK
-			} else {
-				Gene geneToUpdate = (Gene) oldGene;
-				geneToUpdate.update(gene);
-				session.update(geneToUpdate);
-				gene = geneToUpdate;
-			}
-			
-			session.save(target);
-			session.flush(); // to get the PK
-
-
-			// Relaciona interaction data con mirna y target
-
-			id.setMirna_pk(miRna.getPk());
-			id.setTarget_pk(target.getPk());
-			id.setGene_pk(gene.getPk());
-			session.save(id);
-			session.flush();
-
-
-			// Relaciona Complex con InteractionData/Target/miRNA
-
-			complex.setInteraction_data_pk(id.getPk());
-			complex.setTarget_pk(target.getPk());
-			complex.setMirna_pk(miRna.getPk());
-			session.save(complex);
-			session.flush();
-
-			count++;
-			if (count%100==0) {
-				System.out.println(count);
-				session.flush();
-				session.clear();
-			}
-
-			stmt.close();
-			tx.commit();
-
-		} catch (SQLException e) {
-			tx.rollback();
-			e.printStackTrace();
-		} finally {
-			if (con!=null) con.close();
-			HibernateUtil.closeSession();
-			HibernateUtil.closeSessionFactory();
+		Object oldMiRna = session.createCriteria(MiRna.class)
+				.add( Restrictions.eq("name", miRna.getName()) )
+				.uniqueResult();
+		if (oldMiRna==null) {
+			session.save(miRna);
+			session.flush();  // to get the PK
+		} else {
+			MiRna miRnaToUpdate = (MiRna) oldMiRna;
+			miRnaToUpdate.update(miRna);
+			session.update(miRnaToUpdate);
+			miRna = miRnaToUpdate;
 		}
 
-	}
+		Object oldGene = session.createCriteria(Gene.class)
+				.add( Restrictions.eq("name", gene.getName()) )
+				.uniqueResult();
+		if (oldGene==null) {
+			session.save(gene);
+			session.flush();  // to get the PK
+		} else {
+			Gene geneToUpdate = (Gene) oldGene;
+			geneToUpdate.update(gene);
+			session.update(geneToUpdate);
+			gene = geneToUpdate;
+		}
+		
+		session.save(target);
+		session.flush(); // to get the PK
 
+		// Relaciona interaction data con mirna y target
+		id.setMirna_pk(miRna.getPk());
+		id.setTarget_pk(target.getPk());
+		id.setGene_pk(gene.getPk());
+		session.save(id);
+		session.flush();
+
+		// Relaciona Complex con InteractionData/Target/miRNA
+		complex.setInteraction_data_pk(id.getPk());
+		complex.setTarget_pk(target.getPk());
+		complex.setMirna_pk(miRna.getPk());
+		session.save(complex);
+		session.flush();
+		
+	}
+	
 	public static void main(String[] args) throws Exception {
 
 		/*
 		 * HUMAN
 		 */
-		repTar repTarHuman = new repTar("repTar_human");
+		
+		RepTar repTarHuman = new RepTar("repTar_human");
+		
+		// /* 1. meter datos en mirna_raw */
 		//String inputFileHuman = "/Users/esteban/Softw/miRNA/repTar/human_pred.txt";
 		//repTarHuman.insertInTable(inputFileHuman);
+		
+		/* 2. meter datos en mirna */
 		repTarHuman.insertIntoSQLModel();
 
 		/*
 		 * MOUSE
 		 */
-		repTar repTarMouse = new repTar("repTar_mouse");
+		
+		//RepTar repTarMouse = new RepTar("repTar_mouse");
+		
+		// /* 1. meter datos en mirna_raw */
 		//String inputFileMouse = "/Users/esteban/Softw/miRNA/repTar/mouse_pred.txt";
 		//repTarMouse.insertInTable(inputFileMouse);
+		
+		/* 2. meter datos en mirna */
 		//repTarMouse.insertIntoSQLModel();
 
 	}
