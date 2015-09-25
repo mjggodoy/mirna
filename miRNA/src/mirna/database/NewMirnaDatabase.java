@@ -22,7 +22,7 @@ public abstract class NewMirnaDatabase implements IMirnaDatabase {
 	
 	// Number of rows to read from the database to be inserted into the model.
 	// Use -1 to read all the rows.
-	protected final int ROWS_TO_READ = 5;
+	protected final int ROWS_TO_READ = 100;
 	
 	protected String tableName;
 	
