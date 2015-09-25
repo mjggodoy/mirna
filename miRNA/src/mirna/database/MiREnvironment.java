@@ -239,6 +239,7 @@ public class MiREnvironment extends NewMirnaDatabase {
 		// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
 		Object oldMirnaHasPubmedDocument = session.createCriteria(MirnaHasPubmedDocument.class)
 				.add( Restrictions.eq("mirnaPk", miRna.getPk()) )
+				.add( Restrictions.eq("pubmedDocumentPk", pubmedDoc.getPk()) )
 				.uniqueResult();
 		if (oldMirnaHasPubmedDocument==null) {
 			session.save(mirnaHasPubmedDocument);
