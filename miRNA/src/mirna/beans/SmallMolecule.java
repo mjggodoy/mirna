@@ -14,14 +14,14 @@ import mirna.exception.ConflictException;
 
 public class SmallMolecule extends ModelClass {
 
-
-	@Column(name = "fda", nullable = false, length = 300)
+	
+	@Column(name = "fda", nullable = true, length = 300)
 	private String fda;
-
-	@Column(name = "db", nullable = false, length = 300)
+	
+	@Column(name = "db", nullable = true, length = 300)
 	private String db;
-
-	@Column(name = "cid", nullable = false, length = 300)
+	
+	@Column(name = "cid", nullable = true, length = 300)
 	private String cid;
 
 	@Column(name = "environmental_factor_pk", nullable = false, length = 20)
