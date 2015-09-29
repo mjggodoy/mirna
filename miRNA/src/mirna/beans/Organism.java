@@ -39,7 +39,8 @@ public class Organism extends ModelClass {
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		if("Human".equals(name)) this.name = "Homo sapiens";
+		else this.name = name;
 	}
 
 	public String getSpecie() {

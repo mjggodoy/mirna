@@ -133,7 +133,7 @@ public class SM2miR2N extends NewMirnaDatabase {
 		String evidence = rs.getString("expression");
 
 		Organism organism = new Organism();
-		organism.setName(specie);
+		organism.setName(specie.trim());
 
 		MiRna miRna = new MiRna();
 
@@ -146,16 +146,19 @@ public class SM2miR2N extends NewMirnaDatabase {
 			String substring_specie_name = specie_name.substring(0, 1) + specie_name.substring(3, 4);
 			String name_organism = substring_genus + substring_specie_name;
 			//System.out.println(substring_genus + substring_specie_name);
-			miRna.setName(name_organism+"-"+name);
+			miRna.setName(name_organism+"-"+name.trim());
+			miRna.setAccessionNumber(mirbase);
 			//System.out.println(miRna.getName());
 			
 		}else if (organism.getName().equals("Heifer")){
 			
-			miRna.setName("bta"+"-"+name);
+			miRna.setName("bta"+"-"+name.trim());
+			miRna.setAccessionNumber(mirbase);
 
 		}else if (organism.getName().equals("Physcomitrella patens")){ 	
 		
-			miRna.setName("ppt"+"-"+name);
+			miRna.setName("ppt"+"-"+name.trim());
+			miRna.setAccessionNumber(mirbase);
 
 		}else if (!organism.getName().equals("Heifer") || !organism.getName().equals("Chinese yew") 
 					|| !organism.getName().equals("Solanum")){
@@ -167,16 +170,16 @@ public class SM2miR2N extends NewMirnaDatabase {
 				String substring_specie_name = specie_name.substring(0, 2);
 				//System.out.println(substring_genus + substring_specie_name);
 				String name_organism = substring_genus + substring_specie_name;
-				miRna.setName(name_organism+"-"+name);
+				miRna.setName(name_organism+"-"+ name.trim());
+				miRna.setAccessionNumber(mirbase);
 				System.out.println(miRna.getName());
 
 		}else{
 			
 			miRna.setName(name);
+			miRna.setAccessionNumber(mirbase);
 
 		}
-
-		miRna.setAccessionNumber(mirbase);
 
 		SmallMolecule smallmolecule = new SmallMolecule();
 		smallmolecule.setFda(fda);
@@ -222,7 +225,7 @@ public class SM2miR2N extends NewMirnaDatabase {
 
 		miRna.setOrganismPk(organism.getPk());
 		Object oldMiRna = session.createCriteria(MiRna.class)
-				.add( Restrictions.eq("name", miRna.getName()) )
+				.add(Restrictions.eq("name", miRna.getName()) )
 				.uniqueResult();
 		if (oldMiRna==null) {
 			session.save(miRna);
@@ -251,25 +254,15 @@ public class SM2miR2N extends NewMirnaDatabase {
 
 		// Inserta smallmolecule (o recupera su id. si ya existe)
 		smallmolecule.setEnvironmental_factor_pk(ef.getPk());
-		Object oldSmallMolecule = session.createCriteria(SmallMolecule.class)
-				.add( Restrictions.eq("db", smallmolecule.getDb()) )
-				.uniqueResult();
-		if (oldSmallMolecule==null) {
-			session.save(smallmolecule);
-			session.flush();  // to get the PK
-		} else {
-			SmallMolecule smallmoleculeToUpdate = (SmallMolecule) oldSmallMolecule;
-			smallmoleculeToUpdate.update(smallmolecule);
-			session.update(smallmoleculeToUpdate);
-			smallmolecule = smallmoleculeToUpdate;
-		}
-
+		session.save(smallmolecule);
+		
 		// Inserta nueva DataExpression
 		// (y la relaciona con el MiRna y SmallMolecule)
 
 		ed.setMirnaPk(miRna.getPk());
-		ed.setEnvironmentalFactorPk(smallmolecule.getPk()); 
-		session.save(ed);			
+		ed.setEnvironmentalFactorPk(ef.getPk()); 
+		session.save(ed);	
+
 
 		// Inserta pubmedDocument (o recupera su id. si ya existe)
 
@@ -305,17 +298,19 @@ public class SM2miR2N extends NewMirnaDatabase {
 
 		session.save(expresDataHasPubmedDocument);
 		
+		
+		
 	}
 	
 	public static void main(String[] args) throws Exception {
 
 		SM2miR2N sm2 = new SM2miR2N();
 
-		// /* 1. meter datos en mirna_raw */
+		// /* 1. meter datos en mirna_raw 
 		//String inputFile = "/Users/esteban/Softw/miRNA/SM2miR2n.txt";
 		//sm2.insertInTable(inputFile);
 
-		/* 2. meter datos en mirna */
+		 //2. meter datos en mirna 
 		sm2.insertIntoSQLModel();
 
 	}
