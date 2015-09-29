@@ -517,9 +517,6 @@ public class TarBase extends NewMirnaDatabase {
 		/* 2. meter datos en mirna */
 		tarBase.insertIntoSQLModel();
 
-		//select * from mirna.mirna where name='let-7';
-		//select * from mirna.expression_data where mirna_pk=115
-
 	}
 
 }
