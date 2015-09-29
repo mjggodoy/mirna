@@ -174,43 +174,40 @@ public class TarBase extends NewMirnaDatabase {
 	@Override
 	protected void processRow(Session session, ResultSet rs) throws Exception {
 		
-		String id_tarbase = rs.getString("id");
-		//String idv4 = rs.getString("id_v4"); // This field is not going to be used!
-		String dataType = rs.getString("data_type");
-		//String supportType = rs.getString("support_type"); // This field is not going to be used!
-		String specie = rs.getString("organism");
-		String miRna = rs.getString("miRNA");
-		String hgncSymbol = rs.getString("hgnc_symbol");
-		String gene_name = rs.getString("gene");
-		String isoform = rs.getString("isoform");
-		String ensembl = rs.getString("ensembl");
-		String chrLoc = rs.getString("chr_loc");
-		String is = rs.getString("i_s");
-		//String ds = rs.getString("d_s");
-		String paper = rs.getString("paper");
-		String targetSeq = rs.getString("target_seq");
-		String mirnaSeq =rs.getString("mirna_seq");
-		//String seqLocation = rs.getString("seq_location"); // This field is not going to be used!!
-		String pmid = rs.getString("pmid");
-		String kegg = rs.getString("kegg");
-		String protein_type = rs.getString("protein_type");
-		String different_expression = rs.getString("dif_expr_in");
-		String pathology_or_event = rs.getString("pathology_or_event");
-		String mis_regulation = rs.getString("mis_regulation");
-		String gene_expression = rs.getString("gene_expression");
-		//String type_tumour = rs.getString("tumour_involv");// This is not going to be used.
-		String bib = rs.getString("bib");
-		String cell_line_used = rs.getString("cell_line_used");
-		String hgnc_id = rs.getString("hgnc_id");
-		String swiss_prot = rs.getString("swiss_prot");
-		//String aux = rs.getString("aux"); // I know... this is not going to be used, is it?
+		String id_tarbase = nullifyField(rs.getString("id"));
+		//String idv4 = nullifyField(rs.getString("id_v4")); // This field is not going to be used!
+		String dataType = nullifyField(rs.getString("data_type"));
+		//String supportType = nullifyField(rs.getString("support_type")); // This field is not going to be used!
+		String specie = nullifyField(rs.getString("organism"));
+		String miRna = nullifyField(rs.getString("miRNA"));
+		String hgncSymbol = nullifyField(rs.getString("hgnc_symbol"));
+		String gene_name = nullifyField(rs.getString("gene"));
+		String isoform = nullifyField(rs.getString("isoform"));
+		String ensembl = nullifyField(rs.getString("ensembl"));
+		String chrLoc = nullifyField(rs.getString("chr_loc"));
+		String is = nullifyField(rs.getString("i_s"));
+		//String ds = nullifyField(rs.getString("d_s"));
+		String paper = nullifyField(rs.getString("paper"));
+		String targetSeq = nullifyField(rs.getString("target_seq"));
+		String mirnaSeq =nullifyField(rs.getString("mirna_seq"));
+		//String seqLocation = nullifyField(rs.getString("seq_location")); // This field is not going to be used!!
+		String pmid = nullifyField(rs.getString("pmid"));
+		String kegg = nullifyField(rs.getString("kegg"));
+		String protein_type = nullifyField(rs.getString("protein_type"));
+		String different_expression = nullifyField(rs.getString("dif_expr_in"));
+		String pathology_or_event = nullifyField(rs.getString("pathology_or_event"));
+		String mis_regulation = nullifyField(rs.getString("mis_regulation"));
+		String gene_expression = nullifyField(rs.getString("gene_expression"));
+		//String type_tumour = nullifyField(rs.getString("tumour_involv"));// This is not going to be used.
+		String bib = nullifyField(rs.getString("bib"));
+		String cell_line_used = nullifyField(rs.getString("cell_line_used"));
+		String hgnc_id = nullifyField(rs.getString("hgnc_id"));
+		String swiss_prot = nullifyField(rs.getString("swiss_prot"));
+		//String aux = nullifyField(rs.getString("aux")); // I know... this is not going to be used, is it?
 
 		InteractionData id = new InteractionData();
 		id.setReference(paper);
 		id.setProvenance("TarBase");
-
-		InteractionData id2 = new InteractionData();
-		id2.setProvenance("TarBase");
 
 		Organism organism = new Organism();
 		organism.setName(specie);
@@ -256,25 +253,18 @@ public class TarBase extends NewMirnaDatabase {
 		gene.setName(gene_name);
 		gene.setLocation(chrLoc);
 		if (kegg.length()>0) gene.setKegg_id(kegg);
-		if (gene_expression.length()>0) gene.setExpression_site(gene_expression);
+		if (gene_expression.length()>0) gene.setExpression_site(gene_expression);		
 		gene.setHgnc_symbol(hgncSymbol);
-		gene.setGeneId(ensembl);
-
-		Gene gene2 = new Gene();
-		gene2.setName(gene_name);
-		gene2.setLocation(chrLoc);
-		if (kegg.length()>0) gene2.setKegg_id(kegg);
-		if (gene_expression.length()>0) gene2.setExpression_site(gene_expression);
-		gene2.setHgnc_symbol(hgncSymbol);
-		gene2.setGeneId(hgnc_id);
-		
+		gene.setEnsembl_id(ensembl);
+		gene.setHgnc_id(hgnc_id);
+	
 		String[] proteinTokens = StringUtils.splitPreserveAllTokens(swiss_prot, ",");
 
 		List<Protein> proteinList = new ArrayList<Protein>();
 
 		for (String token : proteinTokens) {
 			Protein protein = new Protein();
-			protein.setUniprot_id(token);
+			protein.setUniprot_id(token.trim());
 			if (protein_type.length()>0) protein.setType(protein_type);
 			proteinList.add(protein);
 		}
@@ -381,7 +371,7 @@ public class TarBase extends NewMirnaDatabase {
 		// Inserta Gene (o recupera su id. si ya existe)
 		gene.setOrganism_pk(organism.getPk());
 		Object oldGene = session.createCriteria(Gene.class)
-				.add( Restrictions.eq("geneId", gene.getGeneId()) )
+				.add( Restrictions.eq("name", gene.getName()) )
 				.uniqueResult();
 		if (oldGene==null) {
 			session.save(gene);
@@ -393,22 +383,7 @@ public class TarBase extends NewMirnaDatabase {
 			gene = geneToUpdate;
 		}
 
-		// Inserta Gene (o recupera su id. si ya existe)
-
-		gene2.setOrganism_pk(organism.getPk());
-		Object oldGene2 = session.createCriteria(Gene.class)
-				.add( Restrictions.eq("geneId", gene2.getGeneId()) )
-				.uniqueResult();
-		if (oldGene2==null) {
-			session.save(gene2);
-			session.flush(); // to get the PK
-		} else {
-			Gene geneToUpdate = (Gene) oldGene2;
-			geneToUpdate.update(gene2);
-			session.update(geneToUpdate);
-			gene2 = geneToUpdate;
-		}
-
+		
 		// Insertar Sequence (o recupera su id. si ya existe)
 		
 		Object oldSequence2 = session.createCriteria(Sequence.class)
@@ -427,7 +402,6 @@ public class TarBase extends NewMirnaDatabase {
 		//Inserta transcript (o recupera us id. si ya existe)
 
 		transcript.setGeneId(gene.getPk());
-		transcript.setGeneId(gene2.getPk());
 
 		Object oldTranscript = session.createCriteria(Transcript.class)
 				.add( Restrictions.eq("isoform", transcript.getIsoform()))
@@ -502,14 +476,6 @@ public class TarBase extends NewMirnaDatabase {
 		id.setExpression_data_pk(ed.getPk());
 		session.save(id);
 		
-		// Inserta nueva InteractionData 
-		// (y la relaciona con el MiRna, ExpressionData y Gene correspondiente)
-
-		id2.setGene_pk(gene2.getPk());
-		id2.setMirna_pk(mirna.getPk());
-		id2.setExpression_data_pk(ed.getPk());
-		session.save(id2);
-		
 		// Inserta nueva Target
 		target.setTranscript_pk(transcript.getPk());
 		target.setSequence_pk(sequence_target.getPk());
@@ -533,6 +499,11 @@ public class TarBase extends NewMirnaDatabase {
 		// Relaciona PubmedDocument con ExpressionData
 		session.save(expresDataHasPubmedDocument);
 		
+		
+	}
+	
+	private String nullifyField(String field) {
+		return "n_a".equals(field) ? null : field;
 	}
 	
 	public static void main(String[] args) throws Exception {

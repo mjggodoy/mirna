@@ -62,6 +62,12 @@ public class Gene extends ModelClass {
 	@Column(name = "organism_pk")
 	private Integer organism_pk;
 	
+	@Column(name = "ensembl_id", nullable = true, length = 45, unique = false)
+	private String ensembl_id;// ok
+	
+	@Column(name = "hgnc_id", nullable = true, length = 45, unique = false)
+	private String hgnc_id;
+	
 	// XUXA
 //	@Column(name = "chromosome", nullable = true, length = 45, unique = false)
 //	private Integer transcript_id;
@@ -206,6 +212,22 @@ public class Gene extends ModelClass {
 		this.organism_pk = organism_pk;
 	}
 
+	public String getEnsembl_id() {
+		return ensembl_id;
+	}
+
+	public void setEnsembl_id(String ensembl_id) {
+		this.ensembl_id = ensembl_id;
+	}
+	
+	public String getHgnc_id() {
+		return hgnc_id;
+	}
+
+	public void setHgnc_id(String hgnc_id) {
+		this.hgnc_id = hgnc_id;
+	}
+
 	public int checkConflict(Gene gene) {
 		int res = 0;
 		if (this.pk != null) {
@@ -283,12 +305,13 @@ public class Gene extends ModelClass {
 			else if (!this.hgnc_symbol.equals(gene.getHgnc_symbol()))
 				return -1;
 		}
-		if (this.location != null) {
-			if (gene.getLocation() == null)
-				res++;
-			else if (!this.location.equals(gene.getLocation()))
-				return -1;
-		}
+		//TODO: Tratar mejor el conflicto
+//		if (this.location != null) {
+//			if (gene.getLocation() == null)
+//				res++;
+//			else if (!this.location.equals(gene.getLocation()))
+//				return -1;
+//		}
 		if (this.expression_site != null) {
 			if (gene.getExpression_site() == null)
 				res++;
@@ -323,17 +346,32 @@ public class Gene extends ModelClass {
 			else if (!this.organism_pk.equals(gene.getOrganism_pk()))
 				return -1;
 		}
-
-//		if (this.transcript_id != null) {
-//			if (gene.getTranscript_id()  == null)
-//				res++;
-//			else if (!this.transcript_id.equals(gene.getTranscript_id()))
-//				return -1;
-//		}
 		
+		if (this.ensembl_id != null) {
+			if (gene.getEnsembl_id() == null)
+				res++;
+			else if (!this.ensembl_id.equals(gene.getEnsembl_id()))
+				return -1;
+		}
+		
+		if (this.ensembl_id != null) {
+			if (gene.getEnsembl_id() == null)
+				res++;
+			else if (!this.ensembl_id.equals(gene.getEnsembl_id()))
+				return -1;
+		}
 
+		if (this.hgnc_id != null) {
+			if (gene.getHgnc_id() == null)
+				res++;
+			else if (!this.hgnc_id.equals(gene.getHgnc_id()))
+				return -1;
+		}
+		
 		return res;
 	}
+
+	
 
 	public void update(Gene gene) throws ConflictException {
 		this.update(gene, true);
@@ -365,8 +403,11 @@ public class Gene extends ModelClass {
 			this.end_strand = gene.getEnd_strand();
 		if (gene.getHgnc_symbol() != null)
 			this.hgnc_symbol = gene.getHgnc_symbol();
-		if (gene.getLocation() != null)
-			this.location = gene.getLocation();
+		//TODO: Tratar mejor
+		if (gene.getLocation() != null) {
+			if (this.location != null)
+				this.location = gene.getLocation();
+		}
 		if (gene.getExpression_site() != null)
 			this.expression_site = gene.getExpression_site();
 		if (gene.getKegg_id() != null)
@@ -377,8 +418,11 @@ public class Gene extends ModelClass {
 			this.distance = gene.getDistance();
 		if (gene.getOrganism_pk() != null)
 			this.organism_pk = gene.getOrganism_pk();
-//		if (gene.getTranscript_id() != null)
-//			this.transcript_id = gene.getTranscript_id();
+		if (gene.getEnsembl_id() != null)
+			this.ensembl_id = gene.getEnsembl_id();
+		if (gene.getHgnc_id() != null)
+			this.hgnc_id = gene.getHgnc_id() ;
+
 	
 	}
 
@@ -392,8 +436,12 @@ public class Gene extends ModelClass {
 				+ ", location=" + location + ", expression_site="
 				+ expression_site + ", kegg_id=" + kegg_id + ", arm=" + arm
 				+ ", distance=" + distance + ", organism_pk=" + organism_pk
-				+ ", pk=" + pk + "]";
+				+ ", ensembl_id=" + ensembl_id + ", hgnc_id=" + hgnc_id + "]";
 	}
+
+	
+
+	
 
 	
 
