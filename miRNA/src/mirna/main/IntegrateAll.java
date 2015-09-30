@@ -14,13 +14,14 @@ public class IntegrateAll {
 		(new MiRCancer()).insertIntoSQLModel();
 		(new MiREnvironment()).insertIntoSQLModel();
 		(new SM2miR2N()).insertIntoSQLModel();
-		(new TarBase()).insertIntoSQLModel();
 		(new MiRDB()).insertIntoSQLModel();
 		(new PlantMirnaMatureMirna()).insertIntoSQLModel();
 		(new PlantMirnaStemLoop()).insertIntoSQLModel();
 		(new Phenomir()).insertIntoSQLModel();
 		(new RepTar("repTar_Human")).insertIntoSQLModel();
 		(new RepTar("repTar_Mouse")).insertIntoSQLModel();
+		(new TarBase()).insertIntoSQLModel();
+		
 
 
 	}
