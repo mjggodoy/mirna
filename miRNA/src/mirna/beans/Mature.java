@@ -27,24 +27,14 @@ public class Mature extends ModelClass {
 	
 	public Mature() { }
 
-
 	
-
-
 	public String getProportion() {
 		return proportion;
 	}
 
-
-
-
-
 	public void setProportion(String proportion) {
 		this.proportion = proportion;
 	}
-
-
-
 
 
 	public Integer getMirnaPk() {

@@ -167,21 +167,7 @@ public class PlantMirnaMatureMirna extends NewMirnaDatabase {
 		mature.setMirnaPk(miRNA.getPk());
 		mature.setSequence_pk(sequence.getPk());
 		
-		// Inserta Mature (o recupera su id. si ya existe)
-		Object oldMature = session.createCriteria(Mature.class)
-				.add( Restrictions.eq("sequence_pk", mature.getSequence_pk() ) )
-				.uniqueResult();
-		if (oldMature==null) {
-			session.save(mature);
-			session.flush();  // to get the PK
-
-		} else {
-
-			Mature matureToUpdate = (Mature) oldMature;
-			matureToUpdate.update(mature);
-			session.update(matureToUpdate);
-			mature = matureToUpdate;
-		}
+	
 
 		// Relaciona expressiondata data con mirna
 
