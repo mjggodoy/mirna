@@ -17,6 +17,8 @@ import mirna.beans.Mature;
 import mirna.beans.MiRna;
 import mirna.beans.Organism;
 import mirna.beans.Sequence;
+import mirna.beans.nToM.MatureHasSequence;
+import mirna.beans.nToM.MirnaHasMature;
 import mirna.beans.nToM.MirnaHasOrganism;
 import mirna.exception.MiRnaException;
 
@@ -96,10 +98,10 @@ public class PlantMirnaMatureMirna extends NewMirnaDatabase {
 
 	}
 
-	
+
 	@Override
 	protected void processRow(Session session, ResultSet rs) throws Exception {
-		
+
 		String specie = rs.getString("specie").toLowerCase().trim();
 		String mature_id = rs.getString("mirna_id").toLowerCase().trim();
 		String sequence_mature = rs.getString("sequence").toLowerCase().trim();
@@ -131,7 +133,7 @@ public class PlantMirnaMatureMirna extends NewMirnaDatabase {
 			session.update(organismToUpdate);
 			organism = organismToUpdate;
 		}
-		
+
 		// Inserta MiRna (o recupera su id. si ya existe)
 
 		Object oldMiRna = session.createCriteria(MiRna.class)
@@ -149,7 +151,7 @@ public class PlantMirnaMatureMirna extends NewMirnaDatabase {
 			System.out.println("UPDATE");
 
 		}
-		
+
 		Object oldSequence = session.createCriteria(Sequence.class)
 				.add( Restrictions.eq("sequence", sequence.getSequence()) )
 				.uniqueResult();
@@ -163,16 +165,18 @@ public class PlantMirnaMatureMirna extends NewMirnaDatabase {
 			sequence = sequenceToUpdate;
 			System.out.println(sequence);
 		}
-
-		mature.setMirnaPk(miRNA.getPk());
-		mature.setSequence_pk(sequence.getPk());
-		session.save(mature);
 		
+		// Relaciona expressiondata data con mirna
+
+		ed.setMirnaPk(miRNA.getPk());
+		session.save(ed);
+		session.flush();
+
+		// Relaciona Organism con Mirna (si no lo estaba ya)
+
 		MirnaHasOrganism mirnaHasOrganism = 
 				new MirnaHasOrganism(miRNA.getPk(), organism.getPk());
 
-
-		// Relaciona Organism con Mirna (si no lo estaba ya)
 		Object oldmirnaHasOrganism = session.createCriteria(MirnaHasOrganism.class)
 				.add( Restrictions.eq("mirna_pk", miRNA.getPk()) )
 				.add( Restrictions.eq("organism_pk", organism.getPk()) )
@@ -181,13 +185,35 @@ public class PlantMirnaMatureMirna extends NewMirnaDatabase {
 			session.save(mirnaHasOrganism);
 
 		}
+
+		session.save(mature);
+		session.flush();
 	
+		//Relaciona Mature con Sequence
+		MatureHasSequence matureHasSequence = 
+				new MatureHasSequence(mature.getPk(), sequence.getPk());
 
-		// Relaciona expressiondata data con mirna
+		Object oldmatureHasSequence = session.createCriteria(MatureHasSequence.class)
+				.add( Restrictions.eq("mature_pk", mature.getPk()) )
+				.add( Restrictions.eq("sequence_pk", sequence.getPk()) )
+				.uniqueResult();
+		if (oldmatureHasSequence==null) {
+			session.save(matureHasSequence);
 
-		ed.setMirnaPk(miRNA.getPk());
-		session.save(ed);
-		
+		}
+
+		//Relaciona MiRNA con Mature
+		MirnaHasMature mirnaHasMature = 
+				new MirnaHasMature(miRNA.getPk(), mature.getPk());
+
+		Object oldmirnaHasMature = session.createCriteria(MirnaHasMature.class)
+				.add( Restrictions.eq("mirna_pk", miRNA.getPk()) )
+				.add( Restrictions.eq("mature_pk", mature.getPk()) )
+				.uniqueResult();
+		if (oldmirnaHasMature==null) {
+			session.save(mirnaHasMature);
+
+		}
 	}
 
 	public static void main(String[] args) throws Exception{

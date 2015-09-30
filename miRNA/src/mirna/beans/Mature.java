@@ -18,13 +18,6 @@ public class Mature extends ModelClass {
 	@Column(name = "proportion", nullable = true, length = 80, unique = true)
 	protected String proportion;
 	
-	@Column(name = "mirna_pk", nullable = false)
-	private Integer mirnaPk;
-	
-	@Column(name = "sequence_pk", nullable = false)
-	private Integer sequence_pk;
-	
-	
 	public Mature() { }
 
 	
@@ -37,24 +30,6 @@ public class Mature extends ModelClass {
 	}
 
 
-	public Integer getMirnaPk() {
-		return mirnaPk;
-	}
-
-
-	public void setMirnaPk(Integer mirnaPk) {
-		this.mirnaPk = mirnaPk;
-	}
-
-
-	public Integer getSequence_pk() {
-		return sequence_pk;
-	}
-
-
-	public void setSequence_pk(Integer sequence_pk) {
-		this.sequence_pk = sequence_pk;
-	}
 
 	public int checkConflict(Mature mature) {
 		int res = 0;
@@ -68,14 +43,8 @@ public class Mature extends ModelClass {
 				return -1;
 			}
 		}
-		if (this.sequence_pk!=null) {
-			if (mature.getSequence_pk()==null) res++;
-			else if (!this.sequence_pk.equals(mature.getSequence_pk())) return -1;
-		}
-		if (this.mirnaPk!=null) {
-			if (mature.getMirnaPk()==null) res++;
-			else if (!this.mirnaPk.equals(mature.getMirnaPk())) return -1;
-		}
+		
+		
 		return res;
 	}
 	
@@ -89,15 +58,13 @@ public class Mature extends ModelClass {
 		}
 		if (mature.getPk()!=null) this.pk = mature.getPk();
 		if (mature.getProportion()!=null) this.proportion = mature.getProportion();
-		if (mature.getSequence_pk()!=null) this.sequence_pk = mature.getSequence_pk();
-		if (mature.getMirnaPk()!=null) this.mirnaPk = mature.getMirnaPk();
 	}
 
 
 	@Override
 	public String toString() {
-		return "Mature [proportion=" + proportion + ", mirnaPk=" + mirnaPk
-				+ ", sequence_pk=" + sequence_pk + ", pk=" + pk + "]";
+		return "Mature [proportion=" + proportion + 
+				", pk=" + pk + "]";
 	}
 		
 }

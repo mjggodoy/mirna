@@ -48,6 +48,10 @@
   <mapping class="mirna.beans.nToM.SnpHasDisease" />
   <mapping class="mirna.beans.nToM.TranscriptProducesProtein" />
   <mapping class="mirna.beans.nToM.SnpHasPubmedDocument" />
+  <mapping class="mirna.beans.nToM.HairpinHasSequence" />
+  <mapping class="mirna.beans.nToM.MatureHasSequence" />
+  <mapping class="mirna.beans.nToM.MirnaHasHairpin" />
+  <mapping class="mirna.beans.nToM.MirnaHasMature" />
   <mapping class="mirna.beans.SmallMolecule" />
   <mapping class="mirna.beans.EnvironmentalFactor" />
    

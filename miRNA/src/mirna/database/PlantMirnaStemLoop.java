@@ -17,6 +17,9 @@ import mirna.beans.Hairpin;
 import mirna.beans.MiRna;
 import mirna.beans.Organism;
 import mirna.beans.Sequence;
+import mirna.beans.nToM.HairpinHasSequence;
+import mirna.beans.nToM.MatureHasSequence;
+import mirna.beans.nToM.MirnaHasHairpin;
 import mirna.beans.nToM.MirnaHasOrganism;
 import mirna.exception.MiRnaException;
 
@@ -99,10 +102,10 @@ public class PlantMirnaStemLoop extends NewMirnaDatabase {
 		}
 
 	}
-	
+
 	@Override
 	protected void processRow(Session session, ResultSet rs) throws Exception {
-		
+
 		String specie = rs.getString("specie").toLowerCase().trim();
 		String stemloop_id = rs.getString("mirna_id").toLowerCase().trim();
 		String sequence_hairpin = rs.getString("sequence").toLowerCase().trim();
@@ -134,7 +137,7 @@ public class PlantMirnaStemLoop extends NewMirnaDatabase {
 			session.update(organismToUpdate);
 			organism = organismToUpdate;
 		}
-		
+
 		// Inserta MiRna (o recupera su id. si ya existe)
 		Object oldMiRna = session.createCriteria(MiRna.class)
 				.add(Restrictions.eq("name", miRNA.getName()))
@@ -149,7 +152,7 @@ public class PlantMirnaStemLoop extends NewMirnaDatabase {
 			miRNA = miRnaToUpdate;
 			System.out.println("Mirna " + miRNA.getName());
 		}
-		
+
 		Object oldSequence = session.createCriteria(Sequence.class)
 				.add( Restrictions.eq("sequence", sequence.getSequence()) )
 				.uniqueResult();
@@ -164,11 +167,12 @@ public class PlantMirnaStemLoop extends NewMirnaDatabase {
 			sequence = sequenceToUpdate;
 			System.out.println(sequence);
 		}
-		
-		hairpin.setMirnaPk(miRNA.getPk());
-		hairpin.setSequence_pk(sequence.getPk());
-		
-		
+
+		// Relaciona expressiondata data con mirna
+		ed.setMirnaPk(miRNA.getPk());
+		session.save(ed);
+
+
 		MirnaHasOrganism mirnaHasOrganism = 
 				new MirnaHasOrganism(miRNA.getPk(), organism.getPk());
 
@@ -182,13 +186,43 @@ public class PlantMirnaStemLoop extends NewMirnaDatabase {
 			session.save(mirnaHasOrganism);
 
 		}
-		
-		// Relaciona expressiondata data con mirna
-		ed.setMirnaPk(miRNA.getPk());
-		session.save(ed);
-		
+
+		session.save(hairpin);
+		session.flush();
+
+		HairpinHasSequence hairpinHasSequence = 
+				new HairpinHasSequence(hairpin.getPk(), sequence.getPk());
+
+
+		// Relaciona hairpin con sequence (si no lo estaba ya)
+		Object oldHairpinHasSequence = session.createCriteria(HairpinHasSequence.class)
+				.add( Restrictions.eq("hairpin_pk", hairpin.getPk()) )
+				.add( Restrictions.eq("sequence_pk", sequence.getPk()) )
+				.uniqueResult();
+		if (oldHairpinHasSequence==null) {
+			session.save(hairpinHasSequence);
+
+		}
+
+		// Relaciona hairpin con mirna.
+
+		MirnaHasHairpin mirnaHasHairpin = 
+				new MirnaHasHairpin(miRNA.getPk(), hairpin.getPk());
+
+		Object oldMirnaHasHairpin = session.createCriteria(MirnaHasHairpin.class)
+				.add( Restrictions.eq("mirna_pk", miRNA.getPk()) )
+				.add( Restrictions.eq("hairpin_pk", hairpin.getPk()) )
+				.uniqueResult();
+		if (oldMirnaHasHairpin==null) {
+			session.save(mirnaHasHairpin);
+
+		}
+
+
+
+
 	}
-	
+
 	public static void main(String[] args) throws Exception {
 
 		PlantMirnaStemLoop plant = new PlantMirnaStemLoop();

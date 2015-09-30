@@ -17,6 +17,8 @@ import mirna.beans.Organism;
 import mirna.beans.PubmedDocument;
 import mirna.beans.Sequence;
 import mirna.beans.nToM.ExpressionDataHasPubmedDocument;
+import mirna.beans.nToM.HairpinHasSequence;
+import mirna.beans.nToM.MirnaHasHairpin;
 import mirna.beans.nToM.MirnaHasOrganism;
 import mirna.beans.nToM.MirnaHasPubmedDocument;
 import mirna.beans.nToM.MirnaHasSequence;
@@ -192,6 +194,21 @@ public class VirmiRNA1 extends NewMirnaDatabase{
 		}
 
 
+		// Inserta Hairpin (o recupera su id. si ya existe)
+
+		Object oldHairpin = session.createCriteria(Hairpin.class)
+				.add(Restrictions.eq("name", hairpin.getName()))
+				.uniqueResult();
+		if (oldHairpin == null) {
+			session.save(hairpin);
+			session.flush(); // to get the PK
+		} else {
+			Hairpin hairpinToUpdate = (Hairpin) oldHairpin;
+			hairpinToUpdate.update(hairpin);
+			session.update(hairpinToUpdate);
+			hairpin = hairpinToUpdate;
+		}
+
 		// Inserta MiRna (o recupera su id. si ya existe)
 		Object oldMiRna = session.createCriteria(MiRna.class)
 				.add(Restrictions.eq("name", mirna.getName()) )
@@ -247,23 +264,7 @@ public class VirmiRNA1 extends NewMirnaDatabase{
 
 		}
 
-		hairpin.setSequence_pk(sequence2.getPk());
-		hairpin.setMirnaPk(mirna.getPk());
 
-		// Inserta Hairpin (o recupera su id. si ya existe)
-
-		Object oldHairpin = session.createCriteria(Hairpin.class)
-				.add(Restrictions.eq("name", hairpin.getName()))
-				.uniqueResult();
-		if (oldHairpin == null) {
-			session.save(hairpin);
-			session.flush(); // to get the PK
-		} else {
-			Hairpin hairpinToUpdate = (Hairpin) oldHairpin;
-			hairpinToUpdate.update(hairpin);
-			session.update(hairpinToUpdate);
-			hairpin = hairpinToUpdate;
-		}
 
 		// Relaciona expression data con mirna  (o recupera su id. si ya existe)
 
@@ -308,7 +309,7 @@ public class VirmiRNA1 extends NewMirnaDatabase{
 			}
 
 			session.save(expresDataHasPubmedDocument);	
-			
+
 			MirnaHasOrganism mirnaHasOrganism = 
 					new MirnaHasOrganism(mirna.getPk(), organism.getPk());
 
@@ -322,6 +323,37 @@ public class VirmiRNA1 extends NewMirnaDatabase{
 				session.save(mirnaHasOrganism);
 
 			}
+
+
+			HairpinHasSequence hairpinHasSequence = 
+					new HairpinHasSequence(hairpin.getPk(), sequence2.getPk());
+
+
+			// Relaciona Organism con Mirna (si no lo estaba ya)
+			Object oldHairpinHasSequence = session.createCriteria(HairpinHasSequence.class)
+					.add( Restrictions.eq("hairpin_pk", hairpin.getPk()) )
+					.add( Restrictions.eq("sequence_pk", sequence2.getPk()) )
+					.uniqueResult();
+			if (oldHairpinHasSequence==null) {
+				session.save(hairpinHasSequence);
+
+			}
+			
+			
+			// Relaciona hairpin con mirna.
+
+			MirnaHasHairpin mirnaHasHairpin = 
+					new MirnaHasHairpin(mirna.getPk(), hairpin.getPk());
+
+			Object oldMirnaHasHairpin = session.createCriteria(MirnaHasHairpin.class)
+					.add( Restrictions.eq("mirna_pk", mirna.getPk()) )
+					.add( Restrictions.eq("hairpin_pk", hairpin.getPk()) )
+					.uniqueResult();
+			if (oldMirnaHasHairpin==null) {
+				session.save(mirnaHasHairpin);
+
+			}
+
 
 		}	
 	}

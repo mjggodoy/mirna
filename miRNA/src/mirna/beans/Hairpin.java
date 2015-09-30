@@ -2,22 +2,22 @@ package mirna.beans;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
 import mirna.exception.ConflictException;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "hairpin")
 public class Hairpin extends ModelClass {
 	
 	@Column(name = "name", nullable = true)
 	private String name;
 	
-	@Column(name = "mirna_pk", nullable = false)
-	private Integer mirnaPk;
-	
-	@Column(name = "sequence_pk", nullable = false)
-	private Integer sequence_pk;
+	/*@Column(name = "mirna_pk", nullable = false)
+	private Integer mirnaPk;*/
 	
 	public Hairpin() { }
 	
@@ -31,14 +31,11 @@ public class Hairpin extends ModelClass {
 			if (hairpin.getName()==null) res++;
 			else if (!this.name.equals(hairpin.getName())) return -1;
 		}
-		if (this.sequence_pk!=null) {
-			if (hairpin.getSequence_pk()==null) res++;
-			else if (!this.sequence_pk.equals(hairpin.getSequence_pk())) return -1;
-		}
-		if (this.mirnaPk!=null) {
+		
+		/*if (this.mirnaPk!=null) {
 			if (hairpin.getMirnaPk()==null) res++;
 			else if (!this.mirnaPk.equals(hairpin.getMirnaPk())) return -1;
-		}
+		}*/
 		return res;
 	}
 	
@@ -51,32 +48,20 @@ public class Hairpin extends ModelClass {
 			if (this.checkConflict(hairpin)==-1) throw new ConflictException(this, hairpin);
 		}
 		if (hairpin.getPk()!=null) this.pk = hairpin.getPk();
-		if (hairpin.getSequence_pk()!=null) this.sequence_pk = hairpin.getSequence_pk();
-		if (hairpin.getMirnaPk()!=null) this.mirnaPk = hairpin.getMirnaPk();
-		if (hairpin.getName()!=null) this.name = hairpin.getName();
+/*		if (hairpin.getMirnaPk()!=null) this.mirnaPk = hairpin.getMirnaPk();
+*/		if (hairpin.getName()!=null) this.name = hairpin.getName();
 
 	}
 	
 
-
-	public Integer getSequence_pk() {
-		return sequence_pk;
-	}
-
-
-	public void setSequence_pk(Integer sequence_pk) {
-		this.sequence_pk = sequence_pk;
-	}
-
-
-	public Integer getMirnaPk() {
+	/*public Integer getMirnaPk() {
 		return mirnaPk;
 	}
 
 	public void setMirnaPk(Integer mirnaPk) {
 		this.mirnaPk = mirnaPk;
 	}
-	
+	*/
 	public String getName() {
 		return name;
 	}
@@ -87,8 +72,8 @@ public class Hairpin extends ModelClass {
 
 	@Override
 	public String toString() {
-		return "Hairpin [name=" + name + ", mirnaPk=" + mirnaPk
-				+ ", sequence_pk=" + sequence_pk + ", pk=" + pk + "]";
+		return "Hairpin [name=" + name + 
+				", pk=" + pk + "]";
 	}
 
 	

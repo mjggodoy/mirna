@@ -22,7 +22,6 @@ public class MiRna extends ModelClass {
 	@Column(name = "resource", nullable = true, length = 45)
 	private String resource;
 	
-
 	
 	/**
 	 * XUXA
@@ -56,24 +55,6 @@ public class MiRna extends ModelClass {
 		this.resource = resource;
 	}
 
-	
-
-//	public Integer getHairpinPk() {
-//		return hairpinPk;
-//	}
-//
-//	public void setHairpinPk(Integer hairpinPk) {
-//		this.hairpinPk = hairpinPk;
-//	}
-//	
-//	public Integer getMaturePk() {
-//		return hairpinPk;
-//	}
-//
-//	public void setMaturePk(Integer hairpinPk) {
-//		this.hairpinPk = hairpinPk;
-//	}
-
 	public int checkConflict(MiRna mirna) {
 		int res = 0;
 		if (this.pk!=null) {
@@ -95,10 +76,7 @@ public class MiRna extends ModelClass {
 			else if (!this.resource.equals(mirna.getResource())) return -1;
 		}
 		
-//		if (this.hairpinPk!=null) {
-//			if (mirna.getHairpinPk()==null) res++;
-//			else if (!this.hairpinPk.equals(mirna.getHairpinPk())) return -1;
-//		}
+		
 		return res;
 	}
 	
@@ -116,7 +94,6 @@ public class MiRna extends ModelClass {
 		if (mirna.getName()!=null) this.name = mirna.getName();
 		if (mirna.getAccessionNumber()!=null) this.accessionNumber = mirna.getAccessionNumber();
 		if (mirna.getResource()!=null) this.resource = mirna.getResource();
-//		if (mirna.getHairpinPk()!=null) this.hairpinPk = mirna.getHairpinPk();
 //		if (mirna.getMaturePk()!=null) this.maturePk = mirna.getMaturePk();
 		
 	}
@@ -125,7 +102,6 @@ public class MiRna extends ModelClass {
 	public String toString() {
 		return "MiRna [name=" + name + ", accessionNumber=" + accessionNumber
 				+ ", resource=" + resource
-//				+ ", hairpinPk=" + hairpinPk
 //				+ ", maturePk=" + maturePk
 				+ ", pk=" + pk + "]";
 	}
