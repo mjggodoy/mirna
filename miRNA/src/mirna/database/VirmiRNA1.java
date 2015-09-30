@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
 import mirna.beans.ExpressionData;
 import mirna.beans.Gene;
 import mirna.beans.Hairpin;
@@ -16,9 +17,11 @@ import mirna.beans.Organism;
 import mirna.beans.PubmedDocument;
 import mirna.beans.Sequence;
 import mirna.beans.nToM.ExpressionDataHasPubmedDocument;
+import mirna.beans.nToM.MirnaHasOrganism;
 import mirna.beans.nToM.MirnaHasPubmedDocument;
 import mirna.beans.nToM.MirnaHasSequence;
 import mirna.exception.MiRnaException;
+
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -168,7 +171,10 @@ public class VirmiRNA1 extends NewMirnaDatabase{
 			session.save(sequence1);
 			session.flush(); // to get the PK
 		} else {
-			sequence1 = (Sequence) oldSequence1;
+			Sequence sequenceUptoDate = (Sequence) oldSequence1;
+			sequenceUptoDate.update(sequence1);
+			session.update(sequenceUptoDate);
+			sequence1 = sequenceUptoDate;
 
 		}
 
@@ -187,7 +193,6 @@ public class VirmiRNA1 extends NewMirnaDatabase{
 
 
 		// Inserta MiRna (o recupera su id. si ya existe)
-		mirna.setOrganismPk(organism.getPk());
 		Object oldMiRna = session.createCriteria(MiRna.class)
 				.add(Restrictions.eq("name", mirna.getName()) )
 				.uniqueResult();
@@ -235,7 +240,10 @@ public class VirmiRNA1 extends NewMirnaDatabase{
 			session.save(sequence2);
 			session.flush(); // to get the PK
 		} else {
-			sequence2 = (Sequence) oldSequence2;
+			Sequence sequenceUptoDate = (Sequence) oldSequence2;
+			sequenceUptoDate.update(sequence2);
+			session.update(sequenceUptoDate);
+			sequence2 = sequenceUptoDate;
 
 		}
 
@@ -300,6 +308,20 @@ public class VirmiRNA1 extends NewMirnaDatabase{
 			}
 
 			session.save(expresDataHasPubmedDocument);	
+			
+			MirnaHasOrganism mirnaHasOrganism = 
+					new MirnaHasOrganism(mirna.getPk(), organism.getPk());
+
+
+			// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
+			Object oldmirnaHasOrganism = session.createCriteria(MirnaHasOrganism.class)
+					.add( Restrictions.eq("mirna_pk", mirna.getPk()) )
+					.add( Restrictions.eq("organism_pk", organism.getPk()) )
+					.uniqueResult();
+			if (oldmirnaHasOrganism==null) {
+				session.save(mirnaHasOrganism);
+
+			}
 
 		}	
 	}

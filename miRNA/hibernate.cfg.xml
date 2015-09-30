@@ -40,6 +40,7 @@
   <mapping class="mirna.beans.BiologicalProcess" />
   <mapping class="mirna.beans.InteractionData" />
   <mapping class="mirna.beans.Protein" />
+  <mapping class="mirna.beans.nToM.MirnaHasOrganism" />
   <mapping class="mirna.beans.nToM.ExpressionDataHasPubmedDocument" />
   <mapping class="mirna.beans.nToM.MirnaHasPubmedDocument" />
   <mapping class="mirna.beans.nToM.MirnaHasSequence" />

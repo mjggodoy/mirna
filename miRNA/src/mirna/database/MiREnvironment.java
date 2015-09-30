@@ -14,6 +14,7 @@ import mirna.beans.MiRna;
 import mirna.beans.Organism;
 import mirna.beans.PubmedDocument;
 import mirna.beans.nToM.ExpressionDataHasPubmedDocument;
+import mirna.beans.nToM.MirnaHasOrganism;
 import mirna.beans.nToM.MirnaHasPubmedDocument;
 import mirna.exception.MiRnaException;
 
@@ -34,7 +35,7 @@ public class MiREnvironment extends NewMirnaDatabase {
 	public MiREnvironment() throws MiRnaException {
 		super(TABLE_NAME);
 	}
-	
+
 	public void insertInTable(String csvInputFile) throws Exception {
 
 		Connection con = null;
@@ -104,7 +105,7 @@ public class MiREnvironment extends NewMirnaDatabase {
 
 	@Override
 	protected void processRow(Session session, ResultSet rs) throws Exception {
-		
+
 		String id = rs.getString("mir");
 		String name = rs.getString("name");
 		@SuppressWarnings("unused")
@@ -185,7 +186,6 @@ public class MiREnvironment extends NewMirnaDatabase {
 			System.out.println("Retrieve Organism");
 		}
 
-		miRna.setOrganismPk(organism.getPk());
 		// Inserta MiRna (o recupera su id. si ya existe)
 		Object oldMiRna = session.createCriteria(MiRna.class)
 				.add( Restrictions.eq("name", miRna.getName()) )
@@ -229,12 +229,27 @@ public class MiREnvironment extends NewMirnaDatabase {
 		ed.setEnvironmentalFactorPk(environmentalFactor.getPk());
 		session.save(ed);
 
-		// Relaciona miRNa con Organism. No estoy segura. La entidad-relacion es de one-to-many segun el modelo.
+		// Relaciona miRNa con Document.
 		MirnaHasPubmedDocument mirnaHasPubmedDocument =
 				new MirnaHasPubmedDocument(miRna.getPk(), pubmedDoc.getPk());
 
+		// Relaciona miRNa con ExpressionData.
 		ExpressionDataHasPubmedDocument expresDataHasPubmedDocument =
 				new ExpressionDataHasPubmedDocument(ed.getPk(), pubmedDoc.getPk());
+
+		MirnaHasOrganism mirnaHasOrganism = 
+				new MirnaHasOrganism(miRna.getPk(), organism.getPk());
+
+
+		// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
+		Object oldmirnaHasOrganism = session.createCriteria(MirnaHasOrganism.class)
+				.add( Restrictions.eq("mirna_pk", miRna.getPk()) )
+				.add( Restrictions.eq("organism_pk", organism.getPk()) )
+				.uniqueResult();
+		if (oldmirnaHasOrganism==null) {
+			session.save(mirnaHasOrganism);
+
+		}
 
 		// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
 		Object oldMirnaHasPubmedDocument = session.createCriteria(MirnaHasPubmedDocument.class)
@@ -248,9 +263,9 @@ public class MiREnvironment extends NewMirnaDatabase {
 
 		// Relaciona PubmedDocument con ExpressionData
 		session.save(expresDataHasPubmedDocument);
-		
+
 	}
-	
+
 	public static void main(String[] args) throws Exception {
 
 		MiREnvironment mirEnvironment = new MiREnvironment();

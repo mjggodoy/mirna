@@ -10,6 +10,8 @@ import javax.persistence.Table;
 @Table(name = "transcript_produces_protein")
 public class TranscriptProducesProtein implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@Column(name = "transcript_pk", nullable = false, length = 11, unique = false)
 	private Integer transcript_pk;

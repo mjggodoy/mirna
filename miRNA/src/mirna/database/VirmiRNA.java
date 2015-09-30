@@ -9,8 +9,8 @@ public abstract class VirmiRNA extends NewMirnaDatabase {
 	public static void main(String[] args) throws Exception {
 
 		(new VirmiRNA1()).insertIntoSQLModel();
-		(new VirmiRNA2()).insertIntoSQLModel();
-		(new VirmiRNA3()).insertIntoSQLModel();
+		//(new VirmiRNA2()).insertIntoSQLModel();
+		//(new VirmiRNA3()).insertIntoSQLModel();
 
 	}
 }

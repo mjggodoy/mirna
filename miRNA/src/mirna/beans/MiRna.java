@@ -22,9 +22,7 @@ public class MiRna extends ModelClass {
 	@Column(name = "resource", nullable = true, length = 45)
 	private String resource;
 	
-	@Column(name = "organism_pk", nullable = true)
-	private Integer organismPk;
-	
+
 	
 	/**
 	 * XUXA
@@ -58,13 +56,7 @@ public class MiRna extends ModelClass {
 		this.resource = resource;
 	}
 
-	public Integer getOrganismPk() {
-		return organismPk;
-	}
-
-	public void setOrganismPk(Integer organismPk) {
-		this.organismPk = organismPk;
-	}
+	
 
 //	public Integer getHairpinPk() {
 //		return hairpinPk;
@@ -102,10 +94,6 @@ public class MiRna extends ModelClass {
 			if (mirna.getResource()==null) res++;
 			else if (!this.resource.equals(mirna.getResource())) return -1;
 		}
-		if (this.organismPk!=null) {
-			if (mirna.getOrganismPk()==null) res++;
-			else if (!this.organismPk.equals(mirna.getOrganismPk())) return -1;
-		}
 		
 //		if (this.hairpinPk!=null) {
 //			if (mirna.getHairpinPk()==null) res++;
@@ -128,7 +116,6 @@ public class MiRna extends ModelClass {
 		if (mirna.getName()!=null) this.name = mirna.getName();
 		if (mirna.getAccessionNumber()!=null) this.accessionNumber = mirna.getAccessionNumber();
 		if (mirna.getResource()!=null) this.resource = mirna.getResource();
-		if (mirna.getOrganismPk()!=null) this.organismPk = mirna.getOrganismPk();
 //		if (mirna.getHairpinPk()!=null) this.hairpinPk = mirna.getHairpinPk();
 //		if (mirna.getMaturePk()!=null) this.maturePk = mirna.getMaturePk();
 		
@@ -138,7 +125,6 @@ public class MiRna extends ModelClass {
 	public String toString() {
 		return "MiRna [name=" + name + ", accessionNumber=" + accessionNumber
 				+ ", resource=" + resource
-				+ ", organismPk=" + organismPk
 //				+ ", hairpinPk=" + hairpinPk
 //				+ ", maturePk=" + maturePk
 				+ ", pk=" + pk + "]";

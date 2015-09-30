@@ -2,12 +2,16 @@ package mirna.beans;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
 import mirna.exception.ConflictException;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "organism")
+
 public class Organism extends ModelClass {
 
 	@Column(name = "specie", nullable = true, length = 45, unique = false)

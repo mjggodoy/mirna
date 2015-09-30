@@ -18,6 +18,7 @@ import mirna.beans.Organism;
 import mirna.beans.PubmedDocument;
 import mirna.beans.SmallMolecule;
 import mirna.beans.nToM.ExpressionDataHasPubmedDocument;
+import mirna.beans.nToM.MirnaHasOrganism;
 import mirna.beans.nToM.MirnaHasPubmedDocument;
 import mirna.exception.MiRnaException;
 
@@ -223,7 +224,6 @@ public class SM2miR2N extends NewMirnaDatabase {
 			System.out.println("Update ORGANISM");
 		}
 
-		miRna.setOrganismPk(organism.getPk());
 		Object oldMiRna = session.createCriteria(MiRna.class)
 				.add(Restrictions.eq("name", miRna.getName()) )
 				.uniqueResult();
@@ -298,6 +298,20 @@ public class SM2miR2N extends NewMirnaDatabase {
 
 		session.save(expresDataHasPubmedDocument);
 		
+		
+		MirnaHasOrganism mirnaHasOrganism = 
+				new MirnaHasOrganism(miRna.getPk(), organism.getPk());
+
+
+		// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
+		Object oldmirnaHasOrganism = session.createCriteria(MirnaHasOrganism.class)
+				.add( Restrictions.eq("mirna_pk", miRna.getPk()) )
+				.add( Restrictions.eq("organism_pk", organism.getPk()) )
+				.uniqueResult();
+		if (oldmirnaHasOrganism==null) {
+			session.save(mirnaHasOrganism);
+
+		}
 		
 		
 	}
