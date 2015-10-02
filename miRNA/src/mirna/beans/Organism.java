@@ -97,7 +97,9 @@ public class Organism extends ModelClass {
 		if (this.resource != null) {
 			if (specie.getResource() == null)
 				res++;
-			else if (!this.resource.equals(specie.getResource()))
+			if(!this.resource.equals(specie.getResource()) && this.name.equals(specie.getName()))
+				res++;
+			if(!this.resource.equals(specie.getResource()) && !this.name.equals(specie.getName()))
 				return -1;
 		}
 

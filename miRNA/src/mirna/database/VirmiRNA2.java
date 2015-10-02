@@ -16,6 +16,7 @@ import mirna.beans.Organism;
 import mirna.beans.PubmedDocument;
 import mirna.beans.Sequence;
 import mirna.beans.Target;
+import mirna.beans.Transcript;
 import mirna.beans.nToM.ExpressionDataHasPubmedDocument;
 import mirna.beans.nToM.MirnaHasOrganism;
 import mirna.beans.nToM.MirnaHasPubmedDocument;
@@ -152,9 +153,10 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 		String send_match = nullifyField(rs.getString("seed_match"));
 		String target_resource = nullifyField(rs.getString("target_ref"));
 		String target_pubmedId = nullifyField(rs.getString("pubmed_id"));
-		
+
 		if (accesion_number!=null) {
 			accesion_number = accesion_number.substring(accesion_number.indexOf("=")+1);
+			System.out.println(accesion_number);
 		}
 
 		MiRna mirna = new MiRna();
@@ -170,14 +172,22 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 			sequence2 = null;
 		}
 
+		if (resource_organism!=null) {
+
+			resource_organism = resource_organism.substring(resource_organism.indexOf("id=")+3);
+			System.out.println(resource_organism);
+
+		}
+
 		Organism organism = new Organism();
 		organism.setName(organism_name_full);
 		organism.setShortName(organism_name);
+		organism.setResource(resource_organism);
 		//TODO: No cogemos ahora mismo los resource porque hay organism
 		// con mismo nombre y distinto resource. Quiza arreglar cogiendo
 		// el verdadero nombre de la resource.
 		//organism.setResource(resource_organism);
-		if (!createdObject(organism_name_full, organism_name)) {
+		if (!createdObject(organism_name_full, organism_name, resource_organism)) {
 			organism = null;
 		}
 
@@ -187,6 +197,7 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 			organism2 = null;
 		}
 
+		
 		Target target = new Target();
 		target.setRegion(target_region);
 		target.setSeed_match(send_match);
@@ -198,6 +209,9 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 
 		BiologicalProcess biologicalprocess = new BiologicalProcess();
 		biologicalprocess.setName(target_process);
+		if (!createdObject(target_process)) {
+			biologicalprocess = null;
+		}
 
 		ExpressionData expressiondata = new ExpressionData();
 		expressiondata.setCellularLine(cell_line);
@@ -206,8 +220,12 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 		expressiondata.setProvenance("VirmiRNA");
 
 		Gene gene = new Gene();
-		gene.setName(target1);
 		gene.setGeneId(uniprot);
+		gene.setName(target1);
+		if (!createdObject(target1)) {
+			gene = null;
+		}
+		
 
 		PubmedDocument pubmedDoc = new PubmedDocument();
 
@@ -221,10 +239,19 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 			if (link.contains("http://www.ncbi.nlm.nih.gov/pubmed/")) {
 
 				String pubmedId = link.substring(link.indexOf(">")+1);
+				System.out.println(pubmedId);
 				pubmedDoc.setId(pubmedId);
+
+
+			}else if (link.contains("http://www.patentlens.net/patentlens/patents.html?patnums=")){
+
+				pubmedDoc = null;
+
 			}
 
+
 			target_pubmedId = target_pubmedId.substring(link.length()+4);
+
 		}
 
 
@@ -236,16 +263,18 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 
 		// Inserta Sequence (o recupera su id. si ya existe)
 
-		Object oldSequence1 = session.createCriteria(Sequence.class)
-				.add(Restrictions.eq("sequence", sequence1.getSequence()))
-				.uniqueResult();
-		if (oldSequence1 == null) {
-			session.save(sequence1);
-			session.flush(); // to get the PK
-		} else {
-			sequence1 = (Sequence) oldSequence1;
-		}
+		if(sequence1 != null){
 
+			Object oldSequence1 = session.createCriteria(Sequence.class)
+					.add(Restrictions.eq("sequence", sequence1.getSequence()))
+					.uniqueResult();
+			if (oldSequence1 == null) {
+				session.save(sequence1);
+				session.flush(); // to get the PK
+			} else {
+				sequence1 = (Sequence) oldSequence1;
+			}
+		}
 		// Inserta Organism (o recupera su id. si ya existe)
 		Object oldOrganism = session.createCriteria(Organism.class)
 				.add(Restrictions.eq("name", organism.getName()) )
@@ -259,6 +288,7 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 			session.update(organismToUpdate);
 			organism = organismToUpdate;
 		}
+
 		Object oldOrganism2 = session.createCriteria(Organism.class)
 				.add(Restrictions.eq("name", organism2.getName()) )
 				.uniqueResult();
@@ -342,19 +372,22 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 
 		// Inserta PubmedDoc (o recupera su id. si ya existe)
 
-		Object oldPubmedDoc = session.createCriteria(PubmedDocument.class)
-				.add( Restrictions.eq("id", pubmedDoc.getId()) )
-				.uniqueResult();
-		if (oldPubmedDoc==null) {
-			session.save(pubmedDoc);
-			session.flush(); // to get the PK
-		} else {
-			PubmedDocument pubmedDocToUpdate = (PubmedDocument) oldPubmedDoc;
-			pubmedDocToUpdate.update(pubmedDoc);
-			session.update(pubmedDocToUpdate);
-			pubmedDoc = pubmedDocToUpdate;
+		if(pubmedDoc !=null){
+			Object oldPubmedDoc = session.createCriteria(PubmedDocument.class)
+					.add( Restrictions.eq("id", pubmedDoc.getId()) )
+					.uniqueResult();
+			if (oldPubmedDoc==null) {
+				session.save(pubmedDoc);
+				session.flush(); // to get the PK
+			} else {
+				PubmedDocument pubmedDocToUpdate = (PubmedDocument) oldPubmedDoc;
+				pubmedDocToUpdate.update(pubmedDoc);
+				session.update(pubmedDocToUpdate);
+				pubmedDoc = pubmedDocToUpdate;
+			}
 		}
 
+	
 		// Relaciona target y sequence/ target y organism
 		if (sequence2!=null) target.setSequence_pk(sequence2.getPk());
 		target.setOrganism_pk(organism2.getPk());
@@ -373,24 +406,28 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 		interactiondata.setProvenance("VirmiRNA");
 		session.save(interactiondata);
 
-		MirnaHasPubmedDocument mirnaHasPubmedDocument =
-				new MirnaHasPubmedDocument(mirna.getPk(), pubmedDoc.getPk());
-
-		ExpressionDataHasPubmedDocument expresDataHasPubmedDocument =
-				new ExpressionDataHasPubmedDocument(expressiondata.getPk(), pubmedDoc.getPk());
-
 		// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
-		Object oldMirnaHasPubmedDocument = session.createCriteria(MirnaHasPubmedDocument.class)
-				.add( Restrictions.eq("mirnaPk", mirna.getPk()) )
-				.add( Restrictions.eq("pubmedDocumentPk", pubmedDoc.getPk()) )
-				.uniqueResult();
-		if (oldMirnaHasPubmedDocument==null) {
-			session.save(mirnaHasPubmedDocument);
+		if(pubmedDoc !=null){
+
+			MirnaHasPubmedDocument mirnaHasPubmedDocument =
+					new MirnaHasPubmedDocument(mirna.getPk(), pubmedDoc.getPk());
+
+			Object oldMirnaHasPubmedDocument = session.createCriteria(MirnaHasPubmedDocument.class)
+					.add( Restrictions.eq("mirnaPk", mirna.getPk()) )
+					.add( Restrictions.eq("pubmedDocumentPk", pubmedDoc.getPk()) )
+					.uniqueResult();
+			if (oldMirnaHasPubmedDocument==null) {
+				session.save(mirnaHasPubmedDocument);
+			}
 		}
 
-		// Relaciona PubmedDocument con ExpressionData
-		session.save(expresDataHasPubmedDocument);
+		if(pubmedDoc !=null){
+			ExpressionDataHasPubmedDocument expresDataHasPubmedDocument =
+					new ExpressionDataHasPubmedDocument(expressiondata.getPk(), pubmedDoc.getPk());
 
+			// Relaciona PubmedDocument con ExpressionData
+			session.save(expresDataHasPubmedDocument);
+		}
 
 
 		MirnaInvolvesBiologicalProcess mirnaInvolvesBiologicalProcess =
@@ -403,7 +440,7 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 		if (oldMirnInvolvesBiologicalProcess==null) {
 			session.save(mirnaInvolvesBiologicalProcess);
 		}
-		
+
 		MirnaHasOrganism mirnaHasOrganism = 
 				new MirnaHasOrganism(mirna.getPk(), organism.getPk());
 
@@ -418,7 +455,7 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 		}
 
 	}
-	
+
 	private String nullifyField(String field) {
 		return "".equals(field.trim()) || "na".equals(field.trim()) || "NA".equals(field.trim()) ? null : field.trim();
 	}

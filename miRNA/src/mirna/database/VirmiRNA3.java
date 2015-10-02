@@ -346,16 +346,10 @@ public class VirmiRNA3 extends NewMirnaDatabase {
 	}
 
 	private String nullifyField(String field) {
-		return "".equals(field.trim()) || "na".equals(field.trim()) || "-".equals(field.trim()) ? null : field.trim();
+		return "".equals(field.trim()) || "na".equals(field.trim()) || "na".equals(field.trim()) || "-".equals(field.trim()) ? null : field.trim();
 	}
 
-	private boolean createdObject(String... attributes) {
-		boolean res = false;
-		for (String att : attributes) {
-			if (att != null) res = true;			
-		}
-		return res;
-	}
+	
 
 
 }
