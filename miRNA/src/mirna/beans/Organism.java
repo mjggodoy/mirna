@@ -76,7 +76,7 @@ public class Organism extends ModelClass {
 		if (this.name != null) {
 			if (specie.getName() == null)
 				res++;
-			else if (!this.name.equals(specie.getName()))
+			else if (!this.name.toLowerCase().equals(specie.getName().toLowerCase()))
 				return -1;
 		}
 		

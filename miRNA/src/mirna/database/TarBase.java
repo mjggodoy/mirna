@@ -537,14 +537,6 @@ public class TarBase extends NewMirnaDatabase {
 		return "".equals(field.trim()) || "n_a".equals(field.trim()) ? null : field.trim();
 	}
 	
-	private boolean createdObject(String... attributes) {
-		boolean res = false;
-		for (String att : attributes) {
-			if (att != null) res = true;			
-		}
-		return res;
-	}
-	
 	public static void main(String[] args) throws Exception {
 
 		TarBase tarBase = new TarBase();

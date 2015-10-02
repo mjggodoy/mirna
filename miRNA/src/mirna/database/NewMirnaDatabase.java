@@ -92,6 +92,14 @@ public abstract class NewMirnaDatabase implements IMirnaDatabase {
 			HibernateUtil.closeSession();
 			HibernateUtil.closeSessionFactory();
 		}
-	} 
+	}
+	
+	protected boolean createdObject(String... attributes) {
+		boolean res = false;
+		for (String att : attributes) {
+			if (att != null) res = true;			
+		}
+		return res;
+	}
 
 }

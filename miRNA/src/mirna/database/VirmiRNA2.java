@@ -132,25 +132,30 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 	@Override
 	public void processRow(Session session, ResultSet rs) throws Exception {
 
-		String id_virus = rs.getString("avm_id");
-		String mirna_name = rs.getString("mirna");
-		String mirna_seq = rs.getString("mirna_sequence");
-		String accesion_number = rs.getString("mirbase_id");
-		String specie_target = rs.getString("specie");
-		String organism_name = rs.getString("virus");
-		String organism_name_full = rs.getString("virus_full_name");
-		String resource_organism = rs.getString("taxonomy");
-		String target1= rs.getString("target");
-		String uniprot = rs.getString("uniprot");
-		String target_process = rs.getString("target_process");
-		String method = rs.getString("method");
-		String cell_line = rs.getString("cell_line");
-		String target_sequence = rs.getString("target_sequence");
-		String target_region = rs.getString("target_region");
-		String target_coords = rs.getString("target_coords");
-		String send_match = rs.getString("seed_match");
-		String target_resource = rs.getString("target_ref");
-		String target_pubmedId = rs.getString("pubmed_id");
+		String id_virus = nullifyField(rs.getString("avm_id"));
+		String mirna_name = nullifyField(rs.getString("mirna"));
+		String mirna_seq = nullifyField(rs.getString("mirna_sequence"));
+		String accesion_number = nullifyField(rs.getString("mirbase_id"));
+		String specie_target = nullifyField(rs.getString("specie"));
+		String organism_name = nullifyField(rs.getString("virus"));
+		String organism_name_full = nullifyField(rs.getString("virus_full_name"));
+		@SuppressWarnings("unused")
+		String resource_organism = nullifyField(rs.getString("taxonomy"));
+		String target1= nullifyField(rs.getString("target"));
+		String uniprot = nullifyField(rs.getString("uniprot"));
+		String target_process = nullifyField(rs.getString("target_process"));
+		String method = nullifyField(rs.getString("method"));
+		String cell_line = nullifyField(rs.getString("cell_line"));
+		String target_sequence = nullifyField(rs.getString("target_sequence"));
+		String target_region = nullifyField(rs.getString("target_region"));
+		String target_coords = nullifyField(rs.getString("target_coords"));
+		String send_match = nullifyField(rs.getString("seed_match"));
+		String target_resource = nullifyField(rs.getString("target_ref"));
+		String target_pubmedId = nullifyField(rs.getString("pubmed_id"));
+		
+		if (accesion_number!=null) {
+			accesion_number = accesion_number.substring(accesion_number.indexOf("=")+1);
+		}
 
 		MiRna mirna = new MiRna();
 		mirna.setName(mirna_name);
@@ -161,20 +166,35 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 
 		Sequence sequence2 = new Sequence();
 		sequence2.setSequence(target_sequence);
+		if (!createdObject(target_sequence)) {
+			sequence2 = null;
+		}
 
 		Organism organism = new Organism();
 		organism.setName(organism_name_full);
 		organism.setShortName(organism_name);
-		organism.setResource(resource_organism);
+		//TODO: No cogemos ahora mismo los resource porque hay organism
+		// con mismo nombre y distinto resource. Quiza arreglar cogiendo
+		// el verdadero nombre de la resource.
+		//organism.setResource(resource_organism);
+		if (!createdObject(organism_name_full, organism_name)) {
+			organism = null;
+		}
 
 		Organism organism2 = new Organism();
-		organism2.setSpecie(specie_target);// included (:P) set/get en la clase organism.
+		organism2.setName(specie_target);// included (:P) set/get en la clase organism.
+		if (!createdObject(specie_target)) {
+			organism2 = null;
+		}
 
 		Target target = new Target();
 		target.setRegion(target_region);
 		target.setSeed_match(send_match);
 		target.setCoordinates(target_coords);
 		target.setTarget_ref(target_resource);
+		if (!createdObject(target_region, send_match, target_coords, target_resource)) {
+			target = null;
+		}
 
 		BiologicalProcess biologicalprocess = new BiologicalProcess();
 		biologicalprocess.setName(target_process);
@@ -227,7 +247,6 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 		}
 
 		// Inserta Organism (o recupera su id. si ya existe)
-
 		Object oldOrganism = session.createCriteria(Organism.class)
 				.add(Restrictions.eq("name", organism.getName()) )
 				.uniqueResult();
@@ -235,12 +254,22 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 			session.save(organism);
 			session.flush(); // to get the PK
 		} else {
-
 			Organism organismToUpdate = (Organism) oldOrganism;
 			organismToUpdate.update(organism);
 			session.update(organismToUpdate);
 			organism = organismToUpdate;
-
+		}
+		Object oldOrganism2 = session.createCriteria(Organism.class)
+				.add(Restrictions.eq("name", organism2.getName()) )
+				.uniqueResult();
+		if (oldOrganism2==null) {
+			session.save(organism2);
+			session.flush(); // to get the PK
+		} else {
+			Organism organismToUpdate2 = (Organism) oldOrganism2;
+			organismToUpdate2.update(organism2);
+			session.update(organismToUpdate2);
+			organism2 = organismToUpdate2;
 		}
 
 		Object oldMiRna = session.createCriteria(MiRna.class)
@@ -267,14 +296,16 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 			session.save(mirnaHasSequence);
 		}
 
-		Object oldSequence2 = session.createCriteria(Sequence.class)
-				.add(Restrictions.eq("sequence", sequence2.getSequence()))
-				.uniqueResult();
-		if (oldSequence2 == null) {
-			session.save(sequence2);
-			session.flush(); // to get the PK
-		} else {
-			sequence2 = (Sequence) oldSequence2;
+		if (sequence2!=null) {
+			Object oldSequence2 = session.createCriteria(Sequence.class)
+					.add(Restrictions.eq("sequence", sequence2.getSequence()))
+					.uniqueResult();
+			if (oldSequence2 == null) {
+				session.save(sequence2);
+				session.flush(); // to get the PK
+			} else {
+				sequence2 = (Sequence) oldSequence2;
+			}
 		}
 
 
@@ -324,14 +355,12 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 			pubmedDoc = pubmedDocToUpdate;
 		}
 
-
 		// Relaciona target y sequence/ target y organism
-		target.setSequence_pk(sequence2.getPk());
+		if (sequence2!=null) target.setSequence_pk(sequence2.getPk());
 		target.setOrganism_pk(organism2.getPk());
 		session.save(target);
 
 		// Relaciona expression data con mirna (o recupera su id. si ya existe)
-
 		expressiondata.setMirnaPk(mirna.getPk());
 		session.save(expressiondata);
 
@@ -343,7 +372,6 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 		interactiondata.setGene_pk(gene.getPk());
 		interactiondata.setProvenance("VirmiRNA");
 		session.save(interactiondata);
-
 
 		MirnaHasPubmedDocument mirnaHasPubmedDocument =
 				new MirnaHasPubmedDocument(mirna.getPk(), pubmedDoc.getPk());
@@ -389,6 +417,10 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 
 		}
 
+	}
+	
+	private String nullifyField(String field) {
+		return "".equals(field.trim()) || "na".equals(field.trim()) || "NA".equals(field.trim()) ? null : field.trim();
 	}
 
 }
