@@ -18,12 +18,11 @@ public class IntegrateAll {
 		(new PlantMirnaMatureMirna()).insertIntoSQLModel();
 		(new PlantMirnaStemLoop()).insertIntoSQLModel();
 		(new Phenomir()).insertIntoSQLModel();
-		(new RepTar("repTar_Human")).insertIntoSQLModel();
-		(new RepTar("repTar_Mouse")).insertIntoSQLModel();
+		(new RepTar("repTar_human")).insertIntoSQLModel();
+		(new RepTar("repTar_mouse")).insertIntoSQLModel();
 		(new TarBase()).insertIntoSQLModel();
 		
-
-
+		
 	}
 
 }
