@@ -114,10 +114,7 @@ public class MirDIP extends NewMirnaDatabase {
 			session.save(miRna);
 			session.flush();  // to get the PK
 		} else {
-			MiRna miRnaToUpdate = (MiRna) oldMiRna;
-			miRnaToUpdate.update(miRna);
-			session.update(miRnaToUpdate);
-			miRna = miRnaToUpdate;
+			miRna = (MiRna) oldMiRna;
 		}
 
 		// Inserta gene (o recupera su id. si ya existe)
@@ -128,10 +125,7 @@ public class MirDIP extends NewMirnaDatabase {
 			session.save(gene);
 			session.flush(); // to get the PK
 		} else {
-			Gene geneToUpdate = (Gene) oldGene;
-			geneToUpdate.update(gene);
-			session.update(geneToUpdate);
-			gene = geneToUpdate;
+			gene = (Gene) oldGene;
 		}
 
 		id.setMirna_pk(miRna.getPk());
