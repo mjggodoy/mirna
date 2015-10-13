@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import mirna.beans.Gene;
+
 import mirna.beans.MiRna;
 import mirna.exception.MiRnaException;
 
@@ -21,11 +21,11 @@ import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationExceptio
 
 
 
-public class MicroTCdsDataGene extends NewMirnaDatabase {
+public class MicroTCdsDataMiRNA extends NewMirnaDatabase {
 
 	private final static String TABLE_NAME = "microt_cds";
 
-	public MicroTCdsDataGene() throws MiRnaException {
+	public MicroTCdsDataMiRNA() throws MiRnaException {
 		super(TABLE_NAME);
 		this.fetchSizeMin = true;
 	}
@@ -123,20 +123,20 @@ public class MicroTCdsDataGene extends NewMirnaDatabase {
 		
 		//org.hibernate.Transaction tx = session.beginTransaction();
 		
-		String geneString = rs.getString("gene_id");
+		String miRNAString = rs.getString("miRNA");
 		
 		//System.out.println(miRNAString);
 		
-		Gene gene = new Gene();
-		gene.setName(geneString);
+		MiRna miRna = new MiRna();
+		miRna.setName(miRNAString);
 		
 		//try{
 		
 		
 		//System.out.println("saving");
-		session.save(gene); 
+		session.save(miRna); 
 		//session.flush();
-		System.out.println(gene.getName());
+		System.out.println(miRna.getName());
 		//tx.commit();
 		
 		

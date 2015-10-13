@@ -10,6 +10,7 @@ import java.sql.Statement;
 
 import mirna.beans.Gene;
 import mirna.beans.MiRna;
+import mirna.beans.Transcript;
 import mirna.exception.MiRnaException;
 
 import org.apache.commons.lang.StringUtils;
@@ -21,15 +22,15 @@ import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationExceptio
 
 
 
-public class MicroTCdsDataGene extends NewMirnaDatabase {
+public class MicroTCdsDataGeneTranscript extends NewMirnaDatabase {
 
 	private final static String TABLE_NAME = "microt_cds";
 
-	public MicroTCdsDataGene() throws MiRnaException {
+	public MicroTCdsDataGeneTranscript() throws MiRnaException {
 		super(TABLE_NAME);
 		this.fetchSizeMin = true;
 	}
-	
+
 	public void insertInTable(String csvInputFile) throws Exception {
 
 		Connection con = null;
@@ -120,33 +121,26 @@ public class MicroTCdsDataGene extends NewMirnaDatabase {
 
 	@Override
 	protected void processRow(Session session, ResultSet rs) throws Exception {
+
+		String transcriptId = rs.getString("transcript_id");
+		String geneName = rs.getString("gene_id");
+
+		Transcript transcript = new Transcript();
+		transcript.setTranscriptID(transcriptId);
+		//session.save(transcript);
+
+		//  Recupera su id. si ya existe
 		
-		//org.hibernate.Transaction tx = session.beginTransaction();
+		Object oldGene = session.createCriteria(Gene.class)
+				.add(Restrictions.eq("name", geneName))
+				.uniqueResult();
 		
-		String geneString = rs.getString("gene_id");
+		Gene gene = (Gene) oldGene;
+					
+		transcript.setGeneId(gene.getPk());
+		session.save(transcript);
+
 		
-		//System.out.println(miRNAString);
-		
-		Gene gene = new Gene();
-		gene.setName(geneString);
-		
-		//try{
-		
-		
-		//System.out.println("saving");
-		session.save(gene); 
-		//session.flush();
-		System.out.println(gene.getName());
-		//tx.commit();
-		
-		
-		//}catch (ConstraintViolationException ex){
-			//ex.printStackTrace();
-			//ex.getMessage();
-			//System.out.println("YA METIDA: miRNAString");
-			//tx.rollback();
-		//}
-	
 				
 	}
 

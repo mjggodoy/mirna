@@ -11,6 +11,7 @@ import java.util.Properties;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import mirna.beans.MiRna;
 import mirna.exception.MiRnaException;
 import mirna.utils.HibernateUtil;
 
@@ -22,7 +23,7 @@ public abstract class NewMirnaDatabase implements IMirnaDatabase {
 	
 	// Number of rows to read from the database to be inserted into the model.
 	// Use -1 to read all the rows.
-	protected final int ROWS_TO_READ = 2;
+	protected final int ROWS_TO_READ = Integer.MAX_VALUE;
 	
 	protected String tableName;
 	
@@ -62,7 +63,7 @@ public abstract class NewMirnaDatabase implements IMirnaDatabase {
 			
 			// our SQL SELECT query. 
 			// if you only need a few columns, specify them by name instead of using "*"
-			String query = "SELECT * FROM " + tableName;
+			String query = "SELECT distinct transcript_id FROM " + tableName;
 			System.out.println("STARTING: " + query);
 			
 			// execute the query, and get a java resultset
@@ -75,20 +76,21 @@ public abstract class NewMirnaDatabase implements IMirnaDatabase {
 				processRow(session, rs);
 				
 				count++;
-				if (count%100==0) {
+				if (count%1000==0) {
 					System.out.println(tableName + ": " + count);
-					session.flush();
-			        session.clear();
+					//session.flush();
+			        //session.clear();
 				}
 				
 			}
+			
 			stmt.close();
 			tx.commit();
 		} catch (SQLException e) {
 			tx.rollback();
 			e.printStackTrace();
 		} finally {
-			if (con!=null) con.close();
+			//if (con!=null) con.close();
 			HibernateUtil.closeSession();
 			HibernateUtil.closeSessionFactory();
 		}

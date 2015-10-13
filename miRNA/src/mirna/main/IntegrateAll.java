@@ -9,7 +9,9 @@ public class IntegrateAll {
 		//(new HMDD()).insertIntoSQLModel();
 		//(new Microcosm()).insertIntoSQLModel();
 		//(new MicroTCdsData()).insertIntoSQLModel();
-		(new MicroTCdsDataGene()).insertIntoSQLModel();
+		//(new MicroTCdsDataMiRNA()).insertIntoSQLModel();
+		//(new MicroTCdsDataGene()).insertIntoSQLModel();
+		(new MicroTCdsDataGeneTranscript()).insertIntoSQLModel();
 		//(new MicroTV4()).insertIntoSQLModel();
 		//(new Mir2Disease()).insertIntoSQLModel();
 		//(new MiRCancer()).insertIntoSQLModel();
