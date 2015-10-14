@@ -14,6 +14,8 @@ import org.hibernate.criterion.Restrictions;
 import mirna.beans.Gene;
 import mirna.beans.InteractionData;
 import mirna.beans.MiRna;
+import mirna.beans.Target;
+import mirna.beans.Transcript;
 import mirna.exception.MiRnaException;
 
 
@@ -98,25 +100,27 @@ public class MiRDB extends NewMirnaDatabase {
 		id.setScore(score);
 		id.setProvenance("miRDB");
 		
-		Gene gene = new Gene();
-		gene.setAccessionumber(target_name);
+		Target target = new Target();
+		
+		Transcript transcript = new Transcript();
+		transcript.setName(target_name);
 		
 		MiRna miRna = new MiRna();
 		miRna.setName(miRNA);
 		
 		// Inserta el gene (o recupera su id. si ya existe)
 		
-		Object oldGene = session.createCriteria(Gene.class)
-				.add( Restrictions.eq("name", gene.getName()) )
+		Object oldTranscript = session.createCriteria(Transcript.class)
+				.add(Restrictions.eq("transcriptID", transcript.getTranscriptID()))
 				.uniqueResult();
-		if (oldGene==null) {
-			session.save(gene);
-			session.flush();  // to get the PK
+		if (oldTranscript == null) {
+			session.save(transcript);
+			session.flush(); // to get the PK
 		} else {
-			Gene geneToUpdate = (Gene) oldGene;
-			geneToUpdate.update(gene);
-			session.update(geneToUpdate);
-			gene = geneToUpdate;
+			Transcript transcriptToUpdate = (Transcript) oldTranscript;
+			transcriptToUpdate.update(transcript);
+			session.update(transcriptToUpdate);
+			transcript = transcriptToUpdate;
 		}
 	
 		// Inserta MiRna (o recupera su id. si ya existe)
@@ -134,11 +138,16 @@ public class MiRDB extends NewMirnaDatabase {
 			miRna = miRnaToUpdate;
 		}			
 
+		
+		target.setTranscript_pk(transcript.getPk());
+		session.save(target);
+		session.flush(); // to get the PK
+		
 		// Inserta nueva InteractinData
 		// (y la relaciona con el MiRna y Target correspondientes)
 
 		id.setMirna_pk(miRna.getPk());
-		id.setGene_pk(gene.getPk());
+		id.setTarget_pk(target.getPk());
 		session.save(id);
 		session.flush(); // to get the PK
 		

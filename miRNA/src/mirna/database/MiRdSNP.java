@@ -22,11 +22,11 @@ public abstract class MiRdSNP extends NewMirnaDatabase {
 
 	public static void main(String[] args) throws Exception {
 
-		(new MiRdSNP1()).insertIntoSQLModel();
-		(new MiRdSNP2()).insertIntoSQLModel();
-		(new MiRdSNP3()).insertIntoSQLModel();
+		//(new MiRdSNP1()).insertIntoSQLModel();
+		//(new MiRdSNP2()).insertIntoSQLModel();
+		//(new MiRdSNP3()).insertIntoSQLModel();
 		(new MiRdSNP4()).insertIntoSQLModel();
-		(new MiRdSNP5()).insertIntoSQLModel();
+		//(new MiRdSNP5()).insertIntoSQLModel();
 
 	}
 

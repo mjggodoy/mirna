@@ -16,6 +16,7 @@ import mirna.beans.Gene;
 import mirna.beans.InteractionData;
 import mirna.beans.MiRna;
 import mirna.beans.Target;
+import mirna.beans.Transcript;
 import mirna.exception.MiRnaException;
 
 public class RepTar extends NewMirnaDatabase {
@@ -169,6 +170,9 @@ public class RepTar extends NewMirnaDatabase {
 		target.setUtr3_conservation_score(UTR3_conservation_score);
 		target.setSite_conservation_score(site_conservation_score);
 		target.setRepeated_motifs(repeated_motifs);
+		
+		Transcript transcript = new Transcript();
+		transcript.setTranscriptID(gene_accesion);
 
 		Complex complex = new Complex();
 		complex.setMinimal_free_energy(minimal_free_energy);
@@ -204,6 +208,21 @@ public class RepTar extends NewMirnaDatabase {
 			gene = geneToUpdate;
 		}
 		
+		transcript.setGeneId(gene.getPk());
+		Object oldTranscript = session.createCriteria(Transcript.class)
+				.add(Restrictions.eq("transcriptID", transcript.getTranscriptID()))
+				.uniqueResult();
+		if (oldTranscript == null) {
+			session.save(transcript);
+			session.flush(); // to get the PK
+		} else {
+			Transcript transcriptToUpdate = (Transcript) oldTranscript;
+			transcriptToUpdate.update(transcript);
+			session.update(transcriptToUpdate);
+			transcript = transcriptToUpdate;
+		}
+		
+		target.setTranscript_pk(transcript.getPk());
 		session.save(target);
 		session.flush(); // to get the PK
 
@@ -222,6 +241,7 @@ public class RepTar extends NewMirnaDatabase {
 		session.flush();
 		
 	}
+	
 	
 
 }

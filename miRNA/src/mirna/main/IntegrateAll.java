@@ -12,7 +12,7 @@ public class IntegrateAll {
 		//(new MicroTCdsDataMiRNA()).insertIntoSQLModel();
 		//(new MicroTCdsDataGene()).insertIntoSQLModel();
 		//(new MicroTCdsDataGeneTranscript()).insertIntoSQLModel();
-		(new MicroTCdsDataMiRNAInteractionData()).insertIntoSQLModel();
+		//(new MicroTCdsDataMiRNAInteractionData()).insertIntoSQLModel();
 		//(new MicroTV4()).insertIntoSQLModel();
 		//(new Mir2Disease()).insertIntoSQLModel();
 		//(new MiRCancer()).insertIntoSQLModel();
