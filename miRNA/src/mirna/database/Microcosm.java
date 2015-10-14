@@ -124,7 +124,7 @@ public class Microcosm extends NewMirnaDatabase {
 		String score = rs.getString("score");
 		String pvalue_og = rs.getString("pvalue_og");
 		String transcriptId = rs.getString("transcript_id");
-		String externalName = rs.getString("external_name");
+		String genename = rs.getString("external_name");
 
 		MiRna miRna = new MiRna();
 		miRna.setName(seq);
@@ -147,7 +147,7 @@ public class Microcosm extends NewMirnaDatabase {
 		transcript.setTranscriptID(transcriptId);
 		
 		Gene gene = new Gene();
-		gene.setGeneId(externalName);
+		gene.setName(genename);
 
 
 		// Inserta MiRna (o recupera su id. si ya existe)
@@ -168,7 +168,7 @@ public class Microcosm extends NewMirnaDatabase {
 		}
 		
 		Object oldGene = session.createCriteria(Gene.class)
-				.add(Restrictions.eq("geneId", gene.getGeneId()))
+				.add(Restrictions.eq("name", gene.getName()))
 				.uniqueResult();
 		if (oldGene == null) {
 			session.save(gene);

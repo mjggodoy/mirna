@@ -159,7 +159,7 @@ public class RepTar extends NewMirnaDatabase {
 		miRna.setName(mirna_name);
 
 		Gene gene = new Gene();
-		gene.setAccessionumber(gene_accesion);
+		//gene.setAccessionumber(gene_accesion);
 		gene.setName(gene_symbol);
 
 		Target target = new Target();

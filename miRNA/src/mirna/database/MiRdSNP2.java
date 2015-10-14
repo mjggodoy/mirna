@@ -121,7 +121,7 @@ public class MiRdSNP2 extends MiRdSNP {
 
 		Gene gene = new Gene();
 		gene.setName(gene_name);
-		gene.setAccessionumber(ref_seq);;
+		//gene.setAccessionumber(ref_seq);;
 
 		Target target = new Target();
 

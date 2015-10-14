@@ -113,7 +113,7 @@ public class MiRdSNP3 extends MiRdSNP {
 	public void processRow(Session session, ResultSet rs) throws Exception{
 
 			String gene_name = rs.getString("gene").toLowerCase().trim();
-			String ref_seq = rs.getString("refseq").toLowerCase().trim();
+			//String ref_seq = rs.getString("refseq").toLowerCase().trim();
 			String mirna_name = rs.getString("miR").toLowerCase().trim();
 			String snp_id = rs.getString("snp").toLowerCase().trim();
 			String disease_name = rs.getString("diseases").toLowerCase().trim();
@@ -124,7 +124,7 @@ public class MiRdSNP3 extends MiRdSNP {
 
 			Gene gene = new Gene();
 			gene.setName(gene_name);
-			gene.setAccessionumber(ref_seq);
+			//gene.setAccessionumber(ref_seq);
 
 			MiRna mirna = new MiRna();
 			mirna.setName(mirna_name);

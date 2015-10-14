@@ -119,7 +119,7 @@ public class MiRdSNP4 extends MiRdSNP {
 
 		Gene gene = new Gene();
 		gene.setName(gene_name);
-		gene.setGeneId(ref_seq);
+		//gene.setGeneId(ref_seq);
 
 
 		String[] diseaseTokens = StringUtils.splitPreserveAllTokens(disease_name, ",");
