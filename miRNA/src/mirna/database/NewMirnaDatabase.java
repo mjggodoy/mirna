@@ -63,7 +63,7 @@ public abstract class NewMirnaDatabase implements IMirnaDatabase {
 			
 			// our SQL SELECT query. 
 			// if you only need a few columns, specify them by name instead of using "*"
-			String query = "SELECT distinct transcript_id FROM " + tableName;
+			String query = "SELECT * FROM " + tableName;
 			System.out.println("STARTING: " + query);
 			
 			// execute the query, and get a java resultset
@@ -71,12 +71,13 @@ public abstract class NewMirnaDatabase implements IMirnaDatabase {
 			
 			// iterate through the java resultset
 			int count = 0;
+			System.out.println("EMPIEZO EN LA PRIMERA LINEA");
 			while (count<ROWS_TO_READ && rs.next()) {
 				
 				processRow(session, rs);
 				
 				count++;
-				if (count%1000==0) {
+				if (count%10==0) {
 					System.out.println(tableName + ": " + count);
 					//session.flush();
 			        //session.clear();
