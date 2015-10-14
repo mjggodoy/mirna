@@ -138,26 +138,28 @@ public class MicroTCdsDataMiRNAInteractionData extends NewMirnaDatabase {
 		target.setChromosome(chromosome);
 		target.setCoordinates(coordinates);
 		
-		
+		// Gene
 		Object oldGene = session.createCriteria(Gene.class)
 				.add(Restrictions.eq("name",geneName))
 				.uniqueResult();
 		
 		Gene gene = (Gene) oldGene;
 		
-		
+		// mirna
 		Object oldmiRna = session.createCriteria(MiRna.class)
 				.add(Restrictions.eq("name",miRnaName ))
 				.uniqueResult();
 		
 		MiRna miRna = (MiRna) oldmiRna;
 		
-		
+		// Transcript
 		Object oldTranscript = session.createCriteria(Transcript.class)
 				.add(Restrictions.eq("transcriptID", transcriptId))
 				.uniqueResult();
 		
 		Transcript transcript= (Transcript) oldTranscript;
+		
+		//InteractionData
 		
 		InteractionData id = new InteractionData();
 		id.setMiTG_score(miTG_score);
