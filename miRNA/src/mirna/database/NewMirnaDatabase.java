@@ -23,11 +23,11 @@ public abstract class NewMirnaDatabase implements IMirnaDatabase {
 	
 	// Number of rows to read from the database to be inserted into the model.
 	// Use -1 to read all the rows.
-	protected final int ROWS_TO_READ = 5;
+	protected final int ROWS_TO_READ = Integer.MAX_VALUE;
 	
 	protected String tableName;
 	
-	protected boolean fetchSizeMin = true;
+	protected boolean fetchSizeMin = false;
 	
 	protected NewMirnaDatabase(String tableName) throws MiRnaException {
 		try {
@@ -77,10 +77,10 @@ public abstract class NewMirnaDatabase implements IMirnaDatabase {
 				processRow(session, rs);
 				
 				count++;
-				if (count%5==0) {
+				if (count%1000==0) {
 					System.out.println(tableName + ": " + count);
-					//session.flush();
-			        //session.clear();
+					session.flush();
+			        session.clear();
 				}
 				
 			}
