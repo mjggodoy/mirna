@@ -21,6 +21,8 @@ public abstract class NewMirnaDatabase implements IMirnaDatabase {
 	protected String dbUser;
 	protected String dbPassword;
 	
+	protected String selectQuery = "select * from %s";
+	
 	// Number of rows to read from the database to be inserted into the model.
 	// Use -1 to read all the rows.
 	protected final int ROWS_TO_READ = Integer.MAX_VALUE;
@@ -63,7 +65,7 @@ public abstract class NewMirnaDatabase implements IMirnaDatabase {
 			
 			// our SQL SELECT query. 
 			// if you only need a few columns, specify them by name instead of using "*"
-			String query = "SELECT * FROM " + tableName;
+			String query = String.format(selectQuery, tableName);
 			System.out.println("STARTING: " + query);
 			
 			// execute the query, and get a java resultset
@@ -71,7 +73,7 @@ public abstract class NewMirnaDatabase implements IMirnaDatabase {
 			
 			// iterate through the java resultset
 			int count = 0;
-			System.out.println("EMPIEZO EN LA PRIMERA LINEA");
+			//System.out.println("EMPIEZO EN LA PRIMERA LINEA");
 			while (count<ROWS_TO_READ && rs.next()) {
 				
 				processRow(session, rs);
