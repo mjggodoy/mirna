@@ -2,9 +2,7 @@ package mirna.database.microtcds;
 
 import java.sql.ResultSet;
 import org.hibernate.Session;
-import mirna.beans.Transcript;
 import mirna.exception.MiRnaException;
-
 
 
 public class MicroTCdsDataTranscript extends MicroTCdsData {

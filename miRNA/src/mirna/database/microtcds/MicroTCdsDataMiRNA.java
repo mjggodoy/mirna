@@ -1,13 +1,9 @@
 package mirna.database.microtcds;
 
 import java.sql.ResultSet;
-
 import org.hibernate.Session;
-
 import mirna.beans.MiRna;
 import mirna.exception.MiRnaException;
-
-
 
 public class MicroTCdsDataMiRNA extends MicroTCdsData {
 

@@ -1,10 +1,10 @@
-package mirna.database.microtcds;
+package mirna.database.microtv4;
 
 import java.sql.ResultSet;
 import mirna.exception.MiRnaException;
 import org.hibernate.Session;
 
-public class MicroTCdsDataMiRNAInteractionData extends MicroTCdsData {
+public class MicroTCdsDataMiRNAInteractionData extends MicroTV4 {
 
 
 	public MicroTCdsDataMiRNAInteractionData() throws MiRnaException {

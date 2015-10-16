@@ -1,18 +1,13 @@
-package mirna.database.microtcds;
+package mirna.database.microtv4;
 
 import java.sql.ResultSet;
-
-import mirna.beans.Gene;
-import mirna.beans.Transcript;
 import mirna.exception.MiRnaException;
-
 import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
 
 
-public class MicroTCdsDataGeneTranscript extends MicroTCdsData {
+public class MicroTV4DataGeneTranscript extends MicroTV4 {
 
-	public MicroTCdsDataGeneTranscript() throws MiRnaException {
+	public MicroTV4DataGeneTranscript() throws MiRnaException {
 		super();
 		super.selectQuery = "SELECT DISTINCT transcript_id, gene_id from %s LIMIT 10";
 	}
@@ -44,7 +39,7 @@ public class MicroTCdsDataGeneTranscript extends MicroTCdsData {
 
 	public static void main(String[] args) throws Exception {
 		
-		MicroTCdsDataGeneTranscript o = new MicroTCdsDataGeneTranscript();
+		MicroTV4DataGeneTranscript o = new MicroTV4DataGeneTranscript();
 		o.insertIntoSQLModel();
 		
 		

@@ -1,4 +1,4 @@
-package mirna.database;
+package mirna.database.mirdip;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -6,10 +6,13 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+
 import mirna.beans.Gene;
 import mirna.beans.InteractionData;
 import mirna.beans.MiRna;
+import mirna.database.NewMirnaDatabase;
 import mirna.exception.MiRnaException;
+
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
