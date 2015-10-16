@@ -20,10 +20,11 @@ public class MicroTCdsDataMiRNA extends MicroTCdsData {
 	protected void processRow(Session session, ResultSet rs) throws Exception {
 		
 		String miRNAString = rs.getString("miRNA");
+		System.out.println(miRNAString);
 		MiRna miRna = new MiRna();
 		miRna.setName(miRNAString);
 		session.save(miRna); 
-		//System.out.println(miRna.getName());
+		System.out.println(miRna.getName());
 				
 	}
 	
