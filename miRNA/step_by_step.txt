@@ -1,19 +1,41 @@
 1. MicroT_CDS
+
 	1.1	Ejecutar MicroTCdsDataMiRNA
+	
 	1.2 Ejecutar MicroTCdsDataGene
+	
 	1.3 Ejecutar MicroTCdsDataGeneTranscript
-	<Descartado MicroTCdsDataMiRNAInteractionData
+	
+	<Descartado MicroTCdsDataMiRNAInteractionData>
+	
 	1.4 Creada tabla microt_cds_pk desde microt_cds
+	
 UPDATE mirna_raw.microt_cds_pk SET transcript_pk=(SELECT pk FROM mirna.transcript WHERE mirna.transcript.id=mirna_raw.microt_cds_pk.transcript_id);
+
 	1.5 Insertar Target:
+	
 insert into mirna.target (pk, region, chromosome, coordinates, transcript_pk)
 select target_pk, region, chromosome, coordinates, transcript_pk from mirna_raw.microt_cds_pk;
+
 	1.6 Insertar InteractionData:
+	
 insert into mirna.interaction_data (mitg_score, target_pk, mirna_pk, gene_pk, provenance)
 select mitg_score, target_pk, mirna_pk, gene_pk, "microT_CDS" from mirna_raw.microt_cds_pk;
 
+
 2. MicroTV4
-	2.1 Ejecutar MicroTV4MiRNA
+
+	2.1 Ejecutar MicroTV4MiRNA: No hace falta. Tenemos todos los MiRNA.
+	
+SELECT t1.mirna
+FROM mirna_raw.microtv4 t1
+LEFT JOIN mirna.mirna t2
+ON t1.mirna = t2.name
+	where
+	t1.pk is not null
+	and t2.pk is null;
+	
+	2.2 Ejecutar MicroTV4Gene: 
 	
 	
 	SELECT t1.mirna
