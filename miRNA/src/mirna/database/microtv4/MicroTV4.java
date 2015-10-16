@@ -1,4 +1,4 @@
-package mirna.database;
+package mirna.database.microtv4;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -12,6 +12,7 @@ import mirna.beans.InteractionData;
 import mirna.beans.MiRna;
 import mirna.beans.Target;
 import mirna.beans.Transcript;
+import mirna.database.NewMirnaDatabase;
 import mirna.exception.MiRnaException;
 
 import org.apache.commons.lang.StringUtils;
