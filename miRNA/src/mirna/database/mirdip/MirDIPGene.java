@@ -18,17 +18,16 @@ public class MirDIPGene extends MirDIP {
 
 	public MirDIPGene() throws MiRnaException {
 		super();
-		super.selectQuery = "SELECT DISTINCT(gene_symbol) from %s LIMIT 10";
+		super.selectQuery = "SELECT count(distinct t1.gene_symbol) FROM mirna_raw.mirDIP t1 LEFT JOIN mirna.gene t2 ON t1.gene_symbol = t2.name where t1.pk is not null and t2.pk is null;";
 	}
-
 	@Override
 	public void processRow(Session session, ResultSet rs) throws Exception {
 
 		String gene_id = rs.getString("gene_symbol");
 		System.out.println(gene_id);
-		/*Gene gene = new Gene();
+		Gene gene = new Gene();
 		gene.setName(gene_id);
-		session.save(gene);*/
+		session.save(gene);
 
 	}	
 

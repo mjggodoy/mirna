@@ -16,7 +16,7 @@ public class MirDIPMiRNA extends MirDIP {
 
 	public MirDIPMiRNA() throws MiRnaException {
 		super();
-		super.selectQuery = "SELECT DISTINCT(microrna) from %s LIMIT 10";
+		super.selectQuery = "SELECT count(distinct t1.microrna) FROM mirna_raw.mirDIP t1 LEFT JOIN mirna.mirna t2 ON t1.microrna = t2.name where t1.pk is not null and t2.pk is null;";
 	}
 
 	@Override
@@ -24,10 +24,10 @@ public class MirDIPMiRNA extends MirDIP {
 
 		String miRNAString = rs.getString("microrna");
 		System.out.println(miRNAString);
-	/*	MiRna miRna = new MiRna();
+		MiRna miRna = new MiRna();
 		miRna.setName(miRNAString);
 		session.save(miRna); 
-		System.out.println(miRna.getName());*/
+		//System.out.println(miRna.getName());*/
 
 	}	
 
