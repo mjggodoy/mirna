@@ -16,7 +16,7 @@ public class RepTarTranscript extends RepTar {
 	public RepTarTranscript() throws MiRnaException {
 		super();
 		super.selectQuery = "SELECT distinct t1.gene_accesion" +
-				" FROM mirna_raw.repTar_human t1" +
+				" FROM mirna_raw.repTar_mouse t1" +
 				" LEFT JOIN mirna.transcript t2" +
 				" ON t1.gene_accesion = t2.id" +
 				" where" + 

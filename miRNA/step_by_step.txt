@@ -104,7 +104,7 @@ select mitg_score, target_pk, mirna_pk, gene_pk, "microTv4" from mirna_raw.micro
 	  
 	  4.3 Comprobar e insertar mirna diferentes con respecto a la columna name de la base de datos mirna.mirna
 	  
-	  SELECT t1.mirna
+	  SELECT t1.mirna								
 		FROM mirna_raw.repTar_human t1
 		LEFT JOIN mirna.mirna t2
 		ON t1.mirna = t2.name
@@ -122,6 +122,28 @@ select mitg_score, target_pk, mirna_pk, gene_pk, "microTv4" from mirna_raw.micro
     	where
     	t1.pk is not null
     	and t2.pk is null;
+    	
+    SELECT count(distinct t1.gene_symbol)
+		FROM mirna_raw.repTar_mouse t1
+		LEFT JOIN mirna.gene t2
+		ON t1.gene_symbol = t2.name
+		where
+		t1.pk is not null
+		and t2.pk is null;
+	
+	Ejecutar RepRarGene en java para la inserción.
+	Comprobación de que los datos recuperados estén vacíos con la misma consulta anterior.
+		
+	SELECT distinct t1.gene_accesion
+	FROM mirna_raw.repTar_mouse t1
+	LEFT JOIN mirna.transcript t2
+	ON t1.gene_accesion = t2.id
+	where
+		t1.pk is not null
+		and t2.pk is null;
+	
+	Ejecutar RepRarTranscript en java para la inserción.
+	Comprobación de que los datos recuperados estén vacíos con la misma consulta anterior.
     
 	UPDATE mirna_raw.repTar_human_pk 
 	SET gene_pk=(SELECT pk FROM mirna.mirna WHERE mirna.gene.name=mirna_raw.repTar_human_pk.gene_symbol);
@@ -129,8 +151,47 @@ select mitg_score, target_pk, mirna_pk, gene_pk, "microTv4" from mirna_raw.micro
 	UPDATE mirna_raw.repTar_human_pk 
 	SET transcript_pk=(SELECT pk FROM mirna.transcript WHERE mirna.transcript.id=mirna_raw.repTar_human_pk.gene_accesion
 
+5. RepTar_mouse
+
+ 	  4.1 Copiar base de datos de RepTar_human a ReptarHuman_pk.
+	  
+	  4.2 Crear columnas pks para mirna, gene, target, transcript e interaction_data.
+	  
+	  4.3 Comprobar e insertar mirna diferentes con respecto a la columna name de la base de datos mirna.mirna
+
+	SELECT t1.mirna
+	FROM mirna_raw.repTar_mouse t1
+	LEFT JOIN mirna.mirna t2
+	ON t1.mirna = t2.name
+	where
+    	t1.pk is not null
+    	and t2.pk is null;
+    
+    Ejecutar RepRarmiRNA en java para la inserción.
+	Comprobación de que los datos recuperados estén vacíos con la misma consulta anterior.
+	
+	SELECT count(distinct t1.gene_symbol)
+	FROM mirna_raw.repTar_mouse t1
+	LEFT JOIN mirna.gene t2
+	ON t1.gene_symbol = t2.name
+	where
+		t1.pk is not null
+		and t2.pk is null;
+		
+	Ejecutar RepRarGene en java para la inserción.
+	Comprobación de que los datos recuperados estén vacíos con la misma consulta anterior.
+		
+		
+	SELECT distinct t1.gene_accesion
+	FROM mirna_raw.repTar_mouse t1
+	LEFT JOIN mirna.transcript t2
+	ON t1.gene_accesion = t2.id
+	where
+		t1.pk is not null
+		and t2.pk is null;
 	
 	
-	
+	Ejecutar RepRarTranscript en java para la inserción.
+	Comprobación de que los datos recuperados estén vacíos con la misma consulta anterior.
 	
 	

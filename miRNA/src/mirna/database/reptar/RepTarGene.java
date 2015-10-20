@@ -18,7 +18,7 @@ public class RepTarGene extends RepTar {
 	public RepTarGene() throws MiRnaException {
 		super();
 		super.selectQuery = "SELECT distinct t1.gene_symbol" +
-				" FROM mirna_raw.repTar_human t1" +
+				" FROM mirna_raw.repTar_mouse t1" +
 				" LEFT JOIN mirna.gene t2" +
 				" ON t1.gene_symbol = t2.name" +
 				" where" +

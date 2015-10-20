@@ -19,7 +19,7 @@ public class RepTarmiRNA extends RepTar {
 	public RepTarmiRNA() throws MiRnaException {
 		super();
 		super.selectQuery = "SELECT distinct t1.mirna"+
-				" FROM mirna_raw.repTar_human t1" +
+				" FROM mirna_raw.repTar_mouse t1" +
 				" LEFT JOIN mirna.mirna t2" +
 				" ON t1.mirna = t2.name" +
 				" where" +
