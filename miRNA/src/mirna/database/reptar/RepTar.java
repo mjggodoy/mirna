@@ -1,4 +1,4 @@
-package mirna.database;
+package mirna.database.reptar;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -17,15 +17,17 @@ import mirna.beans.InteractionData;
 import mirna.beans.MiRna;
 import mirna.beans.Target;
 import mirna.beans.Transcript;
+import mirna.database.NewMirnaDatabase;
 import mirna.exception.MiRnaException;
 
 public class RepTar extends NewMirnaDatabase {
 
-	private String tableName;
+	//private  static final String TABLE_NAME = "repTar_human";
+	
+	private  static final String TABLE_NAME = "repTar_mouse";
 
-	public RepTar(String tableName) throws MiRnaException {
-		super(tableName);
-		this.fetchSizeMin = true;
+	public RepTar() throws MiRnaException {
+		super(TABLE_NAME);
 	}
 
 	public void insertInTable(String csvInputFile) throws Exception {
