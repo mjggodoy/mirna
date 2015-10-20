@@ -1,13 +1,9 @@
 package mirna.database.microtcds;
 
 import java.sql.ResultSet;
-
 import org.hibernate.Session;
-
 import mirna.beans.MiRna;
 import mirna.exception.MiRnaException;
-
-
 
 public class MicroTCdsDataMiRNA extends MicroTCdsData {
 
@@ -20,10 +16,11 @@ public class MicroTCdsDataMiRNA extends MicroTCdsData {
 	protected void processRow(Session session, ResultSet rs) throws Exception {
 		
 		String miRNAString = rs.getString("miRNA");
+		System.out.println(miRNAString);
 		MiRna miRna = new MiRna();
 		miRna.setName(miRNAString);
 		session.save(miRna); 
-		//System.out.println(miRna.getName());
+		System.out.println(miRna.getName());
 				
 	}
 	
