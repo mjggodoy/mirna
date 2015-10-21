@@ -176,6 +176,17 @@ select mitg_score, target_pk, mirna_pk, gene_pk, "microTv4" from mirna_raw.micro
 	UPDATE mirna_raw.repTar_human_pk 
 	SET transcript_pk=(SELECT pk FROM mirna.transcript WHERE mirna.transcript.id=mirna_raw.repTar_human_pk.gene_accesion
 
+	#1
+	select max(pk) from mirna.target;
+
+	#2
+	SET @a:=45101818;
+	UPDATE mirna_raw.repTar_human_pk SET target_pk=@a:=@a+1;
+
+	#3
+	insert into mirna.target (pk, binding_site_start, binding_site_end, gu_proportion, utr3_conservation_score, site_conservation_score, repeated_motifs, transcript_pk)
+	select target_pk, sequence_start, sequence_end, gu_proportion, UTR_conservation_score, site_conservation_score, repeated_motifs, transcript_pk from mirna_raw.repTar_human_pk;
+	
 5. RepTar_mouse
 
  	  4.1 Copiar base de datos de RepTar_human a ReptarHuman_pk.
@@ -227,5 +238,17 @@ select mitg_score, target_pk, mirna_pk, gene_pk, "microTv4" from mirna_raw.micro
 	
 	UPDATE mirna_raw.repTar_mouse_pk 
 	SET transcript_pk=(SELECT pk FROM mirna.transcript WHERE mirna.transcript.id=mirna_raw.repTar_mouse_pk.gene_accesion);
+	
+	#1
+	select max(pk) from mirna.target;
+	
+	#2
+	SET @a:=49946987;
+	UPDATE mirna_raw.repTar_mouse_pk SET target_pk=@a:=@a+1;
+	
+	#3
+	insert into mirna.target (pk, binding_site_start, binding_site_end, gu_proportion, utr3_conservation_score, site_conservation_score, repeated_motifs, transcript_pk)
+	select target_pk, sequence_start, sequence_end, gu_proportion, UTR_conservation_score, site_conservation_score, repeated_motifs, transcript_pk from mirna_raw.repTar_mouse_pk;
+	
 	
 	
