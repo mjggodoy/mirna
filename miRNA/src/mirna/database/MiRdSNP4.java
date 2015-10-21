@@ -8,15 +8,19 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+
 import mirna.beans.Disease;
 import mirna.beans.ExpressionData;
 import mirna.beans.Gene;
 import mirna.beans.InteractionData;
 import mirna.beans.MiRna;
 import mirna.beans.SNP;
+import mirna.beans.Target;
+import mirna.beans.Transcript;
 import mirna.beans.nToM.SnpHasDisease;
 import mirna.exception.MiRnaException;
 
@@ -119,7 +123,7 @@ public class MiRdSNP4 extends MiRdSNP {
 
 		Gene gene = new Gene();
 		gene.setName(gene_name);
-		gene.setGeneId(ref_seq);
+		//gene.setGeneId(ref_seq);
 
 
 		String[] diseaseTokens = StringUtils.splitPreserveAllTokens(disease_name, ",");
@@ -136,6 +140,11 @@ public class MiRdSNP4 extends MiRdSNP {
 
 		MiRna mirna = new MiRna();
 		mirna.setName(mirna_name);
+		
+		Target target = new Target();
+		
+		Transcript transcript = new Transcript();
+		transcript.setTranscriptID(ref_seq);
 
 		SNP snp = new SNP();
 		snp.setSnp_id(snp_id);
@@ -172,6 +181,24 @@ public class MiRdSNP4 extends MiRdSNP {
 			session.update(snpToUpdate);
 			snp = snpToUpdate;
 		}
+		
+		transcript.setGeneId(gene.getPk());
+		Object oldTranscript = session.createCriteria(Transcript.class)
+				.add(Restrictions.eq("transcriptID", transcript.getTranscriptID()))
+				.uniqueResult();
+		if (oldTranscript == null) {
+			session.save(transcript);
+			session.flush(); // to get the PK
+		} else {
+			Transcript transcriptToUpdate = (Transcript) oldTranscript;
+			transcriptToUpdate.update(transcript);
+			session.update(transcriptToUpdate);
+			transcript = transcriptToUpdate;
+		}
+		
+		target.setTranscript_pk(transcript.getPk());
+		session.save(target);
+		session.flush(); // to get the PK
 
 		for (Disease disease: diseaseList){
 
@@ -233,6 +260,7 @@ public class MiRdSNP4 extends MiRdSNP {
 		session.save(ed);
 		id.setMirna_pk(mirna.getPk());
 		id.setGene_pk(gene.getPk());
+		id.setTarget_pk(target.getPk());
 		id.setExpression_data_pk(ed.getPk());
 		session.save(id);
 

@@ -1,4 +1,4 @@
-package mirna.database;
+package mirna.database.mirdb;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -11,9 +11,11 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-import mirna.beans.Gene;
 import mirna.beans.InteractionData;
 import mirna.beans.MiRna;
+import mirna.beans.Target;
+import mirna.beans.Transcript;
+import mirna.database.NewMirnaDatabase;
 import mirna.exception.MiRnaException;
 
 
@@ -23,70 +25,13 @@ import mirna.exception.MiRnaException;
  * @author Esteban López Camacho
  *
  */
-public class MiRDB extends NewMirnaDatabase {
+public class MiRDBMirna extends MiRDB {
 
-	private final static String TABLE_NAME = "miRDB";
-
-	public MiRDB() throws MiRnaException {
-		super(TABLE_NAME);
-		this.fetchSizeMin = true;
+	public MiRDBMirna() throws MiRnaException {
+		super();
 	}
 
-	public void insertInTable(String csvInputFile) throws Exception {
-
-		Connection con = null;
-		String line = null;
-		String[] tokens = null;
-
-		try {
-			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-			Statement stmt = (Statement) con.createStatement(); 
-
-			FileReader fr = new FileReader(csvInputFile);
-			BufferedReader br = new BufferedReader(fr);
-
-			int count = 0;
-
-			br.readLine();
-
-			while (((line = br.readLine()) != null)) {
-
-				count++;
-				System.out.println(count);
-
-				tokens = StringUtils.splitPreserveAllTokens(line, "\t");
-
-				String accesionNumber = tokens[0];
-				String target = tokens[1];
-				String score = tokens[2];
-
-				String query = "INSERT INTO " + tableName + " VALUES (NULL, '"
-						+ accesionNumber + "','"
-						+ target + "','"
-						+ score + "')";
-
-				stmt.executeUpdate(query);
-
-
-			}
-			fr.close();
-			br.close();
-			stmt.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-			if (line!=null) {
-				System.out.println(line);
-				for (int j = 0; j < tokens.length; j++) {
-					System.out.println(j + ": " + tokens[j]);
-				}
-			}
-			e.printStackTrace();
-		} finally {
-			if (con!=null) con.close();
-		}
-
-	}
-
+	
 	@Override
 	protected void processRow(Session session, ResultSet rs) throws Exception {
 		
@@ -98,25 +43,27 @@ public class MiRDB extends NewMirnaDatabase {
 		id.setScore(score);
 		id.setProvenance("miRDB");
 		
-		Gene gene = new Gene();
-		gene.setAccessionumber(target_name);
+		Target target = new Target();
+		
+		Transcript transcript = new Transcript();
+		transcript.setName(target_name);
 		
 		MiRna miRna = new MiRna();
 		miRna.setName(miRNA);
 		
 		// Inserta el gene (o recupera su id. si ya existe)
 		
-		Object oldGene = session.createCriteria(Gene.class)
-				.add( Restrictions.eq("name", gene.getName()) )
+		Object oldTranscript = session.createCriteria(Transcript.class)
+				.add(Restrictions.eq("transcriptID", transcript.getTranscriptID()))
 				.uniqueResult();
-		if (oldGene==null) {
-			session.save(gene);
-			session.flush();  // to get the PK
+		if (oldTranscript == null) {
+			session.save(transcript);
+			session.flush(); // to get the PK
 		} else {
-			Gene geneToUpdate = (Gene) oldGene;
-			geneToUpdate.update(gene);
-			session.update(geneToUpdate);
-			gene = geneToUpdate;
+			Transcript transcriptToUpdate = (Transcript) oldTranscript;
+			transcriptToUpdate.update(transcript);
+			session.update(transcriptToUpdate);
+			transcript = transcriptToUpdate;
 		}
 	
 		// Inserta MiRna (o recupera su id. si ya existe)
@@ -134,11 +81,16 @@ public class MiRDB extends NewMirnaDatabase {
 			miRna = miRnaToUpdate;
 		}			
 
+		
+		target.setTranscript_pk(transcript.getPk());
+		session.save(target);
+		session.flush(); // to get the PK
+		
 		// Inserta nueva InteractinData
 		// (y la relaciona con el MiRna y Target correspondientes)
 
 		id.setMirna_pk(miRna.getPk());
-		id.setGene_pk(gene.getPk());
+		id.setTarget_pk(target.getPk());
 		session.save(id);
 		session.flush(); // to get the PK
 		
@@ -146,7 +98,7 @@ public class MiRDB extends NewMirnaDatabase {
 	
 	public static void main(String[] args) throws Exception {
 
-		MiRDB mirdb = new MiRDB();
+		MiRDBMirna mirdb = new MiRDBMirna();
 
 		// /* 1. meter datos en mirna_raw */
 		//String inputFile = "/Users/esteban/Softw/miRNA/MirTarget2_v4.0_prediction_result.txt";

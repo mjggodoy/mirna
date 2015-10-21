@@ -1,4 +1,4 @@
-package mirna.database;
+package mirna.database.reptar;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -16,15 +16,17 @@ import mirna.beans.Gene;
 import mirna.beans.InteractionData;
 import mirna.beans.MiRna;
 import mirna.beans.Target;
+import mirna.beans.Transcript;
+import mirna.database.NewMirnaDatabase;
 import mirna.exception.MiRnaException;
 
-public class RepTar extends NewMirnaDatabase {
+public class RepTar_mouse extends NewMirnaDatabase {
 
-	private String tableName;
+	
+	private  static final String TABLE_NAME = "repTar_mouse";
 
-	public RepTar(String tableName) throws MiRnaException {
-		super(tableName);
-		this.fetchSizeMin = true;
+	public RepTar_mouse() throws MiRnaException {
+		super(TABLE_NAME);
 	}
 
 	public void insertInTable(String csvInputFile) throws Exception {
@@ -159,7 +161,7 @@ public class RepTar extends NewMirnaDatabase {
 		miRna.setName(mirna_name);
 
 		Gene gene = new Gene();
-		gene.setAccessionumber(gene_accesion);
+		//gene.setAccessionumber(gene_accesion);
 		gene.setName(gene_symbol);
 
 		Target target = new Target();
@@ -169,6 +171,9 @@ public class RepTar extends NewMirnaDatabase {
 		target.setUtr3_conservation_score(UTR3_conservation_score);
 		target.setSite_conservation_score(site_conservation_score);
 		target.setRepeated_motifs(repeated_motifs);
+		
+		Transcript transcript = new Transcript();
+		transcript.setTranscriptID(gene_accesion);
 
 		Complex complex = new Complex();
 		complex.setMinimal_free_energy(minimal_free_energy);
@@ -204,6 +209,21 @@ public class RepTar extends NewMirnaDatabase {
 			gene = geneToUpdate;
 		}
 		
+		transcript.setGeneId(gene.getPk());
+		Object oldTranscript = session.createCriteria(Transcript.class)
+				.add(Restrictions.eq("transcriptID", transcript.getTranscriptID()))
+				.uniqueResult();
+		if (oldTranscript == null) {
+			session.save(transcript);
+			session.flush(); // to get the PK
+		} else {
+			Transcript transcriptToUpdate = (Transcript) oldTranscript;
+			transcriptToUpdate.update(transcript);
+			session.update(transcriptToUpdate);
+			transcript = transcriptToUpdate;
+		}
+		
+		target.setTranscript_pk(transcript.getPk());
 		session.save(target);
 		session.flush(); // to get the PK
 
@@ -223,5 +243,4 @@ public class RepTar extends NewMirnaDatabase {
 		
 	}
 	
-
 }

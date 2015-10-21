@@ -1,4 +1,4 @@
-package mirna.database;
+package mirna.database.microtv4;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -12,6 +12,7 @@ import mirna.beans.InteractionData;
 import mirna.beans.MiRna;
 import mirna.beans.Target;
 import mirna.beans.Transcript;
+import mirna.database.NewMirnaDatabase;
 import mirna.exception.MiRnaException;
 
 import org.apache.commons.lang.StringUtils;
@@ -152,10 +153,7 @@ public class MicroTV4 extends NewMirnaDatabase {
 			session.save(miRna);
 			session.flush();  // to get the PK
 		} else {
-			MiRna miRnaToUpdate = (MiRna) oldMiRna;
-			miRnaToUpdate.update(miRna);
-			session.update(miRnaToUpdate);
-			miRna = miRnaToUpdate;
+			miRna = (MiRna) oldMiRna;
 		}
 		
 		// Inserta gene (o recupera su id. si ya existe)
@@ -166,10 +164,7 @@ public class MicroTV4 extends NewMirnaDatabase {
 			session.save(gene);
 			session.flush(); // to get the PK
 		} else {
-			Gene geneToUpdate = (Gene) oldGene;
-			geneToUpdate.update(gene);
-			session.update(geneToUpdate);
-			gene = geneToUpdate;
+			gene = (Gene) oldGene;
 		}
 		
 		transcript.setGeneId(gene.getPk());
@@ -181,10 +176,7 @@ public class MicroTV4 extends NewMirnaDatabase {
 			session.save(transcript);
 			session.flush(); // to get the PK
 		} else {
-			Transcript transcriptToUpdate = (Transcript) oldTranscript;
-			transcriptToUpdate.update(transcript);
-			session.update(transcriptToUpdate);
-			transcript = transcriptToUpdate;
+			transcript = (Transcript) oldTranscript;
 		}
 		
 		// Inserta Target

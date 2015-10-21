@@ -1,4 +1,4 @@
-package mirna.database;
+package mirna.database.mirdip;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -6,10 +6,13 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+
 import mirna.beans.Gene;
 import mirna.beans.InteractionData;
 import mirna.beans.MiRna;
+import mirna.database.NewMirnaDatabase;
 import mirna.exception.MiRnaException;
+
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -114,10 +117,7 @@ public class MirDIP extends NewMirnaDatabase {
 			session.save(miRna);
 			session.flush();  // to get the PK
 		} else {
-			MiRna miRnaToUpdate = (MiRna) oldMiRna;
-			miRnaToUpdate.update(miRna);
-			session.update(miRnaToUpdate);
-			miRna = miRnaToUpdate;
+			miRna = (MiRna) oldMiRna;
 		}
 
 		// Inserta gene (o recupera su id. si ya existe)
@@ -128,10 +128,7 @@ public class MirDIP extends NewMirnaDatabase {
 			session.save(gene);
 			session.flush(); // to get the PK
 		} else {
-			Gene geneToUpdate = (Gene) oldGene;
-			geneToUpdate.update(gene);
-			session.update(geneToUpdate);
-			gene = geneToUpdate;
+			gene = (Gene) oldGene;
 		}
 
 		id.setMirna_pk(miRna.getPk());
