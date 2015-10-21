@@ -167,8 +167,11 @@ select mitg_score, target_pk, mirna_pk, gene_pk, "microTv4" from mirna_raw.micro
 	Ejecutar RepRarTranscript en java para la inserción.
 	Comprobación de que los datos recuperados estén vacíos con la misma consulta anterior.
     
+    UPDATE mirna_raw.repTar_human_pk
+	SET mirna_pk=(SELECT pk FROM mirna.mirna WHERE mirna.mirna.name=mirna_raw.repTar_mouse_pk.mirna);
+    
 	UPDATE mirna_raw.repTar_human_pk 
-	SET gene_pk=(SELECT pk FROM mirna.mirna WHERE mirna.gene.name=mirna_raw.repTar_human_pk.gene_symbol);
+	SET gene_pk=(SELECT pk FROM mirna.gene WHERE mirna.gene.name=mirna_raw.repTar_human_pk.gene_symbol);
 	
 	UPDATE mirna_raw.repTar_human_pk 
 	SET transcript_pk=(SELECT pk FROM mirna.transcript WHERE mirna.transcript.id=mirna_raw.repTar_human_pk.gene_accesion
@@ -215,5 +218,14 @@ select mitg_score, target_pk, mirna_pk, gene_pk, "microTv4" from mirna_raw.micro
 	
 	Ejecutar RepRarTranscript en java para la inserción.
 	Comprobación de que los datos recuperados estén vacíos con la misma consulta anterior.
+	
+	UPDATE mirna_raw.repTar_mouse_pk
+	SET mirna_pk=(SELECT pk FROM mirna.mirna WHERE mirna.mirna.name=mirna_raw.repTar_mouse_pk.mirna);
+	
+	UPDATE mirna_raw.repTar_mouse_pk 
+	SET gene_pk=(SELECT pk FROM mirna.gene WHERE mirna.gene.name=mirna_raw.repTar_mouse_pk.gene_symbol);
+	
+	UPDATE mirna_raw.repTar_mouse_pk 
+	SET transcript_pk=(SELECT pk FROM mirna.transcript WHERE mirna.transcript.id=mirna_raw.repTar_mouse_pk.gene_accesion);
 	
 	
