@@ -281,3 +281,4 @@ select mitg_score, target_pk, mirna_pk, gene_pk, "microTv4" from mirna_raw.micro
 	select minimal_free_energy, normalized_free_energy, binding_site_pattern, interaction_data_pk, mirna_pk, target_pk from mirna_raw.repTar_mouse_pk
 	
 	
+6. MiRDB
