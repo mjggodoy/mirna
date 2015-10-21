@@ -13,10 +13,10 @@ import org.hibernate.Session;
  * @author Esteban López Camacho
  *
  */
-public class RepTarmiRNA extends RepTar {
+public class RepTarmiRNAH extends RepTar_human {
 
 
-	public RepTarmiRNA() throws MiRnaException {
+	public RepTarmiRNAH() throws MiRnaException {
 		super();
 		super.selectQuery = "SELECT distinct t1.mirna"+
 				" FROM mirna_raw.repTar_mouse t1" +
@@ -39,7 +39,7 @@ public class RepTarmiRNA extends RepTar {
 
 	public static void main(String[] args) throws Exception {
 
-		RepTarmiRNA mirdip = new RepTarmiRNA();
+		RepTarmiRNAH mirdip = new RepTarmiRNAH();
 		mirdip.insertIntoSQLModel();
 
 	}

@@ -20,14 +20,13 @@ import mirna.beans.Transcript;
 import mirna.database.NewMirnaDatabase;
 import mirna.exception.MiRnaException;
 
-public class RepTar extends NewMirnaDatabase {
+public class RepTar_mouse extends NewMirnaDatabase {
 
-	//private  static final String TABLE_NAME = "repTar_human";
 	
-	private  static final String TABLE_NAME = "repTar_mouse";
+	private  static final String TABLE_NAME2 = "repTar_mouse";
 
-	public RepTar() throws MiRnaException {
-		super(TABLE_NAME);
+	public RepTar_mouse() throws MiRnaException {
+		super(TABLE_NAME2);
 	}
 
 	public void insertInTable(String csvInputFile) throws Exception {

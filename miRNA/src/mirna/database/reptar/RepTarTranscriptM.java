@@ -11,9 +11,9 @@ import org.hibernate.Session;
  * @author Esteban López Camacho
  *
  */
-public class RepTarTranscript extends RepTar {
+public class RepTarTranscriptM extends RepTar_mouse {
 
-	public RepTarTranscript() throws MiRnaException {
+	public RepTarTranscriptM() throws MiRnaException {
 		super();
 		super.selectQuery = "SELECT distinct t1.gene_accesion" +
 				" FROM mirna_raw.repTar_mouse t1" +
@@ -36,7 +36,7 @@ public class RepTarTranscript extends RepTar {
 
 	public static void main(String[] args) throws Exception {
 
-		RepTarTranscript mirdip = new RepTarTranscript();
+		RepTarTranscriptM mirdip = new RepTarTranscriptM();
 		mirdip.insertIntoSQLModel();
 
 	}
