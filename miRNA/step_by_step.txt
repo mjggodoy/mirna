@@ -63,7 +63,7 @@ UPDATE mirna_raw.microtv4_pk SET transcript_pk=(SELECT pk FROM mirna.transcript 
 
 	2.4 Ejecutar MicroTV4Target
 	
-	2.5 Comprobar si hay mirnas que no estén incluídos
+	2.5 Comprobar si hay mirnas que no est√©n inclu√≠dos
 	
 	SELECT t1.mirna
 FROM mirna_raw.microtv4 t1
@@ -73,7 +73,7 @@ ON t1.mirna = t2.name
     t1.pk is not null
     and t2.pk is null;
     
-    2.6 Comprobar si hay genes que no estén incluídos
+    2.6 Comprobar si hay genes que no est√©n inclu√≠dos
     
     	SELECT t1.gene_id
 FROM mirna_raw.microtv4 t1
@@ -83,7 +83,7 @@ ON t1.gene_id = t2.name
     t1.pk is not null
     and t2.pk is null;
     
-    2.7 Comprobar si hay transcripts que no están incluídos
+    2.7 Comprobar si hay transcripts que no est√°n inclu√≠dos
     
     SELECT t1.transcript_id
 FROM mirna_raw.microtv4 t1
@@ -134,8 +134,8 @@ select mitg_score, target_pk, mirna_pk, gene_pk, "microTv4" from mirna_raw.micro
     	t1.pk is not null
     	and t2.pk is null;
     	
-	Ejecutar RepRarmiRNA en java para la inserción.
-	Comprobación de que los datos recuperados estén vacíos con la misma consulta anterior:
+	Ejecutar RepRarmiRNA en java para la inserci√≥n.
+	Comprobaci√≥n de que los datos recuperados est√©n vac√≠os con la misma consulta anterior:
     
       SELECT t1.mirna
 		FROM mirna_raw.repTar_human t1
@@ -153,8 +153,8 @@ select mitg_score, target_pk, mirna_pk, gene_pk, "microTv4" from mirna_raw.micro
 		t1.pk is not null
 		and t2.pk is null;
 	
-	Ejecutar RepRarGene en java para la inserción.
-	Comprobación de que los datos recuperados estén vacíos con la misma consulta anterior.
+	Ejecutar RepRarGene en java para la inserci√≥n.
+	Comprobaci√≥n de que los datos recuperados est√©n vac√≠os con la misma consulta anterior.
 		
 	SELECT distinct t1.gene_accesion
 	FROM mirna_raw.repTar_mouse t1
@@ -164,8 +164,8 @@ select mitg_score, target_pk, mirna_pk, gene_pk, "microTv4" from mirna_raw.micro
 		t1.pk is not null
 		and t2.pk is null;
 	
-	Ejecutar RepRarTranscript en java para la inserción.
-	Comprobación de que los datos recuperados estén vacíos con la misma consulta anterior.
+	Ejecutar RepRarTranscript en java para la inserci√≥n.
+	Comprobaci√≥n de que los datos recuperados est√©n vac√≠os con la misma consulta anterior.
     
     UPDATE mirna_raw.repTar_human_pk
 	SET mirna_pk=(SELECT pk FROM mirna.mirna WHERE mirna.mirna.name=mirna_raw.repTar_mouse_pk.mirna);
@@ -187,6 +187,21 @@ select mitg_score, target_pk, mirna_pk, gene_pk, "microTv4" from mirna_raw.micro
 	insert into mirna.target (pk, binding_site_start, binding_site_end, gu_proportion, utr3_conservation_score, site_conservation_score, repeated_motifs, transcript_pk)
 	select target_pk, sequence_start, sequence_end, gu_proportion, UTR_conservation_score, site_conservation_score, repeated_motifs, transcript_pk from mirna_raw.repTar_human_pk;
 	
+	#4
+	select max(pk) from mirna.interaction_data;
+‚Äã
+	#5
+	SET @b:=54877715;
+	UPDATE mirna_raw.repTar_human_pk SET interaction_data_pk=@b:=@b+1;
+‚Äã
+	#6
+	insert into mirna.interaction_data (pk, target_pk, mirna_pk, gene_pk, provenance)
+	select interaction_data_pk, target_pk, mirna_pk, gene_pk, "repTar" from mirna_raw.repTar_human_pk;
+‚Äã
+	#7
+	insert into mirna.complex (minimal_free_energy, normalized_minimal_free_energy, binding_site_pattern, interaction_data_pk, mirna_pk, target_pk)
+	select minimal_free_energy, normalized_free_energy, binding_site_pattern, interaction_data_pk, mirna_pk, target_pk from mirna_raw.repTar_human_pk
+	
 5. RepTar_mouse
 
  	  4.1 Copiar base de datos de RepTar_human a ReptarHuman_pk.
@@ -203,8 +218,8 @@ select mitg_score, target_pk, mirna_pk, gene_pk, "microTv4" from mirna_raw.micro
     	t1.pk is not null
     	and t2.pk is null;
     
-    Ejecutar RepRarmiRNA en java para la inserción.
-	Comprobación de que los datos recuperados estén vacíos con la misma consulta anterior.
+    Ejecutar RepRarmiRNA en java para la inserci√≥n.
+	Comprobaci√≥n de que los datos recuperados est√©n vac√≠os con la misma consulta anterior.
 	
 	SELECT count(distinct t1.gene_symbol)
 	FROM mirna_raw.repTar_mouse t1
@@ -214,8 +229,8 @@ select mitg_score, target_pk, mirna_pk, gene_pk, "microTv4" from mirna_raw.micro
 		t1.pk is not null
 		and t2.pk is null;
 		
-	Ejecutar RepRarGene en java para la inserción.
-	Comprobación de que los datos recuperados estén vacíos con la misma consulta anterior.
+	Ejecutar RepRarGene en java para la inserci√≥n.
+	Comprobaci√≥n de que los datos recuperados est√©n vac√≠os con la misma consulta anterior.
 		
 		
 	SELECT distinct t1.gene_accesion
@@ -227,8 +242,8 @@ select mitg_score, target_pk, mirna_pk, gene_pk, "microTv4" from mirna_raw.micro
 		and t2.pk is null;
 	
 	
-	Ejecutar RepRarTranscript en java para la inserción.
-	Comprobación de que los datos recuperados estén vacíos con la misma consulta anterior.
+	Ejecutar RepRarTranscript en java para la inserci√≥n.
+	Comprobaci√≥n de que los datos recuperados est√©n vac√≠os con la misma consulta anterior.
 	
 	UPDATE mirna_raw.repTar_mouse_pk
 	SET mirna_pk=(SELECT pk FROM mirna.mirna WHERE mirna.mirna.name=mirna_raw.repTar_mouse_pk.mirna);
@@ -250,5 +265,19 @@ select mitg_score, target_pk, mirna_pk, gene_pk, "microTv4" from mirna_raw.micro
 	insert into mirna.target (pk, binding_site_start, binding_site_end, gu_proportion, utr3_conservation_score, site_conservation_score, repeated_motifs, transcript_pk)
 	select target_pk, sequence_start, sequence_end, gu_proportion, UTR_conservation_score, site_conservation_score, repeated_motifs, transcript_pk from mirna_raw.repTar_mouse_pk;
 	
+	#4
+	select max(pk) from mirna.interaction_data;
+	
+	#5
+	SET @b:=59722884;
+	UPDATE mirna_raw.repTar_human_pk SET interaction_data_pk=@b:=@b+1;
+	
+	#6
+	insert into mirna.interaction_data (pk, target_pk, mirna_pk, gene_pk, provenance)
+	select interaction_data_pk, target_pk, mirna_pk, gene_pk, "repTar" from mirna_raw.repTar_mouse_pk
+	
+	#7
+	insert into mirna.complex (minimal_free_energy, normalized_minimal_free_energy, binding_site_pattern, interaction_data_pk, mirna_pk, target_pk)
+	select minimal_free_energy, normalized_free_energy, binding_site_pattern, interaction_data_pk, mirna_pk, target_pk from mirna_raw.repTar_mouse_pk
 	
 	

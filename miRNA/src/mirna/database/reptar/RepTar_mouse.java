@@ -23,10 +23,10 @@ import mirna.exception.MiRnaException;
 public class RepTar_mouse extends NewMirnaDatabase {
 
 	
-	private  static final String TABLE_NAME2 = "repTar_mouse";
+	private  static final String TABLE_NAME = "repTar_mouse";
 
 	public RepTar_mouse() throws MiRnaException {
-		super(TABLE_NAME2);
+		super(TABLE_NAME);
 	}
 
 	public void insertInTable(String csvInputFile) throws Exception {

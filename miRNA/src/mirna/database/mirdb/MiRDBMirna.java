@@ -27,7 +27,6 @@ import mirna.exception.MiRnaException;
  */
 public class MiRDBMirna extends MiRDB {
 
-
 	public MiRDBMirna() throws MiRnaException {
 		super();
 	}
