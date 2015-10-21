@@ -2,13 +2,9 @@ package mirna.database.mirdip;
 
 import java.sql.ResultSet;
 
-import mirna.beans.Gene;
-import mirna.beans.InteractionData;
-import mirna.beans.MiRna;
-import mirna.exception.MiRnaException;
-
 import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
+
+import mirna.exception.MiRnaException;
 
 /**
  * Código para procesar los datos de mirDIP
