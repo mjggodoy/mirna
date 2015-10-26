@@ -11,7 +11,6 @@ import java.util.Properties;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import mirna.beans.MiRna;
 import mirna.exception.MiRnaException;
 import mirna.utils.HibernateUtil;
 
