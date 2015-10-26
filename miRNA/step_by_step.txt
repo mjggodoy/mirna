@@ -324,6 +324,8 @@ select mitg_score, target_pk, mirna_pk, gene_pk, "microTv4" from mirna_raw.micro
 	#4
 	select max(pk) from mirna.interaction_data;
 	
+	6.6 InteractionData
+	
 	#5
 	SET @b:=62085627;
 	UPDATE mirna_raw.miRDB_pk SET interaction_data_pk=@b:=@b+1;
@@ -332,6 +334,14 @@ select mitg_score, target_pk, mirna_pk, gene_pk, "microTv4" from mirna_raw.micro
 	insert into mirna.interaction_data (pk, score, target_pk, mirna_pk, provenance)
 	select interaction_data_pk, score, target_pk, mirna_pk, "repTar" from mirna_raw.miRDB_pk;
 	
+	7. miRdSNP
 	
+	7.1 Copiar base de datos de miRdSNP3 a miRdSNP3_pk .
+	
+	INSERT INTO mirna_raw.miRdSNP3_pk
+	SELECT pk, gene, refseq, miR, snp, diseases, distance, expConf FROM mirna_raw.miRdSNP3;
+	
+	7.2 Crear columnas pks para mirna, gene, target
+
 	
 	
