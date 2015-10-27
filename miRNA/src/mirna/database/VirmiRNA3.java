@@ -298,19 +298,22 @@ public class VirmiRNA3 extends NewMirnaDatabase {
 		target.setOrganism_pk(organism2.getPk());
 		target.setSequence_pk(sequence.getPk()) ;
 		session.save(target);
+		
+		// Relaciona interaction data con mirna  (o recupera su id. si ya existe)		
+		id.setTarget_pk(target.getPk());
+		id.setMirna_pk(mirna.getPk());
+		id.setGene_pk(gene.getPk());
+		session.save(id);
+		session.flush();
 
 		// Relaciona expression data con mirna  (o recupera su id. si ya existe)
 
 		ed.setMirnaPk(mirna.getPk());
+		ed.setInteraction_data_pk(id.getPk()); // fixed
 		session.save(ed);
 
-		// Relaciona interaction data con mirna  (o recupera su id. si ya existe)		
 
-		id.setTarget_pk(target.getPk());
-		id.setMirna_pk(mirna.getPk());
-		id.setGene_pk(gene.getPk());
-		id.setExpression_data_pk(ed.getPk());
-		session.save(id);
+		
 
 
 		MirnaHasPubmedDocument mirnaHasPubmedDocument =

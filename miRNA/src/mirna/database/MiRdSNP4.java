@@ -255,14 +255,17 @@ public class MiRdSNP4 extends MiRdSNP {
 		// Relaciona interaction data y expression data/gene/mirna
 		// Relaciona expressiondata y mirna
 		// Relaciona expressiondata y disease
-
-		ed.setMirnaPk(mirna.getPk());
-		session.save(ed);
+		
 		id.setMirna_pk(mirna.getPk());
 		id.setGene_pk(gene.getPk());
 		id.setTarget_pk(target.getPk());
-		id.setExpression_data_pk(ed.getPk());
 		session.save(id);
+		session.flush();
+
+		ed.setMirnaPk(mirna.getPk());
+		ed.setInteraction_data_pk(id.getPk()); // Fixed
+		session.save(ed);
+		
 
 	}
 

@@ -284,19 +284,19 @@ public class TarBase extends NewMirnaDatabase {
 		List<Protein> proteinList = new ArrayList<Protein>();
 
 		if(proteinTokens !=null){
-			
+
 			for (String token : proteinTokens) {
 
 
-					Protein protein = new Protein();
-					protein.setUniprot_id(token.trim());
-					protein.setType(protein_type);
-					proteinList.add(protein);
+				Protein protein = new Protein();
+				protein.setUniprot_id(token.trim());
+				protein.setType(protein_type);
+				proteinList.add(protein);
 
-					if (!createdObject(token.trim(), protein_type)){
+				if (!createdObject(token.trim(), protein_type)){
 
-						protein = null;
-					
+					protein = null;
+
 				}
 
 			}
@@ -526,19 +526,21 @@ public class TarBase extends NewMirnaDatabase {
 			}
 		}
 
-		//Inserta nueva DataExpression (y la relaciona con MiRna y Disease correspondiente)
-		ed.setMirnaPk(mirna.getPk());
-		if (disease!=null) ed.setDiseasePk(disease.getPk());
-		session.save(ed);
-		session.flush();
-
 		//Inserta nueva InteractionData (y la relaciona con lo que toque)
 		id.setMirna_pk(mirna.getPk());
 		if (gene!=null) {id.setGene_pk(gene.getPk());}
 		id.setTarget_pk(target.getPk());
-		id.setExpression_data_pk(ed.getPk());
 		session.save(id);
 		session.flush();
+
+		//Inserta nueva DataExpression (y la relaciona con MiRna y Disease correspondiente)
+		ed.setMirnaPk(mirna.getPk());
+		ed.setInteraction_data_pk(id.getPk()); // Fixed
+		if (disease!=null) ed.setDiseasePk(disease.getPk());
+		session.save(ed);
+		session.flush();
+
+
 
 		if (pubmed!=null) {
 			MirnaHasPubmedDocument mirnaHasPubmedDocument =

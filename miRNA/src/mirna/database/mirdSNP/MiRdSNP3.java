@@ -267,10 +267,11 @@ public class MiRdSNP3 extends NewMirnaDatabase {
 				ed.setMirnaPk(mirna.getPk());
 				ed.setDiseasePk(disease.getPk());
 				session.save(ed);
+				session.flush(); // to get the ed pk
 				id.setMirna_pk(mirna.getPk());
 				id.setGene_pk(gene.getPk());
 				id.setTarget_pk(target.getPk());
-				id.setExpression_data_pk(ed.getPk());
+				ed.setInteraction_data_pk(id.getPk());
 				session.save(id);
 
 			}

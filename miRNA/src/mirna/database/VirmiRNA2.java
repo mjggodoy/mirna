@@ -392,20 +392,23 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 		if (sequence2!=null) target.setSequence_pk(sequence2.getPk());
 		target.setOrganism_pk(organism2.getPk());
 		session.save(target);
-
-		// Relaciona expression data con mirna (o recupera su id. si ya existe)
-		expressiondata.setMirnaPk(mirna.getPk());
-		session.save(expressiondata);
-
-		//Relaciona interaction data expressiondata
-
-		interactiondata.setExpression_data_pk(expressiondata.getPk());
+		
 		interactiondata.setTarget_pk(target.getPk());
 		interactiondata.setMirna_pk(mirna.getPk());
 		interactiondata.setGene_pk(gene.getPk());
 		interactiondata.setProvenance("VirmiRNA");
 		session.save(interactiondata);
+		session.flush(); // to get the pk.
 
+
+		// Relaciona expression data con mirna (o recupera su id. si ya existe)
+		expressiondata.setMirnaPk(mirna.getPk());
+		expressiondata.setInteraction_data_pk(interactiondata.getPk()); // fixed
+		session.save(expressiondata);
+
+		//Relaciona interaction data expressiondata
+
+		
 		// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
 		if(pubmedDoc !=null){
 

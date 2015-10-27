@@ -215,8 +215,9 @@ public class MiRdSNP2 extends MiRdSNP {
 				id.setTarget_pk(target.getPk());
 				id.setGene_pk(gene.getPk());
 				ed.setMirnaPk(mirna.getPk());
-				id.setExpression_data_pk(ed.getPk());
 				session.save(id);
+				session.flush();
+				ed.setInteraction_data_pk(id.getPk()); // Fixed
 				session.save(ed);
 
 			}
