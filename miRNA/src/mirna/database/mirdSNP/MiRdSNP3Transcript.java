@@ -16,6 +16,13 @@ public class MiRdSNP3Transcript extends MiRdSNP3 {
 
 	public MiRdSNP3Transcript() throws MiRnaException {
 		super(); 
+		super.selectQuery = "SELECT count(distinct t1.refseq) " 
+				+ " FROM mirna_raw.miRdSNP3 t1"
+				+ " LEFT JOIN mirna.transcript t2"
+				+ " ON t1.refseq = t2.id"
+				+ " where "
+				+ " t1.pk is not null and t2.pk is null;";
+				
 	}
 	
 	@Override
