@@ -1,6 +1,8 @@
 package mirna.database.mirdSNP;
 import java.sql.ResultSet;
+
 import org.hibernate.Session;
+
 import mirna.beans.MiRna;
 import mirna.exception.MiRnaException;
 
@@ -24,10 +26,19 @@ public class MiRdSNP3Mirna extends MiRdSNP3 {
 	protected void processRow(Session session, ResultSet rs) throws Exception{
 
 		String miRNAString = rs.getString("miR");
+		System.out.println(miRNAString);
 		MiRna miRna = new MiRna();
 		miRna.setName(miRNAString);
 		session.save(miRna); 
 		
 	}
 
+	public static void main(String[] args) throws Exception {
+		
+		MiRdSNP3Mirna mirna = new MiRdSNP3Mirna();
+		mirna.insertIntoSQLModel();
+		
+	}
+	
+	
 }

@@ -16,7 +16,7 @@ public class MiRdSNP3Transcript extends MiRdSNP3 {
 
 	public MiRdSNP3Transcript() throws MiRnaException {
 		super(); 
-		super.selectQuery = "SELECT count(distinct t1.refseq) " 
+		super.selectQuery = "SELECT distinct t1.refseq" 
 				+ " FROM mirna_raw.miRdSNP3 t1"
 				+ " LEFT JOIN mirna.transcript t2"
 				+ " ON t1.refseq = t2.id"
@@ -34,5 +34,14 @@ public class MiRdSNP3Transcript extends MiRdSNP3 {
 		session.save(transcript);
 		
 	}
+	
+	public static void main(String[] args) throws Exception {
+		
+		MiRdSNP3SNP transcript = new MiRdSNP3SNP();
+		transcript.insertIntoSQLModel();
+		
+		
+	}
+	
 
 }

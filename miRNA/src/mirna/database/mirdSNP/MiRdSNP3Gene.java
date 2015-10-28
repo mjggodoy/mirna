@@ -31,5 +31,12 @@ public class MiRdSNP3Gene extends MiRdSNP3 {
 		session.save(gene);
 		
 	}
+	
+	public static void main(String[] args) throws Exception {
+		
+		MiRdSNP3Gene gene = new MiRdSNP3Gene();
+		gene.insertIntoSQLModel();
+		
+	}
 
 }
