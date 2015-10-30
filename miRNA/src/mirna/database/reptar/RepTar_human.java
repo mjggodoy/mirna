@@ -26,6 +26,8 @@ public class RepTar_human extends NewMirnaDatabase {
 	
 	public RepTar_human() throws MiRnaException {
 		super(TABLE_NAME);
+		this.fetchSizeMin = true;
+
 	}
 
 	public void insertInTable(String csvInputFile) throws Exception {

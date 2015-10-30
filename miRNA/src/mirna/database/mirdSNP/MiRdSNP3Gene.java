@@ -26,6 +26,7 @@ public class MiRdSNP3Gene extends MiRdSNP3 {
 	protected void processRow(Session session, ResultSet rs) throws Exception{
 
 		String gene_id = rs.getString("gene");
+		System.out.println(gene_id);
 		Gene gene = new Gene();
 		gene.setName(gene_id);
 		session.save(gene);

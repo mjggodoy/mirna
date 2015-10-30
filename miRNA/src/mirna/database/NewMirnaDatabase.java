@@ -78,7 +78,7 @@ public abstract class NewMirnaDatabase implements IMirnaDatabase {
 				processRow(session, rs);
 				
 				count++;
-				if (count%1000==0) {
+				if (count%10000==0) {
 					System.out.println(tableName + ": " + count);
 					session.flush();
 			        session.clear();
