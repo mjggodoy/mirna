@@ -54,6 +54,8 @@
   <mapping class="mirna.beans.nToM.MirnaHasMature" />
   <mapping class="mirna.beans.SmallMolecule" />
   <mapping class="mirna.beans.EnvironmentalFactor" />
+  
+  <mapping class="mirna.database.beans.DiseasePk" />
    
  </session-factory>
 </hibernate-configuration>
