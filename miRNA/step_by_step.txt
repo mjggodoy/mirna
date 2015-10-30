@@ -433,13 +433,56 @@ select mitg_score, target_pk, mirna_pk, gene_pk, "microTv4" from mirna_raw.micro
 	insert into mirna.snp_has_disease (disease_pk, snp_pk)
 	select distinct t2.disease_pk, t1.snp_pk from mirna_raw.miRdSNP3_pk t1, mirna_raw.miRdSNP3_disease_pk t2 where t1.pk=t2.row_pk;
 	
-	// Well, the column gene_pk (many-to-many relationships gene -> transcript) must be dropped(pua)
-	//create intermediate tables transcripthasgene and snphasgene
-	// Another sql query of type insert into:
-	
-	insert into mirna.transcript_has_gene (gene_pk, transcript_Pk)
-	select distinct tranascript_pk, gene_pk from mirna_raw.miRdSNP3_pk;
+	#Two new intermediate tables have been created given that genes are annotated with synonyms. Although a gene has an one-to-many relationship with transcript, it must be modified.
+	 The same problem happens with snp (a gene and its synonym could point to snp) 
 	
 	
-	// It's necessary to make a many-to-many relationships between gene/transcripts and gene/SNP. 
+	// Relate snp and gene as follows (this query to insert data is executed once 'cause mirdSNP3 is the only database of the big ones which has SNPs to be related with Genes): 
+	
+	insert into mirna.snp_has_gene (snp_pk, gene_pk)
+	select distinct snp_pk, gene_pk from mirna_raw.miRdSNP3_pk;
+	
+	// Relate genes and transcriprs as follows (this execution is not applicable to all databases) 
+	
+	repTar_mouse (transcript, gene): 16984 are the new rows introduced.
+	
+	insert into mirna.transcript_has_gene (transcript_pk, gene_pk)
+	select distinct transcript_pk, gene_pk from mirna_raw.repTar_mouse_pk;
+	
+	repTar_human (transcript, gene): 
+	
+	insert into mirna.transcript_has_gene (transcript_pk, gene_pk)
+	select distinct transcript_pk, gene_pk from mirna_raw.repTar_human_pk;
+	
+	mirdSNP3: There are duplicates so, another query was executed:
+	
+	insert into mirna.transcript_has_gene (transcript_pk, gene_pk)
+	select distinct transcript_pk, gene_pk from mirna_raw.miRdSNP3_pk t1
+	WHERE NOT EXISTS(SELECT transcript_pk, gene_pk FROM mirna.transcript_has_gene t2 
+	WHERE t1.transcript_pk = t2.transcript_pk and t1.gene_pk = t2.gene_pk);
+	
+	microtv4:
+	
+	insert into mirna.transcript_has_gene (transcript_pk, gene_pk)
+	select distinct transcript_pk, gene_pk from mirna_raw.microtv4_pk;
+	
+	85141 (total distinct gene_pk and transcript_pk retrieved using this query:
+	select count(*) from mirna.transcript_has_gene;)
+	
+	microt_cds:
+	
+	insert into mirna.transcript_has_gene (transcript_pk, gene_pk)
+	select distinct transcript_pk, gene_pk from mirna_raw.microt_cds_pk;
+	
+	Total for all rows after executing the query: select count(distinct transcript_pk, gene_pk)  from mirna_raw.microt_cds_pk;
+	
+	64636 (with/without replicates)
+	
+	Total for all rows after executing the query: select count(*) from mirna.transcript_has_gene;
+	
+	102.747 (total of transcript-gene relationships wihtout replicates)
+	
+	
+	
+	
 	
