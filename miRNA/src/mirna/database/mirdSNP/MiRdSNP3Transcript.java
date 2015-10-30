@@ -1,8 +1,6 @@
 package mirna.database.mirdSNP;
 import java.sql.ResultSet;
-
 import org.hibernate.Session;
-
 import mirna.beans.Transcript;
 import mirna.exception.MiRnaException;
 
@@ -28,7 +26,8 @@ public class MiRdSNP3Transcript extends MiRdSNP3 {
 	@Override
 	protected void processRow(Session session, ResultSet rs) throws Exception{
 
-		String transcript_name = rs.getString("refsq");
+		String transcript_name = rs.getString("refseq");
+		System.out.println(transcript_name);
 		Transcript transcript = new Transcript();
 		transcript.setTranscriptID(transcript_name);
 		session.save(transcript);
@@ -37,7 +36,7 @@ public class MiRdSNP3Transcript extends MiRdSNP3 {
 	
 	public static void main(String[] args) throws Exception {
 		
-		MiRdSNP3SNP transcript = new MiRdSNP3SNP();
+		MiRdSNP3Transcript transcript = new MiRdSNP3Transcript();
 		transcript.insertIntoSQLModel();
 		
 		
