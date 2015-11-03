@@ -483,6 +483,17 @@ select mitg_score, target_pk, mirna_pk, gene_pk, "microTv4" from mirna_raw.micro
 	102.747 (total of transcript-gene relationships wihtout replicates)
 	
 	
+	In this section, we start with those databases that have a number of rows lower than the rest whose data have been integrated above:
+	
+	8.HMDD
+
+	 A lot of flush():
+	 The process programmed using Hibernate took 20 mins.  
+	
+	
+	
+	
+	
 	
 	
 	
