@@ -24,21 +24,17 @@ public class Transcript extends ModelClass {
 	
 	@Column(name = "external_name", nullable = true, length = 20, unique = true)
 	private String externalName;
-	
-	@Column(name = "gene_pk", nullable = true, unique = true)
-	private Integer geneId;
 
 	public Transcript() {
 	}
 
 	public Transcript(int pk, String transcriptID, String name, String isoform
-			, String externalName, int geneId) {
+			, String externalName) {
 		super(pk);
 		this.transcriptID = transcriptID;
 		this.name = name;
 		this.isoform = isoform;
 		this.externalName = externalName;
-		this.geneId = geneId;
 	}
 
 	public String getTranscriptID() {
@@ -72,15 +68,6 @@ public class Transcript extends ModelClass {
 	public void setExternalName(String externalName) {
 		this.externalName = externalName;
 	}
-	
-	public Integer getGeneId() {
-		return geneId;
-	}
-
-	public void setGeneId(Integer geneId) {
-		this.geneId = geneId;
-	}
-	
 
 	public int checkConflict(Transcript transcript) {
 
@@ -142,8 +129,6 @@ public class Transcript extends ModelClass {
 			this.name = transcript.getName();
 		if (transcript.getExternalName() != null)
 			this.externalName = transcript.getExternalName();
-		if (transcript.getGeneId()!= null)
-			this.geneId = transcript.getGeneId();
 		
 	}
 
@@ -151,11 +136,7 @@ public class Transcript extends ModelClass {
 	public String toString() {
 		return "Transcript [transcriptID=" + transcriptID + ", name=" + name
 				+ ", isoform=" + isoform + ", externalName=" + externalName
-				+ ", geneId=" + geneId
 				+ " pk=" + pk + "]";
 	}
-
-
-	
 
 }

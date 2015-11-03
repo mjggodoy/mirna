@@ -13,6 +13,7 @@ import mirna.beans.MiRna;
 import mirna.exception.MiRnaException;
 import mirna.beans.Target;
 import mirna.beans.Transcript;
+import mirna.beans.nToM.TranscriptHasGene;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
@@ -179,7 +180,7 @@ public class Microcosm extends NewMirnaDatabase {
 		}
 		
 		// Inserta Transcript (o recupera su id. si ya existe)
-		transcript.setGeneId(gene.getPk());
+		//transcript.setGeneId(gene.getPk());
 		Object oldTranscript = session.createCriteria(Transcript.class)
 				.add(Restrictions.eq("transcriptID", transcript.getTranscriptID()))
 				.uniqueResult();
@@ -192,6 +193,10 @@ public class Microcosm extends NewMirnaDatabase {
 			session.update(transcriptToUpdate);
 			transcript = transcriptToUpdate;
 		}
+		
+		TranscriptHasGene transcriptHasGene
+			= new TranscriptHasGene(transcript.getPk(), gene.getPk());
+		session.save(transcriptHasGene);
 		
 		target.setTranscript_pk(transcript.getPk());
 		session.save(target);
