@@ -156,8 +156,6 @@ public class Microcosm extends NewMirnaDatabase {
 				.add(Restrictions.eq("name", miRna.getName()))
 				.uniqueResult();
 		if (oldMiRna == null) {
-			System.out.println("SALVANDO:");
-			System.out.println(miRna);
 			session.save(miRna);
 			session.flush(); // to get the PK
 		} else {
@@ -206,19 +204,12 @@ public class Microcosm extends NewMirnaDatabase {
 		id.setTarget_pk(target.getPk());
 		id.setGene_pk(gene.getPk());
 		session.save(id);
-		session.flush(); // to get the PK
 		
 	}
 	
 	public static void main(String[] args) throws Exception {
 		
 		Microcosm microcosm = new Microcosm();
-		
-		// /* 1. meter datos en mirna_raw */
-		// String inputFile = "/Users/esteban/Softw/miRNA/microcosm/v5.txt.homo_sapiens";
-		// microcosm.insertInTable(inputFile);
-		
-		/* 2. meter datos en mirna */
 		microcosm.insertIntoSQLModel();
 		
 	}
