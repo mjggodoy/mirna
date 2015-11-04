@@ -239,7 +239,7 @@ public class Gene extends ModelClass {
 		if (this.name != null) {
 			if (gene.getName() == null)
 				res++;
-			else if (!this.name.equals(gene.getName()))
+			else if (!this.name.toLowerCase().equals(gene.getName().toLowerCase()))
 				return -1;
 		}
 
@@ -385,8 +385,6 @@ public class Gene extends ModelClass {
 		}
 		if (gene.getPk() != null)
 			this.pk = gene.getPk();
-		if (gene.getName() != null)
-			this.name = gene.getName();
 		if (gene.getGeneId() != null)
 			this.geneId = gene.getGeneId();
 		if (gene.getDescription() != null)
