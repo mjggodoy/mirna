@@ -25,7 +25,7 @@ public class Test extends RepTar_human {
 		Transcript t = new Transcript();
 		t.setPk(Integer.valueOf(transcript_pk));
 		t.setTranscriptID(name);
-		t.setGeneId(Integer.valueOf(gene_pk));
+		//t.setGeneId(Integer.valueOf(gene_pk));
 		session.update(t);
 		//System.out.println(gene_pk + " " + transcript_pk);
 

@@ -28,6 +28,7 @@ import mirna.beans.nToM.ExpressionDataHasPubmedDocument;
 import mirna.beans.nToM.MirnaHasOrganism;
 import mirna.beans.nToM.MirnaHasPubmedDocument;
 import mirna.beans.nToM.MirnaHasSequence;
+import mirna.beans.nToM.TranscriptHasGene;
 import mirna.beans.nToM.TranscriptProducesProtein;
 import mirna.exception.MiRnaException;
 
@@ -461,7 +462,6 @@ public class TarBase extends NewMirnaDatabase {
 		}
 
 		//Inserta transcript (o recupera us id. si ya existe)
-		if (gene!=null) transcript.setGeneId(gene.getPk());
 		Object oldTranscript = session.createCriteria(Transcript.class)
 				.add( Restrictions.eq("isoform", transcript.getIsoform()))
 				.uniqueResult();
@@ -475,6 +475,18 @@ public class TarBase extends NewMirnaDatabase {
 			session.update(transcriptToUpdate);
 			transcript = transcriptToUpdate;
 			System.out.println("Retrieve transcript");
+		}
+		
+		if (gene!=null) {
+			TranscriptHasGene transcripthasGene =
+					new TranscriptHasGene(transcript.getPk(), gene.getPk());
+			Object oldTranscripthasGene = session.createCriteria(TranscriptHasGene.class)
+					.add(Restrictions.eq("transcriptPk", transcript.getPk()))
+					.add(Restrictions.eq("genePk", gene.getPk()))
+					.uniqueResult();
+			if (oldTranscripthasGene == null) {
+		        session.save(transcripthasGene);
+			}
 		}
 
 		// Inserta nueva Target

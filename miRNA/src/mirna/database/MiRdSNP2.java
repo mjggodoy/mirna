@@ -18,6 +18,7 @@ import mirna.beans.SNP;
 import mirna.beans.Target;
 import mirna.beans.Transcript;
 import mirna.beans.nToM.SnpHasDisease;
+import mirna.beans.nToM.TranscriptHasGene;
 import mirna.exception.MiRnaException;
 
 import org.apache.commons.lang.StringUtils;
@@ -150,7 +151,6 @@ public class MiRdSNP2 extends MiRdSNP {
 
 		ExpressionData ed = new ExpressionData();
 		ed.setProvenance("mirdSNP");
-		
 
 		Object oldGene = session.createCriteria(Gene.class)
 				.add( Restrictions.eq("name", gene.getName()) )
@@ -165,7 +165,6 @@ public class MiRdSNP2 extends MiRdSNP {
 			gene = geneToUpdate;
 		}
 		
-		transcript.setGeneId(gene.getPk());
 		Object oldTranscript = session.createCriteria(Transcript.class)
 				.add(Restrictions.eq("transcriptID", transcript.getTranscriptID()))
 				.uniqueResult();
@@ -182,11 +181,19 @@ public class MiRdSNP2 extends MiRdSNP {
 		target.setTranscript_pk(transcript.getPk());
 		session.save(target);
 		session.flush(); // to get the PK
-
+		
+		TranscriptHasGene transcripthasGene =
+				new TranscriptHasGene(transcript.getPk(), gene.getPk());
+		Object oldTranscripthasGene = session.createCriteria(TranscriptHasGene.class)
+				.add(Restrictions.eq("transcriptPk", transcript.getPk()))
+				.add(Restrictions.eq("genePk", gene.getPk()))
+				.uniqueResult();
+		if (oldTranscripthasGene == null) {
+	        session.save(transcripthasGene);
+		}
 
 		String[] mirnaTokens = StringUtils.splitPreserveAllTokens(mirna_name, "|");
 		List<MiRna> mirnaList = new ArrayList<MiRna>();
-	
 
 		for (String token : mirnaTokens) {
 

@@ -16,11 +16,9 @@ import mirna.beans.Transcript;
 import mirna.beans.nToM.TranscriptHasGene;
 
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.mapping.List;
 
 /**
  * Código para procesar los datos de Microcosm
