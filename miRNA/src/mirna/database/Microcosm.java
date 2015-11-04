@@ -16,8 +16,11 @@ import mirna.beans.Transcript;
 import mirna.beans.nToM.TranscriptHasGene;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.mapping.List;
 
 /**
  * Código para procesar los datos de Microcosm
@@ -157,6 +160,8 @@ public class Microcosm extends NewMirnaDatabase {
 				.add(Restrictions.eq("name", miRna.getName()))
 				.uniqueResult();
 		if (oldMiRna == null) {
+			//System.out.println("SALVANDO:");
+			//System.out.println(miRna);
 			session.save(miRna);
 			session.flush(); // to get the PK
 		} else {
@@ -167,8 +172,7 @@ public class Microcosm extends NewMirnaDatabase {
 		}
 		
 		Object oldGene = session.createCriteria(Gene.class)
-				.add(Restrictions.eq("name", gene.getName()))
-				.uniqueResult();
+				.add(Restrictions.ilike("name", gene.getName(), MatchMode.EXACT)).uniqueResult();	
 		if (oldGene == null) {
 			session.save(gene);
 			session.flush(); // to get the PK
@@ -194,9 +198,18 @@ public class Microcosm extends NewMirnaDatabase {
 			transcript = transcriptToUpdate;
 		}
 		
-		TranscriptHasGene transcriptHasGene
-			= new TranscriptHasGene(transcript.getPk(), gene.getPk());
-		session.save(transcriptHasGene);
+		TranscriptHasGene transcripthasGene =
+				new TranscriptHasGene(transcript.getPk(), gene.getPk());
+		
+		Object oldTranscripthasGene = session.createCriteria(TranscriptHasGene.class)
+				.add(Restrictions.eq("transcriptPk", transcript.getPk()))
+				.add(Restrictions.eq("genePk", gene.getPk()))
+				.uniqueResult();
+		if (oldTranscripthasGene == null) {
+			
+	        session.save(transcripthasGene);
+
+		}
 		
 		target.setTranscript_pk(transcript.getPk());
 		session.save(target);
@@ -215,6 +228,12 @@ public class Microcosm extends NewMirnaDatabase {
 	public static void main(String[] args) throws Exception {
 		
 		Microcosm microcosm = new Microcosm();
+		
+		// /* 1. meter datos en mirna_raw */
+		// String inputFile = "/Users/esteban/Softw/miRNA/microcosm/v5.txt.homo_sapiens";
+		// microcosm.insertInTable(inputFile);
+		
+		/* 2. meter datos en mirna */
 		microcosm.insertIntoSQLModel();
 		
 	}
