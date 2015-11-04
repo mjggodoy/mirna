@@ -17,6 +17,7 @@ import mirna.beans.InteractionData;
 import mirna.beans.MiRna;
 import mirna.beans.Target;
 import mirna.beans.Transcript;
+import mirna.beans.nToM.TranscriptHasGene;
 import mirna.database.NewMirnaDatabase;
 import mirna.exception.MiRnaException;
 
@@ -209,7 +210,6 @@ public class RepTar_mouse extends NewMirnaDatabase {
 			gene = geneToUpdate;
 		}
 		
-		transcript.setGeneId(gene.getPk());
 		Object oldTranscript = session.createCriteria(Transcript.class)
 				.add(Restrictions.eq("transcriptID", transcript.getTranscriptID()))
 				.uniqueResult();
@@ -221,6 +221,16 @@ public class RepTar_mouse extends NewMirnaDatabase {
 			transcriptToUpdate.update(transcript);
 			session.update(transcriptToUpdate);
 			transcript = transcriptToUpdate;
+		}
+		
+		TranscriptHasGene transcripthasGene =
+				new TranscriptHasGene(transcript.getPk(), gene.getPk());
+		Object oldTranscripthasGene = session.createCriteria(TranscriptHasGene.class)
+				.add(Restrictions.eq("transcriptPk", transcript.getPk()))
+				.add(Restrictions.eq("genePk", gene.getPk()))
+				.uniqueResult();
+		if (oldTranscripthasGene == null) {
+	        session.save(transcripthasGene);
 		}
 		
 		target.setTranscript_pk(transcript.getPk());
