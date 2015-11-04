@@ -420,7 +420,7 @@ select mitg_score, target_pk, mirna_pk, gene_pk, "microTv4" from mirna_raw.micro
 	
 	#5
 	SET @b:=63970029;
-	UPDATE mirna_raw.miRDB_pk SET interaction_data_pk=@b:=@b+1;
+	UPDATE mirna_raw.miRdSNP3_pk SET id_pk=@b:=@b+1;
 	
 	#6
 	insert into mirna.interaction_data (pk, mirna_pk, gene_pk, target_pk, provenance)
@@ -486,9 +486,13 @@ select mitg_score, target_pk, mirna_pk, gene_pk, "microTv4" from mirna_raw.micro
 	In this section, we start with those databases that have a number of rows lower than the rest whose data have been integrated above:
 	
 	8.HMDD
-
-	 A lot of flush():
-	 The process programmed using Hibernate took 20 mins.  
+	
+	A lot of flush():
+	The process programmed using Hibernate took 20 mins.  
+	 
+	9.Phenomir
+	
+	The process programmed using Hibernate took 10 mins. 
 	
 	
 	
