@@ -117,56 +117,64 @@ public class SM2miR2N extends NewMirnaDatabase {
 
 	@Override
 	protected void processRow(Session session, ResultSet rs) throws Exception {
-		
-		String name = rs.getString("mirna");
-		String mirbase = rs.getString("mirbase");
-		String small_molecule = rs.getString("small_molecule").toLowerCase().trim();
-		String fda = rs.getString("fda").toLowerCase().trim();
-		String db = rs.getString("db").toLowerCase().trim();
-		String cid = rs.getString("cid").toLowerCase().trim();
-		String method = rs.getString("method").toLowerCase().trim();
-		String specie = rs.getString("species");
-		String condition = rs.getString("condition_");
-		String pmid = rs.getString("pmid");
-		String year = rs.getString("year");
-		String reference = rs.getString("reference");
-		String support = rs.getString("support");
-		String evidence = rs.getString("expression");
+
+		String name = nullifyField(rs.getString("mirna"));
+		String mirbase =  nullifyField(rs.getString("mirbase"));
+		String small_molecule = nullifyField(rs.getString("small_molecule").toLowerCase().trim());
+		String fda = nullifyField(rs.getString("fda").toLowerCase().trim());
+		String db = nullifyField(rs.getString("db").toLowerCase().trim());
+		String cid = nullifyField(rs.getString("cid").toLowerCase().trim());
+		String method = nullifyField(rs.getString("method").toLowerCase().trim());
+		String specie = nullifyField(rs.getString("species"));
+		String condition = nullifyField(rs.getString("condition_"));
+		String pmid = nullifyField(rs.getString("pmid"));
+		String year = nullifyField(rs.getString("year"));
+		String reference = nullifyField(rs.getString("reference"));
+		String support = nullifyField(rs.getString("support"));
+		String evidence = nullifyField(rs.getString("expression"));
 
 		Organism organism = new Organism();
 		organism.setName(specie.trim());
 
+
+		if (!createdObject(specie)) { 
+			
+			organism = null;
+
+		}
+
 		MiRna miRna = new MiRna();
 
-		if (organism.getName().equals("Populus trichocarpa")){
 
-			String[] tokens = StringUtils.splitPreserveAllTokens(organism.getName(), " ");
-			String genus = tokens[0];
-			String specie_name = tokens[1];
-			String substring_genus = genus.substring(0,1).toLowerCase();
-			String substring_specie_name = specie_name.substring(0, 1) + specie_name.substring(3, 4);
-			String name_organism = substring_genus + substring_specie_name;
-			//System.out.println(substring_genus + substring_specie_name);
-			miRna.setName(name_organism+"-"+name.trim());
-			miRna.setAccessionNumber(mirbase);
-			//System.out.println(miRna.getName());
-			
-		}else if (organism.getName().equals("Heifer")){
-			
-			miRna.setName("bta"+"-"+name.trim());
-			miRna.setAccessionNumber(mirbase);
+			if (organism.getName().equals("Populus trichocarpa")){
 
-		}else if (organism.getName().equals("Physcomitrella patens")){ 	
-		
-			miRna.setName("ppt"+"-"+name.trim());
-			miRna.setAccessionNumber(mirbase);
-			
-		}else if (organism.getName().equals("Gossypium hirsutum")){ 	
-			
-			miRna.setName("ghr"+"-"+name.trim());
-			miRna.setAccessionNumber(mirbase);	
-			
-		}else if (!organism.getName().equals("Chinese yew") 
+				String[] tokens = StringUtils.splitPreserveAllTokens(organism.getName(), " ");
+				String genus = tokens[0];
+				String specie_name = tokens[1];
+				String substring_genus = genus.substring(0,1).toLowerCase();
+				String substring_specie_name = specie_name.substring(0, 1) + specie_name.substring(3, 4);
+				String name_organism = substring_genus + substring_specie_name;
+				//System.out.println(substring_genus + substring_specie_name);
+				miRna.setName(name_organism+"-"+name.trim());
+				miRna.setAccessionNumber(mirbase);
+				//System.out.println(miRna.getName());
+
+			}else if (organism.getName().equals("Heifer")){
+
+				miRna.setName("bta"+"-"+name.trim());
+				miRna.setAccessionNumber(mirbase);
+
+			}else if (organism.getName().equals("Physcomitrella patens")){ 	
+
+				miRna.setName("ppt"+"-"+name.trim());
+				miRna.setAccessionNumber(mirbase);
+
+			}else if (organism.getName().equals("Gossypium hirsutum")){ 	
+
+				miRna.setName("ghr"+"-"+name.trim());
+				miRna.setAccessionNumber(mirbase);	
+
+			}else if (!organism.getName().equals("Chinese yew") 
 					|| !organism.getName().equals("Solanum")){
 				String[] tokens = StringUtils.splitPreserveAllTokens(organism.getName(), " ");
 				String genus = tokens[0];
@@ -180,20 +188,42 @@ public class SM2miR2N extends NewMirnaDatabase {
 				miRna.setAccessionNumber(mirbase);
 				//System.out.println(miRna.getName());
 
-		}else{
-			
-			miRna.setName(name);
-			miRna.setAccessionNumber(mirbase);
+			}else{
 
-		}
+				miRna.setName(name);
+				miRna.setAccessionNumber(mirbase);
+
+			}
+			
+			if (!createdObject(name)) { 
+				
+				miRna = null;
+
+			}
+
+		
 
 		SmallMolecule smallmolecule = new SmallMolecule();
 		smallmolecule.setFda(fda);
 		smallmolecule.setCid(cid);
 		smallmolecule.setDb(db);
+		
+		if (!createdObject(fda, cid, db)) { 
+			
+			miRna = null;
+
+		}
+		
 
 		EnvironmentalFactor ef = new EnvironmentalFactor();
 		ef.setName(small_molecule);
+		
+		if (!createdObject(small_molecule)) { 
+			
+			ef = null;
+
+		}
+		
 
 		ExpressionData ed = new ExpressionData();
 		ed.setCondition(condition);
@@ -206,12 +236,21 @@ public class SM2miR2N extends NewMirnaDatabase {
 
 		PubmedDocument pubmedDoc = new PubmedDocument();
 		pubmedDoc.setId(pmid);
+		
+		
+		if (!createdObject(pmid)) { 
+			
+			pubmedDoc = null;
+
+		}
 
 		// Inserta Organism (o recupera su id. si ya existe)
 		// Relaciona mirna y organism
 
 		// Inserta MiRna (o recupera su id. si ya existe)
 
+		
+		if(organism != null){
 		Object oldOrganism = session.createCriteria(Organism.class)
 				.add(Restrictions.eq("name", organism.getName()) )
 				.uniqueResult();
@@ -226,6 +265,8 @@ public class SM2miR2N extends NewMirnaDatabase {
 			session.update(organismToUpdate);
 			organism = organismToUpdate;
 		}
+		}
+		
 
 		Object oldMiRna = session.createCriteria(MiRna.class)
 				.add(Restrictions.eq("name", miRna.getName()) )
@@ -239,9 +280,27 @@ public class SM2miR2N extends NewMirnaDatabase {
 			session.update(miRnaToUpdate);
 			miRna = miRnaToUpdate;
 		}
+		
+		MirnaHasOrganism mirnaHasOrganism = 
+				new MirnaHasOrganism(miRna.getPk(), organism.getPk());
+
+
+		// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
+		Object oldmirnaHasOrganism = session.createCriteria(MirnaHasOrganism.class)
+				.add( Restrictions.eq("mirna_pk", miRna.getPk()) )
+				.add( Restrictions.eq("organism_pk", organism.getPk()) )
+				.uniqueResult();
+		if (oldmirnaHasOrganism==null) {
+			session.save(mirnaHasOrganism);
+
+		
+		
+		}
 
 		// Inserta EnvironmentalFactor (o recupera su id. si ya existe)
-
+		
+		
+		if(ef !=null){
 		Object oldEf = session.createCriteria(EnvironmentalFactor.class)
 				.add( Restrictions.eq("name", ef.getName()) )
 				.uniqueResult();
@@ -254,11 +313,11 @@ public class SM2miR2N extends NewMirnaDatabase {
 			session.update(efToUpdate);
 			ef = efToUpdate;
 		}
-
+		}
 		// Inserta smallmolecule (o recupera su id. si ya existe)
 		smallmolecule.setEnvironmental_factor_pk(ef.getPk());
 		session.save(smallmolecule);
-		
+
 		// Inserta nueva DataExpression
 		// (y la relaciona con el MiRna y SmallMolecule)
 
@@ -268,6 +327,9 @@ public class SM2miR2N extends NewMirnaDatabase {
 
 
 		// Inserta pubmedDocument (o recupera su id. si ya existe)
+		
+		if(pubmedDoc !=null){
+
 
 		Object oldPubmedDoc = session.createCriteria(PubmedDocument.class)
 				.add( Restrictions.eq("id", pubmedDoc.getId()) )
@@ -300,25 +362,17 @@ public class SM2miR2N extends NewMirnaDatabase {
 		// Relaciona PubmedDocument con ExpressionData
 
 		session.save(expresDataHasPubmedDocument);
-		
-		
-		MirnaHasOrganism mirnaHasOrganism = 
-				new MirnaHasOrganism(miRna.getPk(), organism.getPk());
-
-
-		// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
-		Object oldmirnaHasOrganism = session.createCriteria(MirnaHasOrganism.class)
-				.add( Restrictions.eq("mirna_pk", miRna.getPk()) )
-				.add( Restrictions.eq("organism_pk", organism.getPk()) )
-				.uniqueResult();
-		if (oldmirnaHasOrganism==null) {
-			session.save(mirnaHasOrganism);
 
 		}
 		
-		
+
+
 	}
-	
+
+	private String nullifyField(String field) {
+		return "".equals(field.trim()) || "n_a".equals(field.trim()) || "NULL".equals(field.trim()) ? null : field.trim();
+	}
+
 	public static void main(String[] args) throws Exception {
 
 		SM2miR2N sm2 = new SM2miR2N();
