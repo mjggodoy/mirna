@@ -494,6 +494,22 @@ select mitg_score, target_pk, mirna_pk, gene_pk, "microTv4" from mirna_raw.micro
 	
 	The process programmed using Hibernate took 10 mins. 
 	
+	10.Mir2Cancer
+	
+	The process using Hibernate took less than 5 mins.
+	
+	11. Mir2Disease
+	
+	The process using Hibernate took less than 5 mins.
+	
+	12. MirEnvironment
+	
+	The process using Hibernate took less than 5 mins.
+	
+	13. SMS2miR2N
+	
+	The process using 
+	
 	
 	
 	

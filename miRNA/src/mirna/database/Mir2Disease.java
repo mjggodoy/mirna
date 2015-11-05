@@ -94,12 +94,6 @@ public class Mir2Disease extends NewMirnaDatabase {
 	@Override
 	protected void processRow(Session session, ResultSet rs) throws Exception {
 		
-//		mirna -> miRNA.name
-//		disease  -> Disease.name
-//		expression	-> ExpressionData.evidence
-//		method -> ExpressionData.method
-//		date -> ExpressionData.year
-//		description -> ExpressionData.description
 		
 		String mirna = rs.getString("mirna").trim();
 		String diseaseField = rs.getString("disease").toLowerCase().trim();
@@ -194,13 +188,6 @@ public class Mir2Disease extends NewMirnaDatabase {
 	public static void main(String[] args) throws Exception {
 		
 		Mir2Disease mir2disease = new Mir2Disease();
-		
-		// /* 1. meter datos en mirna_raw */
-		// String inputFile = "/Users/esteban/Softw/miRNA/mir2disease_AllEntries.txt";
-		// inputFile = mir2disease.specificFileFix(inputFile);
-		// mir2disease.insertInTable(inputFile);
-		
-		/* 2. meter datos en mirna */
 		mir2disease.insertIntoSQLModel();
 
 	}

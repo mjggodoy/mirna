@@ -121,7 +121,7 @@ public class MiREnvironment extends NewMirnaDatabase {
 		String pubmedId = rs.getString("pubmedId");
 
 		MiRna miRna = new MiRna();
-		miRna.setName(name);
+		miRna.setName(name.trim());
 
 		Disease disease = new Disease();
 		disease.setName(disease_name);
@@ -177,13 +177,11 @@ public class MiREnvironment extends NewMirnaDatabase {
 		if (oldOrganism==null) {
 			session.save(organism);
 			session.flush(); // to get the PK
-			System.out.println("Save Organism");
 		} else {
 			Organism organismToUpdate = (Organism) oldOrganism;
 			organismToUpdate.update(organism);
 			session.update(organismToUpdate);
 			organism = organismToUpdate;
-			System.out.println("Retrieve Organism");
 		}
 
 		// Inserta MiRna (o recupera su id. si ya existe)
@@ -196,7 +194,6 @@ public class MiREnvironment extends NewMirnaDatabase {
 		} else {
 			MiRna miRnaToUpdate = (MiRna) oldMiRna;
 			miRnaToUpdate.update(miRna);
-			System.out.println("mirna "+ miRna);
 			session.update(miRnaToUpdate);
 			miRna = miRnaToUpdate;
 		}
@@ -269,12 +266,6 @@ public class MiREnvironment extends NewMirnaDatabase {
 	public static void main(String[] args) throws Exception {
 
 		MiREnvironment mirEnvironment = new MiREnvironment();
-
-		// /* 1. meter datos en mirna_raw */
-		//String inputFile = "/Users/esteban/Softw/miRNA/mirendata.txt";
-		//mirEnvironment.insertInTable(inputFile);
-
-		/* 2. meter datos en mirna */
 		mirEnvironment.insertIntoSQLModel();
 
 	}

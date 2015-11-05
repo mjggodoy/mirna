@@ -226,12 +226,6 @@ public class Microcosm extends NewMirnaDatabase {
 	public static void main(String[] args) throws Exception {
 		
 		Microcosm microcosm = new Microcosm();
-		
-		// /* 1. meter datos en mirna_raw */
-		// String inputFile = "/Users/esteban/Softw/miRNA/microcosm/v5.txt.homo_sapiens";
-		// microcosm.insertInTable(inputFile);
-		
-		/* 2. meter datos en mirna */
 		microcosm.insertIntoSQLModel();
 		
 	}
