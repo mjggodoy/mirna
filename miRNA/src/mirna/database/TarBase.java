@@ -583,12 +583,6 @@ public class TarBase extends NewMirnaDatabase {
 	public static void main(String[] args) throws Exception {
 
 		TarBase tarBase = new TarBase();
-
-		// /* 1. meter datos en mirna_raw */
-		//String inputFile = "/Users/esteban/Softw/miRNA/TarBase_V5.0.txt";
-		//tarBase.insertInTable(inputFile);
-
-		/* 2. meter datos en mirna */
 		tarBase.insertIntoSQLModel();
 
 	}

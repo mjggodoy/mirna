@@ -12,7 +12,6 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-import mirna.beans.ExpressionData;
 import mirna.beans.Mature;
 import mirna.beans.MiRna;
 import mirna.beans.Organism;
@@ -117,9 +116,6 @@ public class PlantMirnaMatureMirna extends NewMirnaDatabase {
 
 		Mature mature = new Mature();
 
-		ExpressionData ed = new ExpressionData();
-		ed.setProvenance("PlantMirna");
-
 		// Inserta Organism (o recupera su id. si ya existe)
 		Object oldOrganism = session.createCriteria(Organism.class)
 				.add( Restrictions.eq("name", organism.getName()) )
@@ -142,13 +138,11 @@ public class PlantMirnaMatureMirna extends NewMirnaDatabase {
 		if (oldMiRna==null) {
 			session.save(miRNA);
 			session.flush();  // to get the PK
-			System.out.println("SAVE");
 		} else {
 			MiRna miRnaToUpdate = (MiRna) oldMiRna;
 			miRnaToUpdate.update(miRNA);
 			session.update(miRnaToUpdate);
 			miRNA = miRnaToUpdate;
-			System.out.println("UPDATE");
 
 		}
 
@@ -163,14 +157,8 @@ public class PlantMirnaMatureMirna extends NewMirnaDatabase {
 			sequenceToUpdate.update(sequence);
 			session.update(sequenceToUpdate);
 			sequence = sequenceToUpdate;
-			System.out.println(sequence);
 		}
 		
-		// Relaciona expressiondata data con mirna
-
-		ed.setMirnaPk(miRNA.getPk());
-		session.save(ed);
-		session.flush();
 
 		// Relaciona Organism con Mirna (si no lo estaba ya)
 
@@ -219,12 +207,6 @@ public class PlantMirnaMatureMirna extends NewMirnaDatabase {
 	public static void main(String[] args) throws Exception{
 
 		PlantMirnaMatureMirna plant = new PlantMirnaMatureMirna();
-
-		// /* 1. meter datos en mirna_raw */
-		//	String inputFile = "/Users/esteban/Softw/miRNA/plant_mirna/all_mature.txt";
-		//	plant.insertInTable(inputFile);
-
-		/* 2. meter datos en mirna */
 		plant.insertIntoSQLModel();
 
 	}

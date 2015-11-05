@@ -121,8 +121,6 @@ public class PlantMirnaStemLoop extends NewMirnaDatabase {
 
 		Hairpin hairpin = new Hairpin();
 
-		ExpressionData ed = new ExpressionData();
-		ed.setProvenance("PlantMirna");
 
 		// Inserta Organism (o recupera su id. si ya existe)
 		Object oldOrganism = session.createCriteria(Organism.class)
@@ -168,11 +166,7 @@ public class PlantMirnaStemLoop extends NewMirnaDatabase {
 			System.out.println(sequence);
 		}
 
-		// Relaciona expressiondata data con mirna
-		ed.setMirnaPk(miRNA.getPk());
-		session.save(ed);
-
-
+		
 		MirnaHasOrganism mirnaHasOrganism = 
 				new MirnaHasOrganism(miRNA.getPk(), organism.getPk());
 
