@@ -133,8 +133,9 @@ public class MiREnvironment extends NewMirnaDatabase {
 		if (miRna.getName().equals("n/a")) {
 
 			miRna.setName(name2.trim());
-
-		} else if (miRna.getName().equals("n/a")) {
+		}
+		
+		if (miRna.getName().equals("n/a")) {
 
 			miRna.setName(name3.trim());
 
