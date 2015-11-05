@@ -160,8 +160,13 @@ public class SM2miR2N extends NewMirnaDatabase {
 		
 			miRna.setName("ppt"+"-"+name.trim());
 			miRna.setAccessionNumber(mirbase);
-
-		}else if (!organism.getName().equals("Heifer") || !organism.getName().equals("Chinese yew") 
+			
+		}else if (organism.getName().equals("Gossypium hirsutum")){ 	
+			
+			miRna.setName("ghr"+"-"+name.trim());
+			miRna.setAccessionNumber(mirbase);	
+			
+		}else if (!organism.getName().equals("Chinese yew") 
 					|| !organism.getName().equals("Solanum")){
 				String[] tokens = StringUtils.splitPreserveAllTokens(organism.getName(), " ");
 				String genus = tokens[0];
@@ -214,14 +219,12 @@ public class SM2miR2N extends NewMirnaDatabase {
 
 			session.save(organism);
 			session.flush(); // to get the PK
-			System.out.println("Save ORGANISM");
 		} else {
 
 			Organism organismToUpdate = (Organism) oldOrganism;
 			organismToUpdate.update(organism);
 			session.update(organismToUpdate);
 			organism = organismToUpdate;
-			System.out.println("Update ORGANISM");
 		}
 
 		Object oldMiRna = session.createCriteria(MiRna.class)
@@ -319,12 +322,6 @@ public class SM2miR2N extends NewMirnaDatabase {
 	public static void main(String[] args) throws Exception {
 
 		SM2miR2N sm2 = new SM2miR2N();
-
-		// /* 1. meter datos en mirna_raw 
-		//String inputFile = "/Users/esteban/Softw/miRNA/SM2miR2n.txt";
-		//sm2.insertInTable(inputFile);
-
-		 //2. meter datos en mirna 
 		sm2.insertIntoSQLModel();
 
 	}
