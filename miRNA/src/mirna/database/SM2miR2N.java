@@ -178,7 +178,7 @@ public class SM2miR2N extends NewMirnaDatabase {
 				String name_organism = substring_genus + substring_specie_name;
 				miRna.setName(name_organism+"-"+ name.trim());
 				miRna.setAccessionNumber(mirbase);
-				System.out.println(miRna.getName());
+				//System.out.println(miRna.getName());
 
 		}else{
 			
