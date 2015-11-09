@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+
 import mirna.beans.Disease;
 import mirna.beans.ExpressionData;
 import mirna.beans.MiRna;
@@ -15,6 +16,7 @@ import mirna.beans.PubmedDocument;
 import mirna.beans.nToM.ExpressionDataHasPubmedDocument;
 import mirna.beans.nToM.MirnaHasPubmedDocument;
 import mirna.exception.MiRnaException;
+
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -153,25 +155,36 @@ public class Phenomir extends NewMirnaDatabase {
 	@Override
 	public void processRow(Session session, ResultSet rs) throws Exception {
 
-		String phenomicid = rs.getString("phenomicid");
-		String pmid = rs.getString("pmid");
-		String diseaseField = rs.getString("disease").toLowerCase().trim();
-		String diseaseClass = rs.getString("class").toLowerCase().trim();
-		String mirna = rs.getString("miRNA").trim();
-		String accession = rs.getString("accession").toLowerCase().trim();
-		String evidence = rs.getString("expression");
-		String foldchangemin = rs.getString("foldchangemin");
-		String foldchangemax = rs.getString("foldchangemax");
-		String studyDesign = rs.getString("name");
-		String method = rs.getString("method");
+		String phenomicid = nullifyField(rs.getString("phenomicid"));
+		String pmid = nullifyField(rs.getString("pmid"));
+		String diseaseField = nullifyField(rs.getString("disease").toLowerCase().trim());
+		String diseaseClass = nullifyField(rs.getString("class").toLowerCase().trim());
+		String mirna = nullifyField(rs.getString("miRNA").trim());
+		String accession = nullifyField(rs.getString("accession").toLowerCase().trim());
+		String evidence = nullifyField(rs.getString("expression"));
+		String foldchangemin = nullifyField(rs.getString("foldchangemin"));
+		String foldchangemax = nullifyField(rs.getString("foldchangemax"));
+		String studyDesign = nullifyField(rs.getString("name"));
+		String method = nullifyField(rs.getString("method"));
 
 		MiRna miRna = new MiRna();
 		miRna.setName(mirna);
 		miRna.setAccessionNumber(accession);
 
+		if (!createdObject(mirna, accession)) { 
+
+			miRna = null;
+
+		}
+
 		Disease disease = new Disease();
 		disease.setName(diseaseField);
 		disease.setDiseaseClass(diseaseClass);
+
+		if (!createdObject(diseaseField, diseaseClass)) { 
+
+			disease = null;
+		}
 
 		ExpressionData ed = new ExpressionData();
 		ed.setProvenanceId(phenomicid);
@@ -182,36 +195,14 @@ public class Phenomir extends NewMirnaDatabase {
 		ed.setMethod(method);
 		ed.setProvenance("PhenomiR");
 
+		if (!createdObject(phenomicid, evidence, foldchangemin, foldchangemax, studyDesign, method)) { 
+
+			ed = null;
+		}
+
 		PubmedDocument pubmedDoc = new PubmedDocument();
 		pubmedDoc.setId(pmid);
 
-		// Inserta MiRna (o recupera su id. si ya existe)
-		Object oldMiRna = session.createCriteria(MiRna.class)
-				.add( Restrictions.eq("name", miRna.getName()) )
-				.uniqueResult();
-		if (oldMiRna==null) {
-			session.save(miRna);
-			session.flush();  // to get the PK
-		} else {
-			MiRna miRnaToUpdate = (MiRna) oldMiRna;
-			miRnaToUpdate.update(miRna);
-			session.update(miRnaToUpdate);
-			miRna = miRnaToUpdate;
-		}
-
-		// Inserta Disease (o recupera su id. si ya existe)
-		Object oldDisease = session.createCriteria(Disease.class)
-				.add( Restrictions.eq("name", disease.getName()) )
-				.uniqueResult();
-		if (oldDisease==null) {
-			session.save(disease);
-			session.flush(); // to get the PK
-		} else {
-			Disease diseaseToUpdate = (Disease) oldDisease;
-			diseaseToUpdate.update(disease);
-			session.update(diseaseToUpdate);
-			disease = diseaseToUpdate;
-		}
 
 		// Inserta PubmedDocument (o recupera su id. si ya existe)
 		Object oldPubmedDoc = session.createCriteria(PubmedDocument.class)
@@ -227,34 +218,77 @@ public class Phenomir extends NewMirnaDatabase {
 			pubmedDoc = pubmedDocToUpdate;
 		}
 
+
+		if(miRna != null){
+
+			// Inserta MiRna (o recupera su id. si ya existe)
+			Object oldMiRna = session.createCriteria(MiRna.class)
+					.add( Restrictions.eq("name", miRna.getName()) )
+					.uniqueResult();
+			if (oldMiRna==null) {
+				session.save(miRna);
+				session.flush();  // to get the PK
+			} else {
+				MiRna miRnaToUpdate = (MiRna) oldMiRna;
+				miRnaToUpdate.update(miRna);
+				session.update(miRnaToUpdate);
+				miRna = miRnaToUpdate;
+			}
+
+			MirnaHasPubmedDocument mirnaHasPubmedDocument =
+					new MirnaHasPubmedDocument(miRna.getPk(), pubmedDoc.getPk());
+
+			// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
+			Object oldMirnaHasPubmedDocument = session.createCriteria(MirnaHasPubmedDocument.class)
+					.add( Restrictions.eq("mirnaPk", miRna.getPk()) )
+					.add( Restrictions.eq("pubmedDocumentPk", pubmedDoc.getPk()) )
+					.uniqueResult();
+			if (oldMirnaHasPubmedDocument==null) {
+				session.save(mirnaHasPubmedDocument);
+			}
+		}
+
+		if(disease != null){
+		// Inserta Disease (o recupera su id. si ya existe)
+		Object oldDisease = session.createCriteria(Disease.class)
+				.add( Restrictions.eq("name", disease.getName()) )
+				.uniqueResult();
+		if (oldDisease==null) {
+			session.save(disease);
+			session.flush(); // to get the PK
+		} else {
+			Disease diseaseToUpdate = (Disease) oldDisease;
+			diseaseToUpdate.update(disease);
+			session.update(diseaseToUpdate);
+			disease = diseaseToUpdate;
+		}
+		}
+
 		// Inserta nueva DataExpression
 		// (y la relaciona con el MiRna y Disease correspondiente)
 
+		if(ed != null){
 		ed.setMirnaPk(miRna.getPk());
 		ed.setDiseasePk(disease.getPk());
 		session.save(ed);
 		session.flush(); // to get the PK
 		// ExpressionData igual (?)
 
-		MirnaHasPubmedDocument mirnaHasPubmedDocument =
-				new MirnaHasPubmedDocument(miRna.getPk(), pubmedDoc.getPk());
+
 		ExpressionDataHasPubmedDocument expresDataHasPubmedDocument =
 				new ExpressionDataHasPubmedDocument(ed.getPk(), pubmedDoc.getPk());
 
-		// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
-		Object oldMirnaHasPubmedDocument = session.createCriteria(MirnaHasPubmedDocument.class)
-				.add( Restrictions.eq("mirnaPk", miRna.getPk()) )
-				.add( Restrictions.eq("pubmedDocumentPk", pubmedDoc.getPk()) )
-				.uniqueResult();
-		if (oldMirnaHasPubmedDocument==null) {
-			session.save(mirnaHasPubmedDocument);
-		}
 
 		// Relaciona PubmedDocument con ExpressionData
 		session.save(expresDataHasPubmedDocument);
-
+		}
 
 	}
+
+	private String nullifyField(String field) {
+		return "".equals(field.trim()) || "n_a".equals(field.trim()) || "NULL".equals(field.trim()) ? null : field.trim();
+	}
+
 
 	public static void main(String[] args) throws Exception {
 

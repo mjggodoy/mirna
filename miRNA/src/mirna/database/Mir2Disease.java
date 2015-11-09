@@ -95,12 +95,12 @@ public class Mir2Disease extends NewMirnaDatabase {
 	protected void processRow(Session session, ResultSet rs) throws Exception {
 		
 		
-		String mirna = rs.getString("mirna").trim();
-		String diseaseField = rs.getString("disease").toLowerCase().trim();
-		String evidence = rs.getString("expression").trim();
-		String method = rs.getString("method").trim();
-		String year = rs.getString("date").trim();
-		String description = rs.getString("reference").trim();
+		String mirna = nullifyField(rs.getString("mirna").trim());
+		String diseaseField = nullifyField(rs.getString("disease").trim());
+		String evidence = nullifyField(rs.getString("expression").trim());
+		String method = nullifyField(rs.getString("method").trim());
+		String year = nullifyField(rs.getString("date").trim());
+		String description = nullifyField(rs.getString("reference").trim());
 		
 		MiRna miRna = new MiRna();
 		miRna.setName(mirna);
@@ -115,6 +115,13 @@ public class Mir2Disease extends NewMirnaDatabase {
 		ed.setYear(year);
 		ed.setProvenance("miR2Disease");
 		
+		if (!createdObject(description, evidence, method, year)) { 
+
+			ed = null;
+
+		}
+		
+
 		// Inserta MiRna (o recupera su id. si ya existe)
 		Object oldMiRna = session.createCriteria(MiRna.class)
 				.add( Restrictions.eq("name", miRna.getName()) )
@@ -147,9 +154,12 @@ public class Mir2Disease extends NewMirnaDatabase {
 		// Inserta nueva DataExpression
 		// (y la relaciona con el MiRna y Disease correspondiente)
 		
+		if(ed != null){
 		ed.setMirnaPk(miRna.getPk());
 		ed.setDiseasePk(disease.getPk());
 		session.save(ed);
+		
+		}
 		
 	}
 	
@@ -184,6 +194,11 @@ public class Mir2Disease extends NewMirnaDatabase {
 		
 		return newFile;
 	}
+	
+	private String nullifyField(String field) {
+		return "".equals(field.trim()) || "n_a".equals(field.trim()) || "NULL".equals(field.trim()) ? null : field.trim();
+	}
+	
 	
 	public static void main(String[] args) throws Exception {
 		

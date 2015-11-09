@@ -138,7 +138,7 @@ public class SM2miR2N extends NewMirnaDatabase {
 
 
 		if (!createdObject(specie)) { 
-			
+
 			organism = null;
 
 		}
@@ -146,84 +146,82 @@ public class SM2miR2N extends NewMirnaDatabase {
 		MiRna miRna = new MiRna();
 
 
-			if (organism.getName().equals("Populus trichocarpa")){
+		if (organism.getName().equals("Populus trichocarpa")){
 
-				String[] tokens = StringUtils.splitPreserveAllTokens(organism.getName(), " ");
-				String genus = tokens[0];
-				String specie_name = tokens[1];
-				String substring_genus = genus.substring(0,1).toLowerCase();
-				String substring_specie_name = specie_name.substring(0, 1) + specie_name.substring(3, 4);
-				String name_organism = substring_genus + substring_specie_name;
-				//System.out.println(substring_genus + substring_specie_name);
-				miRna.setName(name_organism+"-"+name.trim());
-				miRna.setAccessionNumber(mirbase);
-				//System.out.println(miRna.getName());
+			String[] tokens = StringUtils.splitPreserveAllTokens(organism.getName(), " ");
+			String genus = tokens[0];
+			String specie_name = tokens[1];
+			String substring_genus = genus.substring(0,1).toLowerCase();
+			String substring_specie_name = specie_name.substring(0, 1) + specie_name.substring(3, 4);
+			String name_organism = substring_genus + substring_specie_name;
+			//System.out.println(substring_genus + substring_specie_name);
+			miRna.setName(name_organism+"-"+name.trim());
+			miRna.setAccessionNumber(mirbase);
+			//System.out.println(miRna.getName());
 
-			}else if (organism.getName().equals("Heifer")){
+		}else if (organism.getName().equals("Heifer")){
 
-				miRna.setName("bta"+"-"+name.trim());
-				miRna.setAccessionNumber(mirbase);
+			miRna.setName("bta"+"-"+name.trim());
+			miRna.setAccessionNumber(mirbase);
 
-			}else if (organism.getName().equals("Physcomitrella patens")){ 	
+		}else if (organism.getName().equals("Physcomitrella patens")){ 	
 
-				miRna.setName("ppt"+"-"+name.trim());
-				miRna.setAccessionNumber(mirbase);
+			miRna.setName("ppt"+"-"+name.trim());
+			miRna.setAccessionNumber(mirbase);
 
-			}else if (organism.getName().equals("Gossypium hirsutum")){ 	
+		}else if (organism.getName().equals("Gossypium hirsutum")){ 	
 
-				miRna.setName("ghr"+"-"+name.trim());
-				miRna.setAccessionNumber(mirbase);	
+			miRna.setName("ghr"+"-"+name.trim());
+			miRna.setAccessionNumber(mirbase);	
 
-			}else if (!organism.getName().equals("Chinese yew") 
-					|| !organism.getName().equals("Solanum")){
-				String[] tokens = StringUtils.splitPreserveAllTokens(organism.getName(), " ");
-				String genus = tokens[0];
-				String specie_name = tokens[1];
-				//System.out.println(organism.getName() + " " + genus + " " + specie_name);
-				String substring_genus = genus.substring(0,1).toLowerCase();
-				String substring_specie_name = specie_name.substring(0, 2);
-				//System.out.println(substring_genus + substring_specie_name);
-				String name_organism = substring_genus + substring_specie_name;
-				miRna.setName(name_organism+"-"+ name.trim());
-				miRna.setAccessionNumber(mirbase);
-				//System.out.println(miRna.getName());
+		}else if (!organism.getName().equals("Chinese yew") 
+				|| !organism.getName().equals("Solanum")){
+			String[] tokens = StringUtils.splitPreserveAllTokens(organism.getName(), " ");
+			String genus = tokens[0];
+			String specie_name = tokens[1];
+			//System.out.println(organism.getName() + " " + genus + " " + specie_name);
+			String substring_genus = genus.substring(0,1).toLowerCase();
+			String substring_specie_name = specie_name.substring(0, 2);
+			//System.out.println(substring_genus + substring_specie_name);
+			String name_organism = substring_genus + substring_specie_name;
+			miRna.setName(name_organism+"-"+ name.trim());
+			miRna.setAccessionNumber(mirbase);
+			//System.out.println(miRna.getName());
 
-			}else{
+		}else{
 
-				miRna.setName(name);
-				miRna.setAccessionNumber(mirbase);
+			miRna.setName(name);
+			miRna.setAccessionNumber(mirbase);
 
-			}
-			
-			if (!createdObject(name)) { 
-				
-				miRna = null;
+		}
 
-			}
+		if (!createdObject(name)) { 
 
-		
+			miRna = null;
+
+		}
 
 		SmallMolecule smallmolecule = new SmallMolecule();
 		smallmolecule.setFda(fda);
 		smallmolecule.setCid(cid);
 		smallmolecule.setDb(db);
-		
+
 		if (!createdObject(fda, cid, db)) { 
-			
-			miRna = null;
+
+			smallmolecule = null;
 
 		}
-		
+
 
 		EnvironmentalFactor ef = new EnvironmentalFactor();
 		ef.setName(small_molecule);
-		
+
 		if (!createdObject(small_molecule)) { 
-			
+
 			ef = null;
 
 		}
-		
+
 
 		ExpressionData ed = new ExpressionData();
 		ed.setCondition(condition);
@@ -236,10 +234,10 @@ public class SM2miR2N extends NewMirnaDatabase {
 
 		PubmedDocument pubmedDoc = new PubmedDocument();
 		pubmedDoc.setId(pmid);
-		
-		
+
+
 		if (!createdObject(pmid)) { 
-			
+
 			pubmedDoc = null;
 
 		}
@@ -248,26 +246,8 @@ public class SM2miR2N extends NewMirnaDatabase {
 		// Relaciona mirna y organism
 
 		// Inserta MiRna (o recupera su id. si ya existe)
-
 		
-		if(organism != null){
-		Object oldOrganism = session.createCriteria(Organism.class)
-				.add(Restrictions.eq("name", organism.getName()) )
-				.uniqueResult();
-		if (oldOrganism==null) {
-
-			session.save(organism);
-			session.flush(); // to get the PK
-		} else {
-
-			Organism organismToUpdate = (Organism) oldOrganism;
-			organismToUpdate.update(organism);
-			session.update(organismToUpdate);
-			organism = organismToUpdate;
-		}
-		}
 		
-
 		Object oldMiRna = session.createCriteria(MiRna.class)
 				.add(Restrictions.eq("name", miRna.getName()) )
 				.uniqueResult();
@@ -280,39 +260,60 @@ public class SM2miR2N extends NewMirnaDatabase {
 			session.update(miRnaToUpdate);
 			miRna = miRnaToUpdate;
 		}
-		
-		MirnaHasOrganism mirnaHasOrganism = 
-				new MirnaHasOrganism(miRna.getPk(), organism.getPk());
 
 
-		// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
-		Object oldmirnaHasOrganism = session.createCriteria(MirnaHasOrganism.class)
-				.add( Restrictions.eq("mirna_pk", miRna.getPk()) )
-				.add( Restrictions.eq("organism_pk", organism.getPk()) )
-				.uniqueResult();
-		if (oldmirnaHasOrganism==null) {
-			session.save(mirnaHasOrganism);
+		if(organism != null){
+			Object oldOrganism = session.createCriteria(Organism.class)
+					.add(Restrictions.eq("name", organism.getName()) )
+					.uniqueResult();
+			if (oldOrganism==null) {
 
-		
-		
+				session.save(organism);
+				session.flush(); // to get the PK
+			} else {
+
+				Organism organismToUpdate = (Organism) oldOrganism;
+				organismToUpdate.update(organism);
+				session.update(organismToUpdate);
+				organism = organismToUpdate;
+			}
+			
+			MirnaHasOrganism mirnaHasOrganism = 
+					new MirnaHasOrganism(miRna.getPk(), organism.getPk());
+
+
+			// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
+			Object oldmirnaHasOrganism = session.createCriteria(MirnaHasOrganism.class)
+					.add( Restrictions.eq("mirna_pk", miRna.getPk()) )
+					.add( Restrictions.eq("organism_pk", organism.getPk()) )
+					.uniqueResult();
+			if (oldmirnaHasOrganism==null) {
+				session.save(mirnaHasOrganism);
+
+
+
+			}	
 		}
+
+
 
 		// Inserta EnvironmentalFactor (o recupera su id. si ya existe)
-		
-		
+
+
 		if(ef !=null){
-		Object oldEf = session.createCriteria(EnvironmentalFactor.class)
-				.add( Restrictions.eq("name", ef.getName()) )
-				.uniqueResult();
-		if (oldEf==null) {
-			session.save(ef);
-			session.flush();  // to get the PK
-		} else {
-			EnvironmentalFactor efToUpdate = (EnvironmentalFactor) oldEf;
-			efToUpdate.update(ef);
-			session.update(efToUpdate);
-			ef = efToUpdate;
-		}
+			
+			Object oldEf = session.createCriteria(EnvironmentalFactor.class)
+					.add( Restrictions.eq("name", ef.getName()) )
+					.uniqueResult();
+			if (oldEf==null) {
+				session.save(ef);
+				session.flush();  // to get the PK
+			} else {
+				EnvironmentalFactor efToUpdate = (EnvironmentalFactor) oldEf;
+				efToUpdate.update(ef);
+				session.update(efToUpdate);
+				ef = efToUpdate;
+			}
 		}
 		// Inserta smallmolecule (o recupera su id. si ya existe)
 		smallmolecule.setEnvironmental_factor_pk(ef.getPk());
@@ -327,44 +328,44 @@ public class SM2miR2N extends NewMirnaDatabase {
 
 
 		// Inserta pubmedDocument (o recupera su id. si ya existe)
-		
+
 		if(pubmedDoc !=null){
 
 
-		Object oldPubmedDoc = session.createCriteria(PubmedDocument.class)
-				.add( Restrictions.eq("id", pubmedDoc.getId()) )
-				.uniqueResult();
-		if (oldPubmedDoc==null) {
-			session.save(pubmedDoc);
-			session.flush(); // to get the PK
-		} else {
-			PubmedDocument pubmedDocToUpdate = (PubmedDocument) oldPubmedDoc;
-			pubmedDocToUpdate.update(pubmedDoc);
-			session.update(pubmedDocToUpdate);
-			pubmedDoc = pubmedDocToUpdate;
+			Object oldPubmedDoc = session.createCriteria(PubmedDocument.class)
+					.add( Restrictions.eq("id", pubmedDoc.getId()) )
+					.uniqueResult();
+			if (oldPubmedDoc==null) {
+				session.save(pubmedDoc);
+				session.flush(); // to get the PK
+			} else {
+				PubmedDocument pubmedDocToUpdate = (PubmedDocument) oldPubmedDoc;
+				pubmedDocToUpdate.update(pubmedDoc);
+				session.update(pubmedDocToUpdate);
+				pubmedDoc = pubmedDocToUpdate;
+			}
+
+			MirnaHasPubmedDocument mirnaHasPubmedDocument =
+					new MirnaHasPubmedDocument(miRna.getPk(), pubmedDoc.getPk());
+			ExpressionDataHasPubmedDocument expresDataHasPubmedDocument =
+					new ExpressionDataHasPubmedDocument(ed.getPk(), pubmedDoc.getPk());
+
+			// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
+
+			Object oldMirnaHasPubmedDocument = session.createCriteria(MirnaHasPubmedDocument.class)
+					.add( Restrictions.eq("mirnaPk", miRna.getPk()) )
+					.add( Restrictions.eq("pubmedDocumentPk", pubmedDoc.getPk()) )
+					.uniqueResult();
+			if (oldMirnaHasPubmedDocument==null) {
+				session.save(mirnaHasPubmedDocument);
+			}
+
+			// Relaciona PubmedDocument con ExpressionData
+
+			session.save(expresDataHasPubmedDocument);
+
 		}
 
-		MirnaHasPubmedDocument mirnaHasPubmedDocument =
-				new MirnaHasPubmedDocument(miRna.getPk(), pubmedDoc.getPk());
-		ExpressionDataHasPubmedDocument expresDataHasPubmedDocument =
-				new ExpressionDataHasPubmedDocument(ed.getPk(), pubmedDoc.getPk());
-
-		// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
-
-		Object oldMirnaHasPubmedDocument = session.createCriteria(MirnaHasPubmedDocument.class)
-				.add( Restrictions.eq("mirnaPk", miRna.getPk()) )
-				.add( Restrictions.eq("pubmedDocumentPk", pubmedDoc.getPk()) )
-				.uniqueResult();
-		if (oldMirnaHasPubmedDocument==null) {
-			session.save(mirnaHasPubmedDocument);
-		}
-
-		// Relaciona PubmedDocument con ExpressionData
-
-		session.save(expresDataHasPubmedDocument);
-
-		}
-		
 
 
 	}

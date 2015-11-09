@@ -468,15 +468,13 @@ public class TarBase extends NewMirnaDatabase {
 		if (oldTranscript==null) {
 			session.save(transcript);
 			session.flush(); // to get the PK
-			System.out.println("Save transcript");
 		} else {
 			Transcript transcriptToUpdate = (Transcript) oldTranscript;
 			transcriptToUpdate.update(transcript);
 			session.update(transcriptToUpdate);
 			transcript = transcriptToUpdate;
-			System.out.println("Retrieve transcript");
 		}
-		
+
 		if (gene!=null) {
 			TranscriptHasGene transcripthasGene =
 					new TranscriptHasGene(transcript.getPk(), gene.getPk());
@@ -485,7 +483,7 @@ public class TarBase extends NewMirnaDatabase {
 					.add(Restrictions.eq("genePk", gene.getPk()))
 					.uniqueResult();
 			if (oldTranscripthasGene == null) {
-		        session.save(transcripthasGene);
+				session.save(transcripthasGene);
 			}
 		}
 
@@ -525,17 +523,19 @@ public class TarBase extends NewMirnaDatabase {
 					session.update(proteinToUpdate);
 					protein = proteinToUpdate;
 				}
+
+
+				//Relaciona transcript con protein
+				TranscriptProducesProtein transcriptProtein = new TranscriptProducesProtein(transcript.getPk(), protein.getPk());	
+				Object transcriptProducesProtein = session.createCriteria(TranscriptProducesProtein.class)
+						.add( Restrictions.eq("transcript_pk", transcript.getPk()) )
+						.add( Restrictions.eq("protein_pk", protein.getPk()) )
+						.uniqueResult();
+				if (transcriptProducesProtein==null) {
+					session.save(transcriptProtein);
+				}
 			}
 
-			//Relaciona transcript con protein
-			TranscriptProducesProtein transcriptProtein = new TranscriptProducesProtein(transcript.getPk(), protein.getPk());	
-			Object transcriptProducesProtein = session.createCriteria(TranscriptProducesProtein.class)
-					.add( Restrictions.eq("transcript_pk", transcript.getPk()) )
-					.add( Restrictions.eq("protein_pk", protein.getPk()) )
-					.uniqueResult();
-			if (transcriptProducesProtein==null) {
-				session.save(transcriptProtein);
-			}
 		}
 
 		//Inserta nueva InteractionData (y la relaciona con lo que toque)
