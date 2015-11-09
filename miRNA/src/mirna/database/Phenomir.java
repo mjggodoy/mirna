@@ -172,9 +172,7 @@ public class Phenomir extends NewMirnaDatabase {
 		miRna.setAccessionNumber(accession);
 
 		if (!createdObject(mirna, accession)) { 
-
 			miRna = null;
-
 		}
 
 		Disease disease = new Disease();
@@ -182,7 +180,6 @@ public class Phenomir extends NewMirnaDatabase {
 		disease.setDiseaseClass(diseaseClass);
 
 		if (!createdObject(diseaseField, diseaseClass)) { 
-
 			disease = null;
 		}
 
@@ -195,14 +192,8 @@ public class Phenomir extends NewMirnaDatabase {
 		ed.setMethod(method);
 		ed.setProvenance("PhenomiR");
 
-		if (!createdObject(phenomicid, evidence, foldchangemin, foldchangemax, studyDesign, method)) { 
-
-			ed = null;
-		}
-
 		PubmedDocument pubmedDoc = new PubmedDocument();
 		pubmedDoc.setId(pmid);
-
 
 		// Inserta PubmedDocument (o recupera su id. si ya existe)
 		Object oldPubmedDoc = session.createCriteria(PubmedDocument.class)
@@ -218,9 +209,7 @@ public class Phenomir extends NewMirnaDatabase {
 			pubmedDoc = pubmedDocToUpdate;
 		}
 
-
 		if(miRna != null){
-
 			// Inserta MiRna (o recupera su id. si ya existe)
 			Object oldMiRna = session.createCriteria(MiRna.class)
 					.add( Restrictions.eq("name", miRna.getName()) )
@@ -249,39 +238,34 @@ public class Phenomir extends NewMirnaDatabase {
 		}
 
 		if(disease != null){
-		// Inserta Disease (o recupera su id. si ya existe)
-		Object oldDisease = session.createCriteria(Disease.class)
-				.add( Restrictions.eq("name", disease.getName()) )
-				.uniqueResult();
-		if (oldDisease==null) {
-			session.save(disease);
-			session.flush(); // to get the PK
-		} else {
-			Disease diseaseToUpdate = (Disease) oldDisease;
-			diseaseToUpdate.update(disease);
-			session.update(diseaseToUpdate);
-			disease = diseaseToUpdate;
-		}
+			// Inserta Disease (o recupera su id. si ya existe)
+			Object oldDisease = session.createCriteria(Disease.class)
+					.add( Restrictions.eq("name", disease.getName()) )
+					.uniqueResult();
+			if (oldDisease==null) {
+				session.save(disease);
+				session.flush(); // to get the PK
+			} else {
+				Disease diseaseToUpdate = (Disease) oldDisease;
+				diseaseToUpdate.update(disease);
+				session.update(diseaseToUpdate);
+				disease = diseaseToUpdate;
+			}
 		}
 
 		// Inserta nueva DataExpression
 		// (y la relaciona con el MiRna y Disease correspondiente)
-
-		if(ed != null){
 		ed.setMirnaPk(miRna.getPk());
 		ed.setDiseasePk(disease.getPk());
 		session.save(ed);
 		session.flush(); // to get the PK
 		// ExpressionData igual (?)
 
-
 		ExpressionDataHasPubmedDocument expresDataHasPubmedDocument =
 				new ExpressionDataHasPubmedDocument(ed.getPk(), pubmedDoc.getPk());
 
-
 		// Relaciona PubmedDocument con ExpressionData
 		session.save(expresDataHasPubmedDocument);
-		}
 
 	}
 
