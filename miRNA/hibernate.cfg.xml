@@ -46,6 +46,7 @@
   <mapping class="mirna.beans.nToM.MirnaHasSequence" />
   <mapping class="mirna.beans.nToM.MirnaInvolvesBiologicalProcess" />
   <mapping class="mirna.beans.nToM.SnpHasDisease" />
+  <mapping class="mirna.beans.nToM.SnpHasGene" />
   <mapping class="mirna.beans.nToM.TranscriptProducesProtein" />
   <mapping class="mirna.beans.nToM.SnpHasPubmedDocument" />
   <mapping class="mirna.beans.nToM.HairpinHasSequence" />
