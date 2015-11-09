@@ -115,11 +115,7 @@ public class Mir2Disease extends NewMirnaDatabase {
 		ed.setYear(year);
 		ed.setProvenance("miR2Disease");
 		
-		if (!createdObject(description, evidence, method, year)) { 
-
-			ed = null;
-
-		}
+		
 		
 
 		// Inserta MiRna (o recupera su id. si ya existe)
@@ -154,12 +150,11 @@ public class Mir2Disease extends NewMirnaDatabase {
 		// Inserta nueva DataExpression
 		// (y la relaciona con el MiRna y Disease correspondiente)
 		
-		if(ed != null){
 		ed.setMirnaPk(miRna.getPk());
 		ed.setDiseasePk(disease.getPk());
 		session.save(ed);
 		
-		}
+		
 		
 	}
 	
