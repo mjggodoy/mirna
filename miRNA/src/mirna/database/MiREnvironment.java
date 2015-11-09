@@ -104,53 +104,50 @@ public class MiREnvironment extends NewMirnaDatabase {
 	@Override
 	protected void processRow(Session session, ResultSet rs) throws Exception {
 
-		String id = rs.getString("mir");
-		String name = rs.getString("name");
-		String name2 = rs.getString("name2"); // He puesto el mirna
-		// espec�fico, �ste hace
-		// referencia al de su familia
-		String name3 = rs.getString("name3");// esta
-		// columna
-		// hace
-		// referencia
-		// al mirna
-		// del
-		// segundo
-		// nombre
-		String disease_name = rs.getString("disease").toLowerCase().trim();
+		String id = nullifyField(rs.getString("mir"));
+		String name = nullifyField(rs.getString("name"));
+		String name2 = nullifyField(rs.getString("name2")); 
+		String name3 = nullifyField(rs.getString("name3"));
+		String disease_name = nullifyField(rs.getString("disease").toLowerCase().trim());
 		String environmentalFactor_name = rs.getString("enviromentalFactor")
 				.toLowerCase().trim();
-		String treatment = rs.getString("treatment").toLowerCase().trim();
-		String cellularLine = rs.getString("cellularLine").toLowerCase().trim();
-		String specie_name = rs.getString("specie");
-		String description = rs.getString("description");
-		String pubmedId = rs.getString("pubmedId");
+		String treatment = nullifyField(rs.getString("treatment").toLowerCase().trim());
+		String cellularLine = nullifyField(rs.getString("cellularLine").toLowerCase().trim());
+		String specie_name = nullifyField(rs.getString("specie"));
+		String description = nullifyField(rs.getString("description"));
+		String pubmedId = nullifyField(rs.getString("pubmedId"));
 
 		MiRna miRna = new MiRna();
 
 		miRna.setName(name.trim());
 
-		if (miRna.getName().equals("n/a")) {
+		if (miRna.getName() == null) {
 			miRna.setName(name2.trim());
 		}
-		if (miRna.getName().equals("n/a")) {
+		if (miRna.getName() == null) {
 			miRna.setName(name3.trim());
 		}
 
-		Disease disease = null;
-		if (!"n/a".equals(disease_name)) {
-			disease = new Disease();
-			disease.setName(disease_name);
+		if (!createdObject(name3)) {
+			miRna = null;
+		}
+
+		Disease disease = new Disease();
+		disease.setName(disease_name);
+
+		if (!createdObject(disease_name)) {
+			disease = null;
 		}
 
 		EnvironmentalFactor environmentalFactor = new EnvironmentalFactor();
 		environmentalFactor.setName(environmentalFactor_name);
 
+		if (!createdObject(environmentalFactor_name)) {
+			environmentalFactor = null;
+		}
+
 		ExpressionData ed = new ExpressionData();
 		ed.setTreatment(treatment);
-		if (!"n/a".equals(cellularLine)) {
-			ed.setCellularLine(cellularLine);
-		}
 		ed.setDescription(description);
 		ed.setProvenanceId(id);
 		ed.setProvenance("miREnvironment");
@@ -163,10 +160,17 @@ public class MiREnvironment extends NewMirnaDatabase {
 			Organism organism = new Organism();
 			organism.setName(organismlist);
 			organismList.add(organism);
+			if (!createdObject(organismlist)) {
+				organism = null;
+			}
 		}
 
 		PubmedDocument pubmedDoc = new PubmedDocument();
 		pubmedDoc.setId(pubmedId);
+
+		if (!createdObject(pubmedId)) {
+			pubmedDoc = null;
+		}
 
 		// Inserta Disease (o recupera su id. si ya existe)
 		if (disease!=null) {
@@ -183,77 +187,88 @@ public class MiREnvironment extends NewMirnaDatabase {
 			}
 		}
 
-		// Inserta EnvironmentalFactor (o recupera su id. si ya existe)
-		Object oldEnvironmentalFactor = session
-				.createCriteria(EnvironmentalFactor.class)
-				.add(Restrictions.eq("name", environmentalFactor.getName()))
-				.uniqueResult();
-		if (oldEnvironmentalFactor == null) {
-			session.save(environmentalFactor);
-			session.flush(); // to get the PK
-		} else {
-			EnvironmentalFactor environmentalFactorToUpdate = (EnvironmentalFactor) oldEnvironmentalFactor;
-			environmentalFactorToUpdate.update(environmentalFactor);
-			session.update(environmentalFactorToUpdate);
-			environmentalFactor = environmentalFactorToUpdate;
-		}
+		if (environmentalFactor!=null) {
 
-		// Inserta MiRna (o recupera su id. si ya existe)
-		Object oldMiRna = session.createCriteria(MiRna.class)
-				.add(Restrictions.eq("name", miRna.getName())).uniqueResult();
-		if (oldMiRna == null) {
-			session.save(miRna);
-			session.flush(); // to get the PK
-		} else {
-			MiRna miRnaToUpdate = (MiRna) oldMiRna;
-			miRnaToUpdate.update(miRna);
-			session.update(miRnaToUpdate);
-			miRna = miRnaToUpdate;
-		}
-		
-		for (Organism organism : organismList) {
-			Object oldOrganism = session.createCriteria(Organism.class)
-					.add(Restrictions.eq("name", organism.getName()))
+			// Inserta EnvironmentalFactor (o recupera su id. si ya existe)
+			Object oldEnvironmentalFactor = session
+					.createCriteria(EnvironmentalFactor.class)
+					.add(Restrictions.eq("name", environmentalFactor.getName()))
 					.uniqueResult();
-			if (oldOrganism == null) {
-				session.save(organism);
+			if (oldEnvironmentalFactor == null) {
+				session.save(environmentalFactor);
 				session.flush(); // to get the PK
 			} else {
-				Organism organismToUpdate = (Organism) oldOrganism;
-				organismToUpdate.update(organism);
-				session.update(organismToUpdate);
-				organism = organismToUpdate;
+				EnvironmentalFactor environmentalFactorToUpdate = (EnvironmentalFactor) oldEnvironmentalFactor;
+				environmentalFactorToUpdate.update(environmentalFactor);
+				session.update(environmentalFactorToUpdate);
+				environmentalFactor = environmentalFactorToUpdate;
 			}
 
-			MirnaHasOrganism mirnaHasOrganism = new MirnaHasOrganism(miRna.getPk(),
-					organism.getPk());
+		}
+		if (miRna!=null) {
 
-			// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
-			Object oldmirnaHasOrganism = session
-					.createCriteria(MirnaHasOrganism.class)
-					.add(Restrictions.eq("mirna_pk", miRna.getPk()))
-					.add(Restrictions.eq("organism_pk", organism.getPk()))
-					.uniqueResult();
-			if (oldmirnaHasOrganism == null) {
-				session.save(mirnaHasOrganism);
+			// Inserta MiRna (o recupera su id. si ya existe)
+			Object oldMiRna = session.createCriteria(MiRna.class)
+					.add(Restrictions.eq("name", miRna.getName())).uniqueResult();
+			if (oldMiRna == null) {
+				session.save(miRna);
+				session.flush(); // to get the PK
+			} else {
+				MiRna miRnaToUpdate = (MiRna) oldMiRna;
+				miRnaToUpdate.update(miRna);
+				session.update(miRnaToUpdate);
+				miRna = miRnaToUpdate;
 			}
 		}
 
+		for (Organism organism : organismList) {
+			if(organism != null && miRna !=null){
+				Object oldOrganism = session.createCriteria(Organism.class)
+						.add(Restrictions.eq("name", organism.getName()))
+						.uniqueResult();
+				if (oldOrganism == null) {
+					session.save(organism);
+					session.flush(); // to get the PK
+				} else {
+					Organism organismToUpdate = (Organism) oldOrganism;
+					organismToUpdate.update(organism);
+					session.update(organismToUpdate);
+					organism = organismToUpdate;
+				}
+
+				MirnaHasOrganism mirnaHasOrganism = new MirnaHasOrganism(miRna.getPk(),
+						organism.getPk());
+
+				// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
+				Object oldmirnaHasOrganism = session
+						.createCriteria(MirnaHasOrganism.class)
+						.add(Restrictions.eq("mirna_pk", miRna.getPk()))
+						.add(Restrictions.eq("organism_pk", organism.getPk()))
+						.uniqueResult();
+				if (oldmirnaHasOrganism == null) {
+					session.save(mirnaHasOrganism);
+				}
+			}
+		}
 		// Inserta PubmedDocument (o recupera su id. si ya existe)
 
-		Object oldPubmedDoc = session.createCriteria(PubmedDocument.class)
-				.add(Restrictions.eq("id", pubmedDoc.getId())).uniqueResult();
-		if (oldPubmedDoc == null) {
-			session.save(pubmedDoc);
-			session.flush(); // to get the PK
-			// System.out.println("Save Pubmed document");
+		if(pubmedDoc != null){
 
-		} else {
-			PubmedDocument pubmedDocToUpdate = (PubmedDocument) oldPubmedDoc;
-			pubmedDocToUpdate.update(pubmedDoc);
-			session.update(pubmedDocToUpdate);
-			pubmedDoc = pubmedDocToUpdate;
-			// System.out.println("Updated Pubmed document");
+			Object oldPubmedDoc = session.createCriteria(PubmedDocument.class)
+					.add(Restrictions.eq("id", pubmedDoc.getId())).uniqueResult();
+			if (oldPubmedDoc == null) {
+				session.save(pubmedDoc);
+				session.flush(); // to get the PK
+				// System.out.println("Save Pubmed document");
+
+			} else {
+				PubmedDocument pubmedDocToUpdate = (PubmedDocument) oldPubmedDoc;
+				pubmedDocToUpdate.update(pubmedDoc);
+				session.update(pubmedDocToUpdate);
+				pubmedDoc = pubmedDocToUpdate;
+				// System.out.println("Updated Pubmed document");
+			}
+
 		}
 
 		// Inserta nueva DataExpression
@@ -261,18 +276,15 @@ public class MiREnvironment extends NewMirnaDatabase {
 
 		// y con enviromentalFactor
 
-		ed.setMirnaPk(miRna.getPk());
+		if (miRna!=null) ed.setMirnaPk(miRna.getPk());
 		if (disease!=null) ed.setDiseasePk(disease.getPk());
-		ed.setEnvironmentalFactorPk(environmentalFactor.getPk());
+		if (ed!=null) ed.setEnvironmentalFactorPk(environmentalFactor.getPk());
 		session.save(ed);
 
+		if(miRna != null && pubmedDoc != null){
 		// Relaciona miRNa con Document.
 		MirnaHasPubmedDocument mirnaHasPubmedDocument = new MirnaHasPubmedDocument(
 				miRna.getPk(), pubmedDoc.getPk());
-
-		// Relaciona miRNa con ExpressionData.
-		ExpressionDataHasPubmedDocument expresDataHasPubmedDocument = new ExpressionDataHasPubmedDocument(
-				ed.getPk(), pubmedDoc.getPk());
 
 		// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
 		Object oldMirnaHasPubmedDocument = session
@@ -283,11 +295,24 @@ public class MiREnvironment extends NewMirnaDatabase {
 		if (oldMirnaHasPubmedDocument == null) {
 			session.save(mirnaHasPubmedDocument);
 		}
+		}
+		
+		if(pubmedDoc != null){
+
+		// Relaciona miRNa con ExpressionData.
+		ExpressionDataHasPubmedDocument expresDataHasPubmedDocument = new ExpressionDataHasPubmedDocument(
+				ed.getPk(), pubmedDoc.getPk());
 
 		// Relaciona PubmedDocument con ExpressionData
 		session.save(expresDataHasPubmedDocument);
-
+		}
 	}
+
+
+	private String nullifyField(String field) {
+		return "".equals(field.trim()) || "n_a".equals(field.trim()) || "NULL".equals(field.trim()) || "n/a".equals(field.trim()) ? null : field.trim();
+	}
+
 
 	public static void main(String[] args) throws Exception {
 

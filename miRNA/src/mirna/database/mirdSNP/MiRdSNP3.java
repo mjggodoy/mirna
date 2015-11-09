@@ -22,6 +22,7 @@ import mirna.beans.SNP;
 import mirna.beans.Target;
 import mirna.beans.Transcript;
 import mirna.beans.nToM.SnpHasDisease;
+import mirna.beans.nToM.SnpHasGene;
 import mirna.beans.nToM.TranscriptHasGene;
 import mirna.database.NewMirnaDatabase;
 import mirna.exception.MiRnaException;
@@ -224,7 +225,6 @@ public class MiRdSNP3 extends NewMirnaDatabase {
 			mirna = mirnaToUpdate;
 		}
 
-		snp.setGene_pk(gene.getPk());		
 		Object oldSnp = session.createCriteria(SNP.class)
 				.add( Restrictions.eq("snp_id", snp.getSnp_id()))
 				.uniqueResult();
@@ -236,6 +236,15 @@ public class MiRdSNP3 extends NewMirnaDatabase {
 			snpToUpdate.update(snp);
 			session.update(snpToUpdate);
 			snp = snpToUpdate;
+		}
+		
+		SnpHasGene snpHasGene = new SnpHasGene(snp.getPk(), gene.getPk());
+		Object oldSnphasGene = session.createCriteria(SnpHasDisease.class)
+				.add( Restrictions.eq("snpPk", snp.getPk()) )
+				.add( Restrictions.eq("genePk", gene.getPk()) )
+				.uniqueResult();
+		if (oldSnphasGene==null) {
+			session.save(snpHasGene);
 		}
 
 		target.setTranscript_pk(transcript.getPk());
