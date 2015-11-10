@@ -11,9 +11,11 @@ import java.sql.Statement;
 
 import mirna.beans.Disease;
 import mirna.beans.ExpressionData;
+import mirna.beans.Hairpin;
 import mirna.beans.MiRna;
 import mirna.beans.PubmedDocument;
 import mirna.beans.nToM.ExpressionDataHasPubmedDocument;
+import mirna.beans.nToM.MirnaHasHairpin;
 import mirna.beans.nToM.MirnaHasPubmedDocument;
 import mirna.exception.MiRnaException;
 
@@ -169,10 +171,17 @@ public class Phenomir extends NewMirnaDatabase {
 
 		MiRna miRna = new MiRna();
 		miRna.setName(mirna);
-		miRna.setAccessionNumber(accession);
+		//miRna.setAccessionNumber(accession);
 
-		if (!createdObject(mirna, accession)) { 
+		if (!createdObject(mirna)) { 
 			miRna = null;
+		}
+		
+		// TODOS LOS ACESSIONS SON DE HAIRPINS
+		Hairpin hairpin = new Hairpin();
+		hairpin.setAccession_number(accession);
+		if (!createdObject(accession)) { 
+			hairpin = null;
 		}
 
 		Disease disease = new Disease();
@@ -235,6 +244,15 @@ public class Phenomir extends NewMirnaDatabase {
 			if (oldMirnaHasPubmedDocument==null) {
 				session.save(mirnaHasPubmedDocument);
 			}
+			
+			if (hairpin!=null) {
+				session.save(mirnaHasPubmedDocument);
+				session.flush();
+				
+				MirnaHasHairpin mhh = new MirnaHasHairpin(miRna.getPk(), hairpin.getPk());
+				session.save(mhh);
+			}
+			
 		}
 
 		if(disease != null){

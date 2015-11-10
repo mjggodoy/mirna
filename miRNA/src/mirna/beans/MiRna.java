@@ -16,8 +16,8 @@ public class MiRna extends ModelClass {
 	@Column(name = "name", nullable = false, length = 80, unique = true)
 	protected String name;
 	
-	@Column(name = "accession_number", nullable = true, length = 100)
-	private String accessionNumber;
+//	@Column(name = "accession_number", nullable = true, length = 100)
+//	private String accessionNumber;
 	
 	@Column(name = "resource", nullable = true, length = 45)
 	private String resource;
@@ -39,13 +39,13 @@ public class MiRna extends ModelClass {
 		this.name = name;
 	}
 
-	public String getAccessionNumber() {
-		return accessionNumber;
-	}
-
-	public void setAccessionNumber(String accessionNumber) {
-		this.accessionNumber = accessionNumber;
-	}
+//	public String getAccessionNumber() {
+//		return accessionNumber;
+//	}
+//
+//	public void setAccessionNumber(String accessionNumber) {
+//		this.accessionNumber = accessionNumber;
+//	}
 
 	public String getResource() {
 		return resource;
@@ -67,10 +67,10 @@ public class MiRna extends ModelClass {
 				return -1;
 			}
 		}
-		if (this.accessionNumber!=null) {
-			if (mirna.getAccessionNumber()==null) res++;
-			else if (!this.accessionNumber.equals(mirna.getAccessionNumber())) return -1;
-		}
+//		if (this.accessionNumber!=null) {
+//			if (mirna.getAccessionNumber()==null) res++;
+//			else if (!this.accessionNumber.equals(mirna.getAccessionNumber())) return -1;
+//		}
 		if (this.resource!=null) {
 			if (mirna.getResource()==null) res++;
 			else if (!this.resource.equals(mirna.getResource())) return -1;
@@ -92,7 +92,7 @@ public class MiRna extends ModelClass {
 		
 		if (mirna.getPk()!=null) this.pk = mirna.getPk();
 		if (mirna.getName()!=null) this.name = mirna.getName();
-		if (mirna.getAccessionNumber()!=null) this.accessionNumber = mirna.getAccessionNumber();
+//		if (mirna.getAccessionNumber()!=null) this.accessionNumber = mirna.getAccessionNumber();
 		if (mirna.getResource()!=null) this.resource = mirna.getResource();
 //		if (mirna.getMaturePk()!=null) this.maturePk = mirna.getMaturePk();
 		
@@ -100,7 +100,7 @@ public class MiRna extends ModelClass {
 
 	@Override
 	public String toString() {
-		return "MiRna [name=" + name + ", accessionNumber=" + accessionNumber
+		return "MiRna [name=" + name //+ ", accessionNumber=" + accessionNumber
 				+ ", resource=" + resource
 //				+ ", maturePk=" + maturePk
 				+ ", pk=" + pk + "]";
