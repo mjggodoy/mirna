@@ -55,7 +55,7 @@ public class Disease extends ModelClass {
 		}
 		if (this.name!=null) {
 			if (disease.getName()==null) res++; 
-			else if (!this.name.equals(disease.getName())) return -1;
+			else if (!this.name.toLowerCase().equals(disease.getName().toLowerCase())) return -1;
 		}
 		if (this.diseaseClass != null){
 			if (disease.getDiseaseClass()==null) res++;
@@ -73,7 +73,6 @@ public class Disease extends ModelClass {
 			if (this.checkConflict(disease)==-1) throw new ConflictException(this, disease);
 		}
 		if (disease.getPk()!=null) this.pk = disease.getPk();
-		if (disease.getName()!=null) this.name = disease.getName();
 		if (disease.getDiseaseClass()!=null) this.diseaseClass = disease.getDiseaseClass();
 	}
 

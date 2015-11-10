@@ -94,7 +94,6 @@ public class Mir2Disease extends NewMirnaDatabase {
 	@Override
 	protected void processRow(Session session, ResultSet rs) throws Exception {
 		
-		
 		String mirna = nullifyField(rs.getString("mirna").trim());
 		String diseaseField = nullifyField(rs.getString("disease").trim());
 		String evidence = nullifyField(rs.getString("expression").trim());
@@ -114,9 +113,6 @@ public class Mir2Disease extends NewMirnaDatabase {
 		ed.setMethod(method);
 		ed.setYear(year);
 		ed.setProvenance("miR2Disease");
-		
-		
-		
 
 		// Inserta MiRna (o recupera su id. si ya existe)
 		Object oldMiRna = session.createCriteria(MiRna.class)
@@ -149,13 +145,9 @@ public class Mir2Disease extends NewMirnaDatabase {
 		
 		// Inserta nueva DataExpression
 		// (y la relaciona con el MiRna y Disease correspondiente)
-		
 		ed.setMirnaPk(miRna.getPk());
 		ed.setDiseasePk(disease.getPk());
 		session.save(ed);
-		
-		
-		
 	}
 	
 	public String specificFileFix(String csvInputFile) throws IOException {
