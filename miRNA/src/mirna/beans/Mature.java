@@ -1,11 +1,11 @@
 package mirna.beans;
 
 import javax.persistence.Column;
-
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
+
 import mirna.exception.ConflictException;
 
 
@@ -18,6 +18,9 @@ public class Mature extends ModelClass {
 	@Column(name = "proportion", nullable = true, length = 80, unique = true)
 	protected String proportion;
 	
+	@Column(name = "accession_number", nullable = true)
+	private String accession_number;
+	
 	public Mature() { }
 
 	
@@ -29,6 +32,15 @@ public class Mature extends ModelClass {
 		this.proportion = proportion;
 	}
 
+
+	public String getAccession_number() {
+		return accession_number;
+	}
+
+
+	public void setAccession_number(String accession_number) {
+		this.accession_number = accession_number;
+	}
 
 
 	public int checkConflict(Mature mature) {
@@ -44,6 +56,14 @@ public class Mature extends ModelClass {
 			}
 		}
 		
+		if (this.accession_number!=null) {
+			if (mature.getAccession_number()==null) res++;
+			else if (!this.accession_number.equals(mature.getAccession_number())) {
+				return -1;
+			}
+		}
+		
+		
 		
 		return res;
 	}
@@ -58,13 +78,18 @@ public class Mature extends ModelClass {
 		}
 		if (mature.getPk()!=null) this.pk = mature.getPk();
 		if (mature.getProportion()!=null) this.proportion = mature.getProportion();
+		if (mature.getAccession_number()!=null) this.accession_number = mature.getAccession_number();
+
 	}
 
 
 	@Override
 	public String toString() {
-		return "Mature [proportion=" + proportion + 
-				", pk=" + pk + "]";
+		return "Mature [proportion=" + proportion + ", accession_number="
+				+ accession_number + ", pk=" + pk + "]";
 	}
+
+
+	
 		
 }
