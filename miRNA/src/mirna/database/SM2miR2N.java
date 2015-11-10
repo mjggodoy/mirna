@@ -19,7 +19,6 @@ import mirna.beans.Organism;
 import mirna.beans.PubmedDocument;
 import mirna.beans.SmallMolecule;
 import mirna.beans.nToM.ExpressionDataHasPubmedDocument;
-import mirna.beans.nToM.MirnaHasHairpin;
 import mirna.beans.nToM.MirnaHasMature;
 import mirna.beans.nToM.MirnaHasOrganism;
 import mirna.beans.nToM.MirnaHasPubmedDocument;
@@ -122,7 +121,7 @@ public class SM2miR2N extends NewMirnaDatabase {
 	protected void processRow(Session session, ResultSet rs) throws Exception {
 
 		String name = nullifyField(rs.getString("mirna"));
-		String mirbase =  nullifyField(rs.getString("mirbase"));
+		String mirbase =  nullifyField(rs.getString("mirbase").toLowerCase().trim());
 		String small_molecule = nullifyField(rs.getString("small_molecule").toLowerCase().trim());
 		String fda = nullifyField(rs.getString("fda").toLowerCase().trim());
 		String db = nullifyField(rs.getString("db").toLowerCase().trim());
@@ -138,22 +137,17 @@ public class SM2miR2N extends NewMirnaDatabase {
 
 		Mature mature = new Mature();
 		mature.setAccession_number(mirbase);
-		if (!createdObject(mirbase)) { 
+		if ((mirbase==null) || (!mirbase.startsWith("mimat"))) { 
 			mature = null;
 		}
 
 		Organism organism = new Organism();
 		organism.setName(specie.trim());
-
-
 		if (!createdObject(specie)) { 
-
 			organism = null;
-
 		}
 
 		MiRna miRna = new MiRna();
-
 
 		if (organism.getName().equals("Populus trichocarpa")){
 
@@ -199,9 +193,7 @@ public class SM2miR2N extends NewMirnaDatabase {
 		}
 
 		if (!createdObject(name)) { 
-
 			miRna = null;
-
 		}
 
 		SmallMolecule smallmolecule = new SmallMolecule();
@@ -210,21 +202,14 @@ public class SM2miR2N extends NewMirnaDatabase {
 		smallmolecule.setDb(db);
 
 		if (!createdObject(fda, cid, db)) { 
-
 			smallmolecule = null;
-
 		}
-
 
 		EnvironmentalFactor ef = new EnvironmentalFactor();
 		ef.setName(small_molecule);
-
 		if (!createdObject(small_molecule)) { 
-
 			ef = null;
-
 		}
-
 
 		ExpressionData ed = new ExpressionData();
 		ed.setCondition(condition);
@@ -237,20 +222,14 @@ public class SM2miR2N extends NewMirnaDatabase {
 
 		PubmedDocument pubmedDoc = new PubmedDocument();
 		pubmedDoc.setId(pmid);
-
-
 		if (!createdObject(pmid)) { 
-
 			pubmedDoc = null;
-
 		}
 
 		// Inserta Organism (o recupera su id. si ya existe)
 		// Relaciona mirna y organism
 
 		// Inserta MiRna (o recupera su id. si ya existe)
-
-
 		Object oldMiRna = session.createCriteria(MiRna.class)
 				.add(Restrictions.eq("name", miRna.getName()) )
 				.uniqueResult();
@@ -263,7 +242,6 @@ public class SM2miR2N extends NewMirnaDatabase {
 			session.update(miRnaToUpdate);
 			miRna = miRnaToUpdate;
 		}
-
 
 		if(organism != null){
 			Object oldOrganism = session.createCriteria(Organism.class)
@@ -284,7 +262,6 @@ public class SM2miR2N extends NewMirnaDatabase {
 			MirnaHasOrganism mirnaHasOrganism = 
 					new MirnaHasOrganism(miRna.getPk(), organism.getPk());
 
-
 			// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
 			Object oldmirnaHasOrganism = session.createCriteria(MirnaHasOrganism.class)
 					.add( Restrictions.eq("mirna_pk", miRna.getPk()) )
@@ -292,17 +269,10 @@ public class SM2miR2N extends NewMirnaDatabase {
 					.uniqueResult();
 			if (oldmirnaHasOrganism==null) {
 				session.save(mirnaHasOrganism);
-
-
-
 			}	
 		}
 
-
-
 		// Inserta EnvironmentalFactor (o recupera su id. si ya existe)
-
-
 		if(ef !=null){
 
 			Object oldEf = session.createCriteria(EnvironmentalFactor.class)
@@ -364,14 +334,9 @@ public class SM2miR2N extends NewMirnaDatabase {
 					session.save(mirnaHasPubmedDocument);
 				}
 
-				
-
 				if (mature!=null) {
-					
 					session.save(mature);
 					session.flush();
-
-
 					MirnaHasMature mhm = new MirnaHasMature(miRna.getPk(), mature.getPk());
 					session.save(mhm);
 				}
