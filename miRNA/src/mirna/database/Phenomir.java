@@ -246,7 +246,7 @@ public class Phenomir extends NewMirnaDatabase {
 			}
 			
 			if (hairpin!=null) {
-				session.save(mirnaHasPubmedDocument);
+				session.save(hairpin);
 				session.flush();
 				
 				MirnaHasHairpin mhh = new MirnaHasHairpin(miRna.getPk(), hairpin.getPk());
