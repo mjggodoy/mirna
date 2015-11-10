@@ -148,14 +148,12 @@ public class PlantMirnaStemLoop extends NewMirnaDatabase {
 			miRnaToUpdate.update(miRNA);
 			session.update(miRnaToUpdate);
 			miRNA = miRnaToUpdate;
-			System.out.println("Mirna " + miRNA.getName());
 		}
 
 		Object oldSequence = session.createCriteria(Sequence.class)
 				.add( Restrictions.eq("sequence", sequence.getSequence()) )
 				.uniqueResult();
 		if (oldSequence==null) {
-			//System.out.println("LENGTH = " + sequence.getSequence().length());
 			session.save(sequence);
 			session.flush();  // to get the PK
 		} else {
@@ -163,10 +161,9 @@ public class PlantMirnaStemLoop extends NewMirnaDatabase {
 			sequenceToUpdate.update(sequence);
 			session.update(sequenceToUpdate);
 			sequence = sequenceToUpdate;
-			System.out.println(sequence);
 		}
 
-		
+
 		MirnaHasOrganism mirnaHasOrganism = 
 				new MirnaHasOrganism(miRNA.getPk(), organism.getPk());
 
@@ -211,9 +208,6 @@ public class PlantMirnaStemLoop extends NewMirnaDatabase {
 			session.save(mirnaHasHairpin);
 
 		}
-
-
-
 
 	}
 
