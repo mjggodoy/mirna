@@ -423,6 +423,8 @@ public class VirmiRNA1 extends NewMirnaDatabase{
 
 	public static void main(String[] args) throws Exception {
 
+		VirmiRNA1 virmirRNA1 = new VirmiRNA1();
+		virmirRNA1.insertIntoSQLModel();
 
 
 	}

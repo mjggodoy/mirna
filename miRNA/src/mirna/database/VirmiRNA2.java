@@ -486,5 +486,12 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 	private String nullifyField(String field) {
 		return "".equals(field.trim()) || "na".equals(field.trim()) || "NA".equals(field.trim()) ? null : field.trim();
 	}
+	
+	public static void main(String[] args) throws Exception {
+		
+		VirmiRNA2 virmirRNA2 = new VirmiRNA2();
+		virmirRNA2.insertIntoSQLModel();
+		
+	}
 
 }
