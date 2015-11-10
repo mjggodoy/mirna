@@ -220,12 +220,6 @@ public class PlantMirnaStemLoop extends NewMirnaDatabase {
 	public static void main(String[] args) throws Exception {
 
 		PlantMirnaStemLoop plant = new PlantMirnaStemLoop();
-
-		// /* 1. meter datos en mirna_raw */
-		// String inputFile = "/Users/esteban/Softw/miRNA/plant_mirna/all_stem_loop.txt";
-		// plant.insertInTable(inputFile);
-
-		/* 2. meter datos en mirna */
 		plant.insertIntoSQLModel();
 
 	}

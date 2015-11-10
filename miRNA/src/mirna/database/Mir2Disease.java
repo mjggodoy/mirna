@@ -113,7 +113,7 @@ public class Mir2Disease extends NewMirnaDatabase {
 		ed.setMethod(method);
 		ed.setYear(year);
 		ed.setProvenance("miR2Disease");
-
+		
 		// Inserta MiRna (o recupera su id. si ya existe)
 		Object oldMiRna = session.createCriteria(MiRna.class)
 				.add( Restrictions.eq("name", miRna.getName()) )
