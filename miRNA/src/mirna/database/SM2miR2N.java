@@ -164,17 +164,26 @@ public class SM2miR2N extends NewMirnaDatabase {
 		}else if (organism.getName().equals("Heifer")){
 
 			miRna.setName("bta"+"-"+name.trim());
+			System.out.println(miRna.getName());
 
 		}else if (organism.getName().equals("Physcomitrella patens")){ 	
 
 			miRna.setName("ppt"+"-"+name.trim());
+			System.out.println(miRna.getName());
 
 		}else if (organism.getName().equals("Gossypium hirsutum")){ 	
 
 			miRna.setName("ghr"+"-"+name.trim());
+			System.out.println(miRna.getName());
 
-		}else if (!organism.getName().equals("Chinese yew") 
-				|| !organism.getName().equals("Solanum")){
+		}else if(organism.getName().equals("Chinese yew") || 
+				organism.getName().equals("Solanum") ){
+			
+			miRna.setName(name);
+			System.out.println(miRna.getName());
+		
+		}else{
+			
 			String[] tokens = StringUtils.splitPreserveAllTokens(organism.getName(), " ");
 			String genus = tokens[0];
 			String specie_name = tokens[1];
@@ -184,18 +193,15 @@ public class SM2miR2N extends NewMirnaDatabase {
 			//System.out.println(substring_genus + substring_specie_name);
 			String name_organism = substring_genus + substring_specie_name;
 			miRna.setName(name_organism+"-"+ name.trim());
-			//System.out.println(miRna.getName());
-
-		}else{
-
-			miRna.setName(name);
+			System.out.println(miRna.getName());
 
 		}
 
 		if (!createdObject(name)) { 
 			miRna = null;
 		}
-
+		
+	
 		SmallMolecule smallmolecule = new SmallMolecule();
 		smallmolecule.setFda(fda);
 		smallmolecule.setCid(cid);
