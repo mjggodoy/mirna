@@ -164,23 +164,19 @@ public class SM2miR2N extends NewMirnaDatabase {
 		}else if (organism.getName().equals("Heifer")){
 
 			miRna.setName("bta"+"-"+name.trim());
-			System.out.println(miRna.getName());
 
 		}else if (organism.getName().equals("Physcomitrella patens")){ 	
 
 			miRna.setName("ppt"+"-"+name.trim());
-			System.out.println(miRna.getName());
 
 		}else if (organism.getName().equals("Gossypium hirsutum")){ 	
 
 			miRna.setName("ghr"+"-"+name.trim());
-			System.out.println(miRna.getName());
 
 		}else if(organism.getName().equals("Chinese yew") || 
 				organism.getName().equals("Solanum") ){
 			
 			miRna.setName(name);
-			System.out.println(miRna.getName());
 		
 		}else{
 			
@@ -193,7 +189,6 @@ public class SM2miR2N extends NewMirnaDatabase {
 			//System.out.println(substring_genus + substring_specie_name);
 			String name_organism = substring_genus + substring_specie_name;
 			miRna.setName(name_organism+"-"+ name.trim());
-			System.out.println(miRna.getName());
 
 		}
 
@@ -295,14 +290,14 @@ public class SM2miR2N extends NewMirnaDatabase {
 			}
 		}
 		// Inserta smallmolecule (o recupera su id. si ya existe)
-		smallmolecule.setEnvironmental_factor_pk(ef.getPk());
+		if(ef != null) smallmolecule.setEnvironmental_factor_pk(ef.getPk());
 		session.save(smallmolecule);
 
 		// Inserta nueva DataExpression
 		// (y la relaciona con el MiRna y SmallMolecule)
 
-		ed.setMirnaPk(miRna.getPk());
-		ed.setEnvironmentalFactorPk(ef.getPk()); 
+		if(miRna != null) ed.setMirnaPk(miRna.getPk());
+		if(ef != null) ed.setEnvironmentalFactorPk(ef.getPk()); 
 		session.save(ed);	
 
 
