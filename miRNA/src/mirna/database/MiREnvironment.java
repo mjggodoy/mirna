@@ -117,16 +117,209 @@ public class MiREnvironment extends NewMirnaDatabase {
 		String description = nullifyField(rs.getString("description"));
 		String pubmedId = nullifyField(rs.getString("pubmedId"));
 
-		MiRna miRna = new MiRna();
+		Organism organism = new Organism();
 
+		String[] organismTokens = StringUtils.splitPreserveAllTokens(specie_name, ";");
+		List<Organism> organismList = new ArrayList<Organism>();
+
+		for (String organismlist : organismTokens) {
+
+			organism.setName(organismlist);
+			organismList.add(organism);
+			if (!createdObject(organismlist)) {
+				organism = null;
+			}
+		}
+
+
+		MiRna miRna = new MiRna();
 		miRna.setName(name.trim());
 
 		if (miRna.getName() == null) {
-			miRna.setName(name2.trim());
+
+			if (organism.getName().equals("Human")){
+
+				miRna.setName("hsa"+"-"+name2.trim());
+
+			}else if (organism.getName().equals("Mouse")){
+
+				miRna.setName("mmu"+"-"+name2.trim());
+
+			}else if (organism.getName().equals("Rat")){
+
+				miRna.setName("rno"+"-"+name2.trim());
+
+			}else if(organism.getName().equals("C.elegans")){
+
+				miRna.setName("cel"+"-"+name2.trim());
+
+			}else if(organism.getName().equals("Chicken")){
+
+				miRna.setName("gga"+"-"+name2.trim());
+
+			}else if(organism.getName().equals("Chimpanzee")){
+
+				miRna.setName("ptr"+"-"+name2.trim());
+
+			}else if(organism.getName().equals("Dog")){
+
+				miRna.setName("cfa"+"-"+name2.trim());
+
+			}else if(organism.getName().equals("Cow")){
+
+				miRna.setName("bta"+"-"+name2.trim());
+
+			}else if(organism.getName().equals("Human;Mouse")){
+
+
+				for (String organismlist : organismTokens) {
+
+					if(organismlist.equals("Human")){
+
+						miRna.setName("hsa"+"-"+name2.trim());
+
+					}else if(organismlist.equals("Mouse")){
+
+						miRna.setName("mmu"+"-"+name2.trim());
+
+					}
+				}
+
+			}else if(organism.getName().equals("Pig")){
+
+				miRna.setName("ssc"+"-"+name2.trim());
+
+			}else if(organism.getName().equals("Zebrafish")){
+
+				miRna.setName("dre"+"-"+name2.trim());
+
+			}else if(organism.getName().equals("rice")){
+
+				miRna.setName("osa"+"-"+name2.trim());
+
+
+			}else if(organism.getName().equals("Cotton")){
+
+				miRna.setName("gra"+"-"+name2.trim());
+
+			}else if(organism.getName().equals("Maize")){
+
+				miRna.setName("zma"+"-"+name2.trim());
+
+			}else if(organism.getName().equals("Chlamydomonas reinhardtii")){
+
+				miRna.setName("cre"+"-"+name2.trim());
+
+			}else if(organism.getName().equals("Arabidopsis thaliana")){
+
+				miRna.setName("ath"+"-"+name2.trim());
+
+			}else if(organism.getName().equals("grapevine")){
+
+				miRna.setName("vvi"+"-"+name2.trim());
+
+			}else{
+
+				miRna.setName(name2.trim());
+
+			}
 		}
+
+
 		if (miRna.getName() == null) {
-			miRna.setName(name3.trim());
-		}
+
+			if (miRna.getName() == null) {
+
+				if (organism.getName().equals("Human")){
+
+					miRna.setName("hsa"+"-"+name3.trim());
+
+				}else if (organism.getName().equals("Mouse")){
+
+					miRna.setName("mmu"+"-"+name3.trim());
+
+				}else if (organism.getName().equals("Rat")){
+
+					miRna.setName("rno"+"-"+name3.trim());
+
+				}else if(organism.getName().equals("C.elegans")){
+
+					miRna.setName("cel"+"-"+name3.trim());
+
+				}else if(organism.getName().equals("Chicken")){
+
+					miRna.setName("gga"+"-"+name3.trim());
+
+				}else if(organism.getName().equals("Chimpanzee")){
+
+					miRna.setName("ptr"+"-"+name3.trim());
+
+				}else if(organism.getName().equals("Dog")){
+
+					miRna.setName("cfa"+"-"+name3.trim());
+
+				}else if(organism.getName().equals("Cow")){
+
+					miRna.setName("bta"+"-"+name3.trim());
+
+				}else if(organism.getName().equals("Human;Mouse")){
+
+
+					for (String organismlist : organismTokens) {
+
+						if(organismlist.equals("Human")){
+
+							miRna.setName("hsa"+"-"+name3.trim());
+
+						}else if(organismlist.equals("Mouse")){
+
+							miRna.setName("mmu"+"-"+name3.trim());
+
+						}
+					}
+
+				}else if(organism.getName().equals("Pig")){
+
+					miRna.setName("ssc"+"-"+name3.trim());
+
+				}else if(organism.getName().equals("Zebrafish")){
+
+					miRna.setName("dre"+"-"+name3.trim());
+
+				}else if(organism.getName().equals("rice")){
+
+					miRna.setName("osa"+"-"+name3.trim());
+
+
+				}else if(organism.getName().equals("Cotton")){
+
+					miRna.setName("gra"+"-"+name3.trim());
+
+				}else if(organism.getName().equals("Maize")){
+
+					miRna.setName("zma"+"-"+name3.trim());
+
+				}else if(organism.getName().equals("Chlamydomonas reinhardtii")){
+
+					miRna.setName("cre"+"-"+name3.trim());
+
+				}else if(organism.getName().equals("Arabidopsis thaliana")){
+
+					miRna.setName("ath"+"-"+name3.trim());
+
+				}else if(organism.getName().equals("grapevine")){
+
+					miRna.setName("vvi"+"-"+name3.trim());
+
+				}else{
+
+					miRna.setName(name3.trim());
+
+				}
+
+			}
+		}	
+
 
 		if (!createdObject(name3)) {
 			miRna = null;
@@ -148,22 +341,10 @@ public class MiREnvironment extends NewMirnaDatabase {
 
 		ExpressionData ed = new ExpressionData();
 		ed.setTreatment(treatment);
-		ed.setDescription(description);
 		ed.setProvenanceId(id);
+		ed.setDescription(description);
+		ed.setProvenanceId(cellularLine);
 		ed.setProvenance("miREnvironment");
-
-		String[] organismTokens = StringUtils.splitPreserveAllTokens(specie_name, ",");
-		List<Organism> organismList = new ArrayList<Organism>();
-
-		for (String organismlist : organismTokens) {
-
-			Organism organism = new Organism();
-			organism.setName(organismlist);
-			organismList.add(organism);
-			if (!createdObject(organismlist)) {
-				organism = null;
-			}
-		}
 
 		PubmedDocument pubmedDoc = new PubmedDocument();
 		pubmedDoc.setId(pubmedId);
@@ -205,6 +386,7 @@ public class MiREnvironment extends NewMirnaDatabase {
 			}
 
 		}
+
 		if (miRna!=null) {
 
 			// Inserta MiRna (o recupera su id. si ya existe)
@@ -221,32 +403,36 @@ public class MiREnvironment extends NewMirnaDatabase {
 			}
 		}
 
-		for (Organism organism : organismList) {
-			if(organism != null && miRna !=null){
+		for (Organism organism2 : organismList) {
+			if(organism2 != null){
 				Object oldOrganism = session.createCriteria(Organism.class)
-						.add(Restrictions.eq("name", organism.getName()))
+						.add(Restrictions.eq("name", organism2.getName()))
 						.uniqueResult();
 				if (oldOrganism == null) {
-					session.save(organism);
+					session.save(organism2);
 					session.flush(); // to get the PK
 				} else {
 					Organism organismToUpdate = (Organism) oldOrganism;
-					organismToUpdate.update(organism);
+					organismToUpdate.update(organism2);
 					session.update(organismToUpdate);
-					organism = organismToUpdate;
+					organism2 = organismToUpdate;
 				}
 
-				MirnaHasOrganism mirnaHasOrganism = new MirnaHasOrganism(miRna.getPk(),
-						organism.getPk());
+				if(miRna != null){
 
-				// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
-				Object oldmirnaHasOrganism = session
-						.createCriteria(MirnaHasOrganism.class)
-						.add(Restrictions.eq("mirna_pk", miRna.getPk()))
-						.add(Restrictions.eq("organism_pk", organism.getPk()))
-						.uniqueResult();
-				if (oldmirnaHasOrganism == null) {
-					session.save(mirnaHasOrganism);
+					MirnaHasOrganism mirnaHasOrganism = new MirnaHasOrganism(miRna.getPk(),
+							organism2.getPk());
+
+					// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
+					Object oldmirnaHasOrganism = session
+							.createCriteria(MirnaHasOrganism.class)
+							.add(Restrictions.eq("mirna_pk", miRna.getPk()))
+							.add(Restrictions.eq("organism_pk", organism2.getPk()))
+							.uniqueResult();
+					if (oldmirnaHasOrganism == null) {
+						session.save(mirnaHasOrganism);
+					}
+
 				}
 			}
 		}
@@ -259,14 +445,12 @@ public class MiREnvironment extends NewMirnaDatabase {
 			if (oldPubmedDoc == null) {
 				session.save(pubmedDoc);
 				session.flush(); // to get the PK
-				// System.out.println("Save Pubmed document");
 
 			} else {
 				PubmedDocument pubmedDocToUpdate = (PubmedDocument) oldPubmedDoc;
 				pubmedDocToUpdate.update(pubmedDoc);
 				session.update(pubmedDocToUpdate);
 				pubmedDoc = pubmedDocToUpdate;
-				// System.out.println("Updated Pubmed document");
 			}
 
 		}
@@ -282,35 +466,35 @@ public class MiREnvironment extends NewMirnaDatabase {
 		session.save(ed);
 
 		if(miRna != null && pubmedDoc != null){
-		// Relaciona miRNa con Document.
-		MirnaHasPubmedDocument mirnaHasPubmedDocument = new MirnaHasPubmedDocument(
-				miRna.getPk(), pubmedDoc.getPk());
+			// Relaciona miRNa con Document.
+			MirnaHasPubmedDocument mirnaHasPubmedDocument = new MirnaHasPubmedDocument(
+					miRna.getPk(), pubmedDoc.getPk());
 
-		// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
-		Object oldMirnaHasPubmedDocument = session
-				.createCriteria(MirnaHasPubmedDocument.class)
-				.add(Restrictions.eq("mirnaPk", miRna.getPk()))
-				.add(Restrictions.eq("pubmedDocumentPk", pubmedDoc.getPk()))
-				.uniqueResult();
-		if (oldMirnaHasPubmedDocument == null) {
-			session.save(mirnaHasPubmedDocument);
+			// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
+			Object oldMirnaHasPubmedDocument = session
+					.createCriteria(MirnaHasPubmedDocument.class)
+					.add(Restrictions.eq("mirnaPk", miRna.getPk()))
+					.add(Restrictions.eq("pubmedDocumentPk", pubmedDoc.getPk()))
+					.uniqueResult();
+			if (oldMirnaHasPubmedDocument == null) {
+				session.save(mirnaHasPubmedDocument);
+			}
 		}
-		}
-		
+
 		if(pubmedDoc != null){
 
-		// Relaciona miRNa con ExpressionData.
-		ExpressionDataHasPubmedDocument expresDataHasPubmedDocument = new ExpressionDataHasPubmedDocument(
-				ed.getPk(), pubmedDoc.getPk());
+			// Relaciona miRNa con ExpressionData.
+			ExpressionDataHasPubmedDocument expresDataHasPubmedDocument = new ExpressionDataHasPubmedDocument(
+					ed.getPk(), pubmedDoc.getPk());
 
-		// Relaciona PubmedDocument con ExpressionData
-		session.save(expresDataHasPubmedDocument);
+			// Relaciona PubmedDocument con ExpressionData
+			session.save(expresDataHasPubmedDocument);
 		}
 	}
 
 
 	private String nullifyField(String field) {
-		return "".equals(field.trim()) || "n_a".equals(field.trim()) || "NULL".equals(field.trim()) || "n/a".equals(field.trim()) ? null : field.trim();
+		return "".equals(field.trim()) || "n_a".equals(field.trim()) || "NULL".equals(field.trim()) || "n/a".equals(field.trim()) || "N/A".equals(field.trim()) ? null : field.trim();
 	}
 
 
