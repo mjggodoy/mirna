@@ -79,7 +79,7 @@ public abstract class NewMirnaDatabase implements IMirnaDatabase {
 				
 				count++;
 				if (count%100==0) {
-					System.out.println(tableName + ": " + count);
+					//System.out.println(tableName + ": " + count);
 					session.flush();
 			        session.clear();
 				}

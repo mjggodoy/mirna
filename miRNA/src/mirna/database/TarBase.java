@@ -461,18 +461,21 @@ public class TarBase extends NewMirnaDatabase {
 			}
 		}
 
-		//Inserta transcript (o recupera us id. si ya existe)
-		Object oldTranscript = session.createCriteria(Transcript.class)
-				.add( Restrictions.eq("isoform", transcript.getIsoform()))
-				.uniqueResult();
-		if (oldTranscript==null) {
-			session.save(transcript);
-			session.flush(); // to get the PK
-		} else {
-			Transcript transcriptToUpdate = (Transcript) oldTranscript;
-			transcriptToUpdate.update(transcript);
-			session.update(transcriptToUpdate);
-			transcript = transcriptToUpdate;
+		if (transcript!=null) {
+
+			//Inserta transcript (o recupera us id. si ya existe)
+			Object oldTranscript = session.createCriteria(Transcript.class)
+					.add( Restrictions.eq("isoform", transcript.getIsoform()))
+					.uniqueResult();
+			if (oldTranscript==null) {
+				session.save(transcript);
+				session.flush(); // to get the PK
+			} else {
+				Transcript transcriptToUpdate = (Transcript) oldTranscript;
+				transcriptToUpdate.update(transcript);
+				session.update(transcriptToUpdate);
+				transcript = transcriptToUpdate;
+			}
 		}
 
 		if (gene!=null) {
@@ -539,7 +542,7 @@ public class TarBase extends NewMirnaDatabase {
 		}
 
 		//Inserta nueva InteractionData (y la relaciona con lo que toque)
-		id.setMirna_pk(mirna.getPk());
+		if (mirna!=null) id.setMirna_pk(mirna.getPk());
 		if (gene!=null) {id.setGene_pk(gene.getPk());}
 		id.setTarget_pk(target.getPk());
 		session.save(id);
@@ -577,7 +580,7 @@ public class TarBase extends NewMirnaDatabase {
 	}
 
 	private String nullifyField(String field) {
-		return "".equals(field.trim()) || "n_a".equals(field.trim()) ? null : field.trim();
+		return "".equals(field.trim()) || "n_a".equals(field.trim()) || "_".equals(field.trim()) ? null : field.trim();
 	}
 
 	public static void main(String[] args) throws Exception {
