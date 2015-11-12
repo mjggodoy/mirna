@@ -133,199 +133,224 @@ public class MiREnvironment extends NewMirnaDatabase {
 
 
 		MiRna miRna = new MiRna();
-		miRna.setName(name.trim());
+		if(name != null) miRna.setName(name.trim());
+		System.out.println(miRna.getName());
 
-		if (miRna.getName() == null) {
 
-			if (organism.getName().equals("Human")){
+		if (miRna.getName() == null && name2 != null) {
 
-				miRna.setName("hsa"+"-"+name2.trim());
+			miRna.setName(name2.trim());
+			System.out.println(miRna.getName());
 
-			}else if (organism.getName().equals("Mouse")){
 
-				miRna.setName("mmu"+"-"+name2.trim());
+			for(Organism organism1 : organismList){
 
-			}else if (organism.getName().equals("Rat")){
 
-				miRna.setName("rno"+"-"+name2.trim());
+				if("Homo sapiens".equals(organism1.getName())){
 
-			}else if(organism.getName().equals("C.elegans")){
+					miRna.setName("hsa"+"-"+name2.trim());
+					//System.out.println("hsa2 "+ miRna.getName());
 
-				miRna.setName("cel"+"-"+name2.trim());
+				}else if("Mouse".equals(organism1.getName()) && !miRna.getName().startsWith("mmu")){
 
-			}else if(organism.getName().equals("Chicken")){
 
-				miRna.setName("gga"+"-"+name2.trim());
+					miRna.setName("mmu"+"-"+name2.trim());
+					//System.out.println("mmu2 "+ miRna.getName());
 
-			}else if(organism.getName().equals("Chimpanzee")){
 
-				miRna.setName("ptr"+"-"+name2.trim());
+				}else if(organism1.getName().equals("Rat") && !miRna.getName().startsWith("rno")){
 
-			}else if(organism.getName().equals("Dog")){
+					miRna.setName("rno"+"-"+name2.trim());
+					//System.out.println("rno2 "+ miRna.getName());
 
-				miRna.setName("cfa"+"-"+name2.trim());
 
-			}else if(organism.getName().equals("Cow")){
+				}else if(organism.getName().equals("C.elegans") && !miRna.getName().startsWith("cel")){
 
-				miRna.setName("bta"+"-"+name2.trim());
+					miRna.setName("cel"+"-"+name2.trim());
+					//System.out.println("cel2 "+ miRna.getName());
 
-			}else if(organism.getName().equals("Human;Mouse")){
 
+				}else if(organism.getName().equals("Chicken") && !miRna.getName().startsWith("gga")){
 
-				for (String organismlist : organismTokens) {
+					miRna.setName("gga"+"-"+name2.trim());
+					//System.out.println("gga "+miRna.getName());
 
-					if(organismlist.equals("Human")){
+				}else if(organism.getName().equals("Chimpanzee") && !miRna.getName().startsWith("ptr")){
 
-						miRna.setName("hsa"+"-"+name2.trim());
+					miRna.setName("ptr"+"-"+name2.trim());
+					//System.out.println("ptr "+miRna.getName());
 
-					}else if(organismlist.equals("Mouse")){
+				}else if(organism.getName().equals("Dog") && !miRna.getName().startsWith("cfa")){
 
-						miRna.setName("mmu"+"-"+name2.trim());
+					miRna.setName("cfa"+"-"+name2.trim());
+					//System.out.println("cfa2 "+miRna.getName());
 
-					}
-				}
+				}else if(organism.getName().equals("Cow") && !miRna.getName().startsWith("bta")){
 
-			}else if(organism.getName().equals("Pig")){
+					miRna.setName("bta"+"-"+name2.trim());
+					//System.out.println("bta2 "+miRna.getName()); 
 
-				miRna.setName("ssc"+"-"+name2.trim());
+				}else if(organism.getName().equals("Pig") && !miRna.getName().startsWith("ssc")){
 
-			}else if(organism.getName().equals("Zebrafish")){
+					miRna.setName("ssc"+"-"+name2.trim());
+					//System.out.println("ssc2 "+miRna.getName());
 
-				miRna.setName("dre"+"-"+name2.trim());
+				} else if(organism.getName().equals("Zebrafish") && !miRna.getName().startsWith("dre")){
 
-			}else if(organism.getName().equals("rice")){
+					miRna.setName("dre"+"-"+name2.trim());
+					//System.out.println("dre2 "+miRna.getName());
 
-				miRna.setName("osa"+"-"+name2.trim());
+				}else if(organism.getName().equals("rice") && !miRna.getName().startsWith("osa")){
 
+					miRna.setName("osa"+"-"+name2.trim());
+					//System.out.println("osa2 "+miRna.getName());
 
-			}else if(organism.getName().equals("Cotton")){
+				}else if(organism.getName().equals("Cotton") && !miRna.getName().startsWith("gra")){
 
-				miRna.setName("gra"+"-"+name2.trim());
+					miRna.setName("gra"+"-"+name2.trim());
+					//System.out.println("gra2 "+ miRna.getName());
 
-			}else if(organism.getName().equals("Maize")){
+				}else if(organism.getName().equals("Maize") && !miRna.getName().startsWith("zma")){
 
-				miRna.setName("zma"+"-"+name2.trim());
+					miRna.setName("zma"+"-"+name2.trim());
+					//System.out.println("zma2 "+miRna.getName());
 
-			}else if(organism.getName().equals("Chlamydomonas reinhardtii")){
+				}else if(organism.getName().equals("Chlamydomonas reinhardtii") && !miRna.getName().startsWith("cre")){
 
-				miRna.setName("cre"+"-"+name2.trim());
+					miRna.setName("cre"+"-"+name2.trim());
+					//System.out.println("cre2 "+miRna.getName());
 
-			}else if(organism.getName().equals("Arabidopsis thaliana")){
+				}else if(organism.getName().equals("Arabidopsis thaliana") && !miRna.getName().startsWith("ath")){
 
-				miRna.setName("ath"+"-"+name2.trim());
+					miRna.setName("ath"+"-"+name2.trim());
+					//System.out.println("ath2 "+miRna.getName());
 
-			}else if(organism.getName().equals("grapevine")){
+				}else if(organism.getName().equals("grapevine") && !miRna.getName().startsWith("vvi")){
 
-				miRna.setName("vvi"+"-"+name2.trim());
+					miRna.setName("vvi"+"-"+name2.trim());
+					//System.out.println("vvi2 "+miRna.getName());
 
-			}else{
-
-				miRna.setName(name2.trim());
-
-			}
-		}
-
-
-		if (miRna.getName() == null) {
-
-			if (miRna.getName() == null) {
-
-				if (organism.getName().equals("Human")){
-
-					miRna.setName("hsa"+"-"+name3.trim());
-
-				}else if (organism.getName().equals("Mouse")){
-
-					miRna.setName("mmu"+"-"+name3.trim());
-
-				}else if (organism.getName().equals("Rat")){
-
-					miRna.setName("rno"+"-"+name3.trim());
-
-				}else if(organism.getName().equals("C.elegans")){
-
-					miRna.setName("cel"+"-"+name3.trim());
-
-				}else if(organism.getName().equals("Chicken")){
-
-					miRna.setName("gga"+"-"+name3.trim());
-
-				}else if(organism.getName().equals("Chimpanzee")){
-
-					miRna.setName("ptr"+"-"+name3.trim());
-
-				}else if(organism.getName().equals("Dog")){
-
-					miRna.setName("cfa"+"-"+name3.trim());
-
-				}else if(organism.getName().equals("Cow")){
-
-					miRna.setName("bta"+"-"+name3.trim());
-
-				}else if(organism.getName().equals("Human;Mouse")){
-
-
-					for (String organismlist : organismTokens) {
-
-						if(organismlist.equals("Human")){
-
-							miRna.setName("hsa"+"-"+name3.trim());
-
-						}else if(organismlist.equals("Mouse")){
-
-							miRna.setName("mmu"+"-"+name3.trim());
-
-						}
-					}
-
-				}else if(organism.getName().equals("Pig")){
-
-					miRna.setName("ssc"+"-"+name3.trim());
-
-				}else if(organism.getName().equals("Zebrafish")){
-
-					miRna.setName("dre"+"-"+name3.trim());
-
-				}else if(organism.getName().equals("rice")){
-
-					miRna.setName("osa"+"-"+name3.trim());
-
-
-				}else if(organism.getName().equals("Cotton")){
-
-					miRna.setName("gra"+"-"+name3.trim());
-
-				}else if(organism.getName().equals("Maize")){
-
-					miRna.setName("zma"+"-"+name3.trim());
-
-				}else if(organism.getName().equals("Chlamydomonas reinhardtii")){
-
-					miRna.setName("cre"+"-"+name3.trim());
-
-				}else if(organism.getName().equals("Arabidopsis thaliana")){
-
-					miRna.setName("ath"+"-"+name3.trim());
-
-				}else if(organism.getName().equals("grapevine")){
-
-					miRna.setName("vvi"+"-"+name3.trim());
 
 				}else{
 
-					miRna.setName(name3.trim());
+					miRna.setName(name2.trim());
+					//System.out.println("Rest of organisms2 " + miRna.getName());
 
 				}
 
 			}
-		}	
-
-
-		if (!createdObject(name3)) {
-			miRna = null;
 		}
 
-		Disease disease = new Disease();
+		if (miRna.getName() == null && name3 != null) {
+
+			miRna.setName(name3.trim());
+			System.out.println(miRna.getName());
+
+			for(Organism organism1 : organismList){
+
+				if("Homo sapiens".equals(organism1.getName()) && !miRna.getName().startsWith("hsa")){
+
+					miRna.setName("hsa"+"-"+name3.trim());
+					System.out.println("hsa3 "+ miRna.getName());
+				
+				}else if ("Mouse".equals(organism1.getName()) && !miRna.getName().startsWith("mmu")){
+					
+					miRna.setName("mmu"+"-"+name3.trim());
+					System.out.println("mmu3 "+ miRna.getName());
+				
+				}else if ("Rat".equals(organism1.getName()) && !miRna.getName().startsWith("rno")){
+
+					miRna.setName("rno"+"-"+name3.trim());
+					System.out.println("rno3 "+miRna.getName());
+					
+				}else if("C.elegans".equals(organism1.getName()) && !miRna.getName().startsWith("cel")){
+
+					miRna.setName("cel"+"-"+name3.trim());
+					System.out.println("cel "+ miRna.getName());
+				
+				}else if(organism1.getName().equals("Chicken") && !miRna.getName().startsWith("gga")){
+
+					miRna.setName("gga"+"-"+name3.trim());
+					System.out.println("gga3 "+miRna.getName());
+				
+				}else if(organism1.getName().equals("Chimpanzee") && !miRna.getName().startsWith("ptr")){
+
+					miRna.setName("ptr"+"-"+name3.trim());
+					System.out.println("ptr3 "+miRna.getName());
+				
+				}else if(organism1.getName().equals("Dog") && !miRna.getName().startsWith("cfa")){
+
+					miRna.setName("cfa"+"-"+name3.trim());
+					System.out.println("cfa3 "+miRna.getName());
+				
+				}else if(organism1.getName().equals("Cow") && !miRna.getName().startsWith("bta")){
+
+					miRna.setName("bta"+"-"+name3.trim());
+					System.out.println("bta3 "+miRna.getName()); 
+
+				}else if(organism1.getName().equals("Pig") && !miRna.getName().startsWith("ssc")){
+
+					miRna.setName("ssc"+"-"+name3.trim());
+					System.out.println("ssc3 "+miRna.getName());
+					
+				}else if(organism1.getName().equals("Zebrafish") && !miRna.getName().startsWith("dre")){
+
+					miRna.setName("dre"+"-"+name3.trim());
+					System.out.println("dre3 "+miRna.getName());
+				
+				}else if(organism1.getName().equals("rice") && !miRna.getName().startsWith("osa")){
+
+					miRna.setName("osa"+"-"+name3.trim());
+					System.out.println("osa3 "+miRna.getName());
+				
+				}else if(organism1.getName().equals("Cotton") && !miRna.getName().startsWith("gra")){
+
+					miRna.setName("gra"+"-"+name3.trim());
+					System.out.println("gra3 "+ miRna.getName());
+				
+				}else if(organism1.getName().equals("Maize") && !miRna.getName().startsWith("zma") ){
+
+					miRna.setName("zma"+"-"+name3.trim());
+					System.out.println("zma3 "+miRna.getName());
+				
+				}else if(organism1.getName().equals("Chlamydomonas reinhardtii") && !miRna.getName().startsWith("cre")){
+
+					miRna.setName("cre"+"-"+name3.trim());
+					System.out.println("cre3 "+miRna.getName());
+				
+				}else if(organism1.getName().equals("Arabidopsis thaliana") && !miRna.getName().startsWith("ath")){
+
+					miRna.setName("ath"+"-"+name3.trim());
+					System.out.println("ath3 "+miRna.getName());
+
+				}else if(organism1.getName().equals("grapevine") && !miRna.getName().startsWith("vvi")){
+
+					miRna.setName("vvi"+"-"+name3.trim());
+					System.out.println("vvi3 "+miRna.getName());
+
+				}else{
+					
+					miRna.setName(name3.trim());
+					System.out.println("Rest of organisms3 " + miRna.getName());
+
+				}
+
+			}
+		}
+
+
+	}
+
+
+
+
+
+
+	/*if (!createdObject(name3)) {
+			miRna = null;
+		}
+	 */
+	/*Disease disease = new Disease();
 		disease.setName(disease_name);
 
 		if (!createdObject(disease_name)) {
@@ -490,7 +515,7 @@ public class MiREnvironment extends NewMirnaDatabase {
 			// Relaciona PubmedDocument con ExpressionData
 			session.save(expresDataHasPubmedDocument);
 		}
-	}
+	}*/
 
 
 	private String nullifyField(String field) {
