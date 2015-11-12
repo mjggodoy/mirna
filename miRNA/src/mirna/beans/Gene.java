@@ -47,7 +47,7 @@ public class Gene extends ModelClass {
 	@Column(name = "location", nullable = true, length = 45, unique = false)
 	private String location;// ok
 	
-	@Column(name = "expression_site", nullable = true, length = 45, unique = false)
+	@Column(name = "expression_site", nullable = true, length = 90, unique = false)
 	private String expression_site;// ok
 	
 	@Column(name = "kegg_id", nullable = true, length = 45, unique = false)
@@ -239,7 +239,7 @@ public class Gene extends ModelClass {
 		if (this.name != null) {
 			if (gene.getName() == null)
 				res++;
-			else if (!this.name.toLowerCase().equals(gene.getName().toLowerCase()))
+			else if (!this.name.equals(gene.getName()))
 				return -1;
 		}
 

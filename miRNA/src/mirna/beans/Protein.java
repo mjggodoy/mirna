@@ -68,11 +68,13 @@ public class Protein extends ModelClass {
 			else if (!this.pk.equals(protein.getPk())) return -1;
 		}
 		
-		
+		//TODO: Hacer algo mas elegante, por Dios
+		/*
 		if (this.type!=null) {
 			if (protein.type ==null) res++; 
 			else if (!this.type.equals(protein.type)) return -1;
 		}
+		*/
 		
 		if (this.uniprot_id!=null) {
 			if (protein.uniprot_id ==null) res++; 
@@ -95,7 +97,18 @@ public class Protein extends ModelClass {
 			if (this.checkConflict(protein)==-1) throw new ConflictException(this, protein);
 		}
 		if (protein.getPk() !=null) this.pk = protein.getPk();
-		if (protein.getType() !=null) this.type = protein.getType();
+		if (this.type==null) {
+			this.type = protein.getType();
+		} else {
+			if (protein.getType()!=null) {
+				if (!this.type.contains(protein.getType())) {
+					this.type += ","+protein.getType();
+				}
+				
+			}
+		}
+		
+		if (protein.getType() !=null) 
 		if (protein.getUniprot_id()!=null) this.uniprot_id = protein.getUniprot_id();	
 	}
 
