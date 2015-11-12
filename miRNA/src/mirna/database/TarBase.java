@@ -226,7 +226,7 @@ public class TarBase extends NewMirnaDatabase {
 			miRna = "dre"+"-"+miRna;
 			mirna.setName(miRna);
 
-		}else if(organism.getName().equals("Human")){
+		}else if(organism.getName().equals("Homo sapiens")){
 
 			miRna = "hsa"+"-"+miRna;
 			mirna.setName(miRna);
