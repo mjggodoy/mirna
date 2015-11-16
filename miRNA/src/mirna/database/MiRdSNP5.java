@@ -184,7 +184,7 @@ public class MiRdSNP5 extends MiRdSNP {
 	}
 	
 	
-	private String nullifyField(String field) {
+	protected String nullifyField(String field) {
 		return "".equals(field.trim()) || "n_a".equals(field.trim()) || "_".equals(field.trim()) ? null : field.trim();	}
 
 	
