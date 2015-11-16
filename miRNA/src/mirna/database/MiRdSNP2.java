@@ -130,12 +130,19 @@ public class MiRdSNP2 extends MiRdSNP {
 
 		Gene gene = new Gene();
 		gene.setName(gene_name);
+		if (!createdObject(gene_name)) {
+			gene_name = null;
+		}
+
 		//gene.setAccessionumber(ref_seq);;
 
 		Target target = new Target();
 
 		Transcript transcript = new Transcript();
 		transcript.setTranscriptID(ref_seq);
+		if (!createdObject(ref_seq)) {
+			transcript = null;
+		}
 
 		String[] snpTokens = StringUtils.splitPreserveAllTokens(snp_id, "|");
 		List<SNP> snpList = new ArrayList<SNP>();
@@ -157,45 +164,56 @@ public class MiRdSNP2 extends MiRdSNP {
 		ExpressionData ed = new ExpressionData();
 		ed.setProvenance("mirdSNP");
 
-		Object oldGene = session.createCriteria(Gene.class)
-				.add( Restrictions.eq("name", gene.getName()) )
-				.uniqueResult();
-		if (oldGene==null) {
-			session.save(gene);
-			session.flush();  // to get the PK
-		} else {
-			Gene geneToUpdate = (Gene) oldGene;
-			geneToUpdate.update(gene);
-			session.update(geneToUpdate);
-			gene = geneToUpdate;
+
+		if(gene !=null){
+			Object oldGene = session.createCriteria(Gene.class)
+					.add( Restrictions.eq("name", gene.getName()) )
+					.uniqueResult();
+			if (oldGene==null) {
+				session.save(gene);
+				session.flush();  // to get the PK
+			} else {
+				Gene geneToUpdate = (Gene) oldGene;
+				geneToUpdate.update(gene);
+				session.update(geneToUpdate);
+				gene = geneToUpdate;
+			}
 		}
 
-		Object oldTranscript = session.createCriteria(Transcript.class)
-				.add(Restrictions.eq("transcriptID", transcript.getTranscriptID()))
-				.uniqueResult();
-		if (oldTranscript == null) {
-			session.save(transcript);
+		if(transcript != null){
+
+			Object oldTranscript = session.createCriteria(Transcript.class)
+					.add(Restrictions.eq("transcriptID", transcript.getTranscriptID()))
+					.uniqueResult();
+			if (oldTranscript == null) {
+				session.save(transcript);
+				session.flush(); // to get the PK
+			} else {
+				Transcript transcriptToUpdate = (Transcript) oldTranscript;
+				transcriptToUpdate.update(transcript);
+				session.update(transcriptToUpdate);
+				transcript = transcriptToUpdate;
+			}
+
+			target.setTranscript_pk(transcript.getPk());
+			session.save(target);
 			session.flush(); // to get the PK
-		} else {
-			Transcript transcriptToUpdate = (Transcript) oldTranscript;
-			transcriptToUpdate.update(transcript);
-			session.update(transcriptToUpdate);
-			transcript = transcriptToUpdate;
+
+			if(gene != null){
+
+				TranscriptHasGene transcripthasGene =
+						new TranscriptHasGene(transcript.getPk(), gene.getPk());
+				Object oldTranscripthasGene = session.createCriteria(TranscriptHasGene.class)
+						.add(Restrictions.eq("transcriptPk", transcript.getPk()))
+						.add(Restrictions.eq("genePk", gene.getPk()))
+						.uniqueResult();
+				if (oldTranscripthasGene == null) {
+					session.save(transcripthasGene);
+				}
+			}
 		}
 
-		target.setTranscript_pk(transcript.getPk());
-		session.save(target);
-		session.flush(); // to get the PK
 
-		TranscriptHasGene transcripthasGene =
-				new TranscriptHasGene(transcript.getPk(), gene.getPk());
-		Object oldTranscripthasGene = session.createCriteria(TranscriptHasGene.class)
-				.add(Restrictions.eq("transcriptPk", transcript.getPk()))
-				.add(Restrictions.eq("genePk", gene.getPk()))
-				.uniqueResult();
-		if (oldTranscripthasGene == null) {
-			session.save(transcripthasGene);
-		}
 
 		String[] mirnaTokens = StringUtils.splitPreserveAllTokens(mirna_name, "|");
 		List<MiRna> mirnaList = new ArrayList<MiRna>();
@@ -243,7 +261,7 @@ public class MiRdSNP2 extends MiRdSNP {
 		for(SNP snp : snpList){
 
 			if(snp !=null){
-				
+
 				Object oldSnp = session.createCriteria(SNP.class)
 						.add( Restrictions.eq("snp_id", snp.getSnp_id()))
 						.uniqueResult();
@@ -267,7 +285,7 @@ public class MiRdSNP2 extends MiRdSNP {
 					session.save(snpHasGene);
 				}
 
-				
+
 			}
 		}
 
@@ -325,12 +343,12 @@ public class MiRdSNP2 extends MiRdSNP {
 
 	private String nullifyField(String field) {
 		return "".equals(field.trim()) || "n_a".equals(field.trim()) || "_".equals(field.trim()) ? null : field.trim();	}
-	
+
 	public static void main(String[] args) throws Exception {
-		
+
 		MiRdSNP2 mirdsnp2 = new MiRdSNP2();
 		mirdsnp2.insertIntoSQLModel();
-		
+
 	}
 
 
