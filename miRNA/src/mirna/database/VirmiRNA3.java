@@ -359,10 +359,6 @@ public class VirmiRNA3 extends NewMirnaDatabase {
 
 	}
 
-	private String nullifyField(String field) {
-		return "".equals(field.trim()) || "na".equals(field.trim()) || "NA".equals(field.trim()) || "-".equals(field.trim()) ? null : field.trim();
-	}
-
 	public static void main(String[] args) throws Exception {
 		
 		VirmiRNA3 virmirRNA3 = new VirmiRNA3();

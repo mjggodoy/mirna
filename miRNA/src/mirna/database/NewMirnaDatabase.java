@@ -105,5 +105,18 @@ public abstract class NewMirnaDatabase implements IMirnaDatabase {
 		}
 		return res;
 	}
+	
+	protected String nullifyField(String field) {
+		return "".equals(field.trim()) 
+				|| "n_a".equals(field.trim())
+				|| "_".equals(field.trim())
+				|| "NULL".equals(field.trim())
+				|| "n/a".equals(field.trim())
+				|| "N/A".equals(field.trim())
+				|| "na".equals(field.trim())
+				|| "NA".equals(field.trim())
+				|| "-".equals(field.trim())
+				? null : field.trim();
+	}
 
 }

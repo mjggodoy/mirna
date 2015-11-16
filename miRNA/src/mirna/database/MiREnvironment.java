@@ -408,7 +408,7 @@ public class MiREnvironment extends NewMirnaDatabase {
 	}
 
 
-	private String nullifyField(String field) {
+	protected String nullifyField(String field) {
 		return "".equals(field.trim()) || "n_a".equals(field.trim()) || "NULL".equals(field.trim()) || "n/a".equals(field.trim()) || "N/A".equals(field.trim()) ? null : field.trim();
 	}
 

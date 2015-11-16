@@ -234,7 +234,7 @@ public class Microcosm extends NewMirnaDatabase {
 
 	}
 
-	private String nullifyField(String field) {
+	protected String nullifyField(String field) {
 		return "".equals(field.trim()) || "n_a".equals(field.trim()) ? null : field.trim();
 	}
 
