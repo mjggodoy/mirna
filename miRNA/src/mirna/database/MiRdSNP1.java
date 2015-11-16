@@ -119,6 +119,9 @@ public class MiRdSNP1 extends MiRdSNP {
 
 		Disease disease = new Disease();
 		disease.setName(disease_name);
+		if (!createdObject(disease_name)) {
+			disease = null;
+		}
 
 
 		String[] snpTokens = StringUtils.splitPreserveAllTokens(snp_id, ",");
@@ -130,6 +133,10 @@ public class MiRdSNP1 extends MiRdSNP {
 			SNP snp = new SNP();
 			snp.setSnp_id(token);
 			snpList.add(snp);
+			if (!createdObject(token)) {
+				snp = null;
+				
+			}
 		}
 
 
@@ -138,6 +145,10 @@ public class MiRdSNP1 extends MiRdSNP {
 		pubmedDoc.setId(pubmedId);
 		pubmedDoc.setDescription(description);
 		pubmedDoc.setResource(resource);
+		if (!createdObject(pubmedId, description, resource )) {
+			pubmedDoc = null;
+			
+		}
 
 
 		// Inserta Disease (o recupera su id. si ya existe)
