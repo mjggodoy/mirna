@@ -97,21 +97,27 @@ public class MiRdSNP5 extends MiRdSNP {
 
 	public void processRow(Session session, ResultSet rs) throws Exception{
 
-		String chromosome = rs.getString("chromosome").toLowerCase().trim();
-		String position = rs.getString("start").toLowerCase().trim();
-		String snp_name = rs.getString("snp").toLowerCase().trim();
-		String disease_name = rs.getString("disease").toLowerCase().trim();
-		String orientation = rs.getString("orientation").toLowerCase().trim();
+		String chromosome = nullifyField(rs.getString("chromosome").toLowerCase().trim());
+		String position = nullifyField(rs.getString("start").toLowerCase().trim());
+		String snp_name = nullifyField(rs.getString("snp").toLowerCase().trim());
+		String disease_name = nullifyField(rs.getString("disease").toLowerCase().trim());
+		String orientation = nullifyField(rs.getString("orientation").toLowerCase().trim());
 
 
 		String[] diseaseTokens = StringUtils.splitPreserveAllTokens(disease_name, "|");
 		List<Disease> diseaseList = new ArrayList<Disease>();
 
 		for (String token : diseaseTokens) {
+			
 
 			Disease disease = new Disease();
 			disease.setName(token);
 			diseaseList.add(disease);
+			if (!createdObject(token)){	
+				disease = null;
+			}
+			
+			
 		}
 
 		SNP snp = new SNP();
@@ -119,8 +125,11 @@ public class MiRdSNP5 extends MiRdSNP {
 		snp.setSnp_id(snp_name);
 		snp.setPosition(position);
 		snp.setOrientation(orientation);
+		if (!createdObject(chromosome, snp_name, position, orientation)){	
+			snp = null;
+		}
 
-
+		if(snp !=null){
 		Object oldSnp = session.createCriteria(SNP.class)
 				.add( Restrictions.eq("snp_id", snp.getSnp_id()))
 				.uniqueResult();
@@ -133,8 +142,11 @@ public class MiRdSNP5 extends MiRdSNP {
 			session.update(snpToUpdate);
 			snp = snpToUpdate;
 		}
-
+		}
+		
 		for(Disease disease : diseaseList){
+			
+			if(disease != null){
 
 			Object oldDisease = session.createCriteria(Disease.class)
 					.add( Restrictions.eq("name", disease.getName()) )
@@ -154,6 +166,8 @@ public class MiRdSNP5 extends MiRdSNP {
 				System.out.println(snp);
 
 			}
+			
+			if(snp !=null){
 
 			SnpHasDisease snpHasDisease = new SnpHasDisease(snp.getPk(), disease.getPk());
 			Object oldSnphasDisease = session.createCriteria(SnpHasDisease.class)
@@ -163,11 +177,16 @@ public class MiRdSNP5 extends MiRdSNP {
 			if (oldSnphasDisease==null) {
 				session.save(snpHasDisease);
 			}
-
+			}
+		}
 		}
 
-
 	}
+	
+	
+	private String nullifyField(String field) {
+		return "".equals(field.trim()) || "n_a".equals(field.trim()) || "_".equals(field.trim()) ? null : field.trim();	}
+
 	
 	public static void main(String[] args) throws Exception {
 		

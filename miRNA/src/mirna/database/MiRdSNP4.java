@@ -115,16 +115,19 @@ public class MiRdSNP4 extends MiRdSNP {
 
 	public void processRow(Session session, ResultSet rs) throws Exception{
 
-		String gene_name  = rs.getString("gene").toLowerCase().trim();
-		String ref_seq = rs.getString("refseq").toLowerCase().trim();
-		String mirna_name = rs.getString("miR").toLowerCase().trim();
-		String snp_id = rs.getString("snp").toLowerCase().trim();
-		String disease_name = rs.getString("diseases").toLowerCase().trim();
-		String distance = rs.getString("distance").toLowerCase().trim();// I'm not going to use this.
-		String exp_config = rs.getString("expConf").toLowerCase().trim(); //This database field is not to be used.
+		String gene_name  = nullifyField(rs.getString("gene").toLowerCase().trim());
+		String ref_seq = nullifyField(rs.getString("refseq").toLowerCase().trim());
+		String mirna_name = nullifyField(rs.getString("miR").toLowerCase().trim());
+		String snp_id = nullifyField(rs.getString("snp").toLowerCase().trim());
+		String disease_name = nullifyField(rs.getString("diseases").toLowerCase().trim());
+		String distance = nullifyField(rs.getString("distance").toLowerCase().trim());// I'm not going to use this.
+		String exp_config = nullifyField(rs.getString("expConf").toLowerCase().trim()); //This database field is not to be used.
 
 		Gene gene = new Gene();
 		gene.setName(gene_name);
+		if (!createdObject(gene_name)){	
+			gene = null;
+		}
 
 		String[] diseaseTokens = StringUtils.splitPreserveAllTokens(disease_name, ",");
 
@@ -136,24 +139,38 @@ public class MiRdSNP4 extends MiRdSNP {
 			Disease disease = new Disease();
 			disease.setName(token);
 			diseaseList.add(disease);
+			if (!createdObject(token)){	
+				disease = null;
+			}
 		}
 
 		MiRna mirna = new MiRna();
 		mirna.setName(mirna_name);
+		if (!createdObject(mirna_name)){	
+			mirna = null;
+		}
 		
 		Target target = new Target();
 		
 		Transcript transcript = new Transcript();
 		transcript.setTranscriptID(ref_seq);
-
+		if (!createdObject(ref_seq)){	
+			transcript = null;
+		}
+		
 		SNP snp = new SNP();
 		snp.setSnp_id(snp_id);
+		if (!createdObject(snp_id)){	
+			snp = null;
+		}
 
 		InteractionData id = new InteractionData();
 		id.setProvenance("mirdSNP");
 
 		ExpressionData ed = new ExpressionData();
 		ed.setProvenance("mirdSNP");
+		
+		if(gene !=null){
 
 		Object oldGene = session.createCriteria(Gene.class)
 				.add( Restrictions.eq("name", gene.getName()) )
@@ -167,6 +184,11 @@ public class MiRdSNP4 extends MiRdSNP {
 			session.update(geneToUpdate);
 			gene = geneToUpdate;
 		}
+		
+		}
+		
+		
+		if(snp !=null){
 
 		Object oldSnp = session.createCriteria(SNP.class)
 				.add( Restrictions.eq("snp_id", snp.getSnp_id()))
@@ -190,7 +212,9 @@ public class MiRdSNP4 extends MiRdSNP {
 		if (oldSnphasGene==null) {
 			session.save(snpHasGene);
 		}
+		}
 		
+		if(transcript !=null){
 		
 		Object oldTranscript = session.createCriteria(Transcript.class)
 				.add(Restrictions.eq("transcriptID", transcript.getTranscriptID()))
@@ -205,6 +229,9 @@ public class MiRdSNP4 extends MiRdSNP {
 			transcript = transcriptToUpdate;
 		}
 		
+		if(gene !=null){
+
+		
 		TranscriptHasGene transcripthasGene =
 				new TranscriptHasGene(transcript.getPk(), gene.getPk());
 		Object oldTranscripthasGene = session.createCriteria(TranscriptHasGene.class)
@@ -218,9 +245,14 @@ public class MiRdSNP4 extends MiRdSNP {
 		target.setTranscript_pk(transcript.getPk());
 		session.save(target);
 		session.flush(); // to get the PK
-
+		}
+		
+		}
+		
 		for (Disease disease: diseaseList){
 
+			if(disease != null){
+			
 			Object oldDisease = session.createCriteria(Disease.class)
 					.add( Restrictions.eq("name", disease.getName()) )
 					.uniqueResult();
@@ -241,6 +273,8 @@ public class MiRdSNP4 extends MiRdSNP {
 			}
 
 			//Relaciona SNP con disease
+			
+			if(snp !=null){
 
 			SnpHasDisease snpHasDisease = new SnpHasDisease(snp.getPk(), disease.getPk());
 			Object oldSnphasDisease = session.createCriteria(SnpHasDisease.class)
@@ -253,8 +287,13 @@ public class MiRdSNP4 extends MiRdSNP {
 
 			ed.setDiseasePk(disease.getPk());
 
-
+			}
+			}
+		
 		}
+		
+		
+		if(mirna !=null){
 
 		Object oldMiRna = session.createCriteria(MiRna.class)
 				.add( Restrictions.eq("name", mirna.getName()) )
@@ -285,8 +324,13 @@ public class MiRdSNP4 extends MiRdSNP {
 		ed.setInteraction_data_pk(id.getPk()); // Fixed
 		session.save(ed);
 		
-
+		}
 	}
+	
+	private String nullifyField(String field) {
+		return "".equals(field.trim()) || "n_a".equals(field.trim()) || "_".equals(field.trim()) ? null : field.trim();	}
+
+	
 	
 	public static void main(String[] args) throws Exception {
 		
