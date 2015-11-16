@@ -324,7 +324,13 @@ public class MiRdSNP2 extends MiRdSNP {
 
 
 	private String nullifyField(String field) {
-		return "".equals(field.trim()) || "n_a".equals(field.trim()) ? null : field.trim();
+		return "".equals(field.trim()) || "n_a".equals(field.trim()) || "_".equals(field.trim()) ? null : field.trim();	}
+	
+	public static void main(String[] args) throws Exception {
+		
+		MiRdSNP2 mirdsnp2 = new MiRdSNP2();
+		mirdsnp2.insertIntoSQLModel();
+		
 	}
 
 

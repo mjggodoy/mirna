@@ -8,10 +8,12 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
 import mirna.beans.Disease;
 import mirna.beans.SNP;
 import mirna.beans.nToM.SnpHasDisease;
 import mirna.exception.MiRnaException;
+
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -166,5 +168,13 @@ public class MiRdSNP5 extends MiRdSNP {
 
 
 	}
-
+	
+	public static void main(String[] args) throws Exception {
+		
+		MiRdSNP5  miRdSNP5= new MiRdSNP5();
+		miRdSNP5.insertIntoSQLModel();
+		
+	}
+	
+	
 }

@@ -252,6 +252,7 @@ public class TarBase extends NewMirnaDatabase {
 		}
 		
 		boolean vePaTarget = false;
+		boolean relacionaGeneConOrganism = true;
 		String nombreTransformer = mirna.getName();
 		if(nombreTransformer.contains("Edited-")) {
 			mirna.setName(nombreTransformer.replace("Edited-", ""));
@@ -265,6 +266,7 @@ public class TarBase extends NewMirnaDatabase {
 		}
 		if (nombreTransformer.contains("K12")) {
 			vePaTarget = false;
+			relacionaGeneConOrganism = false;
 		}
 
 	
@@ -449,7 +451,7 @@ public class TarBase extends NewMirnaDatabase {
 
 		// Inserta Gene (o recupera su id. si ya existe)
 		if (gene!=null) {
-			gene.setOrganism_pk(organism.getPk());
+			if (relacionaGeneConOrganism) gene.setOrganism_pk(organism.getPk());
 			Object oldGene = session.createCriteria(Gene.class)
 					.add( Restrictions.eq("name", gene.getName()) )
 					.uniqueResult();

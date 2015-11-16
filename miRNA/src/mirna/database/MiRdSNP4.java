@@ -287,5 +287,13 @@ public class MiRdSNP4 extends MiRdSNP {
 		
 
 	}
+	
+	public static void main(String[] args) throws Exception {
+		
+		MiRdSNP4 miRdSNP4= new MiRdSNP4();
+		miRdSNP4.insertIntoSQLModel();
+		
+		
+	}
 
 }

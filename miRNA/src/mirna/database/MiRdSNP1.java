@@ -8,9 +8,11 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+
 import mirna.beans.Disease;
 import mirna.beans.PubmedDocument;
 import mirna.beans.SNP;
@@ -217,6 +219,13 @@ public class MiRdSNP1 extends MiRdSNP {
 
 		}
 
+	}
+	
+	public static void main(String[] args) throws Exception {
+		
+		MiRdSNP1 mirdSNP1 = new MiRdSNP1();
+		mirdSNP1.insertIntoSQLModel();
+		
 	}
 
 }
