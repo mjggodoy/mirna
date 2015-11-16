@@ -258,14 +258,16 @@ public class TarBase extends NewMirnaDatabase {
 		}
 		
 		if (nombreTransformer.contains("HSV1-")) {
-			mirna.setName(nombreTransformer.replace("hsa-", ""));
 			vePaTarget = true;
 		}
 		if (nombreTransformer.contains("LNA_")) {
-			mirna.setName(nombreTransformer.replace("hsa-", ""));
 			vePaTarget = true;
 		}
-		
+		if (nombreTransformer.contains("K12")) {
+			vePaTarget = false;
+		}
+
+	
 		//System.out.println(mirna.getName() + " : " + organism.getName() + " : " + vePaTarget);
 
 		Gene gene = new Gene();
