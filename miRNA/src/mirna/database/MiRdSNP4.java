@@ -249,39 +249,28 @@ public class MiRdSNP4 extends MiRdSNP {
 
 		}
 
-		for (Disease disease: diseaseList){
+		for (int i=0; i<diseaseList.size(); i++) {
 
-			if(disease != null){
+			for (Disease disease: diseaseList){
 
-				Object oldDisease = session.createCriteria(Disease.class)
-						.add( Restrictions.eq("name", disease.getName()) )
-						.uniqueResult();
-				if (oldDisease==null) {
-					session.save(disease);
-					session.flush();  // to get the PK
+				if(disease != null){
 
-				} else {
-					Disease diseaseToUpdate = (Disease) oldDisease;
-					diseaseToUpdate.update(disease);
-					session.update(diseaseToUpdate);
-					disease = diseaseToUpdate;
-
-				}
-
-				//Relaciona SNP con disease
-
-				if(snp !=null){
-
-					SnpHasDisease snpHasDisease = new SnpHasDisease(snp.getPk(), disease.getPk());
-					Object oldSnphasDisease = session.createCriteria(SnpHasDisease.class)
-							.add( Restrictions.eq("snpPk", snp.getPk()) )
-							.add( Restrictions.eq("diseasePk", disease.getPk()) )
+					Object oldDisease = session.createCriteria(Disease.class)
+							.add( Restrictions.eq("name", disease.getName()) )
 							.uniqueResult();
-					if (oldSnphasDisease==null) {
-						session.save(snpHasDisease);
+					if (oldDisease==null) {
+						session.save(disease);
+						session.flush();  // to get the PK
+
+					} else {
+						Disease diseaseToUpdate = (Disease) oldDisease;
+						diseaseToUpdate.update(disease);
+						session.update(diseaseToUpdate);
+						diseaseList.set(i, diseaseToUpdate);
+
 					}
 
-					ed.setDiseasePk(disease.getPk());
+					//Relaciona SNP con disease
 
 				}
 			}
@@ -316,10 +305,13 @@ public class MiRdSNP4 extends MiRdSNP {
 			session.save(id);
 			session.flush();
 
-			ed.setMirnaPk(mirna.getPk());
-			ed.setInteraction_data_pk(id.getPk()); // Fixed
-			session.save(ed);
+			for (Disease disease : diseaseList) {
+				ed.setMirnaPk(mirna.getPk());
+				ed.setDiseasePk(disease.getPk());
+				ed.setInteraction_data_pk(id.getPk()); // Fixed
+				session.save(ed);
 
+			}
 		}
 	}
 
