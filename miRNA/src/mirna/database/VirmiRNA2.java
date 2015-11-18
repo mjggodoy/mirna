@@ -10,7 +10,9 @@ import java.sql.Statement;
 import mirna.beans.BiologicalProcess;
 import mirna.beans.ExpressionData;
 import mirna.beans.Gene;
+import mirna.beans.Hairpin;
 import mirna.beans.InteractionData;
+import mirna.beans.Mature;
 import mirna.beans.MiRna;
 import mirna.beans.Organism;
 import mirna.beans.PubmedDocument;
@@ -158,10 +160,31 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 
 		MiRna mirna = new MiRna();
 		mirna.setName(mirna_name);
-		mirna.setAccessionNumber(accesion_number);
-		if (!createdObject(mirna_name, accesion_number)) {
+		if (!createdObject(mirna_name)) {
 			mirna = null;
 		}
+
+		Hairpin hairpin = new Hairpin();
+
+		if(accesion_number.contains("MI")){
+		hairpin.setAccession_number(accesion_number);
+		}
+		
+		if (!createdObject(accesion_number)) { 
+			hairpin = null;
+		}
+		
+		Mature mature = new Mature();
+
+		if(accesion_number.contains("MIMAT")){
+		mature.setAccession_number(accesion_number);
+		}
+		
+		if (!createdObject(accesion_number)) { 
+			mature = null;
+		}
+		
+		
 
 		Sequence sequence1 = new Sequence();
 		sequence1.setSequence(mirna_seq);

@@ -149,15 +149,15 @@ public class MiRdSNP4 extends MiRdSNP {
 		if (!createdObject(mirna_name)){	
 			mirna = null;
 		}
-		
+
 		Target target = new Target();
-		
+
 		Transcript transcript = new Transcript();
 		transcript.setTranscriptID(ref_seq);
 		if (!createdObject(ref_seq)){	
 			transcript = null;
 		}
-		
+
 		SNP snp = new SNP();
 		snp.setSnp_id(snp_id);
 		if (!createdObject(snp_id)){	
@@ -169,172 +169,168 @@ public class MiRdSNP4 extends MiRdSNP {
 
 		ExpressionData ed = new ExpressionData();
 		ed.setProvenance("mirdSNP");
-		
+
 		if(gene !=null){
 
-		Object oldGene = session.createCriteria(Gene.class)
-				.add( Restrictions.eq("name", gene.getName()) )
-				.uniqueResult();
-		if (oldGene==null) {
-			session.save(gene);
-			session.flush();  // to get the PK
-		} else {
-			Gene geneToUpdate = (Gene) oldGene;
-			geneToUpdate.update(gene);
-			session.update(geneToUpdate);
-			gene = geneToUpdate;
+			Object oldGene = session.createCriteria(Gene.class)
+					.add( Restrictions.eq("name", gene.getName()) )
+					.uniqueResult();
+			if (oldGene==null) {
+				session.save(gene);
+				session.flush();  // to get the PK
+			} else {
+				Gene geneToUpdate = (Gene) oldGene;
+				geneToUpdate.update(gene);
+				session.update(geneToUpdate);
+				gene = geneToUpdate;
+			}
+
 		}
-		
-		}
-		
-		
+
+
 		if(snp !=null){
 
-		Object oldSnp = session.createCriteria(SNP.class)
-				.add( Restrictions.eq("snp_id", snp.getSnp_id()))
-				.uniqueResult();
-		if (oldSnp==null) {
-			session.save(snp);
-			session.flush();  // to get the PK
-		} else {
-			SNP snpToUpdate = (SNP) oldSnp;
-			snpToUpdate.update(snp);
-			session.update(snpToUpdate);
-			snp = snpToUpdate;
-		}
-		
-		
-		SnpHasGene snpHasGene = new SnpHasGene(snp.getPk(), gene.getPk());
-		Object oldSnphasGene = session.createCriteria(SnpHasDisease.class)
-				.add( Restrictions.eq("snpPk", snp.getPk()) )
-				.add( Restrictions.eq("genePk", gene.getPk()) )
-				.uniqueResult();
-		if (oldSnphasGene==null) {
-			session.save(snpHasGene);
-		}
-		}
-		
-		if(transcript !=null){
-		
-		Object oldTranscript = session.createCriteria(Transcript.class)
-				.add(Restrictions.eq("transcriptID", transcript.getTranscriptID()))
-				.uniqueResult();
-		if (oldTranscript == null) {
-			session.save(transcript);
-			session.flush(); // to get the PK
-		} else {
-			Transcript transcriptToUpdate = (Transcript) oldTranscript;
-			transcriptToUpdate.update(transcript);
-			session.update(transcriptToUpdate);
-			transcript = transcriptToUpdate;
-		}
-		
-		if(gene !=null){
+			Object oldSnp = session.createCriteria(SNP.class)
+					.add( Restrictions.eq("snp_id", snp.getSnp_id()))
+					.uniqueResult();
+			if (oldSnp==null) {
+				session.save(snp);
+				session.flush();  // to get the PK
+			} else {
+				SNP snpToUpdate = (SNP) oldSnp;
+				snpToUpdate.update(snp);
+				session.update(snpToUpdate);
+				snp = snpToUpdate;
+			}
 
-		
-		TranscriptHasGene transcripthasGene =
-				new TranscriptHasGene(transcript.getPk(), gene.getPk());
-		Object oldTranscripthasGene = session.createCriteria(TranscriptHasGene.class)
-				.add(Restrictions.eq("transcriptPk", transcript.getPk()))
-				.add(Restrictions.eq("genePk", gene.getPk()))
-				.uniqueResult();
-		if (oldTranscripthasGene == null) {
-	        session.save(transcripthasGene);
+
+			SnpHasGene snpHasGene = new SnpHasGene(snp.getPk(), gene.getPk());
+			Object oldSnphasGene = session.createCriteria(SnpHasDisease.class)
+					.add( Restrictions.eq("snpPk", snp.getPk()) )
+					.add( Restrictions.eq("genePk", gene.getPk()) )
+					.uniqueResult();
+			if (oldSnphasGene==null) {
+				session.save(snpHasGene);
+			}
 		}
-		
-		target.setTranscript_pk(transcript.getPk());
-		session.save(target);
-		session.flush(); // to get the PK
+
+		if(transcript !=null){
+
+			Object oldTranscript = session.createCriteria(Transcript.class)
+					.add(Restrictions.eq("transcriptID", transcript.getTranscriptID()))
+					.uniqueResult();
+			if (oldTranscript == null) {
+				session.save(transcript);
+				session.flush(); // to get the PK
+			} else {
+				Transcript transcriptToUpdate = (Transcript) oldTranscript;
+				transcriptToUpdate.update(transcript);
+				session.update(transcriptToUpdate);
+				transcript = transcriptToUpdate;
+			}
+
+			if(gene !=null){
+
+
+				TranscriptHasGene transcripthasGene =
+						new TranscriptHasGene(transcript.getPk(), gene.getPk());
+				Object oldTranscripthasGene = session.createCriteria(TranscriptHasGene.class)
+						.add(Restrictions.eq("transcriptPk", transcript.getPk()))
+						.add(Restrictions.eq("genePk", gene.getPk()))
+						.uniqueResult();
+				if (oldTranscripthasGene == null) {
+					session.save(transcripthasGene);
+				}
+
+				target.setTranscript_pk(transcript.getPk());
+				session.save(target);
+				session.flush(); // to get the PK
+			}
+
 		}
-		
-		}
-		
+
 		for (Disease disease: diseaseList){
 
 			if(disease != null){
-			
-			Object oldDisease = session.createCriteria(Disease.class)
-					.add( Restrictions.eq("name", disease.getName()) )
-					.uniqueResult();
-			if (oldDisease==null) {
-				session.save(disease);
-				session.flush();  // to get the PK
-				System.out.println("Salvo ESTE disease:");
-				System.out.println(snp);
 
-			} else {
-				Disease diseaseToUpdate = (Disease) oldDisease;
-				diseaseToUpdate.update(disease);
-				session.update(diseaseToUpdate);
-				disease = diseaseToUpdate;
-				System.out.println("Recupero ESTE disease:");
-				System.out.println(snp);
+				Object oldDisease = session.createCriteria(Disease.class)
+						.add( Restrictions.eq("name", disease.getName()) )
+						.uniqueResult();
+				if (oldDisease==null) {
+					session.save(disease);
+					session.flush();  // to get the PK
 
+				} else {
+					Disease diseaseToUpdate = (Disease) oldDisease;
+					diseaseToUpdate.update(disease);
+					session.update(diseaseToUpdate);
+					disease = diseaseToUpdate;
+
+				}
+
+				//Relaciona SNP con disease
+
+				if(snp !=null){
+
+					SnpHasDisease snpHasDisease = new SnpHasDisease(snp.getPk(), disease.getPk());
+					Object oldSnphasDisease = session.createCriteria(SnpHasDisease.class)
+							.add( Restrictions.eq("snpPk", snp.getPk()) )
+							.add( Restrictions.eq("diseasePk", disease.getPk()) )
+							.uniqueResult();
+					if (oldSnphasDisease==null) {
+						session.save(snpHasDisease);
+					}
+
+					ed.setDiseasePk(disease.getPk());
+
+				}
 			}
 
-			//Relaciona SNP con disease
-			
-			if(snp !=null){
-
-			SnpHasDisease snpHasDisease = new SnpHasDisease(snp.getPk(), disease.getPk());
-			Object oldSnphasDisease = session.createCriteria(SnpHasDisease.class)
-					.add( Restrictions.eq("snpPk", snp.getPk()) )
-					.add( Restrictions.eq("diseasePk", disease.getPk()) )
-					.uniqueResult();
-			if (oldSnphasDisease==null) {
-				session.save(snpHasDisease);
-			}
-
-			ed.setDiseasePk(disease.getPk());
-
-			}
-			}
-		
 		}
-		
-		
+
+
 		if(mirna !=null){
 
-		Object oldMiRna = session.createCriteria(MiRna.class)
-				.add( Restrictions.eq("name", mirna.getName()) )
-				.uniqueResult();
-		if (oldMiRna==null) {
-			session.save(mirna);
-			session.flush();  // to get the PK
-		} else {
+			Object oldMiRna = session.createCriteria(MiRna.class)
+					.add( Restrictions.eq("name", mirna.getName()) )
+					.uniqueResult();
+			if (oldMiRna==null) {
+				session.save(mirna);
+				session.flush();  // to get the PK
+			} else {
 
-			MiRna mirnaToUpdate = (MiRna) oldMiRna;
-			mirnaToUpdate.update(mirna);
-			session.update(mirnaToUpdate);
-			mirna = mirnaToUpdate;
-		}
+				MiRna mirnaToUpdate = (MiRna) oldMiRna;
+				mirnaToUpdate.update(mirna);
+				session.update(mirnaToUpdate);
+				mirna = mirnaToUpdate;
+			}
 
 
-		// Relaciona interaction data y expression data/gene/mirna
-		// Relaciona expressiondata y mirna
-		// Relaciona expressiondata y disease
-		
-		id.setMirna_pk(mirna.getPk());
-		id.setGene_pk(gene.getPk());
-		id.setTarget_pk(target.getPk());
-		session.save(id);
-		session.flush();
+			// Relaciona interaction data y expression data/gene/mirna
+			// Relaciona expressiondata y mirna
+			// Relaciona expressiondata y disease
 
-		ed.setMirnaPk(mirna.getPk());
-		ed.setInteraction_data_pk(id.getPk()); // Fixed
-		session.save(ed);
-		
+			id.setMirna_pk(mirna.getPk());
+			id.setGene_pk(gene.getPk());
+			id.setTarget_pk(target.getPk());
+			session.save(id);
+			session.flush();
+
+			ed.setMirnaPk(mirna.getPk());
+			ed.setInteraction_data_pk(id.getPk()); // Fixed
+			session.save(ed);
+
 		}
 	}
-	
-	
-	
+
+
+
 	public static void main(String[] args) throws Exception {
-		
+
 		MiRdSNP4 miRdSNP4= new MiRdSNP4();
 		miRdSNP4.insertIntoSQLModel();
-		
-		
+
+
 	}
 
 }

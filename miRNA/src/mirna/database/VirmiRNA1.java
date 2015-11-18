@@ -120,7 +120,7 @@ public class VirmiRNA1 extends NewMirnaDatabase{
 		String mirna_seq = nullifyField(rs.getString("mirna_seq"));
 		String length = nullifyField(rs.getString("length"));
 		String gc_proportion = nullifyField(rs.getString("gc_proportion"));
-		String arm = nullifyField(rs.getString("arm"));
+		String arm = nullifyField(rs.getString("arm")); //TODO:arm for mirna.
 		String pre_mirna = nullifyField(rs.getString("pre_mirna"));
 		String pre_mirna_seq = nullifyField(rs.getString("pre_mirna_seq"));
 		String cell_line = nullifyField(rs.getString("cell_line"));
@@ -148,12 +148,6 @@ public class VirmiRNA1 extends NewMirnaDatabase{
 		sequence1.setLength(length);
 		if (!createdObject(mirna_seq,gc_proportion,length)) {
 			sequence1 = null;
-		}
-
-		Gene gene = new Gene();
-		gene.setArm(arm);
-		if (!createdObject(arm)) {
-			gene = null;
 		}
 
 
@@ -220,25 +214,24 @@ public class VirmiRNA1 extends NewMirnaDatabase{
 				organism = organismToUpdate;
 			}
 
-
-			// Inserta Hairpin (o recupera su id. si ya existe)
-
-			if(hairpin !=null){
-				Object oldHairpin = session.createCriteria(Hairpin.class)
-						.add(Restrictions.eq("name", hairpin.getName()))
-						.uniqueResult();
-				if (oldHairpin == null) {
-					session.save(hairpin);
-					session.flush(); // to get the PK
-				} else {
-					Hairpin hairpinToUpdate = (Hairpin) oldHairpin;
-					hairpinToUpdate.update(hairpin);
-					session.update(hairpinToUpdate);
-					hairpin = hairpinToUpdate;
-				}
-			}
-
 		}
+		// Inserta Hairpin (o recupera su id. si ya existe)
+
+		if(hairpin !=null){
+			Object oldHairpin = session.createCriteria(Hairpin.class)
+					.add(Restrictions.eq("name", hairpin.getName()))
+					.uniqueResult();
+			if (oldHairpin == null) {
+				session.save(hairpin);
+				session.flush(); // to get the PK
+			} else {
+				Hairpin hairpinToUpdate = (Hairpin) oldHairpin;
+				hairpinToUpdate.update(hairpin);
+				session.update(hairpinToUpdate);
+				hairpin = hairpinToUpdate;
+			}
+		}
+
 
 
 		if(mirna !=null){
@@ -258,35 +251,21 @@ public class VirmiRNA1 extends NewMirnaDatabase{
 			}
 
 			if(sequence1 !=null){
-			MirnaHasSequence mirnaHasSequence =
-					new MirnaHasSequence(mirna.getPk(), sequence1.getPk());
+				MirnaHasSequence mirnaHasSequence =
+						new MirnaHasSequence(mirna.getPk(), sequence1.getPk());
 
-			// Relaciona Sequence con Mirna (si no lo estaba ya)
-			Object oldMirnaHasSequence = session.createCriteria(MirnaHasSequence.class)
-					.add( Restrictions.eq("mirnaPk", mirna.getPk()) )
-					.add( Restrictions.eq("sequencePk", sequence1.getPk()) )
-					.uniqueResult();
-			if (oldMirnaHasSequence==null) {
-				session.save(mirnaHasSequence);
-			}
+				// Relaciona Sequence con Mirna (si no lo estaba ya)
+				Object oldMirnaHasSequence = session.createCriteria(MirnaHasSequence.class)
+						.add( Restrictions.eq("mirnaPk", mirna.getPk()) )
+						.add( Restrictions.eq("sequencePk", sequence1.getPk()) )
+						.uniqueResult();
+				if (oldMirnaHasSequence==null) {
+					session.save(mirnaHasSequence);
+				}
 			}
 		}
 		// Inserta Gene (o recupera su id. si ya existe)
-		if (gene!=null) {
-			gene.setOrganism_pk(organism.getPk());
-			Object oldGene = session.createCriteria(Gene.class)
-					.add(Restrictions.eq("name", gene.getName()))
-					.uniqueResult();
-			if (oldGene == null) {
-				session.save(gene);
-				session.flush(); // to get the PK
-			} else {
-				Gene geneToUpdate = (Gene) oldGene;
-				geneToUpdate.update(gene);
-				session.update(geneToUpdate);
-				gene = geneToUpdate;
-			}
-		}
+		
 
 		if(sequence2 !=null){
 			Object oldSequence2 = session.createCriteria(Sequence.class)
@@ -328,28 +307,27 @@ public class VirmiRNA1 extends NewMirnaDatabase{
 					session.update(pubmedDocToUpdate);
 					pubmedDoc = pubmedDocToUpdate;
 				}
-			}
 
-			if(pubmedDoc !=null && mirna !=null){
 
-				// Relaciona mirna con ExpressionData
+				if(mirna !=null){
 
-				MirnaHasPubmedDocument mirnaHasPubmedDocument =
-						new MirnaHasPubmedDocument(mirna.getPk(), pubmedDoc.getPk());
+					// Relaciona mirna con ExpressionData
 
-				// Relaciona PubmedDocument con ExpressionData
+					MirnaHasPubmedDocument mirnaHasPubmedDocument =
+							new MirnaHasPubmedDocument(mirna.getPk(), pubmedDoc.getPk());
 
-				// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
-				Object oldMirnaHasPubmedDocument = session.createCriteria(MirnaHasPubmedDocument.class)
-						.add( Restrictions.eq("mirnaPk", mirna.getPk()) )
-						.add( Restrictions.eq("pubmedDocumentPk", pubmedDoc.getPk()) )
-						.uniqueResult();
-				if (oldMirnaHasPubmedDocument==null) {
-					session.save(mirnaHasPubmedDocument);
+					// Relaciona PubmedDocument con ExpressionData
+
+					// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
+					Object oldMirnaHasPubmedDocument = session.createCriteria(MirnaHasPubmedDocument.class)
+							.add( Restrictions.eq("mirnaPk", mirna.getPk()) )
+							.add( Restrictions.eq("pubmedDocumentPk", pubmedDoc.getPk()) )
+							.uniqueResult();
+					if (oldMirnaHasPubmedDocument==null) {
+						session.save(mirnaHasPubmedDocument);
+					}
 				}
-			}
 
-			if(pubmedDoc !=null){
 
 				ExpressionDataHasPubmedDocument expresDataHasPubmedDocument =
 						new ExpressionDataHasPubmedDocument(expressiondata.getPk(), pubmedDoc.getPk());
@@ -375,43 +353,43 @@ public class VirmiRNA1 extends NewMirnaDatabase{
 
 				}
 			}
+		}
+
+		if(hairpin !=null && sequence2 != null){
+
+			HairpinHasSequence hairpinHasSequence = 
+					new HairpinHasSequence(hairpin.getPk(), sequence2.getPk());
 
 
-			if(hairpin !=null && sequence2 != null){
+			// Relaciona Organism con Mirna (si no lo estaba ya)
+			Object oldHairpinHasSequence = session.createCriteria(HairpinHasSequence.class)
+					.add( Restrictions.eq("hairpin_pk", hairpin.getPk()) )
+					.add( Restrictions.eq("sequence_pk", sequence2.getPk()) )
+					.uniqueResult();
+			if (oldHairpinHasSequence==null) {
+				session.save(hairpinHasSequence);
 
-				HairpinHasSequence hairpinHasSequence = 
-						new HairpinHasSequence(hairpin.getPk(), sequence2.getPk());
-
-
-				// Relaciona Organism con Mirna (si no lo estaba ya)
-				Object oldHairpinHasSequence = session.createCriteria(HairpinHasSequence.class)
-						.add( Restrictions.eq("hairpin_pk", hairpin.getPk()) )
-						.add( Restrictions.eq("sequence_pk", sequence2.getPk()) )
-						.uniqueResult();
-				if (oldHairpinHasSequence==null) {
-					session.save(hairpinHasSequence);
-
-				}
 			}
+		}
 
-			// Relaciona hairpin con mirna.
+		// Relaciona hairpin con mirna.
 
-			if(hairpin !=null && mirna != null){
-				
-				MirnaHasHairpin mirnaHasHairpin = 
-						new MirnaHasHairpin(mirna.getPk(), hairpin.getPk());
+		if(hairpin !=null && mirna != null){
 
-				Object oldMirnaHasHairpin = session.createCriteria(MirnaHasHairpin.class)
-						.add( Restrictions.eq("mirna_pk", mirna.getPk()) )
-						.add( Restrictions.eq("hairpin_pk", hairpin.getPk()) )
-						.uniqueResult();
-				if (oldMirnaHasHairpin==null) {
-					session.save(mirnaHasHairpin);
+			MirnaHasHairpin mirnaHasHairpin = 
+					new MirnaHasHairpin(mirna.getPk(), hairpin.getPk());
 
-				}
+			Object oldMirnaHasHairpin = session.createCriteria(MirnaHasHairpin.class)
+					.add( Restrictions.eq("mirna_pk", mirna.getPk()) )
+					.add( Restrictions.eq("hairpin_pk", hairpin.getPk()) )
+					.uniqueResult();
+			if (oldMirnaHasHairpin==null) {
+				session.save(mirnaHasHairpin);
+
 			}
+		}
 
-		}	
+
 	}
 
 	public static void main(String[] args) throws Exception {
