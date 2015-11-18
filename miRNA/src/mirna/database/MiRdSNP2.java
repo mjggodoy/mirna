@@ -108,7 +108,7 @@ public class MiRdSNP2 extends MiRdSNP {
 
 	public void processRow(Session session, ResultSet rs) throws Exception {
 
-		String ref_seq = nullifyField(rs.getString("refseq").toLowerCase().trim());
+		String ref_seq = nullifyField(rs.getString("refseq"));
 		String gene_name = nullifyField(rs.getString("gene").toLowerCase().trim());
 		String snp_id = nullifyField(rs.getString("snp_id").toLowerCase().trim());
 		String mirna_name = nullifyField(rs.getString("mirna").toLowerCase().trim());
@@ -116,10 +116,12 @@ public class MiRdSNP2 extends MiRdSNP {
 
 		String[] diseaseTokens = StringUtils.splitPreserveAllTokens(disease_name, "|");
 		List<Disease> diseaseList = new ArrayList<Disease>();
-		for (String token : diseaseTokens) {
-			Disease disease = new Disease();
-			disease.setName(token);
-			diseaseList.add(disease);	
+		if (diseaseTokens!=null) {
+			for (String token : diseaseTokens) {
+				Disease disease = new Disease();
+				disease.setName(token);
+				diseaseList.add(disease);	
+			}
 		}
 
 		Gene gene = new Gene();
@@ -138,18 +140,22 @@ public class MiRdSNP2 extends MiRdSNP {
 
 		String[] snpTokens = StringUtils.splitPreserveAllTokens(snp_id, "|");
 		List<SNP> snpList = new ArrayList<SNP>();
-		for (String token : snpTokens) {
-			SNP snp = new SNP();
-			snp.setSnp_id(token);
-			snpList.add(snp);
+		if (snpTokens!=null) {
+			for (String token : snpTokens) {
+				SNP snp = new SNP();
+				snp.setSnp_id(token);
+				snpList.add(snp);
+			}
 		}
 		
 		String[] mirnaTokens = StringUtils.splitPreserveAllTokens(mirna_name, "|");
 		List<MiRna> mirnaList = new ArrayList<MiRna>();
-		for (String token : mirnaTokens) {
-			MiRna mirna_list = new MiRna();
-			mirna_list.setName(token);
-			mirnaList.add(mirna_list);
+		if (mirnaTokens!=null) {
+			for (String token : mirnaTokens) {
+				MiRna mirna_list = new MiRna();
+				mirna_list.setName(token);
+				mirnaList.add(mirna_list);
+			}
 		}
 
 		// Insertamos gene
@@ -253,7 +259,7 @@ public class MiRdSNP2 extends MiRdSNP {
 		// Relacionamos SNPs con gene y con Diseases
 		for (SNP snp : snpList) {
 			SnpHasGene snpHasGene = new SnpHasGene(snp.getPk(), gene.getPk());
-			Object oldSnphasGene = session.createCriteria(SnpHasDisease.class)
+			Object oldSnphasGene = session.createCriteria(SnpHasGene.class)
 					.add( Restrictions.eq("snpPk", snp.getPk()) )
 					.add( Restrictions.eq("genePk", gene.getPk()) )
 					.uniqueResult();
