@@ -97,11 +97,11 @@ public class MiRdSNP5 extends MiRdSNP {
 
 	public void processRow(Session session, ResultSet rs) throws Exception{
 
-		String chromosome = rs.getString("chromosome").toLowerCase().trim();
-		String position = rs.getString("start").toLowerCase().trim();
-		String snp_name = rs.getString("snp").toLowerCase().trim();
-		String disease_name = rs.getString("disease").toLowerCase().trim();
-		String orientation = rs.getString("orientation").toLowerCase().trim();
+		String chromosome = nullifyField(rs.getString("chromosome").toLowerCase().trim());
+		String position = nullifyField(rs.getString("start").toLowerCase().trim());
+		String snp_name = nullifyField(rs.getString("snp").toLowerCase().trim());
+		String disease_name = nullifyField(rs.getString("disease").toLowerCase().trim());
+		String orientation = nullifyField(rs.getString("orientation").toLowerCase().trim());
 
 
 		String[] diseaseTokens = StringUtils.splitPreserveAllTokens(disease_name, "|");
@@ -109,9 +109,15 @@ public class MiRdSNP5 extends MiRdSNP {
 
 		for (String token : diseaseTokens) {
 
+
 			Disease disease = new Disease();
 			disease.setName(token);
 			diseaseList.add(disease);
+			if (!createdObject(token)){	
+				disease = null;
+			}
+
+
 		}
 
 		SNP snp = new SNP();
@@ -119,62 +125,71 @@ public class MiRdSNP5 extends MiRdSNP {
 		snp.setSnp_id(snp_name);
 		snp.setPosition(position);
 		snp.setOrientation(orientation);
+		if (!createdObject(chromosome, snp_name, position, orientation)){	
+			snp = null;
+		}
 
-
-		Object oldSnp = session.createCriteria(SNP.class)
-				.add( Restrictions.eq("snp_id", snp.getSnp_id()))
-				.uniqueResult();
-		if (oldSnp==null) {
-			session.save(snp);
-			session.flush();  // to get the PK
-		} else {
-			SNP snpToUpdate = (SNP) oldSnp;
-			snpToUpdate.update(snp);
-			session.update(snpToUpdate);
-			snp = snpToUpdate;
+		if(snp !=null){
+			Object oldSnp = session.createCriteria(SNP.class)
+					.add( Restrictions.eq("snp_id", snp.getSnp_id()))
+					.uniqueResult();
+			if (oldSnp==null) {
+				session.save(snp);
+				session.flush();  // to get the PK
+			} else {
+				SNP snpToUpdate = (SNP) oldSnp;
+				snpToUpdate.update(snp);
+				session.update(snpToUpdate);
+				snp = snpToUpdate;
+			}
 		}
 
 		for(Disease disease : diseaseList){
 
-			Object oldDisease = session.createCriteria(Disease.class)
-					.add( Restrictions.eq("name", disease.getName()) )
-					.uniqueResult();
-			if (oldDisease==null) {
-				session.save(disease);
-				session.flush();  // to get the PK
-				System.out.println("Salvo ESTE disease:");
-				System.out.println(snp);
+			if(disease != null){
 
-			} else {
-				Disease diseaseToUpdate = (Disease) oldDisease;
-				diseaseToUpdate.update(disease);
-				session.update(diseaseToUpdate);
-				disease = diseaseToUpdate;
-				System.out.println("Recupero ESTE disease:");
-				System.out.println(snp);
+				Object oldDisease = session.createCriteria(Disease.class)
+						.add( Restrictions.eq("name", disease.getName()) )
+						.uniqueResult();
+				if (oldDisease==null) {
+					session.save(disease);
+					session.flush();  // to get the PK
+					System.out.println("Salvo ESTE disease:");
+					System.out.println(snp);
 
+				} else {
+					Disease diseaseToUpdate = (Disease) oldDisease;
+					diseaseToUpdate.update(disease);
+					session.update(diseaseToUpdate);
+					disease = diseaseToUpdate;
+					System.out.println("Recupero ESTE disease:");
+					System.out.println(snp);
+
+				}
+
+				if(snp !=null){
+
+					SnpHasDisease snpHasDisease = new SnpHasDisease(snp.getPk(), disease.getPk());
+					Object oldSnphasDisease = session.createCriteria(SnpHasDisease.class)
+							.add( Restrictions.eq("snpPk", snp.getPk()) )
+							.add( Restrictions.eq("diseasePk", disease.getPk()) )
+							.uniqueResult();
+					if (oldSnphasDisease==null) {
+						session.save(snpHasDisease);
+					}
+				}
 			}
-
-			SnpHasDisease snpHasDisease = new SnpHasDisease(snp.getPk(), disease.getPk());
-			Object oldSnphasDisease = session.createCriteria(SnpHasDisease.class)
-					.add( Restrictions.eq("snpPk", snp.getPk()) )
-					.add( Restrictions.eq("diseasePk", disease.getPk()) )
-					.uniqueResult();
-			if (oldSnphasDisease==null) {
-				session.save(snpHasDisease);
-			}
-
 		}
 
-
 	}
-	
+
+
 	public static void main(String[] args) throws Exception {
-		
+
 		MiRdSNP5  miRdSNP5= new MiRdSNP5();
 		miRdSNP5.insertIntoSQLModel();
-		
+
 	}
-	
-	
+
+
 }
