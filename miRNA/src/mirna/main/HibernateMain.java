@@ -19,7 +19,7 @@ public class HibernateMain {
 		
         MiRna mirna = new MiRna();
         mirna.setName("hibernate4");
-        mirna.setAccessionNumber("numero");
+        //mirna.setAccessionNumber("numero");
         
         //start transaction
         Transaction tx = session.beginTransaction();

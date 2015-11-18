@@ -70,7 +70,7 @@ public class ExtraeTodoBruto {
 		// construct {?s ?p ?o} where ?s ?p ?o limit 1000 offset 1000
 
 		int offset = 0;
-		boolean ended = false;
+		//boolean ended = false;
 		int count = 1;
 
 //		while (!ended) {
@@ -126,7 +126,7 @@ public class ExtraeTodoBruto {
 	
 			long nresults = model.size();
 			if (nresults < limit) {
-				ended = true;
+				//ended = true;
 			} else {
 				offset += limit;
 			}

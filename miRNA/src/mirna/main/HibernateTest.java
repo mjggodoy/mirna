@@ -2,7 +2,6 @@ package mirna.main;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
 import mirna.beans.Gene;
@@ -19,7 +18,8 @@ public class HibernateTest {
 			Session session = sessionFactory.getCurrentSession();
 			
 			//start transaction
-			Transaction tx = session.beginTransaction();
+			//Transaction tx = 
+					session.beginTransaction();
 			
 			Object oldGene = session.createCriteria(Gene.class)
 					.add(Restrictions.eq("name", "RETSAT"))

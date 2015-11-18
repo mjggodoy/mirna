@@ -12,13 +12,11 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-import mirna.beans.ExpressionData;
 import mirna.beans.Hairpin;
 import mirna.beans.MiRna;
 import mirna.beans.Organism;
 import mirna.beans.Sequence;
 import mirna.beans.nToM.HairpinHasSequence;
-import mirna.beans.nToM.MatureHasSequence;
 import mirna.beans.nToM.MirnaHasHairpin;
 import mirna.beans.nToM.MirnaHasOrganism;
 import mirna.exception.MiRnaException;
