@@ -327,9 +327,6 @@ public class MiRdSNP4 extends MiRdSNP {
 		}
 	}
 	
-	protected String nullifyField(String field) {
-		return "".equals(field.trim()) || "n_a".equals(field.trim()) || "_".equals(field.trim()) ? null : field.trim();	}
-
 	
 	
 	public static void main(String[] args) throws Exception {
