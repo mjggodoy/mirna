@@ -103,21 +103,12 @@ public class MiRdSNP5 extends MiRdSNP {
 		String disease_name = nullifyField(rs.getString("disease").toLowerCase().trim());
 		String orientation = nullifyField(rs.getString("orientation").toLowerCase().trim());
 
-
 		String[] diseaseTokens = StringUtils.splitPreserveAllTokens(disease_name, "|");
 		List<Disease> diseaseList = new ArrayList<Disease>();
-
 		for (String token : diseaseTokens) {
-
-
 			Disease disease = new Disease();
 			disease.setName(token);
 			diseaseList.add(disease);
-			if (!createdObject(token)){	
-				disease = null;
-			}
-
-
 		}
 
 		SNP snp = new SNP();
@@ -146,50 +137,40 @@ public class MiRdSNP5 extends MiRdSNP {
 
 		for(Disease disease : diseaseList){
 
-			if(disease != null){
+			Object oldDisease = session.createCriteria(Disease.class)
+					.add( Restrictions.eq("name", disease.getName()) )
+					.uniqueResult();
+			if (oldDisease==null) {
+				session.save(disease);
+				session.flush();  // to get the PK
+				//System.out.println("Salvo ESTE disease:");
+				//System.out.println(snp);
 
-				Object oldDisease = session.createCriteria(Disease.class)
-						.add( Restrictions.eq("name", disease.getName()) )
+			} else {
+				Disease diseaseToUpdate = (Disease) oldDisease;
+				diseaseToUpdate.update(disease);
+				session.update(diseaseToUpdate);
+				disease = diseaseToUpdate;
+				//System.out.println("Recupero ESTE disease:");
+				//System.out.println(snp);
+			}
+
+			if(snp !=null){
+				SnpHasDisease snpHasDisease = new SnpHasDisease(snp.getPk(), disease.getPk());
+				Object oldSnphasDisease = session.createCriteria(SnpHasDisease.class)
+						.add( Restrictions.eq("snpPk", snp.getPk()) )
+						.add( Restrictions.eq("diseasePk", disease.getPk()) )
 						.uniqueResult();
-				if (oldDisease==null) {
-					session.save(disease);
-					session.flush();  // to get the PK
-					System.out.println("Salvo ESTE disease:");
-					System.out.println(snp);
-
-				} else {
-					Disease diseaseToUpdate = (Disease) oldDisease;
-					diseaseToUpdate.update(disease);
-					session.update(diseaseToUpdate);
-					disease = diseaseToUpdate;
-					System.out.println("Recupero ESTE disease:");
-					System.out.println(snp);
-
-				}
-
-				if(snp !=null){
-
-					SnpHasDisease snpHasDisease = new SnpHasDisease(snp.getPk(), disease.getPk());
-					Object oldSnphasDisease = session.createCriteria(SnpHasDisease.class)
-							.add( Restrictions.eq("snpPk", snp.getPk()) )
-							.add( Restrictions.eq("diseasePk", disease.getPk()) )
-							.uniqueResult();
-					if (oldSnphasDisease==null) {
-						session.save(snpHasDisease);
-					}
+				if (oldSnphasDisease==null) {
+					session.save(snpHasDisease);
 				}
 			}
 		}
-
 	}
-
 
 	public static void main(String[] args) throws Exception {
-
 		MiRdSNP5  miRdSNP5= new MiRdSNP5();
 		miRdSNP5.insertIntoSQLModel();
-
 	}
-
 
 }
