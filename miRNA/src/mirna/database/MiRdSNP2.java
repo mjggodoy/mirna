@@ -209,7 +209,8 @@ public class MiRdSNP2 extends MiRdSNP {
 		}
 		
 		// Insertamos diseases
-		for (Disease disease : diseaseList) {
+		for (int i=0; i<diseaseList.size(); i++) {
+			Disease disease = diseaseList.get(i);
 			Object oldDisease = session.createCriteria(Disease.class)
 					.add( Restrictions.eq("name", disease.getName()) )
 					.uniqueResult();
@@ -220,12 +221,13 @@ public class MiRdSNP2 extends MiRdSNP {
 				Disease diseaseToUpdate = (Disease) oldDisease;
 				diseaseToUpdate.update(disease);
 				session.update(diseaseToUpdate);
-				disease = diseaseToUpdate;
+				diseaseList.set(i, diseaseToUpdate);
 			}
 		}
 		
 		// Insertamos SNPs
-		for(SNP snp : snpList){
+		for(int i=0; i<snpList.size(); i++) {
+			SNP snp = snpList.get(i);
 			Object oldSnp = session.createCriteria(SNP.class)
 					.add( Restrictions.eq("snp_id", snp.getSnp_id()))
 					.uniqueResult();
@@ -236,12 +238,13 @@ public class MiRdSNP2 extends MiRdSNP {
 				SNP snpToUpdate = (SNP) oldSnp;
 				snpToUpdate.update(snp);
 				session.update(snpToUpdate);
-				snp = snpToUpdate;
+				snpList.set(i, snpToUpdate);
 			}
 		}
 		
 		// Insertamos mirnas
-		for (MiRna mirna : mirnaList) {
+		for (int i=0; i<mirnaList.size(); i++) {
+			MiRna mirna = mirnaList.get(i);
 			Object oldMiRna = session.createCriteria(MiRna.class)
 					.add( Restrictions.eq("name", mirna.getName()) )
 					.uniqueResult();
@@ -252,7 +255,7 @@ public class MiRdSNP2 extends MiRdSNP {
 				MiRna miRnaToUpdate = (MiRna) oldMiRna;
 				miRnaToUpdate.update(mirna);
 				session.update(miRnaToUpdate);
-				mirna = miRnaToUpdate;
+				mirnaList.set(i, miRnaToUpdate);
 			}
 		}
 		
