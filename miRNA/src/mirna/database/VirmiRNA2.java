@@ -248,6 +248,10 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 
 		Protein protein = new Protein();
 		protein.setUniprot_id(uniprot);
+		if (!createdObject(uniprot)) {
+			protein = null;
+		}
+
 
 
 		Transcript transcript = new Transcript();
@@ -378,11 +382,6 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 			}
 
 		}
-
-		
-
-
-
 
 		if (sequence2!=null) {
 			Object oldSequence2 = session.createCriteria(Sequence.class)
