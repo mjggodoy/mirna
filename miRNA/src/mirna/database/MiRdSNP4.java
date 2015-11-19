@@ -116,7 +116,7 @@ public class MiRdSNP4 extends MiRdSNP {
 	public void processRow(Session session, ResultSet rs) throws Exception{
 
 		String gene_name  = nullifyField(rs.getString("gene").toLowerCase().trim());
-		String ref_seq = nullifyField(rs.getString("refseq").toLowerCase().trim());
+		String ref_seq = nullifyField(rs.getString("refseq"));
 		String mirna_name = nullifyField(rs.getString("miR").toLowerCase().trim());
 		String snp_id = nullifyField(rs.getString("snp").toLowerCase().trim());
 		String disease_name = nullifyField(rs.getString("diseases").toLowerCase().trim());
@@ -241,7 +241,7 @@ public class MiRdSNP4 extends MiRdSNP {
 			}
 
 			SnpHasGene snpHasGene = new SnpHasGene(snp.getPk(), gene.getPk());
-			Object oldSnphasGene = session.createCriteria(SnpHasDisease.class)
+			Object oldSnphasGene = session.createCriteria(SnpHasGene.class)
 					.add( Restrictions.eq("snpPk", snp.getPk()) )
 					.add( Restrictions.eq("genePk", gene.getPk()) )
 					.uniqueResult();

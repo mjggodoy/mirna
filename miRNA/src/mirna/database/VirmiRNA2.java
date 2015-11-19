@@ -166,7 +166,7 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 
 		Hairpin hairpin = new Hairpin();
 
-		if(accesion_number.contains("MI")){
+		if(accesion_number.startsWith("MI")){
 		hairpin.setAccession_number(accesion_number);
 		}
 		
