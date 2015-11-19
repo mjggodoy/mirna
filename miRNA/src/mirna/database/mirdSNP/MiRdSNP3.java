@@ -139,8 +139,8 @@ public class MiRdSNP3 extends NewMirnaDatabase {
 		String mirna_name = rs.getString("miR").toLowerCase().trim();
 		String snp_id = rs.getString("snp").toLowerCase().trim();
 		String disease_name = rs.getString("diseases").toLowerCase().trim();
-		String distance = rs.getString("distance").toLowerCase().trim();// I'm not going to use this field!
-
+		@SuppressWarnings("unused") // I'm not going to use this field!
+		String distance = rs.getString("distance").toLowerCase().trim();
 
 		String[] diseaseTokens = StringUtils.splitPreserveAllTokens(disease_name, ",");
 		List<Disease> diseaseList = new ArrayList<Disease>();
@@ -151,7 +151,6 @@ public class MiRdSNP3 extends NewMirnaDatabase {
 			disease.setName(token);
 			diseaseList.add(disease);
 		}
-
 
 		Transcript transcript = new Transcript();
 		transcript.setTranscriptID(ref_seq);
@@ -173,7 +172,6 @@ public class MiRdSNP3 extends NewMirnaDatabase {
 
 		ExpressionData ed = new ExpressionData();
 		ed.setProvenance("miRdSNP");
-
 
 		Object oldGene = session.createCriteria(Gene.class)
 				.add( Restrictions.eq("name", gene.getName()) )
@@ -256,7 +254,6 @@ public class MiRdSNP3 extends NewMirnaDatabase {
 
 		for (Disease disease : diseaseList) {
 
-
 			Object oldDisease = session.createCriteria(Disease.class)
 					.add( Restrictions.eq("name", disease.getName()) )
 					.uniqueResult();
@@ -272,7 +269,6 @@ public class MiRdSNP3 extends NewMirnaDatabase {
 				disease = diseaseToUpdate;
 				System.out.println("Recupero ESTE disease:");
 				System.out.println(snp);
-
 				
 				SnpHasDisease snpHasDisease = new SnpHasDisease(snp.getPk(), disease.getPk());
 				Object oldSnphasDisease = session.createCriteria(SnpHasDisease.class)
@@ -288,7 +284,6 @@ public class MiRdSNP3 extends NewMirnaDatabase {
 				id.setTarget_pk(target.getPk());
 				session.save(id);
 				session.flush(); // to get the ed pk
-
 				
 				ed.setMirnaPk(mirna.getPk());
 				ed.setDiseasePk(disease.getPk());

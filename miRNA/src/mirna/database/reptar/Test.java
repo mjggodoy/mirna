@@ -19,7 +19,7 @@ public class Test extends RepTar_human {
 	protected void processRow(Session session, ResultSet rs) throws Exception {
 		
 		
-		String gene_pk = rs.getString("gene_pk");
+		//String gene_pk = rs.getString("gene_pk");
 		String transcript_pk = rs.getString("transcript_pk");
 		String name = rs.getString("gene_accesion");
 		Transcript t = new Transcript();
