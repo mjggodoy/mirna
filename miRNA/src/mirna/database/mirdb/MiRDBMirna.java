@@ -1,21 +1,10 @@
 package mirna.database.mirdb;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.Statement;
 
-import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
 
-import mirna.beans.InteractionData;
 import mirna.beans.MiRna;
-import mirna.beans.Target;
-import mirna.beans.Transcript;
-import mirna.database.NewMirnaDatabase;
 import mirna.exception.MiRnaException;
 
 

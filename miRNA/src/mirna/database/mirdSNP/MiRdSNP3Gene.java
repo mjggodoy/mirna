@@ -4,7 +4,6 @@ import java.sql.ResultSet;
 import org.hibernate.Session;
 
 import mirna.beans.Gene;
-import mirna.beans.Transcript;
 import mirna.exception.MiRnaException;
 
 /**
