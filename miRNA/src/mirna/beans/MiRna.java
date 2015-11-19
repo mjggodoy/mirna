@@ -98,10 +98,5 @@ public class MiRna extends ModelClass {
 		return "MiRna [name=" + name + ", arm=" + arm + ", resource="
 				+ resource + "]";
 	}
-
-	
-
-
-
 	
 }
