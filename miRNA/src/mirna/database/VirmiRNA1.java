@@ -120,7 +120,7 @@ public class VirmiRNA1 extends NewMirnaDatabase{
 		String mirna_seq = nullifyField(rs.getString("mirna_seq"));
 		String length = nullifyField(rs.getString("length"));
 		String gc_proportion = nullifyField(rs.getString("gc_proportion"));
-		String arm = nullifyField(rs.getString("arm")); //TODO:arm for mirna.
+		String arm = nullifyField(rs.getString("arm")); 
 		String pre_mirna = nullifyField(rs.getString("pre_mirna"));
 		String pre_mirna_seq = nullifyField(rs.getString("pre_mirna_seq"));
 		String cell_line = nullifyField(rs.getString("cell_line"));
@@ -138,11 +138,12 @@ public class VirmiRNA1 extends NewMirnaDatabase{
 
 		MiRna mirna = new MiRna();
 		mirna.setName(mirna_name);
-		if (!createdObject(mirna_name)) {
+		mirna.setArm(arm);
+		if (!createdObject(mirna_name, arm)) {
 			mirna = null;
 		}
 
-		Sequence sequence1 = new Sequence();
+		Sequence sequence1 = new Sequence(); 
 		sequence1.setSequence(mirna_seq);
 		sequence1.setGC_proportion(gc_proportion);
 		sequence1.setLength(length);
