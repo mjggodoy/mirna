@@ -120,7 +120,7 @@ public class VirmiRNA1 extends NewMirnaDatabase{
 		String length = nullifyField(rs.getString("length"));
 		String gc_proportion = nullifyField(rs.getString("gc_proportion"));
 		String arm = nullifyField(rs.getString("arm")); 
-		String pre_mirna = nullifyField(rs.getString("pre_mirna"));
+		String pre_mirna = nullifyField(rs.getString("pre_mirna").toLowerCase());
 		String pre_mirna_seq = nullifyField(rs.getString("pre_mirna_seq"));
 		String cell_line = nullifyField(rs.getString("cell_line"));
 		String method = nullifyField(rs.getString("method"));
@@ -169,10 +169,12 @@ public class VirmiRNA1 extends NewMirnaDatabase{
 
 		String[] pubmedDocTokens = StringUtils.splitPreserveAllTokens(pubmed, ",");
 		List<PubmedDocument> pubmedList = new ArrayList<PubmedDocument>();
-		for(String token: pubmedDocTokens){
-			PubmedDocument pubmedDocument = new PubmedDocument();
-			pubmedDocument.setId(token);
-			pubmedList.add(pubmedDocument);
+		if (!pubmed.startsWith("WO")) {
+			for(String token: pubmedDocTokens){
+				PubmedDocument pubmedDocument = new PubmedDocument();
+				pubmedDocument.setId(token.trim());
+				pubmedList.add(pubmedDocument);
+			}
 		}
 
 		// Inserto la sequence de Mirna
