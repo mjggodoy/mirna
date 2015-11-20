@@ -235,11 +235,8 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 		expressiondata.setProvenance("VirmiRNA");
 
 		Gene gene = new Gene();
-		
-		if(target1.equals("2C-coding region") || target1.equals("3' UTR")
-				|| target1.equals("5' UTR")){
 		gene.setName(target1);
-		}
+		
 		
 		if (!createdObject(target1)) {
 			gene = null;
@@ -251,8 +248,6 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 		if (!createdObject(uniprot)) {
 			protein = null;
 		}
-
-
 
 		Transcript transcript = new Transcript();
 
