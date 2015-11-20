@@ -163,6 +163,7 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 		String target_resource = nullifyField(rs.getString("target_ref"));
 		String target_pubmedId = nullifyField(rs.getString("pubmed_id"));
 
+		/*
 		if (accesion_number!=null) {
 			accesion_number = accesion_number.substring(accesion_number.indexOf("=")+1);
 		}
@@ -174,13 +175,13 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 		}
 
 		Hairpin hairpin = null;
-		if(accesion_number.startsWith("MI") && !accesion_number.contains("MIMAT")){
+		if(accesion_number!=null && accesion_number.startsWith("MI") && !accesion_number.contains("MIMAT")){
 			hairpin = new Hairpin();
 			hairpin.setAccession_number(accesion_number);
 		}
 
 		Mature mature = null;
-		if(accesion_number.contains("MIMAT")){
+		if(accesion_number!=null && accesion_number.contains("MIMAT")){
 			mature = new Mature();
 			mature.setAccession_number(accesion_number);
 		}
@@ -238,7 +239,7 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 		}
 
 		Transcript transcript = new Transcript();
-
+*/
 		PubmedDocument pubmedDoc = new PubmedDocument();
 		while(target_pubmedId.contains("<a")){
 			int startIndex = target_pubmedId.indexOf("<a");
@@ -255,7 +256,9 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 			}
 			target_pubmedId = target_pubmedId.substring(link.length()+4);
 		}
+		if (pubmedDoc!=null)
 
+		/*
 		InteractionData interactiondata = new InteractionData();
 
 		// Inserta Sequence (o recupera su id. si ya existe)
@@ -381,10 +384,10 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 		}
 
 		if(gene != null){
+			//System.out.println("Intento salvar gene: " + gene);
 			// Inserta Gene (o recupera su id. si ya existe)
 			Object oldGene = session.createCriteria(Gene.class)
 					.add(Restrictions.eq("name", gene.getName()) )
-					.add(Restrictions.eq("organism_pk", gene.getOrganism_pk()))
 					.uniqueResult();
 			if (oldGene==null) {
 				session.save(gene);
@@ -432,8 +435,8 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 		if(gene != null){
 			TranscriptHasGene transcriptGene = new TranscriptHasGene(transcript.getPk(), gene.getPk());	
 			Object transcriptHasGene = session.createCriteria(TranscriptHasGene.class)
-					.add( Restrictions.eq("transcript_pk", transcript.getPk()) )
-					.add( Restrictions.eq("gene_pk", gene.getPk()) )
+					.add( Restrictions.eq("transcriptPk", transcript.getPk()) )
+					.add( Restrictions.eq("genePk", gene.getPk()) )
 					.uniqueResult();
 			if (transcriptHasGene==null) {
 				session.save(transcriptGene);
@@ -509,6 +512,7 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 			// Relaciona PubmedDocument con ExpressionData
 			session.save(expresDataHasPubmedDocument);
 		}
+		*/
 
 	}
 
