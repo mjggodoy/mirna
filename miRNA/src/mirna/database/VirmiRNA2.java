@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import mirna.beans.BiologicalProcess;
 import mirna.beans.ExpressionData;
@@ -140,6 +142,7 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 	@Override
 	public void processRow(Session session, ResultSet rs) throws Exception {
 
+		//String pk = rs.getString("pk");
 		String id_virus = nullifyField(rs.getString("avm_id"));
 		String mirna_name = nullifyField(rs.getString("mirna"));
 		String mirna_seq = nullifyField(rs.getString("mirna_sequence"));
@@ -163,7 +166,6 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 		String target_resource = nullifyField(rs.getString("target_ref"));
 		String target_pubmedId = nullifyField(rs.getString("pubmed_id"));
 
-		/*
 		if (accesion_number!=null) {
 			accesion_number = accesion_number.substring(accesion_number.indexOf("=")+1);
 		}
@@ -239,26 +241,36 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 		}
 
 		Transcript transcript = new Transcript();
-*/
-		PubmedDocument pubmedDoc = new PubmedDocument();
+
+		//PubmedDocument pubmedDoc = new PubmedDocument();
+		List<PubmedDocument> pubmedDocList = new ArrayList<PubmedDocument>();
 		while(target_pubmedId.contains("<a")){
 			int startIndex = target_pubmedId.indexOf("<a");
 			int endIndex = target_pubmedId.indexOf("</a>");
 			String link = target_pubmedId.substring(startIndex, endIndex);
 			if (link.contains("http://www.ncbi.nlm.nih.gov/pubmed/")) {
-				String pubmedId = link.substring(link.indexOf(">")+1);
-				pubmedDoc.setId(pubmedId);
-				if (!createdObject(pubmedId)) {
-					pubmedDoc = null;
-				}	
-			}else if (link.contains("http://www.patentlens.net/patentlens/patents.html?patnums=")){
-				pubmedDoc = null;
+				String pubmedIds = link.substring(link.indexOf(">")+1);
+				String[] pubmedIdArray = StringUtils.splitPreserveAllTokens(pubmedIds, ",");
+				for (String pid : pubmedIdArray) {
+					PubmedDocument pd = new PubmedDocument();
+					pd.setId(pid.trim());
+					pubmedDocList.add(pd);
+				}
+			//}else if (link.contains("http://www.patentlens.net/patentlens/patents.html?patnums=")){
+			//	pubmedDoc = null;
 			}
 			target_pubmedId = target_pubmedId.substring(link.length()+4);
 		}
-		if (pubmedDoc!=null)
-
 		/*
+		if (pubmedDocList.size()>0) {
+			String pua = pk + ": ";
+			for (PubmedDocument pd : pubmedDocList) {
+				pua += pd.getId() + ",";
+			}
+			System.out.println(pua);
+		}
+		*/
+
 		InteractionData interactiondata = new InteractionData();
 
 		// Inserta Sequence (o recupera su id. si ya existe)
@@ -475,9 +487,10 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 		session.flush();
 
 		// Inserta PubmedDoc (o recupera su id. si ya existe)
-
-		if(pubmedDoc !=null){
-
+		
+		for(PubmedDocument pubmedDoc : pubmedDocList){
+			
+			// Inserta PubmedDocument (o recupera su id. si ya existe)
 			Object oldPubmedDoc = session.createCriteria(PubmedDocument.class)
 					.add( Restrictions.eq("id", pubmedDoc.getId()) )
 					.uniqueResult();
@@ -491,11 +504,15 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 				pubmedDoc = pubmedDocToUpdate;
 			}
 
-			if(mirna !=null){
+			// Relaciona PubmedDocument con ExpressionData
+			ExpressionDataHasPubmedDocument expresDataHasPubmedDocument =
+					new ExpressionDataHasPubmedDocument(expressiondata.getPk(), pubmedDoc.getPk());
+			session.save(expresDataHasPubmedDocument);	
 
+			// Relaciona PubmedDocument con Mirna (si no lo estaba ya)
+			if(mirna !=null){
 				MirnaHasPubmedDocument mirnaHasPubmedDocument =
 						new MirnaHasPubmedDocument(mirna.getPk(), pubmedDoc.getPk());
-
 				Object oldMirnaHasPubmedDocument = session.createCriteria(MirnaHasPubmedDocument.class)
 						.add( Restrictions.eq("mirnaPk", mirna.getPk()) )
 						.add( Restrictions.eq("pubmedDocumentPk", pubmedDoc.getPk()) )
@@ -504,16 +521,7 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 					session.save(mirnaHasPubmedDocument);
 				}
 			}
-
-
-			ExpressionDataHasPubmedDocument expresDataHasPubmedDocument =
-					new ExpressionDataHasPubmedDocument(expressiondata.getPk(), pubmedDoc.getPk());
-
-			// Relaciona PubmedDocument con ExpressionData
-			session.save(expresDataHasPubmedDocument);
 		}
-		*/
-
 	}
 
 	public static void main(String[] args) throws Exception {
