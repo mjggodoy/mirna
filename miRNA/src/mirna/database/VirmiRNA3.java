@@ -131,6 +131,7 @@ public class VirmiRNA3 extends NewMirnaDatabase {
 		String mirna_name = nullifyField(rs.getString("mirna"));
 		String gene_name = nullifyField(rs.getString("gene"));
 		String uniprot_id = nullifyField(rs.getString("uniprot"));
+		@SuppressWarnings("unused") // Al final, pasamos de organismo 2
 		String target_organism = nullifyField(rs.getString("organism"));
 		String cell_line = nullifyField(rs.getString("cell_line"));
 		String method = nullifyField(rs.getString("method"));
@@ -149,11 +150,11 @@ public class VirmiRNA3 extends NewMirnaDatabase {
 			organism = null;
 		}
 
-		Organism organism2 = new Organism();
-		organism2.setName(target_organism);
-		if (!createdObject(target_organism)) {
-			organism2 = null;
-		}
+//		Organism organism2 = new Organism();
+//		organism2.setName(target_organism);
+//		if (!createdObject(target_organism)) {
+//			organism2 = null;
+//		}
 
 		MiRna mirna = new MiRna();
 		mirna.setName(mirna_name);
@@ -241,21 +242,21 @@ public class VirmiRNA3 extends NewMirnaDatabase {
 			}
 		}
 		
-		//Inserta Organism (o recupera su id. si ya existe)
-		if(organism2 != null){
-			Object oldOrganism2 = session.createCriteria(Organism.class)
-					.add(Restrictions.eq("name", organism2.getName()) )
-					.uniqueResult();
-			if (oldOrganism2==null) {
-				session.save(organism2);
-				session.flush();  // to get the PK
-			} else {
-				Organism organismToUpdate2 = (Organism) oldOrganism2;
-				organismToUpdate2.update(organism2);
-				session.update(organismToUpdate2);
-				organism2 = organismToUpdate2;
-			}
-		}
+//		//Inserta Organism (o recupera su id. si ya existe)
+//		if(organism2 != null){
+//			Object oldOrganism2 = session.createCriteria(Organism.class)
+//					.add(Restrictions.eq("name", organism2.getName()) )
+//					.uniqueResult();
+//			if (oldOrganism2==null) {
+//				session.save(organism2);
+//				session.flush();  // to get the PK
+//			} else {
+//				Organism organismToUpdate2 = (Organism) oldOrganism2;
+//				organismToUpdate2.update(organism2);
+//				session.update(organismToUpdate2);
+//				organism2 = organismToUpdate2;
+//			}
+//		}
 
 		//Inserta mirna (o recupera su id. si ya existe)
 		if(mirna != null){
@@ -288,7 +289,7 @@ public class VirmiRNA3 extends NewMirnaDatabase {
 
 		//Inserta Gene (o recupera su id. si ya existe)
 		if (gene!=null) {
-			if(organism2 != null) gene.setOrganism_pk(organism2.getPk());
+//			if(organism2 != null) gene.setOrganism_pk(organism2.getPk());
 			Object oldGene = session.createCriteria(Gene.class)
 					.add(Restrictions.eq("name", gene.getName()) )
 					.uniqueResult();
@@ -309,8 +310,8 @@ public class VirmiRNA3 extends NewMirnaDatabase {
 		if(gene != null){
 			TranscriptHasGene transcriptGene = new TranscriptHasGene(transcript.getPk(), gene.getPk());	
 			Object transcriptHasGene = session.createCriteria(TranscriptHasGene.class)
-					.add( Restrictions.eq("transcript_pk", transcript.getPk()) )
-					.add( Restrictions.eq("gene_pk", gene.getPk()) )
+					.add( Restrictions.eq("transcriptPk", transcript.getPk()) )
+					.add( Restrictions.eq("genePk", gene.getPk()) )
 					.uniqueResult();
 			if (transcriptHasGene==null) {
 				session.save(transcriptGene);
@@ -318,6 +319,20 @@ public class VirmiRNA3 extends NewMirnaDatabase {
 		}
 
 		if(protein != null){
+			
+			Object oldProtein = session.createCriteria(Protein.class)
+					.add( Restrictions.eq("uniprot_id", protein.getUniprot_id()) )
+					.uniqueResult();
+			if (oldProtein==null) {
+				session.save(protein);
+				session.flush(); // to get the PK
+			} else {
+				Protein proteinToUpdate = (Protein) oldProtein;
+				proteinToUpdate.update(protein);
+				session.update(proteinToUpdate);
+				protein = proteinToUpdate;
+			}
+			
 			TranscriptProducesProtein transcriptProtein = new TranscriptProducesProtein(transcript.getPk(), protein.getPk());	
 			Object transcriptProducesProtein = session.createCriteria(TranscriptProducesProtein.class)
 					.add( Restrictions.eq("transcript_pk", transcript.getPk()) )
@@ -328,7 +343,7 @@ public class VirmiRNA3 extends NewMirnaDatabase {
 			}
 		}
 		
-		if(organism2 != null)target.setOrganism_pk(organism2.getPk());
+//		if(organism2 != null)target.setOrganism_pk(organism2.getPk());
 		target.setTranscript_pk(transcript.getPk());
 		if(sequence != null)target.setSequence_pk(sequence.getPk());
 		session.save(target);
