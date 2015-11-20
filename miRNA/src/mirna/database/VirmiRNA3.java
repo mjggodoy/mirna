@@ -151,7 +151,7 @@ public class VirmiRNA3 extends NewMirnaDatabase {
 		Organism organism2 = new Organism();
 		organism2.setName(target_organism);
 		if (!createdObject(target_organism)) {
-			organism = null;
+			organism2 = null;
 		}
 
 		MiRna mirna = new MiRna();
@@ -168,7 +168,7 @@ public class VirmiRNA3 extends NewMirnaDatabase {
 
 		Gene gene = new Gene();
 		gene.setName(gene_name);
-		if (!createdObject(gene_name, uniprot_id)) {
+		if (!createdObject(gene_name)) {
 			gene = null;
 		}
 
@@ -345,6 +345,7 @@ public class VirmiRNA3 extends NewMirnaDatabase {
 		target.setTranscript_pk(transcript.getPk());
 		if(sequence != null)target.setSequence_pk(sequence.getPk()) ;
 		session.save(target);
+		session.flush();
 
 		// Relaciona interaction data con mirna  (o recupera su id. si ya existe)		
 		if(target != null)id.setTarget_pk(target.getPk());
@@ -399,10 +400,7 @@ public class VirmiRNA3 extends NewMirnaDatabase {
 			// Relaciona PubmedDocument con ExpressionData
 			session.save(expresDataHasPubmedDocument);
 
-			
-
-		}
-	
+		}	
 
 	}
 
