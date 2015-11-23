@@ -108,7 +108,7 @@ public class HMDD extends NewMirnaDatabase {
 		ExpressionData expressionData = new ExpressionData();
 		expressionData.setDescription(description);
 		expressionData.setProvenanceId(id);
-		expressionData.setProvenance("hmdd");
+		expressionData.setProvenance("HMDD");
 		
 		PubmedDocument pubmedDoc = new PubmedDocument();
 		pubmedDoc.setId(pubmedid);
@@ -185,12 +185,6 @@ public class HMDD extends NewMirnaDatabase {
 	public static void main(String[] args) throws Exception {
 		
 		HMDD hmdd = new HMDD();
-		
-		// /* 1. meter datos en mirna_raw */
-		// String inputFile = "/Users/esteban/Softw/miRNA/hmdd/alldata.txt";
-		// hmdd.insertInTable(inputFile);
-		
-		/* 2. meter datos en mirna */
 		hmdd.insertIntoSQLModel();
 		
 	}

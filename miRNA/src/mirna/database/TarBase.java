@@ -28,6 +28,7 @@ import mirna.beans.nToM.ExpressionDataHasPubmedDocument;
 import mirna.beans.nToM.MirnaHasOrganism;
 import mirna.beans.nToM.MirnaHasPubmedDocument;
 import mirna.beans.nToM.MirnaHasSequence;
+import mirna.beans.nToM.TranscriptHasGene;
 import mirna.beans.nToM.TranscriptProducesProtein;
 import mirna.exception.MiRnaException;
 
@@ -215,7 +216,7 @@ public class TarBase extends NewMirnaDatabase {
 
 		MiRna mirna = new MiRna();
 
-		if(organism.getName().equals("C.elegans")){
+		if(organism.getName().equals("C. elegans")){
 
 			miRna = "cel"+"-"+miRna;
 			mirna.setName(miRna);
@@ -225,7 +226,7 @@ public class TarBase extends NewMirnaDatabase {
 			miRna = "dre"+"-"+miRna;
 			mirna.setName(miRna);
 
-		}else if(organism.getName().equals("Human")){
+		}else if(organism.getName().equals("Homo sapiens")){
 
 			miRna = "hsa"+"-"+miRna;
 			mirna.setName(miRna);
@@ -249,6 +250,29 @@ public class TarBase extends NewMirnaDatabase {
 
 			mirna.setName(miRna);
 		}
+		
+		boolean vePaTarget = false;
+		//boolean relacionaGeneConOrganism = true;
+		String nombreTransformer = mirna.getName();
+		if(nombreTransformer.contains("Edited-")) {
+			mirna.setName(nombreTransformer.replace("Edited-", ""));
+		}
+		
+		if (nombreTransformer.contains("HSV1-")) {
+			vePaTarget = true;
+		}
+		
+		/*
+		if (nombreTransformer.contains("LNA_")) {
+			vePaTarget = true;
+		}
+		if (nombreTransformer.contains("K12")) {
+			vePaTarget = false;
+			relacionaGeneConOrganism = false;
+		}
+		*/
+	
+		//System.out.println(mirna.getName() + " : " + organism.getName() + " : " + vePaTarget);
 
 		Gene gene = new Gene();
 		gene.setName(gene_name);
@@ -260,16 +284,12 @@ public class TarBase extends NewMirnaDatabase {
 		}
 
 		if (gene_expression != null){
-
-			String[] tokens = StringUtils.splitPreserveAllTokens(gene_expression, ",");
-
-			for(String token: tokens){
-
-				gene.setExpression_site(token);
-				if (!createdObject(token.trim(), gene_expression));
-
-
-			}
+			gene.setExpression_site(gene_expression);
+			//String[] tokens = StringUtils.splitPreserveAllTokens(gene_expression, ",");
+			//for(String token: tokens){
+			//	gene.setExpression_site(token);
+			//	if (!createdObject(token.trim(), gene_expression));
+			//}
 		}
 
 		gene.setHgnc_symbol(hgncSymbol);
@@ -284,19 +304,19 @@ public class TarBase extends NewMirnaDatabase {
 		List<Protein> proteinList = new ArrayList<Protein>();
 
 		if(proteinTokens !=null){
-			
+
 			for (String token : proteinTokens) {
 
 
-					Protein protein = new Protein();
-					protein.setUniprot_id(token.trim());
-					protein.setType(protein_type);
-					proteinList.add(protein);
+				Protein protein = new Protein();
+				protein.setUniprot_id(token.trim());
+				protein.setType(protein_type);
+				proteinList.add(protein);
 
-					if (!createdObject(token.trim(), protein_type)){
+				if (!createdObject(token.trim(), protein_type)){
 
-						protein = null;
-					
+					protein = null;
+
 				}
 
 			}
@@ -315,7 +335,7 @@ public class TarBase extends NewMirnaDatabase {
 		if (!createdObject(pathology_or_event)) {
 			disease = null;
 		}
-
+		
 		ExpressionData ed = new ExpressionData();
 		ed.setDataType(dataType);
 		ed.setMethod(is);
@@ -323,12 +343,12 @@ public class TarBase extends NewMirnaDatabase {
 		ed.setCellularLine(cell_line_used);
 		ed.setDifferentExpressionLocation(different_expression);
 		ed.setProvenanceId(id_tarbase);
+		ed.setDescription(bib);
 		ed.setProvenance("TarBase");
 
 		PubmedDocument pubmed = new PubmedDocument();
 		pubmed.setId(pmid);
-		pubmed.setDescription(bib);
-		if (!createdObject(pmid, bib)) {
+		if (!createdObject(pmid)) {
 			pubmed = null;
 		}
 
@@ -390,15 +410,17 @@ public class TarBase extends NewMirnaDatabase {
 			mirna = miRnaToUpdate;
 		}
 
-		MirnaHasOrganism mirnaHasOrganism = 
-				new MirnaHasOrganism(mirna.getPk(), organism.getPk());
-		// Relaciona organism con Mirna (si no lo estaba ya)
-		Object oldMirnaHasOrganism = session.createCriteria(MirnaHasOrganism.class)
-				.add( Restrictions.eq("mirna_pk", mirna.getPk()) )
-				.add( Restrictions.eq("organism_pk", organism.getPk()) )
-				.uniqueResult();
-		if (oldMirnaHasOrganism==null) {
-			session.save(mirnaHasOrganism);
+		if (vePaTarget==false) {
+			MirnaHasOrganism mirnaHasOrganism = 
+					new MirnaHasOrganism(mirna.getPk(), organism.getPk());
+			// Relaciona organism con Mirna (si no lo estaba ya)
+			Object oldMirnaHasOrganism = session.createCriteria(MirnaHasOrganism.class)
+					.add( Restrictions.eq("mirna_pk", mirna.getPk()) )
+					.add( Restrictions.eq("organism_pk", organism.getPk()) )
+					.uniqueResult();
+			if (oldMirnaHasOrganism==null) {
+				session.save(mirnaHasOrganism);
+			}
 		}
 
 		// Inserta Sequence (o recupera su id. si ya existe)
@@ -415,6 +437,7 @@ public class TarBase extends NewMirnaDatabase {
 				session.update(sequenceToUpdate);
 				sequence_mirna = sequenceToUpdate;
 			}
+
 			MirnaHasSequence mirnaHasSequence =
 					new MirnaHasSequence(mirna.getPk(), sequence_mirna.getPk());
 			// Relaciona Sequence con Mirna (si no lo estaba ya)
@@ -425,11 +448,12 @@ public class TarBase extends NewMirnaDatabase {
 			if (oldMirnaHasSequence==null) {
 				session.save(mirnaHasSequence);
 			}
+			
 		}
 
 		// Inserta Gene (o recupera su id. si ya existe)
 		if (gene!=null) {
-			gene.setOrganism_pk(organism.getPk());
+			//if (relacionaGeneConOrganism) gene.setOrganism_pk(organism.getPk());
 			Object oldGene = session.createCriteria(Gene.class)
 					.add( Restrictions.eq("name", gene.getName()) )
 					.uniqueResult();
@@ -460,26 +484,39 @@ public class TarBase extends NewMirnaDatabase {
 			}
 		}
 
-		//Inserta transcript (o recupera us id. si ya existe)
-		if (gene!=null) transcript.setGeneId(gene.getPk());
-		Object oldTranscript = session.createCriteria(Transcript.class)
-				.add( Restrictions.eq("isoform", transcript.getIsoform()))
-				.uniqueResult();
-		if (oldTranscript==null) {
-			session.save(transcript);
-			session.flush(); // to get the PK
-			System.out.println("Save transcript");
-		} else {
-			Transcript transcriptToUpdate = (Transcript) oldTranscript;
-			transcriptToUpdate.update(transcript);
-			session.update(transcriptToUpdate);
-			transcript = transcriptToUpdate;
-			System.out.println("Retrieve transcript");
+		if (transcript!=null) {
+
+			//Inserta transcript (o recupera us id. si ya existe)
+			Object oldTranscript = session.createCriteria(Transcript.class)
+					.add( Restrictions.eq("isoform", transcript.getIsoform()))
+					.uniqueResult();
+			if (oldTranscript==null) {
+				session.save(transcript);
+				session.flush(); // to get the PK
+			} else {
+				Transcript transcriptToUpdate = (Transcript) oldTranscript;
+				transcriptToUpdate.update(transcript);
+				session.update(transcriptToUpdate);
+				transcript = transcriptToUpdate;
+			}
+			
+			if (gene!=null) {
+				TranscriptHasGene transcripthasGene =
+						new TranscriptHasGene(transcript.getPk(), gene.getPk());
+				Object oldTranscripthasGene = session.createCriteria(TranscriptHasGene.class)
+						.add(Restrictions.eq("transcriptPk", transcript.getPk()))
+						.add(Restrictions.eq("genePk", gene.getPk()))
+						.uniqueResult();
+				if (oldTranscripthasGene == null) {
+					session.save(transcripthasGene);
+				}
+			}
 		}
 
 		// Inserta nueva Target
-		target.setTranscript_pk(transcript.getPk());
+		if (transcript!=null) target.setTranscript_pk(transcript.getPk());
 		if (sequence_target!=null) target.setSequence_pk(sequence_target.getPk());
+		if (vePaTarget) target.setOrganism_pk(organism.getPk());
 		session.save(target);
 
 		// Inserta PubmedDocument (o recupera su id. si ya existe)
@@ -513,32 +550,38 @@ public class TarBase extends NewMirnaDatabase {
 					session.update(proteinToUpdate);
 					protein = proteinToUpdate;
 				}
+
+
+				if (transcript!=null) {
+					//Relaciona transcript con protein
+					TranscriptProducesProtein transcriptProtein = new TranscriptProducesProtein(transcript.getPk(), protein.getPk());	
+					Object transcriptProducesProtein = session.createCriteria(TranscriptProducesProtein.class)
+							.add( Restrictions.eq("transcript_pk", transcript.getPk()) )
+							.add( Restrictions.eq("protein_pk", protein.getPk()) )
+							.uniqueResult();
+					if (transcriptProducesProtein==null) {
+						session.save(transcriptProtein);
+					}
+				}
 			}
 
-			//Relaciona transcript con protein
-			TranscriptProducesProtein transcriptProtein = new TranscriptProducesProtein(transcript.getPk(), protein.getPk());	
-			Object transcriptProducesProtein = session.createCriteria(TranscriptProducesProtein.class)
-					.add( Restrictions.eq("transcript_pk", transcript.getPk()) )
-					.add( Restrictions.eq("protein_pk", protein.getPk()) )
-					.uniqueResult();
-			if (transcriptProducesProtein==null) {
-				session.save(transcriptProtein);
-			}
 		}
+
+		//Inserta nueva InteractionData (y la relaciona con lo que toque)
+		if (mirna!=null) id.setMirna_pk(mirna.getPk());
+		if (gene!=null) {id.setGene_pk(gene.getPk());}
+		id.setTarget_pk(target.getPk());
+		session.save(id);
+		session.flush();
 
 		//Inserta nueva DataExpression (y la relaciona con MiRna y Disease correspondiente)
 		ed.setMirnaPk(mirna.getPk());
+		ed.setInteraction_data_pk(id.getPk()); // Fixed
 		if (disease!=null) ed.setDiseasePk(disease.getPk());
 		session.save(ed);
 		session.flush();
 
-		//Inserta nueva InteractionData (y la relaciona con lo que toque)
-		id.setMirna_pk(mirna.getPk());
-		if (gene!=null) {id.setGene_pk(gene.getPk());}
-		id.setTarget_pk(target.getPk());
-		id.setExpression_data_pk(ed.getPk());
-		session.save(id);
-		session.flush();
+
 
 		if (pubmed!=null) {
 			MirnaHasPubmedDocument mirnaHasPubmedDocument =
@@ -562,19 +605,13 @@ public class TarBase extends NewMirnaDatabase {
 
 	}
 
-	private String nullifyField(String field) {
-		return "".equals(field.trim()) || "n_a".equals(field.trim()) ? null : field.trim();
+	protected String nullifyField(String field) {
+		return "".equals(field.trim()) || "n_a".equals(field.trim()) || "_".equals(field.trim()) ? null : field.trim();
 	}
 
 	public static void main(String[] args) throws Exception {
 
 		TarBase tarBase = new TarBase();
-
-		// /* 1. meter datos en mirna_raw */
-		//String inputFile = "/Users/esteban/Softw/miRNA/TarBase_V5.0.txt";
-		//tarBase.insertInTable(inputFile);
-
-		/* 2. meter datos en mirna */
 		tarBase.insertIntoSQLModel();
 
 	}

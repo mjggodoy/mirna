@@ -12,13 +12,11 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-import mirna.beans.ExpressionData;
 import mirna.beans.Hairpin;
 import mirna.beans.MiRna;
 import mirna.beans.Organism;
 import mirna.beans.Sequence;
 import mirna.beans.nToM.HairpinHasSequence;
-import mirna.beans.nToM.MatureHasSequence;
 import mirna.beans.nToM.MirnaHasHairpin;
 import mirna.beans.nToM.MirnaHasOrganism;
 import mirna.exception.MiRnaException;
@@ -121,8 +119,6 @@ public class PlantMirnaStemLoop extends NewMirnaDatabase {
 
 		Hairpin hairpin = new Hairpin();
 
-		ExpressionData ed = new ExpressionData();
-		ed.setProvenance("PlantMirna");
 
 		// Inserta Organism (o recupera su id. si ya existe)
 		Object oldOrganism = session.createCriteria(Organism.class)
@@ -150,14 +146,12 @@ public class PlantMirnaStemLoop extends NewMirnaDatabase {
 			miRnaToUpdate.update(miRNA);
 			session.update(miRnaToUpdate);
 			miRNA = miRnaToUpdate;
-			System.out.println("Mirna " + miRNA.getName());
 		}
 
 		Object oldSequence = session.createCriteria(Sequence.class)
 				.add( Restrictions.eq("sequence", sequence.getSequence()) )
 				.uniqueResult();
 		if (oldSequence==null) {
-			//System.out.println("LENGTH = " + sequence.getSequence().length());
 			session.save(sequence);
 			session.flush();  // to get the PK
 		} else {
@@ -165,12 +159,7 @@ public class PlantMirnaStemLoop extends NewMirnaDatabase {
 			sequenceToUpdate.update(sequence);
 			session.update(sequenceToUpdate);
 			sequence = sequenceToUpdate;
-			System.out.println(sequence);
 		}
-
-		// Relaciona expressiondata data con mirna
-		ed.setMirnaPk(miRNA.getPk());
-		session.save(ed);
 
 
 		MirnaHasOrganism mirnaHasOrganism = 
@@ -218,20 +207,11 @@ public class PlantMirnaStemLoop extends NewMirnaDatabase {
 
 		}
 
-
-
-
 	}
 
 	public static void main(String[] args) throws Exception {
 
 		PlantMirnaStemLoop plant = new PlantMirnaStemLoop();
-
-		// /* 1. meter datos en mirna_raw */
-		// String inputFile = "/Users/esteban/Softw/miRNA/plant_mirna/all_stem_loop.txt";
-		// plant.insertInTable(inputFile);
-
-		/* 2. meter datos en mirna */
 		plant.insertIntoSQLModel();
 
 	}

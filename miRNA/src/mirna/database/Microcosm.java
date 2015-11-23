@@ -13,9 +13,11 @@ import mirna.beans.MiRna;
 import mirna.exception.MiRnaException;
 import mirna.beans.Target;
 import mirna.beans.Transcript;
+import mirna.beans.nToM.TranscriptHasGene;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
 /**
@@ -25,37 +27,37 @@ import org.hibernate.criterion.Restrictions;
  *
  */
 public class Microcosm extends NewMirnaDatabase {
-	
+
 	private final static String TABLE_NAME = "microcosm_homo_sapiens";
-	
+
 	public Microcosm() throws MiRnaException { super(TABLE_NAME); }
-	
+
 	public void insertInTable(String csvInputFile) throws Exception {
-		
+
 		Connection con = null;
 		String line = null;
 		String[] tokens = null;
-		
+
 		try {
 			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			Statement stmt = (Statement) con.createStatement(); 
-			
+
 			FileReader fr = new FileReader(csvInputFile);
 			BufferedReader br = new BufferedReader(fr);
-	
+
 			int count = 0;
-	
+
 			while ((line = br.readLine()) != null) {
-	
+
 				count++;
 				System.out.println(count);
-				
+
 				tokens = StringUtils.splitPreserveAllTokens(line, "\t");
-	
+
 				if (line != null) {
-					
+
 					if ((!"".equals(line)) && (!line.startsWith("##"))) {
-						
+
 						String group = tokens[0];
 						String seq = tokens[1];
 						String method = tokens[2];
@@ -84,13 +86,13 @@ public class Microcosm extends NewMirnaDatabase {
 								+ pvalueOg + "','"
 								+ transcriptId + "','"
 								+ externalName + "')";
-						
+
 						stmt.executeUpdate(query);
-						
+
 					}
-						
+
 				}
-	
+
 			}
 			fr.close();
 			br.close();
@@ -107,24 +109,24 @@ public class Microcosm extends NewMirnaDatabase {
 		} finally {
 			if (con!=null) con.close();
 		}
-		
+
 	}
-	
+
 	@Override
 	protected void processRow(Session session, ResultSet rs) throws Exception {
-		
-		String seq = rs.getString("seq");
-		String method = rs.getString("method");
-		String feature = rs.getString("feature").toLowerCase().trim();
-		String chromosome = rs.getString("chr").toLowerCase().trim();
-		String start = rs.getString("start").toLowerCase().trim();
-		String end = rs.getString("end").toLowerCase().trim();
-		String strand = rs.getString("strand").toLowerCase().trim();
-		String phase = rs.getString("phase");
-		String score = rs.getString("score");
-		String pvalue_og = rs.getString("pvalue_og");
-		String transcriptId = rs.getString("transcript_id");
-		String genename = rs.getString("external_name");
+
+		String seq = nullifyField(rs.getString("seq"));
+		String method = nullifyField(rs.getString("method"));
+		String feature = nullifyField(rs.getString("feature").toLowerCase().trim());
+		String chromosome = nullifyField(rs.getString("chr").toLowerCase().trim());
+		String start = nullifyField(rs.getString("start").toLowerCase().trim());
+		String end = nullifyField(rs.getString("end").toLowerCase().trim());
+		String strand = nullifyField(rs.getString("strand").toLowerCase().trim());
+		String phase = nullifyField(rs.getString("phase"));
+		String score = nullifyField(rs.getString("score"));
+		String pvalue_og = nullifyField(rs.getString("pvalue_og"));
+		String transcriptId = nullifyField(rs.getString("transcript_id"));
+		String genename = nullifyField(rs.getString("external_name"));
 
 		MiRna miRna = new MiRna();
 		miRna.setName(seq);
@@ -145,10 +147,15 @@ public class Microcosm extends NewMirnaDatabase {
 
 		Transcript transcript = new Transcript();
 		transcript.setTranscriptID(transcriptId);
-		
+
 		Gene gene = new Gene();
 		gene.setName(genename);
 
+		if (!createdObject(genename)) { 
+			
+			gene=null;
+
+		}
 
 		// Inserta MiRna (o recupera su id. si ya existe)
 
@@ -156,8 +163,8 @@ public class Microcosm extends NewMirnaDatabase {
 				.add(Restrictions.eq("name", miRna.getName()))
 				.uniqueResult();
 		if (oldMiRna == null) {
-			System.out.println("SALVANDO:");
-			System.out.println(miRna);
+			//System.out.println("SALVANDO:");
+			//System.out.println(miRna);
 			session.save(miRna);
 			session.flush(); // to get the PK
 		} else {
@@ -166,22 +173,24 @@ public class Microcosm extends NewMirnaDatabase {
 			session.update(miRnaToUpdate);
 			miRna = miRnaToUpdate;
 		}
-		
-		Object oldGene = session.createCriteria(Gene.class)
-				.add(Restrictions.eq("name", gene.getName()))
-				.uniqueResult();
-		if (oldGene == null) {
-			session.save(gene);
-			session.flush(); // to get the PK
-		} else {
-			Gene geneToUpdate = (Gene) oldGene;
-			geneToUpdate.update(gene);
-			session.update(geneToUpdate);
-			gene = geneToUpdate;
+
+		if(gene != null){
+			Object oldGene = session.createCriteria(Gene.class)
+					.add(Restrictions.eq("name", gene.getName()))
+					//.add(Restrictions.ilike("name", gene.getName(), MatchMode.EXACT))
+					.uniqueResult();	
+			if (oldGene == null) {
+				session.save(gene);
+				session.flush(); // to get the PK
+			} else {
+				Gene geneToUpdate = (Gene) oldGene;
+				geneToUpdate.update(gene);
+				session.update(geneToUpdate);
+				gene = geneToUpdate;
+			}
 		}
-		
 		// Inserta Transcript (o recupera su id. si ya existe)
-		transcript.setGeneId(gene.getPk());
+		//transcript.setGeneId(gene.getPk());
 		Object oldTranscript = session.createCriteria(Transcript.class)
 				.add(Restrictions.eq("transcriptID", transcript.getTranscriptID()))
 				.uniqueResult();
@@ -194,33 +203,44 @@ public class Microcosm extends NewMirnaDatabase {
 			session.update(transcriptToUpdate);
 			transcript = transcriptToUpdate;
 		}
-		
+
+		if(gene != null){
+
+			TranscriptHasGene transcripthasGene =
+					new TranscriptHasGene(transcript.getPk(), gene.getPk());
+
+			Object oldTranscripthasGene = session.createCriteria(TranscriptHasGene.class)
+					.add(Restrictions.eq("transcriptPk", transcript.getPk()))
+					.add(Restrictions.eq("genePk", gene.getPk()))
+					.uniqueResult();
+			if (oldTranscripthasGene == null) {
+
+				session.save(transcripthasGene);
+
+			}
+
+		}
+
 		target.setTranscript_pk(transcript.getPk());
 		session.save(target);
 		session.flush(); // to get the PK
-		
+
 		// Inserta nueva DataExpression
 		// (y la relaciona con el MiRna y Target)
-		
+
 		id.setMirna_pk(miRna.getPk());
-		id.setTarget_pk(target.getPk());
-		id.setGene_pk(gene.getPk());
+		if(target != null) id.setTarget_pk(target.getPk());
+		if(gene != null) id.setGene_pk(gene.getPk());
 		session.save(id);
-		session.flush(); // to get the PK
-		
+
 	}
-	
+
+
 	public static void main(String[] args) throws Exception {
-		
+
 		Microcosm microcosm = new Microcosm();
-		
-		// /* 1. meter datos en mirna_raw */
-		// String inputFile = "/Users/esteban/Softw/miRNA/microcosm/v5.txt.homo_sapiens";
-		// microcosm.insertInTable(inputFile);
-		
-		/* 2. meter datos en mirna */
 		microcosm.insertIntoSQLModel();
-		
+
 	}
 
 }

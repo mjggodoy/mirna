@@ -25,9 +25,6 @@ public class SNP extends ModelClass {
 
 	@Column(name = "mutation_pk", nullable = true, length = 45) //mutation_pk puede ser nulo
 	private Integer mutation_pk;
-
-	@Column(name = "gene_pk", nullable = true, length = 45) //mutation_pk puede ser nulo
-	private Integer gene_pk;
 	
 	@Column(name = "chromosome", nullable = true, length = 45) //mutation_pk puede ser nulo
 	private String chromosome;
@@ -71,29 +68,17 @@ public class SNP extends ModelClass {
 		this.mutation_pk = mutation_pk;
 	}
 
-	public Integer getGene_pk() {
-		return gene_pk;
-	}
-
-	public void setGene_pk(Integer gene_pk) {
-		this.gene_pk = gene_pk;
-	}
-	
-
 	public String getChromosome() {
 		return chromosome;
 	}
-
 
 	public void setChromosome(String chromosome) {
 		this.chromosome = chromosome;
 	}
 
-
 	public String getOrientation() {
 		return orientation;
 	}
-
 
 	public void setOrientation(String orientation) {
 		this.orientation = orientation;
@@ -125,10 +110,6 @@ public class SNP extends ModelClass {
 			this.mutation_pk = snp.getMutation_pk();
 		}
 
-		if(snp.gene_pk !=null){
-			this.gene_pk = snp.getGene_pk() ;
-		}
-		
 		if(snp.chromosome !=null){
 			this.chromosome = snp.getChromosome();
 		}
@@ -179,14 +160,6 @@ public class SNP extends ModelClass {
 			}
 		}
 
-		if (this.gene_pk != null) {
-			if (snp.getGene_pk() == null)
-				res++;
-			else if (!this.gene_pk.equals(snp.getGene_pk())){
-				return -1;
-			}
-		}
-
 		if (this.chromosome != null) {
 			if (snp.getChromosome() == null)
 				res++;
@@ -206,16 +179,13 @@ public class SNP extends ModelClass {
 		return res;
 	}
 
-
 	@Override
 	public String toString() {
 		return "SNP [snp_id=" + snp_id + ", position=" + position
 				+ ", article_date=" + article_date + ", mutation_pk="
-				+ mutation_pk + ", gene_pk=" + gene_pk + ", chromosome="
+				+ mutation_pk + ", chromosome="
 				+ chromosome + ", orientation=" + orientation + ", pk=" + pk
 				+ "]";
 	}
-
-	
 
 }

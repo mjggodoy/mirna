@@ -16,8 +16,25 @@ public class Hairpin extends ModelClass {
 	@Column(name = "name", nullable = true)
 	private String name;
 	
-	/*@Column(name = "mirna_pk", nullable = false)
-	private Integer mirnaPk;*/
+	@Column(name = "accession_number", nullable = true)
+	private String accession_number;
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	
+	public String getAccession_number() {
+		return accession_number;
+	}
+
+	public void setAccession_number(String accession_number) {
+		this.accession_number = accession_number;
+	}
 	
 	public Hairpin() { }
 	
@@ -30,6 +47,11 @@ public class Hairpin extends ModelClass {
 		if (this.name!=null) {
 			if (hairpin.getName()==null) res++;
 			else if (!this.name.equals(hairpin.getName())) return -1;
+		}
+		
+		if (this.accession_number!=null) {
+			if (hairpin.getAccession_number()==null) res++;
+			else if (!this.accession_number.equals(hairpin.getAccession_number())) return -1;
 		}
 		
 		/*if (this.mirnaPk!=null) {
@@ -50,33 +72,17 @@ public class Hairpin extends ModelClass {
 		if (hairpin.getPk()!=null) this.pk = hairpin.getPk();
 /*		if (hairpin.getMirnaPk()!=null) this.mirnaPk = hairpin.getMirnaPk();
 */		if (hairpin.getName()!=null) this.name = hairpin.getName();
+		if (hairpin.getAccession_number()!=null) this.accession_number = hairpin.getAccession_number();
+
 
 	}
 	
-
-	/*public Integer getMirnaPk() {
-		return mirnaPk;
-	}
-
-	public void setMirnaPk(Integer mirnaPk) {
-		this.mirnaPk = mirnaPk;
-	}
-	*/
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
+	
 
 	@Override
 	public String toString() {
-		return "Hairpin [name=" + name + 
-				", pk=" + pk + "]";
+		return "Hairpin [name=" + name + ", accession_number="
+				+ accession_number + ", pk=" + pk + "]";
 	}
-
-	
-	
 
 }

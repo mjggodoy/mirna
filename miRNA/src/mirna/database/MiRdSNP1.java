@@ -8,9 +8,11 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+
 import mirna.beans.Disease;
 import mirna.beans.PubmedDocument;
 import mirna.beans.SNP;
@@ -107,20 +109,23 @@ public class MiRdSNP1 extends MiRdSNP {
 
 	public void  processRow(Session session, ResultSet rs) throws Exception {
 
-		String pubmedId = rs.getString("pubmed_id").toLowerCase().trim();
-		String year = rs.getString("year").toLowerCase().trim(); // I'm not going to use this field.
-		String journal = rs.getString("journal").toLowerCase().trim(); // I'm not going to use this field.
-		String description = rs.getString("title").toLowerCase().trim();
-		String snp_id = rs.getString("snp_id").toLowerCase().trim();
-		String disease_name = rs.getString("disease").toLowerCase().trim();
-		String resource = rs.getString("link").toLowerCase().trim();
+		String pubmedId = nullifyField(rs.getString("pubmed_id").toLowerCase().trim());
+		@SuppressWarnings("unused") // I'm not going to use this field.
+		String year = nullifyField(rs.getString("year").toLowerCase().trim());
+		@SuppressWarnings("unused") // I'm not going to use this field.
+		String journal = nullifyField(rs.getString("journal").toLowerCase().trim());
+		String description = nullifyField(rs.getString("title").toLowerCase().trim());
+		String snp_id = nullifyField(rs.getString("snp_id").toLowerCase().trim());
+		String disease_name = nullifyField(rs.getString("disease").toLowerCase().trim());
+		String resource = nullifyField(rs.getString("link").toLowerCase().trim());
 
 		Disease disease = new Disease();
 		disease.setName(disease_name);
-
+		if (!createdObject(disease_name)) {
+			disease = null;
+		}
 
 		String[] snpTokens = StringUtils.splitPreserveAllTokens(snp_id, ",");
-
 
 		List<SNP> snpList = new ArrayList<SNP>();
 
@@ -128,57 +133,40 @@ public class MiRdSNP1 extends MiRdSNP {
 			SNP snp = new SNP();
 			snp.setSnp_id(token);
 			snpList.add(snp);
+			if (!createdObject(token)) {
+				snp = null;
+
+			}
 		}
-
-
 
 		PubmedDocument pubmedDoc = new PubmedDocument();
 		pubmedDoc.setId(pubmedId);
 		pubmedDoc.setDescription(description);
 		pubmedDoc.setResource(resource);
+		if (!createdObject(pubmedId, description, resource )) {
+			pubmedDoc = null;
+
+		}
 
 
 		// Inserta Disease (o recupera su id. si ya existe)
 
-		Object oldDisease = session.createCriteria(Disease.class)
-				.add( Restrictions.eq("name", disease.getName()) )
-				.uniqueResult();
-		if (oldDisease==null) {
-			session.save(disease);
-			session.flush();  // to get the PK
-		} else {
-			Disease diseaseToUpdate = (Disease) oldDisease;
-			diseaseToUpdate.update(disease);
-			session.update(diseaseToUpdate);
-			disease = diseaseToUpdate;
+		if(disease !=null){
+			Object oldDisease = session.createCriteria(Disease.class)
+					.add( Restrictions.eq("name", disease.getName()) )
+					.uniqueResult();
+			if (oldDisease==null) {
+				session.save(disease);
+				session.flush();  // to get the PK
+			} else {
+				Disease diseaseToUpdate = (Disease) oldDisease;
+				diseaseToUpdate.update(disease);
+				session.update(diseaseToUpdate);
+				disease = diseaseToUpdate;
+			}
 		}
 
-
-		// Inserta SNP (o recupera su id. si ya existe)
-
-		for(SNP snp : snpList){
-
-			Object oldSnp = session.createCriteria(SNP.class)
-					.add( Restrictions.eq("snp_id", snp.getSnp_id()) )
-					.uniqueResult();
-			if (oldSnp==null) {
-
-				session.save(snp); // mutation_pk puede ser nulo
-				session.flush();  // to get the PK
-				System.out.println("SALVO ESTE SNP:");
-				System.out.println(snp);
-
-			} else {
-
-				SNP snptoUpdate = (SNP) oldSnp;
-				snptoUpdate.update(snp); //incluir el update en la clase SNP
-				session.update(snptoUpdate);
-				snp = snptoUpdate;
-
-			}
-
-			// Inserta PubmedDoc (o recupera su id. si ya existe)
-
+		if(pubmedDoc !=null){
 			Object oldPubmedDoc = session.createCriteria(PubmedDocument.class)
 					.add( Restrictions.eq("id", pubmedDoc.getId()) )
 					.uniqueResult();
@@ -191,31 +179,62 @@ public class MiRdSNP1 extends MiRdSNP {
 				session.update(pubmedDocToUpdate);
 				pubmedDoc = pubmedDocToUpdate;
 			}
-
-			// Relaciona SNP y Disease
-
-			SnpHasDisease snpHasDisease = new SnpHasDisease(snp.getPk(), disease.getPk());
-			Object oldSnphasDisease = session.createCriteria(SnpHasDisease.class)
-					.add( Restrictions.eq("snpPk", snp.getPk()) )
-					.add( Restrictions.eq("diseasePk", disease.getPk()) )
-					.uniqueResult();
-			if (oldSnphasDisease==null) {
-				session.save(snpHasDisease);
-			}
-
-
-			// Relaciona SNP y Pubmed document
-
-			SnpHasPubmedDocument snpHasPubmedDocument = new SnpHasPubmedDocument(snp.getPk(), pubmedDoc.getPk());
-			Object oldSnpHasPubmedDocument = session.createCriteria(SnpHasPubmedDocument.class)
-					.add( Restrictions.eq("snpPk", snp.getPk()) )
-					.add( Restrictions.eq("pubmedDocumentPk", pubmedDoc.getPk()) )
-					.uniqueResult();
-			if (oldSnpHasPubmedDocument==null) {
-				session.save(snpHasPubmedDocument);
-			}
-
 		}
+
+		// Inserta SNP (o recupera su id. si ya existe)
+
+		for(SNP snp : snpList){
+
+			if(snp != null){
+
+				Object oldSnp = session.createCriteria(SNP.class)
+						.add( Restrictions.eq("snp_id", snp.getSnp_id()) )
+						.uniqueResult();
+				if (oldSnp==null) {
+
+					session.save(snp); // mutation_pk puede ser nulo
+					session.flush();  // to get the PK
+					//System.out.println("SALVO ESTE SNP:");
+					//System.out.println(snp);
+
+				} else {
+					SNP snptoUpdate = (SNP) oldSnp;
+					snptoUpdate.update(snp); //incluir el update en la clase SNP
+					session.update(snptoUpdate);
+					snp = snptoUpdate;
+				}
+
+				// Relaciona SNP y Disease
+				if(disease!= null){
+					SnpHasDisease snpHasDisease = new SnpHasDisease(snp.getPk(), disease.getPk());
+					Object oldSnphasDisease = session.createCriteria(SnpHasDisease.class)
+							.add( Restrictions.eq("snpPk", snp.getPk()) )
+							.add( Restrictions.eq("diseasePk", disease.getPk()) )
+							.uniqueResult();
+					if (oldSnphasDisease==null) {
+						session.save(snpHasDisease);
+					}
+				}
+
+				// Relaciona SNP y Pubmed document
+				if(pubmedDoc !=null){
+					SnpHasPubmedDocument snpHasPubmedDocument = new SnpHasPubmedDocument(snp.getPk(), pubmedDoc.getPk());
+					Object oldSnpHasPubmedDocument = session.createCriteria(SnpHasPubmedDocument.class)
+							.add( Restrictions.eq("snpPk", snp.getPk()) )
+							.add( Restrictions.eq("pubmedDocumentPk", pubmedDoc.getPk()) )
+							.uniqueResult();
+					if (oldSnpHasPubmedDocument==null) {
+						session.save(snpHasPubmedDocument);
+					}
+				}
+			}
+		}
+	}
+
+	public static void main(String[] args) throws Exception {
+
+		MiRdSNP1 mirdSNP1 = new MiRdSNP1();
+		mirdSNP1.insertIntoSQLModel();
 
 	}
 

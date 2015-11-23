@@ -13,7 +13,7 @@ import mirna.exception.ConflictException;
 @Table(name = "interaction_data")
 public class InteractionData extends ModelClass {
 
-	
+
 	@Column(name = "score", nullable = true, length = 80, unique = true)
 	protected String score;
 	@Column(name = "pvalue_log", nullable = true, length = 80, unique = true)
@@ -44,18 +44,17 @@ public class InteractionData extends ModelClass {
 	protected Integer target_pk;
 	@Column(name = "gene_pk", nullable = true, length = 80, unique = true)
 	protected Integer gene_pk;
-	@Column(name = "expression_data_pk", nullable = true, length = 80, unique = true)
-	protected Integer expression_data_pk;
-
 	
+
+
 	public InteractionData() {
 		super();
 	}
-	
 
-	
-	
-	
+
+
+
+
 
 
 
@@ -385,35 +384,10 @@ public class InteractionData extends ModelClass {
 
 
 
-
-
-
-	public Integer getExpression_data_pk() {
-		return expression_data_pk;
-	}
-
-
-
-
-
-
-
-
-	public void setExpression_data_pk(Integer expression_data_pk) {
-		this.expression_data_pk = expression_data_pk;
-	}
-
-
-
-
-
-
-
-
 	public int checkConflict(InteractionData id) {
-		
+
 		int res = 0;
-		
+
 		if (this.pk!=null) {
 			if (id.getPk()==null) res++; 
 			else if (!this.pk.equals(id.getPk())) return -1;
@@ -434,86 +408,79 @@ public class InteractionData extends ModelClass {
 			if (id.provenance==null) res++;
 			else if (!this.provenance.equals(id.provenance)) return -1;
 		}
-		
+
 		if (this.pvalue_og != null){
 			if (id.pvalue_og==null) res++;
 			else if (!this.pvalue_og.equals(id.pvalue_og)) return -1;
 		}
-		
+
 		if (this.miTG_score != null){
 			if (id.miTG_score==null) res++;
 			else if (!this.miTG_score.equals(id.miTG_score)) return -1;
 		}
-		
+
 		if (this.method != null){
 			if (id.method==null) res++;
 			else if (!this.method.equals(id.method)) return -1;
 		}
-		
+
 		if (this.phase != null){
 			if (id.phase==null) res++;
 			else if (!this.phase.equals(id.phase)) return -1;
 		}
-		
+
 		if (this.feature != null){
 			if (id.feature==null) res++;
 			else if (!this.feature.equals(id.feature)) return -1;
 		}
-		
-		
-				
+
+
+
 		if (this.cellular_line != null){
 			if (id.cellular_line==null) res++;
 			else if (!this.cellular_line.equals(id.cellular_line)) return -1;
 		}
-		
-		
-		
+
+
+
 		if (this.type != null){
 			if (id.type==null) res++;
 			else if (!this.type.equals(id.type)) return -1;
 		}
-		
-		
-		
+
+
+
 		if (this.reference != null){
 			if (id.reference==null) res++;
 			else if (!this.reference.equals(id.reference)) return -1;
 		}
-		
+
 		if (this.mirna_pk != null){
 			if (id.mirna_pk==null) res++;
 			else if (!this.mirna_pk.equals(id.mirna_pk)) return -1;
-			
+
 		}
-		
+
 		if (this.target_pk != null){
 			if (id.target_pk==null) res++;
 			else if (!this.target_pk.equals(id.target_pk)) return -1;	
-			
+
 		}
-		
+
 		if(this.gene_pk != null){
 			if(id.gene_pk==null) res++;
 			else if(!this.gene_pk.equals(id.gene_pk)) return -1;
-			
-		}
-		
-		if(this.expression_data_pk != null){
-			if(id.expression_data_pk==null) res++;
-			else if(!this.expression_data_pk.equals(id.expression_data_pk)) return -1;
-			
-		}
-		
 
-		
+		}
+
+	
 		return res;
 	}
-	
+
 	public void update(InteractionData id) throws ConflictException {
 		this.update(id, true);
 	}
-	
+
 	public void update(InteractionData id, boolean checkConflict) throws ConflictException {
 		if (checkConflict) {
 			if (this.checkConflict(id)==-1) throw new ConflictException(this, id);
@@ -534,11 +501,9 @@ public class InteractionData extends ModelClass {
 		if(id.getTarget_pk() != null) this.target_pk = id.getTarget_pk();
 		if(id.getGene_pk() != null) this.gene_pk = id.getGene_pk();
 		if(id.getMirna_pk() != null) this.mirna_pk = id.getMirna_pk();
-		if(id.getExpression_data_pk() != null) this.expression_data_pk = id.getExpression_data_pk();
 
 
 	}
-
 
 
 	@Override
@@ -550,9 +515,12 @@ public class InteractionData extends ModelClass {
 				+ reference + ", cellular_line=" + cellular_line
 				+ ", pvalue_og=" + pvalue_og + ", type=" + type + ", mirna_pk="
 				+ mirna_pk + ", target_pk=" + target_pk + ", gene_pk="
-				+ gene_pk + ", expressiondata_pk=" + expression_data_pk
-				+ ", pk=" + pk + "]";
+				+ gene_pk + "]";
 	}
+
+
+
+	
 
 }
 

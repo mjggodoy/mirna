@@ -168,13 +168,13 @@ select mitg_score, target_pk, mirna_pk, gene_pk, "microTv4" from mirna_raw.micro
 	Comprobación de que los datos recuperados estén vacíos con la misma consulta anterior.
     
     UPDATE mirna_raw.repTar_human_pk
-	SET mirna_pk=(SELECT pk FROM mirna.mirna WHERE mirna.mirna.name=mirna_raw.repTar_mouse_pk.mirna);
+	SET mirna_pk=(SELECT pk FROM mirna.mirna WHERE mirna.mirna.name=mirna_raw.repTar_human_pk.mirna);
     
 	UPDATE mirna_raw.repTar_human_pk 
 	SET gene_pk=(SELECT pk FROM mirna.gene WHERE mirna.gene.name=mirna_raw.repTar_human_pk.gene_symbol);
 	
 	UPDATE mirna_raw.repTar_human_pk 
-	SET transcript_pk=(SELECT pk FROM mirna.transcript WHERE mirna.transcript.id=mirna_raw.repTar_human_pk.gene_accesion
+	SET transcript_pk=(SELECT pk FROM mirna.transcript WHERE mirna.transcript.id=mirna_raw.repTar_human_pk.gene_accesion);
 
 	#1
 	select max(pk) from mirna.target;
@@ -279,5 +279,241 @@ select mitg_score, target_pk, mirna_pk, gene_pk, "microTv4" from mirna_raw.micro
 	#7
 	insert into mirna.complex (minimal_free_energy, normalized_minimal_free_energy, binding_site_pattern, interaction_data_pk, mirna_pk, target_pk)
 	select minimal_free_energy, normalized_free_energy, binding_site_pattern, interaction_data_pk, mirna_pk, target_pk from mirna_raw.repTar_mouse_pk
+	
+	
+6. MiRDB
+
+	6.1 Copiar base de datos de RDB a RDB_pk.
+	
+	6.2 Crear columnas mirna_pk e interaction_data_pk
+		
+	6.3 Comprobar e insertar mirna diferentes con respecto a la columna name de la base de datos mirna.mirna
+	
+		SELECT distinct t1.mir
+		FROM mirna_raw.miRDB t1
+		LEFT JOIN mirna.mirna t2
+		ON t1.mir = t2.name where t1.pk is not null and t2.pk is null;
+		
+		UPDATE mirna_raw.miRDB_pk
+		SET mirna_pk=(SELECT pk FROM mirna.mirna WHERE mirna.mirna.name=mirna_raw.miRDB_pk.mir);
+	
+	6.4 Comprobar e insertar mirna diferentes con respecto a la columna name de la base de datos mirna.transcript
+	
+		SELECT distinct t1.target
+		FROM mirna_raw.miRDB t1
+		LEFT JOIN mirna.transcript t2
+		ON t1.target = t2.id
+		where t1.pk is not null and t2.pk is null;	
+		
+		UPDATE mirna_raw.miRDB_pk
+		SET transcript_pk=(SELECT pk FROM mirna.mirna WHERE mirna.transcript.id=mirna_raw.miRDB_pk.target);
+		
+	6.5 Target:
+	
+	#1
+	select max(pk) from mirna.target;
+	
+	#2
+	SET @a:=52309730;
+	UPDATE mirna_raw.MiRDB_pk SET target_pk=@a:=@a+1;
+	
+	#3
+	insert into mirna.target (pk, transcript_pk)
+	select target_pk, transcript_pk from mirna_raw.miRDB_pk;
+	
+	#4
+	select max(pk) from mirna.interaction_data;
+	
+	6.6 InteractionData
+	
+	#5
+	SET @b:=62085627;
+	UPDATE mirna_raw.miRDB_pk SET interaction_data_pk=@b:=@b+1;
+	
+	#6
+	insert into mirna.interaction_data (pk, score, target_pk, mirna_pk, provenance)
+	select interaction_data_pk, score, target_pk, mirna_pk, "repTar" from mirna_raw.miRDB_pk;
+	
+	7. miRdSNP
+	
+	7.1 Copiar base de datos de miRdSNP3 a miRdSNP3_pk .
+	
+	INSERT INTO mirna_raw.miRdSNP3_pk
+	SELECT pk, gene, refseq, miR, snp, diseases, distance, expConf FROM mirna_raw.miRdSNP3;
+	
+	7.2 Crear columnas pks para disease, mirna, gene, target, snp, transcript, target.
+	
+	ALTER TABLE mirna_raw.miRdSNP3_pk ADD diseases_pk;
+	ALTER TABLE mirna_raw.miRdSNP3_pk ADD mirna_pk;
+	ALTER TABLE mirna_raw.miRdSNP3_pk ADD snp_pk;
+	ALTER TABLE mirna_raw.miRdSNP3_pk ADD gene_pk;
+	ALTER TABLE mirna_raw.miRdSNP3_pk ADD transcript_pk;
+	ALTER TABLE mirna_raw.miRdSNP3_pk ADD target_pk;
+	ALTER TABLE mirna_raw.miRdSNP3_pk ADD id_pk;
+	
+	7.3
+	
+	// snp
+	SELECT count t1.snp
+	FROM mirna_raw.miRdSNP3 t1 
+	LEFT JOIN mirna.snp t2 
+	ON t1.snp = t2.snp_id 
+	where t1.pk is not null and t2.pk is null;
+	
+	//transcript
+	SELECT distinct t1.refseq
+	FROM mirna_raw.miRdSNP3 t1
+	LEFT JOIN mirna.transcript t2
+	ON t1.refseq = t2.id
+	where
+	t1.pk is not null and t2.pk is null;
+	
+	//gene
+	SELECT distinct t1.gene
+	FROM mirna_raw.miRdSNP3
+	t1 LEFT JOIN mirna.gene t2 ON t1.gene = t2.name
+	where 
+	t1.pk is not null and t2.pk is null;
+	
+	//mirna
+	SELECT distinct t1.miR
+	FROM mirna_raw.miRdSNP3 t1 
+	LEFT JOIN mirna.mirna t2 ON t1.miR = t2.name
+	where 
+	t1.pk is not null and t2.pk is null;
+	
+	//disease
+	select distinct TRIM(diseases) from mirna_raw.miRdSNP3 (the first time to introduce new data into Disease table that is why I didn't test the data already included)
+	
+	// Include all mirnas' pk in miRdSNP3_pk
+	
+	UPDATE mirna_raw.miRdSNP3_pk
+	SET mirna_pk=(SELECT pk FROM mirna.mirna 
+	WHERE mirna.mirna.name=mirna_raw.miRdSNP3_pk.miR);
+	
+	// Include all diseases' pk in miRdSNP3_pk
+	
+	UPDATE mirna_raw.miRdSNP3_pk
+	SET diseases_pk=(SELECT pk FROM mirna.disease 
+	WHERE mirna.disease.name=mirna_raw.miRdSNP3_pk.diseases);
+	
+	// Include all snps' in miRdSNP3_pk
+	
+	UPDATE mirna_raw.miRdSNP3_pk
+	SET snp_pk=(SELECT pk FROM mirna.snp 
+	WHERE mirna.snp.snp_id=mirna_raw.miRdSNP3_pk.snp);
+	
+	// Include all genes' in miRdSNP3_pk
+	
+	UPDATE mirna_raw.miRdSNP3_pk
+	SET gene_pk=(SELECT pk FROM mirna.gene 
+	WHERE mirna.gene.name = mirna_raw.miRdSNP3_pk.gene);
+	
+	//
+	54194132 is the result retrieved from this query -> select max(pk) from mirna.target;
+	SET @a:=54194132;
+	UPDATE mirna_raw.miRdSNP3_pk SET target_pk=@a:=@a+1;
+	
+	
+	insert into mirna.target (pk, transcript_pk)
+	select target_pk, transcript_pk from mirna_raw.miRdSNP3_pk;
+	
+	#5
+	SET @b:=63970029;
+	UPDATE mirna_raw.miRdSNP3_pk SET id_pk=@b:=@b+1;
+	
+	#6
+	insert into mirna.interaction_data (pk, mirna_pk, gene_pk, target_pk, provenance)
+	select id_pk, mirna_pk, gene_pk, target_pk, "MIRdSNP" from mirna_raw.miRdSNP3_pk;
+	
+	#7 (expresion_data)
+	insert into mirna.expression_data (mirna_pk, interaction_data_pk, disease_pk, provenance)
+	select t1.mirna_pk, t1.id_pk, t2.disease_pk, "MIRdSNP" from mirna_raw.miRdSNP3_pk t1, mirna_raw.miRdSNP3_disease_pk t2 where t1.pk=t2.row_pk;
+	
+	insert into mirna.snp_has_disease (disease_pk, snp_pk)
+	select distinct t2.disease_pk, t1.snp_pk from mirna_raw.miRdSNP3_pk t1, mirna_raw.miRdSNP3_disease_pk t2 where t1.pk=t2.row_pk;
+	
+	#Two new intermediate tables have been created given that genes are annotated with synonyms. Although a gene has an one-to-many relationship with transcript, it must be modified.
+	 The same problem happens with snp (a gene and its synonym could point to snp) 
+	
+	
+	// Relate snp and gene as follows (this query to insert data is executed once 'cause mirdSNP3 is the only database of the big ones which has SNPs to be related with Genes): 
+	
+	insert into mirna.snp_has_gene (snp_pk, gene_pk)
+	select distinct snp_pk, gene_pk from mirna_raw.miRdSNP3_pk;
+	
+	// Relate genes and transcriprs as follows (this execution is not applicable to all databases) 
+	
+	repTar_mouse (transcript, gene): 16984 are the new rows introduced.
+	
+	insert into mirna.transcript_has_gene (transcript_pk, gene_pk)
+	select distinct transcript_pk, gene_pk from mirna_raw.repTar_mouse_pk;
+	
+	repTar_human (transcript, gene): 
+	
+	insert into mirna.transcript_has_gene (transcript_pk, gene_pk)
+	select distinct transcript_pk, gene_pk from mirna_raw.repTar_human_pk;
+	
+	mirdSNP3: There are duplicates so, another query was executed:
+	
+	insert into mirna.transcript_has_gene (transcript_pk, gene_pk)
+	select distinct transcript_pk, gene_pk from mirna_raw.miRdSNP3_pk t1
+	WHERE NOT EXISTS(SELECT transcript_pk, gene_pk FROM mirna.transcript_has_gene t2 
+	WHERE t1.transcript_pk = t2.transcript_pk and t1.gene_pk = t2.gene_pk);
+	
+	microtv4:
+	
+	insert into mirna.transcript_has_gene (transcript_pk, gene_pk)
+	select distinct transcript_pk, gene_pk from mirna_raw.microtv4_pk;
+	
+	85141 (total distinct gene_pk and transcript_pk retrieved using this query:
+	select count(*) from mirna.transcript_has_gene;)
+	
+	microt_cds:
+	
+	insert into mirna.transcript_has_gene (transcript_pk, gene_pk)
+	select distinct transcript_pk, gene_pk from mirna_raw.microt_cds_pk;
+	
+	Total for all rows after executing the query: select count(distinct transcript_pk, gene_pk)  from mirna_raw.microt_cds_pk;
+	
+	64636 (with/without replicates)
+	
+	Total for all rows after executing the query: select count(*) from mirna.transcript_has_gene;
+	
+	102.747 (total of transcript-gene relationships wihtout replicates)
+	
+	
+	In this section, we start with those databases that have a number of rows lower than the rest whose data have been integrated above:
+	
+	8.HMDD
+	
+	A lot of flush():
+	The process programmed using Hibernate took 20 mins.  
+	 
+	9.Phenomir
+	
+	The process programmed using Hibernate took 10 mins. 
+	
+	10.Mir2Cancer
+	
+	The process using Hibernate took less than 5 mins.
+	
+	11. Mir2Disease
+	
+	The process using Hibernate took less than 5 mins.
+	
+	12. MirEnvironment
+	
+	The process using Hibernate took less than 5 mins.
+	
+	13. SMS2miR2N
+	
+	The process using 
+	
+	
+	
+	
+	
+	
 	
 	

@@ -78,7 +78,7 @@ public abstract class NewMirnaDatabase implements IMirnaDatabase {
 				processRow(session, rs);
 				
 				count++;
-				if (count%1000==0) {
+				if (count%100==0) {
 					System.out.println(tableName + ": " + count);
 					session.flush();
 			        session.clear();
@@ -104,6 +104,19 @@ public abstract class NewMirnaDatabase implements IMirnaDatabase {
 			if (att != null) res = true;			
 		}
 		return res;
+	}
+	
+	protected String nullifyField(String field) {
+		return "".equals(field.trim()) 
+				|| "n_a".equals(field.trim())
+				|| "_".equals(field.trim())
+				|| "NULL".equals(field.trim())
+				|| "n/a".equals(field.trim())
+				|| "N/A".equals(field.trim())
+				|| "na".equals(field.trim())
+				|| "NA".equals(field.trim())
+				|| "-".equals(field.trim())
+				? null : field.trim();
 	}
 
 }

@@ -47,7 +47,7 @@ public class Gene extends ModelClass {
 	@Column(name = "location", nullable = true, length = 45, unique = false)
 	private String location;// ok
 	
-	@Column(name = "expression_site", nullable = true, length = 45, unique = false)
+	@Column(name = "expression_site", nullable = true, length = 90, unique = false)
 	private String expression_site;// ok
 	
 	@Column(name = "kegg_id", nullable = true, length = 45, unique = false)
@@ -385,8 +385,6 @@ public class Gene extends ModelClass {
 		}
 		if (gene.getPk() != null)
 			this.pk = gene.getPk();
-		if (gene.getName() != null)
-			this.name = gene.getName();
 		if (gene.getGeneId() != null)
 			this.geneId = gene.getGeneId();
 		if (gene.getDescription() != null)

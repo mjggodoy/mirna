@@ -46,14 +46,18 @@
   <mapping class="mirna.beans.nToM.MirnaHasSequence" />
   <mapping class="mirna.beans.nToM.MirnaInvolvesBiologicalProcess" />
   <mapping class="mirna.beans.nToM.SnpHasDisease" />
+  <mapping class="mirna.beans.nToM.SnpHasGene" />
   <mapping class="mirna.beans.nToM.TranscriptProducesProtein" />
   <mapping class="mirna.beans.nToM.SnpHasPubmedDocument" />
   <mapping class="mirna.beans.nToM.HairpinHasSequence" />
   <mapping class="mirna.beans.nToM.MatureHasSequence" />
   <mapping class="mirna.beans.nToM.MirnaHasHairpin" />
   <mapping class="mirna.beans.nToM.MirnaHasMature" />
+  <mapping class="mirna.beans.nToM.TranscriptHasGene" />
   <mapping class="mirna.beans.SmallMolecule" />
   <mapping class="mirna.beans.EnvironmentalFactor" />
+  
+  <mapping class="mirna.database.beans.DiseasePk" />
    
  </session-factory>
 </hibernate-configuration>

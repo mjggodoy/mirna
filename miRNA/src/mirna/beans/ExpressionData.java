@@ -67,20 +67,9 @@ public class ExpressionData extends ModelClass {
 	@Column(name = "different_expression_location", nullable = true, length = 80)
 	private String differentExpressionLocation;
 	
-	/* XUXA */
-//	@Column(name = "smallMolecule_pk", nullable = true, length = 80) // he inlcu�do la smallmolecule_Pk para la db SM2miR2N
-//	private Integer smallMolecule_pk;
+	@Column(name = "interaction_data_pk", nullable = true, length = 80)
+	private Integer interaction_data_pk;
 	
-//	@Column(name = "interactionData_pk", nullable = true, length = 80) // he inclu�do la interactionDataPk para la relaci�n interacionData/ExpressionData
-//	private Integer interactionData_pk;
-	
-	
-//	private String journal; //ok
-//	private String reference; //ok
-//	private String resource; //ok
-//	private String phenomicId;//ok
-//	private String mirenvironmentID;
-//	private String support;//ok
 	
 	public ExpressionData() {
 		super();
@@ -231,22 +220,14 @@ public class ExpressionData extends ModelClass {
 		this.differentExpressionLocation = differentExpressionLocation;
 	}
 
-//	public Integer getSmallMolecule_pk() {
-//		return smallMolecule_pk;
-//	}
-//
-//	public void setSmallMolecule_pk(Integer smallMolecule_pk) {
-//		this.smallMolecule_pk = smallMolecule_pk;
-//	}
-//	
-//
-//	public Integer getInteractionData_pk() {
-//		return interactionData_pk;
-//	}
-//
-//	public void setInteractionData_pk(Integer interactionData_pk) {
-//		this.interactionData_pk = interactionData_pk;
-//	}
+
+	public Integer getInteraction_data_pk() {
+		return interaction_data_pk;
+	}
+
+	public void setInteraction_data_pk(Integer interaction_data_pk) {
+		this.interaction_data_pk = interaction_data_pk;
+	}
 
 	public void update(ExpressionData gene) throws ConflictException {
 		this.update(gene, true);
@@ -273,12 +254,12 @@ public class ExpressionData extends ModelClass {
 		if(ed.getMirnaPk() !=null) this.mirnaPk = ed.getMirnaPk(); 
 		if(ed.getProvenance() !=null) this.provenance = ed.getProvenance();
 		if(ed.getProvenanceId() !=null) this.provenanceId = ed.getProvenanceId();
-//		if(ed.getSmallMolecule_pk() !=null) this.smallMolecule_pk = ed.getSmallMolecule_pk();
 		if(ed.getStudyDesign() !=null) this.studyDesign = ed.getStudyDesign();
-//		if(ed.getInteractionData_pk() != null) this.interactionData_pk = ed.getInteractionData_pk();
 		if(ed.getTitleReference() != null) this.titleReference = ed.getTitleReference();
 		if(ed.getTreatment() != null) this.treatment = ed.getTreatment();
-		if(ed.getYear() !=null) this.year = ed.getYear();	
+		if(ed.getYear() !=null) this.year = ed.getYear();
+		if(ed.getInteraction_data_pk() !=null) this.interaction_data_pk = ed.getInteraction_data_pk();	
+
 	}
 	
 	
@@ -362,12 +343,7 @@ public class ExpressionData extends ModelClass {
 			if(ed.getProvenanceId()== null) res++;
 			else if (!this.provenanceId.equals(ed.getProvenanceId())) return -1;	
 		}
-		
-//		if (this.smallMolecule_pk !=null){
-//			if(ed.getSmallMolecule_pk()== null) res++;
-//			else if (!this.smallMolecule_pk.equals(ed.getSmallMolecule_pk())) return -1;	
-//		}
-		
+				
 		if (this.studyDesign !=null){
 			if(ed.getStudyDesign()== null) res++;
 			else if (!this.studyDesign.equals(ed.getStudyDesign())) return -1;	
@@ -388,11 +364,15 @@ public class ExpressionData extends ModelClass {
 			else if (!this.year.equals(ed.getYear())) return -1;	
 		}
 		
+		if (this.interaction_data_pk !=null){
+			if(ed.interaction_data_pk == null) res++;
+			else if (!this.interaction_data_pk.equals(ed.getInteraction_data_pk())) return -1;	
+		}
+		
 	
 		return res;
 		}
-	
-	
+
 	@Override
 	public String toString() {
 		return "ExpressionData [titleReference=" + titleReference
@@ -406,10 +386,10 @@ public class ExpressionData extends ModelClass {
 				+ mirnaPk + ", diseasePk=" + diseasePk
 				+ ", environmentalFactorPk=" + environmentalFactorPk
 				+ ", dataType=" + dataType + ", differentExpressionLocation="
-				+ differentExpressionLocation 
-//				+ ", smallMolecule_pk="
-//				+ smallMolecule_pk + ", interactionData_pk="
-//				+ interactionData_pk 
-				+ "]";
+				+ differentExpressionLocation + ", interaction_data_pk="
+				+ interaction_data_pk + "]";
 	}
+	
+	
+	
 }
