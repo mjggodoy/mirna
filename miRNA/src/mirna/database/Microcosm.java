@@ -175,9 +175,10 @@ public class Microcosm extends NewMirnaDatabase {
 		}
 
 		if(gene != null){
-
 			Object oldGene = session.createCriteria(Gene.class)
-					.add(Restrictions.ilike("name", gene.getName(), MatchMode.EXACT)).uniqueResult();	
+					.add(Restrictions.eq("name", gene.getName()))
+					//.add(Restrictions.ilike("name", gene.getName(), MatchMode.EXACT))
+					.uniqueResult();	
 			if (oldGene == null) {
 				session.save(gene);
 				session.flush(); // to get the PK
@@ -228,8 +229,8 @@ public class Microcosm extends NewMirnaDatabase {
 		// (y la relaciona con el MiRna y Target)
 
 		id.setMirna_pk(miRna.getPk());
-		id.setTarget_pk(target.getPk());
-		id.setGene_pk(gene.getPk());
+		if(target != null) id.setTarget_pk(target.getPk());
+		if(gene != null) id.setGene_pk(gene.getPk());
 		session.save(id);
 
 	}
