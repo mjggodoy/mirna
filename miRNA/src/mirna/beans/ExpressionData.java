@@ -10,7 +10,7 @@ import mirna.exception.ConflictException;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@Table(name = "expression_data")
+@Table(name = "expression_data", schema = "mirna")
 public class ExpressionData extends ModelClass {
 
 	@Column(name = "title_reference", nullable = true, length = 300)
