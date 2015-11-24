@@ -66,165 +66,86 @@ public class ExpressionData extends ModelClass {
 	private String differentExpressionLocation;
 	
 	@Column(name = "interaction_data_pk", nullable = true, length = 80)
-	private Integer interaction_data_pk;
-	
+	private Integer interactionDataPk;
 	
 	public ExpressionData() {
 		super();
 	}
-	
+
 	public String getTitleReference() {
 		return titleReference;
-	}
-
-	public void setTitleReference(String titleReference) {
-		this.titleReference = titleReference;
 	}
 
 	public String getFoldchangeMin() {
 		return foldchangeMin;
 	}
 
-	public void setFoldchangeMin(String foldchangeMin) {
-		this.foldchangeMin = foldchangeMin;
-	}
-
 	public String getFoldchangeMax() {
 		return foldchangeMax;
-	}
-
-	public void setFoldchangeMax(String foldchangeMax) {
-		this.foldchangeMax = foldchangeMax;
 	}
 
 	public String getProvenanceId() {
 		return provenanceId;
 	}
 
-	public void setProvenanceId(String provenanceId) {
-		this.provenanceId = provenanceId;
-	}
-
 	public String getProvenance() {
 		return provenance;
-	}
-
-	public void setProvenance(String provenance) {
-		this.provenance = provenance;
 	}
 
 	public String getStudyDesign() {
 		return studyDesign;
 	}
 
-	public void setStudyDesign(String studyDesign) {
-		this.studyDesign = studyDesign;
-	}
-
 	public String getMethod() {
 		return method;
-	}
-
-	public void setMethod(String method) {
-		this.method = method;
 	}
 
 	public String getTreatment() {
 		return treatment;
 	}
 
-	public void setTreatment(String treatment) {
-		this.treatment = treatment;
-	}
-
 	public String getEvidence() {
 		return evidence;
-	}
-
-	public void setEvidence(String evidence) {
-		this.evidence = evidence;
 	}
 
 	public String getYear() {
 		return year;
 	}
 
-	public void setYear(String year) {
-		this.year = year;
-	}
-
 	public String getDescription() {
 		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	public String getCellularLine() {
 		return cellularLine;
 	}
 
-	public void setCellularLine(String cellularLine) {
-		this.cellularLine = cellularLine;
-	}
-
 	public String getCondition() {
 		return condition;
 	}
 
-	public void setCondition(String condition) {
-		this.condition = condition;
-	}
-	
 	public Integer getMirnaPk() {
 		return mirnaPk;
-	}
-
-	public void setMirnaPk(Integer mirnaPk) {
-		this.mirnaPk = mirnaPk;
 	}
 
 	public Integer getDiseasePk() {
 		return diseasePk;
 	}
 
-	public void setDiseasePk(Integer diseasePk) {
-		this.diseasePk = diseasePk;
-	}
-
 	public Integer getEnvironmentalFactorPk() {
 		return environmentalFactorPk;
-	}
-
-	public void setEnvironmentalFactorPk(Integer environmentalFactorPk) {
-		this.environmentalFactorPk = environmentalFactorPk;
 	}
 
 	public String getDataType() {
 		return dataType;
 	}
 
-	public void setDataType(String dataType) {
-		this.dataType = dataType;
-	}
-	
 	public String getDifferentExpressionLocation() {
 		return differentExpressionLocation;
 	}
 
-	public void setDifferentExpressionLocation(
-			String differentExpressionLocation) {
-		this.differentExpressionLocation = differentExpressionLocation;
+	public Integer getInteractionDataPk() {
+		return interactionDataPk;
 	}
-
-
-	public Integer getInteraction_data_pk() {
-		return interaction_data_pk;
-	}
-
-	public void setInteraction_data_pk(Integer interaction_data_pk) {
-		this.interaction_data_pk = interaction_data_pk;
-	}
-
+	
 }
