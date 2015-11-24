@@ -6,7 +6,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-import mirna.api.model.EnvironmentalFactor;;
+import mirna.api.model.EnvironmentalFactor;
 
 
 @RepositoryRestResource(collectionResourceRel = "environmental_factor", path = "environmentalfactor")
