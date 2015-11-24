@@ -42,4 +42,8 @@ public class MiRna extends ModelClass {
 		return arm;
 	}
 
+	public List<ExpressionData> getExpressionDatas() {
+		return expressionDatas;
+	}
+	
 }
