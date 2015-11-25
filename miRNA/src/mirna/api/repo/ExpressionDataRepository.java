@@ -10,7 +10,7 @@ import mirna.api.model.ExpressionData;
 import mirna.api.model.MiRna;
 
 
-@RepositoryRestResource(collectionResourceRel = "expression_data", path = "expressiondata")
+@RepositoryRestResource(collectionResourceRel = "expression_data", path = "expression_data")
 
 public interface ExpressionDataRepository extends PagingAndSortingRepository<ExpressionData, Integer> {
 	
