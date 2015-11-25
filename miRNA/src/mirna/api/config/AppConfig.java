@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration;
 
+import mirna.api.model.MiRna;
+
 @Configuration
 public class AppConfig extends RepositoryRestMvcConfiguration {
 
@@ -16,13 +18,11 @@ public class AppConfig extends RepositoryRestMvcConfiguration {
 		super.configureRepositoryRestConfiguration(config);
 		try {
 			config.setBaseUri(new URI("/api"));
-			/*
-			config.exposeIdsFor(Endpoint.class, SparqlQuery.class,
-					Ontology.class,
-					ServiceBiocatalogue.class, ServiceBiomoby.class,
-					ServiceEmbrace.class, ServiceVarious.class,
-					Workflow.class, Processor.class);
-					*/
+			config.exposeIdsFor(MiRna.class);
+//					Ontology.class,
+//					ServiceBiocatalogue.class, ServiceBiomoby.class,
+//					ServiceEmbrace.class, ServiceVarious.class,
+//					Workflow.class, Processor.class);
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
