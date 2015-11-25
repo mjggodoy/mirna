@@ -14,7 +14,7 @@ import mirna.api.model.MiRna;
 
 public interface ExpressionDataRepository extends PagingAndSortingRepository<ExpressionData, Integer> {
 	
-	//public Page<ExpressionData> findByProvenance(@Param("provenance")String provenance, Pageable pageable);
-	public Page<MiRna> findBy(@Param("pk")String pk, Pageable pageable);
+	public Page<ExpressionData> findByProvenance(@Param("provenance")String provenance, Pageable pageable);
+	public Page<ExpressionData> findBy(@Param("mirna_pk")String mirna_pk, Pageable pageable);
 
 }
