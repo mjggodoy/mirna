@@ -27,6 +27,10 @@ public class MiRna extends ModelClass {
 	@OneToMany
 	@JoinColumn(name = "mirna_pk", referencedColumnName = "pk")
 	private List<ExpressionData> expressionDatas;
+	
+	@OneToMany
+	@JoinColumn(name = "mirna_pk", referencedColumnName = "pk")
+	private List<InteractionData> interactionDatas;
 
 	public MiRna() {}
 
@@ -42,4 +46,12 @@ public class MiRna extends ModelClass {
 		return arm;
 	}
 
+	public List<ExpressionData> getExpressionDatas() {
+		return expressionDatas;
+	}
+
+	public List<InteractionData> getInteractionDatas() {
+		return interactionDatas;
+	}
+	
 }

@@ -9,7 +9,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import mirna.api.model.ExpressionData;
 
 
-@RepositoryRestResource(collectionResourceRel = "expression_data", path = "expressiondata")
+@RepositoryRestResource(collectionResourceRel = "expression_data", path = "expression_data")
 
 public interface ExpressionDataRepository extends PagingAndSortingRepository<ExpressionData, Integer> {
 	
