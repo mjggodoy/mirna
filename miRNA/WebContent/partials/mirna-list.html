@@ -1,0 +1,9 @@
+<h3>Mirna</h3>
+
+<div class="list-group">
+  <a ng-repeat="o in mirna" href="#" class="list-group-item" ui-sref="viewMirna({id:o.pk})">
+    <h4 class="list-group-item-heading">{{o.name}}</h4>
+  </a>
+</div>
+
+<div ng-include="'partials/snippet/pager.html'"></div>
