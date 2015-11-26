@@ -9,7 +9,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import mirna.api.model.EnvironmentalFactor;
 
 
-@RepositoryRestResource(collectionResourceRel = "environmental_factor", path = "environmentalfactor")
+@RepositoryRestResource(collectionResourceRel = "environmental_factor", path = "environmental_factor")
 
 public interface EnvironmentalFactorRepository extends PagingAndSortingRepository<EnvironmentalFactor, Integer> {
 	
