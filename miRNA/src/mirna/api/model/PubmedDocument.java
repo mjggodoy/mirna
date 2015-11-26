@@ -28,19 +28,12 @@ public class PubmedDocument extends ModelClass {
 		return id;
 	}
 
-	
-	
 	public String getDescription() {
 		return description;
 	}
 
-	
-	
-
 	public String getResource() {
 		return resource;
 	}
-
-	
 	
 }
