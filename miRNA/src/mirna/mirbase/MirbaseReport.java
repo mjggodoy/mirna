@@ -66,8 +66,35 @@ public class MirbaseReport {
 				if (formattedName.startsWith("mir")) {
 					organisms = getOrganisms(name);
 				}
+				formattedName = cambioAPelo(formattedName);
 				if (organisms.isEmpty()) {
 					MirbaseCombinedResult res = busca(formattedName);
+
+					// Segundo intento quitando el gga del principio
+					if (res.res()==false) {
+						if ( (formattedName.startsWith("gga-mdv1-"))
+								|| (formattedName.startsWith("gga-ghr-")) ) {
+							String newFormattedName = formattedName.substring(4);
+							MirbaseCombinedResult newRes = busca(newFormattedName);
+							if (newRes.res()) {
+								formattedName = newFormattedName;
+								res = newRes;
+							}
+						}
+					}
+					
+					// Tercer intento quitando el gra del principio
+					if (res.res()==false) {
+						if (formattedName.startsWith("gra-ghr-")) {
+							String newFormattedName = formattedName.substring(4);
+							MirbaseCombinedResult newRes = busca(newFormattedName);
+							if (newRes.res()) {
+								formattedName = newFormattedName;
+								res = newRes;
+							}
+						}
+					}
+					
 					pw.println(name+"\t"+formattedName+"\t"+res+"\tfalse");
 				} else {
 					for (String organism : organisms) {
@@ -88,6 +115,20 @@ public class MirbaseReport {
 			if (con!=null) con.close();
 		}
 	}
+	
+	private String cambioAPelo(String in) {
+		if ("hsa-HSV1-miR-LAT".toLowerCase().equals(in.toLowerCase())) return "HSV1-miR-LAT";
+		else if ("hsa-LNA_let-7b".toLowerCase().equals(in.toLowerCase())) return "LNA_let-7b";
+		else if ("hsa-miR-10".toLowerCase().equals(in.toLowerCase())) return "hsa-miR-10-5p";
+		else if ("hsa-miR-181a-1*".toLowerCase().equals(in.toLowerCase())) return "hsa-miR-181a-1";
+		else if ("hsa-mir-9-*".toLowerCase().equals(in.toLowerCase())) return "hsa-mir-9*";
+		else if ("mghv-miR-m1-9*".toLowerCase().equals(in.toLowerCase())) return "mghv-miR-m1-9";
+		
+		else return in;
+	}
+	
+	
+	
 	
 	private MirbaseCombinedResult busca(String formattedName) throws SQLException {
 		MirbaseCombinedResult res = new MirbaseCombinedResult();
