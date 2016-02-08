@@ -1,30 +1,28 @@
 package mirna.api.model;
 
-import javax.persistence.Column;
+import java.util.List;
+
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.Table;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
-@Table(name = "hairpin", schema="mirna")
-public class Hairpin extends ModelClass {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorValue("0")
+public class Hairpin extends MiRna {
 	
-	@Column(name = "name", nullable = true)
-	private String name;
+	@ManyToMany
+	@JoinTable(name="hairpin2mature", schema="mirna",
+		joinColumns={@JoinColumn(name="hairpin_pk")},
+		inverseJoinColumns={@JoinColumn(name="mature_pk")})
+	private List<MiRna> matures;
 	
-	@Column(name = "accession_number", nullable = true)
-	private String accession_number;
-	
-	public String getName() {
-		return name;
+	public List<MiRna> getMatures() {
+		return matures;
 	}
 
-	public String getAccession_number() {
-		return accession_number;
-	}
-
-	public Hairpin() { }
-	
 }
