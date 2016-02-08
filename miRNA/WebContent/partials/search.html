@@ -1,7 +1,7 @@
-<form class="form-inline">
+<form class="form-inline" ng-submit="findById()">
 	<div class="form-group">
-		<label for="search-opt-1">Search by miRNA</label>
-		<input type="text" class="form-control" id="search-opt-1" placeholder="miRNA">
+		<label for="search-opt-1">Search by miRNA id</label>
+		<input type="text" class="form-control" id="search-opt-1" placeholder="miRNA" ng-model="idText">
 	</div>
 	<button type="submit" class="btn btn-default">Search</button>
 </form>

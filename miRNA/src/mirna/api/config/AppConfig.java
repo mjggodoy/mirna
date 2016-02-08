@@ -8,6 +8,7 @@ import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration;
 
 import mirna.api.model.MiRna;
+import mirna.api.model.MiRna2;
 
 @Configuration
 public class AppConfig extends RepositoryRestMvcConfiguration {
@@ -18,7 +19,9 @@ public class AppConfig extends RepositoryRestMvcConfiguration {
 		super.configureRepositoryRestConfiguration(config);
 		try {
 			config.setBaseUri(new URI("/api"));
-			config.exposeIdsFor(MiRna.class);
+			config.exposeIdsFor(
+					MiRna.class,
+					MiRna2.class);
 //					Ontology.class,
 //					ServiceBiocatalogue.class, ServiceBiomoby.class,
 //					ServiceEmbrace.class, ServiceVarious.class,

@@ -48,11 +48,11 @@ Duis malesuada blandit ante, eu laoreet purus dapibus in. Vivamus a magna a veli
 		<div class="panel panel-info">
 			<div class="panel-heading">Try me</div>
 			<div class="panel-body">
-				<form class="">
+				<form class="" ng-submit="quickSearch()">
 					<div class="form-group">
 						<label for="try-me">miRNA</label>
 						<div class="input-group">
-							<input type="text" class="form-control" id="try-me" value="hsa-let-7a">
+							<input type="text" class="form-control" id="try-me" ng-model="quickSearchText">
 							<span class="input-group-btn">
 								<button type="submit" class="btn btn-primary">Go</button>
 							</span>

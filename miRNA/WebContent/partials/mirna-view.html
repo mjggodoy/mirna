@@ -2,97 +2,55 @@
 	<div class="col-md-12">
 		<ol class="breadcrumb">
 			<li><a href="#">Home</a></li>
-			<li><a href="#">miRNA</a></li>
-			<li class="active">{{mirna.name}}</li>
+			<li><a data-ui-sref="listMirna">miRNA</a></li>
+			<li class="active">{{mirna.id}}</li>
 		</ol>
 	</div>
 </div>
 
 <div class="row">
 
-	<div class="col-md-4">
+	<div class="col-md-12">
+		<h1 data-ng-if="mirna.mature">Mature <small>{{mirna.id}}</small></h1>
+		<h1 data-ng-if="mirna.mature==false">Hairpin <small>{{mirna.id}}</small></h1>
+	</div>
+
+	<div class="col-md-12">
 		<div class="panel panel-primary">
-			<div class="panel-heading">miRNA</div>
+			<div class="panel-heading">Information</div>
 			<div class="panel-body">
-				<strong>Name:</strong> {{mirna.name}}<br/>
-				<strong>Hairpin:</strong> {{mirna.hairpin.name}}<br/>
-				<strong>Mature:</strong> {{mirna.mature.name}}<br/>
+				<strong>Id:</strong> {{mirna.id}}<br/>
+				<strong>Accession number:</strong> {{mirna.accessionNumber}}<br/>
+				<strong>Mature:</strong> {{mirna.mature}}<br/>
+				<strong>Dead:</strong> {{mirna.dead}}<br/>
 			</div>
 		</div>
 	</div>
 	
-	<div class="col-md-4">
-		<div class="panel panel-info">
-			<div class="panel-heading">Sequence</div>
+	<div class="col-md-12" data-ng-if="mirna.mature">
+		<div class="panel panel-primary">
+			<div class="panel-heading">Hairpins</div>
 			<div class="panel-body">
-				<dl>
-					<dt>Sequence:</dt>
-					<dd>{{mirna.sequence}}</dd>
-				</dl>
+				<ul>
+					<li data-ng-repeat="hairpin in mirna.hairpins">
+						<a data-ui-sref="viewMirna({id: hairpin.pk})">{{hairpin.id}}</a>
+					</li>
+				</ul>
 			</div>
 		</div>
 	</div>
 	
-	<div class="col-md-4">
-		<div class="panel panel-info">
-			<div class="panel-heading">Phenotype</div>
+	<div class="col-md-12" data-ng-if="mirna.mature==false">
+		<div class="panel panel-primary">
+			<div class="panel-heading">Matures</div>
 			<div class="panel-body">
-				<dl>
-					<dt>Diseases:</dt>
-					<dd ng-repeat="disease in mirna.diseases">{{disease}}</dd>
-				</dl>
+				<ul>
+					<li data-ng-repeat="mature in mirna.matures">
+						<a data-ui-sref="viewMirna({id: mature.pk})">{{mature.id}}</a>
+					</li>
+				</ul>
 			</div>
 		</div>
 	</div>
-	
-	<div class="col-md-4">
-		<div class="panel panel-info">
-			<div class="panel-heading">Environmental Factor</div>
-			<div class="panel-body">
-				<dl>
-					<dt>Name:</dt>
-					<dd>{{mirna.environmental_factor}}</dd>
-					...
-				</dl>
-			</div>
-		</div>
-	</div>
-	
-	<div class="col-md-4">
-		<div class="panel panel-info">
-			<div class="panel-heading">Expression Data</div>
-			<div class="panel-body">
-				<dl>
-					<dt>Name:</dt>
-					<dd>{{mirna.environmental_factor}}</dd>
-					...
-				</dl>
-			</div>
-		</div>
-	</div>
-	
-	<div class="col-md-4">
-		<div class="panel panel-info">
-			<div class="panel-heading">Interaction Data</div>
-			<div class="panel-body">
-				<dl>
-					<dt>Name:</dt>
-					<dd>{{mirna.environmental_factor}}</dd>
-					...
-				</dl>
-			</div>
-		</div>
-	</div>
-	
-	
 	
 </div>
-
-
-<h3>{{mirna.name}}</h3>
-
-<dl>
-  <dt>URL</dt>
-  <dd>{{mirna.url}}</dd>
-  <dt>External Links</dt>
-</dl>

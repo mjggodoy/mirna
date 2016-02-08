@@ -35,7 +35,20 @@ angular.module('mirna.controllers', [])
 	$scope.loadPage();
   
 }).controller('MirnaListController', function($scope, $controller, Mirna) {
-	$scope.sortOptions = [ {value: "name", label: "Name"} ];
+	$scope.sortOptions = [ {value: "id", label: "Id"} ];
+	angular.extend(this, $controller('PagedListController',
+			{$scope: $scope, Object : Mirna, elements : 'mirna'}));
+
+}).controller('SearchByIdController', function($scope, $controller, $stateParams, Mirna) {
+	$scope.search = {
+		searchFunction: "findByIdContaining",
+		searchField: "id",
+		searchValue: $stateParams.id
+	};
+	$scope.sortOptions = [ {value: "id", label: "Id"} ];
+//	Mirna.query({},{}, searchOpts, function(response){
+//		$scope.mirna = response.mirna ? response.mirna : [];
+//	});
 	angular.extend(this, $controller('PagedListController',
 			{$scope: $scope, Object : Mirna, elements : 'mirna'}));
 
@@ -43,6 +56,33 @@ angular.module('mirna.controllers', [])
 	//Get a single mirna. Issues a GET to /api/mirna/:id
 	Mirna.get({ id: $stateParams.id }, function(response) {
 		$scope.mirna = response ? response : {};
+		if ($scope.mirna) {
+			if ($scope.mirna.mature) {
+				Mirna.getLink({ id: $stateParams.id, link: "hairpins" }, function(response) {
+					$scope.mirna.hairpins = response ? response.hairpins : {};
+				});
+			} else {
+				Mirna.getLink({ id: $stateParams.id, link: "matures" }, function(response) {
+					$scope.mirna.matures = response ? response.matures : {};
+				});
+			}
+		}
 	});
 
+}).controller('HomeController', function($scope, $state){
+	
+	$scope.quickSearchText = 'hsa-let-7a';
+	
+	$scope.quickSearch = function() {
+		if ($scope.quickSearchText) {
+			$state.go('searchById', {id: $scope.quickSearchText});
+		}
+	};
+}).controller('SearchController', function($scope, $state){
+	
+	$scope.findById = function() {
+		if ($scope.idText) {
+			$state.go('searchById', {id: $scope.idText});
+		}
+	};
 });

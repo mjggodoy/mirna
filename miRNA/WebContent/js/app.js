@@ -12,10 +12,16 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 		controller: 'MirnaViewController'
 	}).state('search', { //search state
 		url: '/search',
-		templateUrl: 'partials/search.html'
+		templateUrl: 'partials/search.html',
+		controller: 'SearchController'
+	}).state('searchById', { //results state
+		url: '/search/id/:id',
+		templateUrl: 'partials/mirna-list.html',
+		controller: 'SearchByIdController'
 	}).state('home', { //home state
 		url: '/home',
-		templateUrl: 'partials/home.html'
+		templateUrl: 'partials/home.html',
+		controller: 'HomeController'
 	});
 
 }).run(function($state) {

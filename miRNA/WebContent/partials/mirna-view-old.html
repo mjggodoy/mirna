@@ -1,0 +1,98 @@
+<div class="row">
+	<div class="col-md-12">
+		<ol class="breadcrumb">
+			<li><a href="#">Home</a></li>
+			<li><a href="#">miRNA</a></li>
+			<li class="active">{{mirna.name}}</li>
+		</ol>
+	</div>
+</div>
+
+<div class="row">
+
+	<div class="col-md-4">
+		<div class="panel panel-primary">
+			<div class="panel-heading">miRNA</div>
+			<div class="panel-body">
+				<strong>Name:</strong> {{mirna.name}}<br/>
+				<strong>Hairpin:</strong> {{mirna.hairpin.name}}<br/>
+				<strong>Mature:</strong> {{mirna.mature.name}}<br/>
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-md-4">
+		<div class="panel panel-info">
+			<div class="panel-heading">Sequence</div>
+			<div class="panel-body">
+				<dl>
+					<dt>Sequence:</dt>
+					<dd>{{mirna.sequence}}</dd>
+				</dl>
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-md-4">
+		<div class="panel panel-info">
+			<div class="panel-heading">Phenotype</div>
+			<div class="panel-body">
+				<dl>
+					<dt>Diseases:</dt>
+					<dd ng-repeat="disease in mirna.diseases">{{disease}}</dd>
+				</dl>
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-md-4">
+		<div class="panel panel-info">
+			<div class="panel-heading">Environmental Factor</div>
+			<div class="panel-body">
+				<dl>
+					<dt>Name:</dt>
+					<dd>{{mirna.environmental_factor}}</dd>
+					...
+				</dl>
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-md-4">
+		<div class="panel panel-info">
+			<div class="panel-heading">Expression Data</div>
+			<div class="panel-body">
+				<dl>
+					<dt>Name:</dt>
+					<dd>{{mirna.environmental_factor}}</dd>
+					...
+				</dl>
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-md-4">
+		<div class="panel panel-info">
+			<div class="panel-heading">Interaction Data</div>
+			<div class="panel-body">
+				<dl>
+					<dt>Name:</dt>
+					<dd>{{mirna.environmental_factor}}</dd>
+					...
+				</dl>
+			</div>
+		</div>
+	</div>
+	
+	
+	
+</div>
+
+
+<h3>{{mirna.name}}</h3>
+
+<dl>
+  <dt>URL</dt>
+  <dd>{{mirna.url}}</dd>
+  <dt>External Links</dt>
+</dl>
