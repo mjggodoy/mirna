@@ -9,7 +9,6 @@ import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguratio
 
 import mirna.api.model.Hairpin;
 import mirna.api.model.Mature;
-//import mirna.api.model.Hairpin;
 import mirna.api.model.MiRna;
 import mirna.api.model.OLDMiRna;
 

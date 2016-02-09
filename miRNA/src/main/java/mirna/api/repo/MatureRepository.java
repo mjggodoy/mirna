@@ -6,7 +6,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import mirna.api.model.Mature;
 
 
-@RepositoryRestResource(collectionResourceRel = "mature", path = "mature")
+@RepositoryRestResource(collectionResourceRel = "mirna", path = "mature")
 
 public interface MatureRepository extends PagingAndSortingRepository<Mature, Integer> {
 
