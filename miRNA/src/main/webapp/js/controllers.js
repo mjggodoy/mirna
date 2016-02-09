@@ -51,7 +51,7 @@ angular.module('mirna.controllers', [])
 
 }).controller('SearchByIdController', function($scope, $controller, $stateParams, Mirna) {
 	$scope.search = {
-		searchFunction: "findByIdContaining",
+		searchFunction: "id",
 		searchField: "id",
 		searchValue: $stateParams.id
 	};
