@@ -1,11 +1,16 @@
 package mirna.api.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -31,6 +36,19 @@ public class MiRna extends ModelClass {
 	
 	@Column(name = "mirbase_pk", nullable = true)
 	private Integer mirBasePk;
+	
+	@ManyToMany
+	@JoinTable(
+			name="mirna_pk_translation",
+			schema="mirna",
+			joinColumns={
+					@JoinColumn(name="new_pk")
+			},
+			inverseJoinColumns={
+					@JoinColumn(name="old_pk", referencedColumnName="mirna_pk")
+			})
+
+	private List<ExpressionData> expressionDatas;
 	
 	public MiRna() {}
 
@@ -58,4 +76,8 @@ public class MiRna extends ModelClass {
 		return mirBasePk;
 	}
 
+	public List<ExpressionData> getExpressionDatas() {
+		return expressionDatas;
+	}
+	
 }

@@ -1,5 +1,7 @@
 package mirna.api.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
@@ -9,7 +11,7 @@ import javax.persistence.Table;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "expression_data", schema = "mirna")
-public class ExpressionData extends ModelClass {
+public class ExpressionData extends ModelClass implements Serializable {
 
 	@Column(name = "title_reference", nullable = true, length = 300)
 	private String titleReference;
