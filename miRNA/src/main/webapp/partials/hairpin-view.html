@@ -3,6 +3,7 @@
 		<ol class="breadcrumb">
 			<li><a href="#">Home</a></li>
 			<li><a data-ui-sref="listMirna">miRNA</a></li>
+			<li><a data-ui-sref="listHairpin">Hairpin</a></li>
 			<li class="active">{{mirna.id}}</li>
 		</ol>
 	</div>
@@ -11,8 +12,7 @@
 <div class="row">
 
 	<div class="col-md-12">
-		<h1 data-ng-if="mirna.mature">Mature <small>{{mirna.id}}</small></h1>
-		<h1 data-ng-if="mirna.mature==false">Hairpin <small>{{mirna.id}}</small></h1>
+		<h1>Hairpin <small>{{mirna.id}}</small></h1>
 	</div>
 
 	<div class="col-md-12">
@@ -21,32 +21,18 @@
 			<div class="panel-body">
 				<strong>Id:</strong> {{mirna.id}}<br/>
 				<strong>Accession number:</strong> {{mirna.accessionNumber}}<br/>
-				<strong>Mature:</strong> {{mirna.mature}}<br/>
 				<strong>Dead:</strong> {{mirna.dead}}<br/>
 			</div>
 		</div>
 	</div>
 	
-	<div class="col-md-12" data-ng-if="mirna.mature">
-		<div class="panel panel-primary">
-			<div class="panel-heading">Hairpins</div>
-			<div class="panel-body">
-				<ul>
-					<li data-ng-repeat="hairpin in mirna.hairpins">
-						<a data-ui-sref="viewMirna({id: hairpin.pk})">{{hairpin.id}}</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</div>
-	
-	<div class="col-md-12" data-ng-if="mirna.mature==false">
+	<div class="col-md-12">
 		<div class="panel panel-primary">
 			<div class="panel-heading">Matures</div>
 			<div class="panel-body">
 				<ul>
 					<li data-ng-repeat="mature in mirna.matures">
-						<a data-ui-sref="viewMirna({id: mature.pk})">{{mature.id}}</a>
+						<a data-ui-sref="viewMature({id: mature.pk})">{{mature.id}}</a>
 					</li>
 				</ul>
 			</div>

@@ -1,7 +1,9 @@
 angular.module('mirna.services', []).factory('AbstractFactory', function($http, SpringDataRestAdapter) {
-	function AbstractFactory(elements) {
+	
+	function AbstractFactory(elements, path) {
+		if (path==undefined) path = elements;
 		this.elements = elements;
-		this.HATEOAS_URL = 'http://localhost:8080/mirna/api/' + elements + '/';
+		this.HATEOAS_URL = 'http://localhost:8080/mirna/api/' + path + '/';
 	}
 	
 	AbstractFactory.prototype = {
@@ -57,5 +59,11 @@ angular.module('mirna.services', []).factory('AbstractFactory', function($http, 
   
 }).factory('Mirna', function(AbstractFactory) {
 	var extended = new AbstractFactory('mirna');
+	return extended;
+}).factory('Mature', function(AbstractFactory) {
+	var extended = new AbstractFactory('mirna', 'mature');
+	return extended;
+}).factory('Hairpin', function(AbstractFactory) {
+	var extended = new AbstractFactory('mirna', 'hairpin');
 	return extended;
 });

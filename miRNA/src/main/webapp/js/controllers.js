@@ -39,6 +39,16 @@ angular.module('mirna.controllers', [])
 	angular.extend(this, $controller('PagedListController',
 			{$scope: $scope, Object : Mirna, elements : 'mirna'}));
 
+}).controller('MatureListController', function($scope, $controller, Mature) {
+	$scope.sortOptions = [ {value: "id", label: "Id"} ];
+	angular.extend(this, $controller('PagedListController',
+			{$scope: $scope, Object : Mature, elements : 'mirna'}));
+	
+}).controller('HairpinListController', function($scope, $controller, Hairpin) {
+	$scope.sortOptions = [ {value: "id", label: "Id"} ];
+	angular.extend(this, $controller('PagedListController',
+			{$scope: $scope, Object : Hairpin, elements : 'mirna'}));
+
 }).controller('SearchByIdController', function($scope, $controller, $stateParams, Mirna) {
 	$scope.search = {
 		searchFunction: "findByIdContaining",
@@ -46,26 +56,45 @@ angular.module('mirna.controllers', [])
 		searchValue: $stateParams.id
 	};
 	$scope.sortOptions = [ {value: "id", label: "Id"} ];
-//	Mirna.query({},{}, searchOpts, function(response){
-//		$scope.mirna = response.mirna ? response.mirna : [];
-//	});
 	angular.extend(this, $controller('PagedListController',
 			{$scope: $scope, Object : Mirna, elements : 'mirna'}));
 
-}).controller('MirnaViewController', function($scope, $stateParams, Mirna) {
-	//Get a single mirna. Issues a GET to /api/mirna/:id
-	Mirna.get({ id: $stateParams.id }, function(response) {
+//}).controller('MirnaViewController', function($scope, $stateParams, Mirna) {
+//	//Get a single mirna. Issues a GET to /api/mirna/:id
+//	Mirna.get({ id: $stateParams.id }, function(response) {
+//		$scope.mirna = response ? response : {};
+////		if ($scope.mirna) {
+////			if ($scope.mirna.mature) {
+////				Mirna.getLink({ id: $stateParams.id, link: "hairpins" }, function(response) {
+////					$scope.mirna.hairpins = response ? response.hairpins : {};
+////				});
+////			} else {
+////				Mirna.getLink({ id: $stateParams.id, link: "matures" }, function(response) {
+////					$scope.mirna.matures = response ? response.matures : {};
+////				});
+////			}
+////		}
+//	});
+	
+}).controller('MatureViewController', function($scope, $stateParams, Mature) {
+	//Get a single mature. Issues a GET to /api/mature/:id
+	Mature.get({ id: $stateParams.id }, function(response) {
 		$scope.mirna = response ? response : {};
 		if ($scope.mirna) {
-			if ($scope.mirna.mature) {
-				Mirna.getLink({ id: $stateParams.id, link: "hairpins" }, function(response) {
-					$scope.mirna.hairpins = response ? response.hairpins : {};
-				});
-			} else {
-				Mirna.getLink({ id: $stateParams.id, link: "matures" }, function(response) {
-					$scope.mirna.matures = response ? response.matures : {};
-				});
-			}
+			Mature.getLink({ id: $stateParams.id, link: "hairpins" }, function(response) {
+				$scope.mirna.hairpins = response ? response.hairpins : {};
+			});
+		}
+	});
+	
+}).controller('HairpinViewController', function($scope, $stateParams, Hairpin) {
+	//Get a single hairpin. Issues a GET to /api/hairpin/:id
+	Hairpin.get({ id: $stateParams.id }, function(response) {
+		$scope.mirna = response ? response : {};
+		if ($scope.mirna) {
+			Hairpin.getLink({ id: $stateParams.id, link: "matures" }, function(response) {
+				$scope.mirna.matures = response ? response.matures : {};
+			});
 		}
 	});
 

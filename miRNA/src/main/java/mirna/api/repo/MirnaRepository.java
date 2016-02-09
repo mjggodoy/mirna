@@ -9,11 +9,11 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import mirna.api.model.MiRna;
 
 
-@RepositoryRestResource(collectionResourceRel = "mirna", path = "mirna_old")
+@RepositoryRestResource(collectionResourceRel = "mirna", path = "mirna")
 
 public interface MirnaRepository extends PagingAndSortingRepository<MiRna, Integer> {
 	
-	public Page<MiRna> findByNameContaining(@Param("name")String name, Pageable pageable);
+	public Page<MiRna> findByIdContaining(@Param("id")String id, Pageable pageable);
 
 
 	

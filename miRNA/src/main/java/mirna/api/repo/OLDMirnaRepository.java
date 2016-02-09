@@ -6,14 +6,14 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-import mirna.api.model.MiRna2;
+import mirna.api.model.OLDMiRna;
 
 
-@RepositoryRestResource(collectionResourceRel = "mirna", path = "mirna")
+@RepositoryRestResource(collectionResourceRel = "mirna", path = "mirna_old")
 
-public interface Mirna2Repository extends PagingAndSortingRepository<MiRna2, Integer> {
+public interface OLDMirnaRepository extends PagingAndSortingRepository<OLDMiRna, Integer> {
 	
-	public Page<MiRna2> findByIdContaining(@Param("id")String id, Pageable pageable);
+	public Page<OLDMiRna> findByNameContaining(@Param("name")String name, Pageable pageable);
 
 
 	

@@ -1,9 +1,26 @@
 <h3>Mirna</h3>
 
-<div class="list-group">
-  <a ng-repeat="o in mirna" href="#" class="list-group-item" ui-sref="viewMirna({id:o.pk})">
-    <h4 class="list-group-item-heading">{{o.id}}</h4>
-  </a>
-</div>
+<table class="table table-hover">
+	<thead>
+		<tr>
+			<th>Id</th>
+			<th>Accession number</th>
+			<th>Mature</th>
+			<th>Hairpin</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr data-ng-repeat="o in mirna">
+			<td>
+				<a data-ui-sref="viewMature({id:o.pk})" data-ng-if="o.mature">{{o.id}}</a>
+				<a data-ui-sref="viewHairpin({id:o.pk})" data-ng-if="o.mature==false">{{o.id}}</a>
+			</td>
+			<td>{{o.accessionNumber}}</td>
+			<td><span data-ng-if="o.mature">&#10004;</span></td>
+			<td><span data-ng-if="o.mature==false">&#10004;</span></td>
+		</tr>
+	</tbody>
+	
+</table>
 
-<div ng-include="'partials/snippet/pager.html'"></div>
+<div data-ng-include="'partials/snippet/pager.html'"></div>

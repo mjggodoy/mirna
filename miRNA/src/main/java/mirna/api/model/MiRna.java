@@ -1,109 +1,61 @@
 package mirna.api.model;
 
-import java.util.List;
-
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
-@Table(name = "mirna", schema = "mirna")
+@Table(name = "mirna2", schema = "mirna")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "mature", discriminatorType=DiscriminatorType.INTEGER)
 public class MiRna extends ModelClass {
 
-	@Column(name = "name", nullable = false, length = 80, unique = true)
-	protected String name;
+	@Column(name = "id", nullable = false, length = 20)
+	protected String id;
 
-	@Column(name = "arm", nullable = true, length = 5)
-	private String arm;
+	@Column(name = "accession_number", nullable = true, length = 20)
+	private String accessionNumber;
 
-	@Column(name = "resource", nullable = true, length = 45)
-	private String resource;
+	@Column(name = "previous_id", nullable = true, length = 90)
+	private String previousId;
 	
-	@OneToMany
-	@JoinColumn(name = "mirna_pk", referencedColumnName = "pk")
-	private List<ExpressionData> expression_data;
+	@Column(name = "mature", nullable = true, length = 1, insertable=false, updatable=false)
+	private boolean mature;
 	
-	@OneToMany
-	@JoinColumn(name = "mirna_pk", referencedColumnName = "pk")
-	private List<InteractionData> interaction_data;
+	@Column(name = "dead", nullable = true, length = 1)
+	private boolean dead;
 	
-	@ManyToMany
-	@JoinTable(name="mirna_has_sequence", schema="mirna",
-		joinColumns={@JoinColumn(name="mirna_pk")},
-		inverseJoinColumns={@JoinColumn(name="sequence_pk")})
-	private List<Sequence> sequence;
+	@Column(name = "mirbase_pk", nullable = true)
+	private Integer mirBasePk;
 	
-	@ManyToMany
-	@JoinTable(name="mirna_has_pubmed_document", schema="mirna",
-		joinColumns={@JoinColumn(name="mirna_pk")},
-		inverseJoinColumns={@JoinColumn(name="pubmed_document_pk")})
-	private List<PubmedDocument> pubmed_document;
-	
-	@ManyToMany
-	@JoinTable(name="mirna_has_hairpin", schema="mirna",
-		joinColumns={@JoinColumn(name="mirna_pk")},
-		inverseJoinColumns={@JoinColumn(name="hairpin_pk")})
-	private List<Hairpin> hairpin;
-	
-	@ManyToMany
-	@JoinTable(name="mirna_has_mature", schema="mirna",
-		joinColumns={@JoinColumn(name="mirna_pk")},
-		inverseJoinColumns={@JoinColumn(name="mature_pk")})
-	private List<Mature> mature;
-	
-	@ManyToMany
-	@JoinTable(name="mirna_involves_biological_process", schema="mirna",
-		joinColumns={@JoinColumn(name="mirna_pk")},
-		inverseJoinColumns={@JoinColumn(name="biological_process_pk")})
-	private List<BiologicalProcess> biological_process;
-
 	public MiRna() {}
 
-	public String getName() {
-		return name;
+	public String getId() {
+		return id;
 	}
 
-	public String getResource() {
-		return resource;
+	public String getAccessionNumber() {
+		return accessionNumber;
 	}
 
-	public String getArm() {
-		return arm;
+	public String getPreviousId() {
+		return previousId;
 	}
 
-	public List<ExpressionData> getExpression_data() {
-		return expression_data;
-	}
-
-	public List<InteractionData> getInteraction_data() {
-		return interaction_data;
-	}
-
-	public List<Sequence> getSequence() {
-		return sequence;
-	}
-	
-	public List<PubmedDocument> getPubmed_document() {
-		return pubmed_document;
-	}
-
-	public List<Hairpin> getHairpin() {
-		return hairpin;
-	}
-
-	public List<Mature> getMature() {
+	public boolean isMature() {
 		return mature;
 	}
 
-	public List<BiologicalProcess> getBiological_process() {
-		return biological_process;
+	public boolean isDead() {
+		return dead;
 	}
 	
+	public Integer getMirBasePk() {
+		return mirBasePk;
+	}
+
 }
