@@ -2,6 +2,9 @@ angular.module('mirna.controllers', [])
 .controller('PagedListController',function($scope, $state, Object, elements) {
 	
 	$scope.page = {};
+	if ($scope.pageSize) {
+		$scope.page.size = $scope.pageSize;
+	}
 	if (!$scope.sort) {
 		$scope.sort = {};
 		if ($scope.sortOptions) {
@@ -59,54 +62,46 @@ angular.module('mirna.controllers', [])
 	angular.extend(this, $controller('PagedListController',
 			{$scope: $scope, Object : Mirna, elements : 'mirna'}));
 
-//}).controller('MirnaViewController', function($scope, $stateParams, Mirna) {
-//	//Get a single mirna. Issues a GET to /api/mirna/:id
-//	Mirna.get({ id: $stateParams.id }, function(response) {
-//		$scope.mirna = response ? response : {};
-////		if ($scope.mirna) {
-////			if ($scope.mirna.mature) {
-////				Mirna.getLink({ id: $stateParams.id, link: "hairpins" }, function(response) {
-////					$scope.mirna.hairpins = response ? response.hairpins : {};
-////				});
-////			} else {
-////				Mirna.getLink({ id: $stateParams.id, link: "matures" }, function(response) {
-////					$scope.mirna.matures = response ? response.matures : {};
-////				});
-////			}
-////		}
-//	});
+}).controller('MirnaViewController',
+		function($scope, $controller, $stateParams, Object, complementary, PubmedDocument) {
 	
-}).controller('MatureViewController', function($scope, $stateParams, Mature) {
-	//Get a single mature. Issues a GET to /api/mature/:id
-	Mature.get({ id: $stateParams.id }, function(response) {
+	Object.get({ id: $stateParams.id }, function(response) {
 		$scope.mirna = response ? response : {};
 		if ($scope.mirna) {
-			Mature.getLink({ id: $stateParams.id, link: "hairpins" }, function(response) {
-				$scope.mirna.hairpins = response ? response.hairpins : {};
+			Object.getLink({ id: $stateParams.id, link: complementary }, function(response) {
+				$scope.mirna[complementary] = response ? response[complementary] : {};
 			});
+			$scope.mirna.pubmed_documents = {};
+			$scope.mirna.pubmed_documents.pageSize = 10;
+			$scope.mirna.pubmed_documents.search = {
+					searchFunction: "mirna_pk",
+					searchField: "pk",
+					searchValue: $stateParams.id
+				};
+			angular.extend(this, $controller('PagedListController',
+					{$scope: $scope.mirna.pubmed_documents, Object : PubmedDocument, elements : 'pubmed_document'}));
 		}
 	});
 	
-}).controller('HairpinViewController', function($scope, $stateParams, Hairpin) {
-	//Get a single hairpin. Issues a GET to /api/hairpin/:id
-	Hairpin.get({ id: $stateParams.id }, function(response) {
-		$scope.mirna = response ? response : {};
-		if ($scope.mirna) {
-			Hairpin.getLink({ id: $stateParams.id, link: "matures" }, function(response) {
-				$scope.mirna.matures = response ? response.matures : {};
-			});
-		}
-	});
+}).controller('MatureViewController', function($scope, $controller, $stateParams, Mature, PubmedDocument) {
+	
+	angular.extend(this, $controller('MirnaViewController',
+			{$scope: $scope, Object : Mature, complementary : 'hairpins'}));
+	
+}).controller('HairpinViewController', function($scope, $controller, $stateParams, Hairpin) {//}, PubmedDocument) {
+	
+	angular.extend(this, $controller('MirnaViewController',
+			{$scope: $scope, Object : Hairpin, complementary : 'matures'}));
 
 }).controller('HomeController', function($scope, $state){
 	
 	$scope.quickSearchText = 'hsa-let-7a';
-	
 	$scope.quickSearch = function() {
 		if ($scope.quickSearchText) {
 			$state.go('searchById', {id: $scope.quickSearchText});
 		}
 	};
+	
 }).controller('SearchController', function($scope, $state){
 	
 	$scope.findById = function() {
@@ -114,4 +109,5 @@ angular.module('mirna.controllers', [])
 			$state.go('searchById', {id: $scope.idText});
 		}
 	};
+	
 });
