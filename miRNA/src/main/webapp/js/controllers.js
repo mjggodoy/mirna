@@ -73,6 +73,11 @@ angular.module('mirna.controllers', [])
 			});
 			$scope.mirna.pubmed_documents = {};
 			$scope.mirna.pubmed_documents.pageSize = 10;
+			$scope.mirna.pubmed_documents.search = {
+					searchFunction: "mirna_pk",
+					searchField: "pk",
+					searchValue: $stateParams.id
+				};
 			angular.extend(this, $controller('PagedListController',
 					{$scope: $scope.mirna.pubmed_documents, Object : PubmedDocument, elements : 'pubmed_document'}));
 		}
