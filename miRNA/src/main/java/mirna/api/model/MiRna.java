@@ -1,6 +1,6 @@
 package mirna.api.model;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -11,15 +11,10 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.SecondaryTable;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "mirna2", schema = "mirna")
-@SecondaryTable(name = "mirna_pk_translation",
-	schema = "mirna",
-	pkJoinColumns = @PrimaryKeyJoinColumn(name = "new_pk"))
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "mature", discriminatorType=DiscriminatorType.INTEGER)
 public class MiRna extends ModelClass {
@@ -44,16 +39,15 @@ public class MiRna extends ModelClass {
 	
 	@ManyToMany
 	@JoinTable(
-			name="mirna_has_pubmed_document",
+			name="mirna_has_pubmed_document2",
 			schema="mirna",
 			joinColumns={
-					@JoinColumn(name="new_pk", referencedColumnName="old_pk2", table="mirna_pk_translation"),
-					@JoinColumn(name="mirna_pk", referencedColumnName="old_pk3", table="mirna_pk_translation")
+					@JoinColumn(name="mirna_pk")
 			},
 			inverseJoinColumns={
 					@JoinColumn(name="pubmed_document_pk")
 			})
-	private List<PubmedDocument> pubmedDocument;
+	private Set<PubmedDocument> pubmedDocuments;
 	
 	public MiRna() {}
 
@@ -81,8 +75,8 @@ public class MiRna extends ModelClass {
 		return mirBasePk;
 	}
 	
-	public List<PubmedDocument> getPubmedDocument() {
-		return pubmedDocument;
+	public Set<PubmedDocument> getPubmedDocuments() {
+		return pubmedDocuments;
 	}
 
 }
