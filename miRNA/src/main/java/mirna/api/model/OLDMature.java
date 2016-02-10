@@ -11,7 +11,7 @@ import javax.persistence.Table;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "mature", schema="mirna")
 
-public class Mature extends ModelClass {
+public class OLDMature extends ModelClass {
 	
 	@Column(name = "proportion", nullable = true, length = 80, unique = true)
 	protected String proportion;
@@ -19,7 +19,7 @@ public class Mature extends ModelClass {
 	@Column(name = "accession_number", nullable = true)
 	private String accession_number;
 	
-	public Mature() { }
+	public OLDMature() { }
 	
 	public String getProportion() {
 		return proportion;

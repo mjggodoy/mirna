@@ -15,7 +15,7 @@ import javax.persistence.Table;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "mirna", schema = "mirna")
-public class MiRna extends ModelClass {
+public class OLDMiRna extends ModelClass {
 
 	@Column(name = "name", nullable = false, length = 80, unique = true)
 	protected String name;
@@ -50,13 +50,13 @@ public class MiRna extends ModelClass {
 	@JoinTable(name="mirna_has_hairpin", schema="mirna",
 		joinColumns={@JoinColumn(name="mirna_pk")},
 		inverseJoinColumns={@JoinColumn(name="hairpin_pk")})
-	private List<Hairpin> hairpin;
+	private List<OLDHairpin> hairpin;
 	
 	@ManyToMany
 	@JoinTable(name="mirna_has_mature", schema="mirna",
 		joinColumns={@JoinColumn(name="mirna_pk")},
 		inverseJoinColumns={@JoinColumn(name="mature_pk")})
-	private List<Mature> mature;
+	private List<OLDMature> mature;
 	
 	@ManyToMany
 	@JoinTable(name="mirna_involves_biological_process", schema="mirna",
@@ -64,7 +64,7 @@ public class MiRna extends ModelClass {
 		inverseJoinColumns={@JoinColumn(name="biological_process_pk")})
 	private List<BiologicalProcess> biological_process;
 
-	public MiRna() {}
+	public OLDMiRna() {}
 
 	public String getName() {
 		return name;
@@ -94,11 +94,11 @@ public class MiRna extends ModelClass {
 		return pubmed_document;
 	}
 
-	public List<Hairpin> getHairpin() {
+	public List<OLDHairpin> getHairpin() {
 		return hairpin;
 	}
 
-	public List<Mature> getMature() {
+	public List<OLDMature> getMature() {
 		return mature;
 	}
 

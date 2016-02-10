@@ -9,7 +9,7 @@ import javax.persistence.Table;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "hairpin", schema="mirna")
-public class Hairpin extends ModelClass {
+public class OLDHairpin extends ModelClass {
 	
 	@Column(name = "name", nullable = true)
 	private String name;
@@ -25,6 +25,6 @@ public class Hairpin extends ModelClass {
 		return accession_number;
 	}
 
-	public Hairpin() { }
+	public OLDHairpin() { }
 	
 }
