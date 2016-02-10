@@ -48,7 +48,7 @@ public class RellenaMirna {
 			
 			stmt = (Statement) con.createStatement();
 			
-			String query = "select * from mirbase.busqueda";
+			String query = "select * from mirbase.busqueda_manual";
 			System.out.println("STARTING: " + query);
 			
 			// execute the query, and get a java resultset
@@ -419,7 +419,7 @@ public class RellenaMirna {
 			
 			// si no está metido
 			
-			String query = "select * from mirna_raw.mirna_new where id=? and accession_number=? "
+			String query = "select * from mirna.mirna2 where id=? and accession_number=? "
 					+ "and mature=? and dead=?";
 //			if (preId==null) query += " and previous_id is null";
 //			else query += " and previous_id=?";
@@ -466,7 +466,7 @@ public class RellenaMirna {
 			
 			if (pk==-1) {
 			
-				String query = "insert into mirna_raw.mirna_new (id, accession_number,"
+				String query = "insert into mirna.mirna2 (id, accession_number,"
 						+ "previous_id, mature, dead, mirbase_pk, old_pks, pre_old_pks) "
 						+ "values(?, ?, ?, ?, ?, ?, ?, ?)";
 //				if (pre) query += "pre_old_pks";
@@ -501,7 +501,7 @@ public class RellenaMirna {
 				String columnName = "old_pks";
 				if (pre) columnName = "pre_" +columnName;
 				
-				String query = "update mirna_raw.mirna_new set "
+				String query = "update mirna.mirna2 set "
 						+columnName+"= CONCAT("+columnName+", ?, ?) WHERE pk=?";
 				stmt = con.prepareStatement(query);
 				stmt.setString(2, ",");
@@ -531,7 +531,7 @@ public class RellenaMirna {
 //		try {
 //			
 //			
-//			String query = "update mirna_raw.mirna_new set ";
+//			String query = "update mirna.mirna2 set ";
 //			if (pre) query += "preOldPks=?";
 //			else query += "oldPks=?";
 //			query += " where pk=?";

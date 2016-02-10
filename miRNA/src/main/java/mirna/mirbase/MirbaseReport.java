@@ -290,6 +290,7 @@ public class MirbaseReport {
 		return newWord;
 	}
 	
+	@SuppressWarnings("unused")
 	private List<String> getOrganism(int pk, String name) throws Exception {
 		
 		String query = "select a.* from mirna.organism a, mirna.mirna_has_organism b "
