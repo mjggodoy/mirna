@@ -2,6 +2,9 @@ angular.module('mirna.controllers', [])
 .controller('PagedListController',function($scope, $state, Object, elements) {
 	
 	$scope.page = {};
+	if ($scope.pageSize) {
+		$scope.page.size = $scope.pageSize;
+	}
 	if (!$scope.sort) {
 		$scope.sort = {};
 		if ($scope.sortOptions) {
@@ -69,6 +72,7 @@ angular.module('mirna.controllers', [])
 				$scope.mirna[complementary] = response ? response[complementary] : {};
 			});
 			$scope.mirna.pubmed_documents = {};
+			$scope.mirna.pubmed_documents.pageSize = 10;
 			angular.extend(this, $controller('PagedListController',
 					{$scope: $scope.mirna.pubmed_documents, Object : PubmedDocument, elements : 'pubmed_document'}));
 		}
