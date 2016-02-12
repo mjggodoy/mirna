@@ -1,0 +1,40 @@
+<div class="col-md-12">
+	<div class="panel panel-primary">
+		<div class="panel-heading">Pubmed Documents</div>
+		<div class="panel-body">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Name</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr data-ng-repeat="o in mirna.pubmed_documents.pubmed_document">
+						<td>
+							<a href="http://www.ncbi.nlm.nih.gov/pubmed/{{o.id}}" target="_blank">
+								{{o.id}} <span class="glyphicon glyphicon-share" aria-hidden="true"></span>
+							</a>
+						</td>
+						<td>Nombre provisional {{o.id}}</td>
+					</tr>
+				</tbody>
+			</table>
+			
+			<div class="pull-right">Page {{mirna.pubmed_documents.page.number+1}} / {{mirna.pubmed_documents.page.totalPages}}</div>
+			
+			<div class="pull-left">Showing {{mirna.pubmed_documents.pubmed_document.length}} of {{mirna.pubmed_documents.page.totalElements}}</div>
+
+			<nav>
+				<ul class="pager">
+					<li ng-class="{disabled: mirna.pubmed_documents.page.number === 0}">
+						<a ui-sref="{page: {{mirna.pubmed_documents.page.number - 1}} }" ng-click="mirna.pubmed_documents.previousPage()">Previous</a>
+					</li>
+					<li ng-class="{disabled: mirna.pubmed_documents.page.number === mirna.pubmed_documents.page.totalPages - 1}">
+						<a ui-sref="{page: {{mirna.pubmed_documents.page.number + 1}} }" ng-click="mirna.pubmed_documents.nextPage()">Next</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
