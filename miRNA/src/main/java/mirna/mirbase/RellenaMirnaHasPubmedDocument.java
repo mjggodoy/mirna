@@ -3,9 +3,12 @@ package mirna.mirbase;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 public class RellenaMirnaHasPubmedDocument {
@@ -22,6 +25,37 @@ public class RellenaMirnaHasPubmedDocument {
 		this.dbUrl = props.getProperty("url");
 		this.dbUser = props.getProperty("user");
 		this.dbPassword = props.getProperty("password");
+	}
+	
+	private boolean estaYaMetido(int mirnaPk, int pubmedDocumentPk) throws SQLException {
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		boolean res = false;
+		
+		try {
+			
+			String query = "select * from mirna.mirna_has_pubmed_document2 "
+					+ "where mirna_pk=? and pubmed_document_pk=?";
+			
+			stmt = con.prepareStatement(query);
+			stmt.setInt(1, mirnaPk);
+			stmt.setInt(2, pubmedDocumentPk);
+			rs = stmt.executeQuery();
+			
+			if (rs.next()) {
+				res = true;
+			}
+			
+				
+		} catch (SQLException e) {
+			throw e;
+		} finally {
+			if (rs!=null) rs.close();
+			if (stmt!=null) stmt.close();
+		}
+		
+		return res;
+		
 	}
 	
 	public void execute() throws Exception {
@@ -49,9 +83,12 @@ public class RellenaMirnaHasPubmedDocument {
 				int oldPk = rs.getInt("mirna_pk");
 				int pmDoc = rs.getInt("pubmed_document_pk");
 				
-				int newPk = getNewPk(oldPk);
-
-				//insertPkPair(newPk, pmDoc);
+				List<Integer> newPks = getNewPks(oldPk);
+				//int newPk = getNewPk(oldPk);
+				for (int newPk : newPks) {
+					if (!estaYaMetido(newPk, pmDoc)) insertPkPair(newPk, pmDoc);
+				}
+				
 				limit--;
 				counter++;
 				if (counter % 100 == 0) System.out.println(oldPk);
@@ -66,6 +103,29 @@ public class RellenaMirnaHasPubmedDocument {
 		}
 	}
 	
+	private void insertPkPair(int mirnaPk, int pubmedDocumentPk) throws SQLException {
+		
+		String query = "insert into mirna.mirna_has_pubmed_document2 (mirna_pk, pubmed_document_pk) "
+				+ "values(?, ?)";
+			
+		PreparedStatement stmt = null;
+		
+		try {
+		
+			stmt = con.prepareStatement(query);
+			stmt.setInt(1, mirnaPk);
+			stmt.setInt(2, pubmedDocumentPk);
+			stmt.execute();
+		
+		} catch (SQLException e) {
+			throw e;
+		} finally {
+			if (stmt!=null) stmt.close();
+		}
+			
+	}
+	
+	@SuppressWarnings("unused")
 	private int getNewPk(int oldPk) throws Exception {
 		
 		Statement stmt = null;
@@ -102,6 +162,41 @@ public class RellenaMirnaHasPubmedDocument {
 		}
 		
 		return newPk;
+		
+	}
+	
+	private List<Integer> getNewPks(int oldPk) throws Exception {
+		
+		Statement stmt = null;
+		ResultSet rs = null;
+		
+		List<Integer> newPks = new ArrayList<Integer>();
+		
+		try {
+			
+			stmt = (Statement) con.createStatement();
+			
+			String query = "select * from mirna.mirna_pk_translation where old_pk="+oldPk;
+			
+			// execute the query, and get a java resultset
+			rs = stmt.executeQuery(query);
+			
+			while (rs.next()) {
+				newPks.add(rs.getInt("new_pk"));
+			}
+			
+			if (newPks.size()==0) {
+				throw new Exception("0 nuevos pks encontrados para "+oldPk);
+			}
+				
+		} catch (SQLException e) {
+			throw e;
+		} finally {
+			if (rs!=null) rs.close();
+			if (stmt!=null) stmt.close();
+		}
+		
+		return newPks;
 		
 	}
 	

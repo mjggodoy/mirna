@@ -1,11 +1,16 @@
 package mirna.api.model;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -32,6 +37,18 @@ public class MiRna extends ModelClass {
 	@Column(name = "mirbase_pk", nullable = true)
 	private Integer mirBasePk;
 	
+	@ManyToMany
+	@JoinTable(
+			name="mirna_has_pubmed_document2",
+			schema="mirna",
+			joinColumns={
+					@JoinColumn(name="mirna_pk")
+			},
+			inverseJoinColumns={
+					@JoinColumn(name="pubmed_document_pk")
+			})
+	private Set<PubmedDocument> pubmedDocuments;
+	
 	public MiRna() {}
 
 	public String getId() {
@@ -56,6 +73,10 @@ public class MiRna extends ModelClass {
 	
 	public Integer getMirBasePk() {
 		return mirBasePk;
+	}
+	
+	public Set<PubmedDocument> getPubmedDocuments() {
+		return pubmedDocuments;
 	}
 
 }
