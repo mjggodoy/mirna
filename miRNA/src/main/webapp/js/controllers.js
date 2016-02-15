@@ -5,6 +5,9 @@ angular.module('mirna.controllers', [])
 	if ($scope.pageSize) {
 		$scope.page.size = $scope.pageSize;
 	}
+	if ($scope.projection) {
+		$scope.page.projection = $scope.projection;
+	}
 	if (!$scope.sort) {
 		$scope.sort = {};
 		if ($scope.sortOptions) {
@@ -85,6 +88,7 @@ angular.module('mirna.controllers', [])
 			
 			$scope.mirna.expression_datas = {};
 			$scope.mirna.expression_datas.pageSize = 10;
+			$scope.mirna.expression_datas.projection = "inlineDisease";
 			$scope.mirna.expression_datas.search = {
 					searchFunction: "mirna_pk",
 					searchField: "pk",

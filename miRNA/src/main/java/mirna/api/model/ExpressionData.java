@@ -6,7 +6,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -56,9 +58,6 @@ public class ExpressionData extends ModelClass {
 	@Column(name = "mirna_pk", nullable = false, length = 20)
 	private Integer mirnaPk;
 	
-	@Column(name = "disease_pk", nullable = true, length = 20)
-	private Integer diseasePk;
-	
 	@Column(name = "environmental_factor_pk", nullable = true, length = 20)
 	private Integer environmentalFactorPk;
 	
@@ -73,6 +72,10 @@ public class ExpressionData extends ModelClass {
 	
 	@ManyToMany(mappedBy = "expressionDatas")
 	private Set<MiRna> mirnas;
+	
+	@ManyToOne
+	@JoinColumn(name = "disease_pk")
+	private Disease disease;
 	
 	public ExpressionData() {
 		super();
@@ -134,10 +137,6 @@ public class ExpressionData extends ModelClass {
 		return mirnaPk;
 	}
 
-	public Integer getDiseasePk() {
-		return diseasePk;
-	}
-
 	public Integer getEnvironmentalFactorPk() {
 		return environmentalFactorPk;
 	}
@@ -156,6 +155,10 @@ public class ExpressionData extends ModelClass {
 	
 	public Set<MiRna> getMirnas() {
 		return mirnas;
+	}
+	
+	public Disease getDisease() {
+		return disease;
 	}
 	
 }

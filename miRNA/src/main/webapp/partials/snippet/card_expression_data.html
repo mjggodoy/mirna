@@ -1,7 +1,14 @@
 <div class="panel">
 	<dl class="dl-horizontal">
+	
 		<dt data-ng-if="expression_data.provenance">Provenance:</dt>
 		<dd data-ng-if="expression_data.provenance">{{expression_data.provenance}}</dd>
+		
+		<dt data-ng-if="expression_data.disease">Disease:</dt>
+		<dd data-ng-if="expression_data.disease">
+			{{expression_data.disease.name}}
+			<span data-ng-if="expression_data.disease.diseaseClass"> ({{expression_data.disease.diseaseClass}})</span>
+		</dd>
 		
 		<dt data-ng-if="expression_data.titleReference">Title reference:</dt>
 		<dd data-ng-if="expression_data.titleReference">{{expression_data.titleReference}}</dd>
