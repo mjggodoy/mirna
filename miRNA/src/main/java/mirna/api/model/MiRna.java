@@ -48,6 +48,19 @@ public class MiRna extends ModelClass {
 					@JoinColumn(name="pubmed_document_pk")
 			})
 	private Set<PubmedDocument> pubmedDocuments;
+
+	@ManyToMany
+	@JoinTable(
+			name="mirna_has_expression_data2",
+			schema="mirna",
+			joinColumns={
+					@JoinColumn(name="mirna_pk")
+			},
+			inverseJoinColumns={
+					@JoinColumn(name="expression_data_pk")
+			})
+
+	private Set<ExpressionData> expressionDatas;
 	
 	public MiRna() {}
 
@@ -79,4 +92,8 @@ public class MiRna extends ModelClass {
 		return pubmedDocuments;
 	}
 
+	public Set<ExpressionData> getExpressionDatas() {
+		return expressionDatas;
+	}
+	
 }

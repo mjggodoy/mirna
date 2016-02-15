@@ -18,6 +18,7 @@ angular.module('mirna.services', []).factory('AbstractFactory', function($http, 
 			} else {
 				url += "?page="+page;
 			}
+			if (pageData.projection) url += "&projection="+pageData.projection;
 			if (pageData.size) url += "&size=" + pageData.size;
 			if (sortData.field && sortData.type)
 				url += "&sort=" + sortData.field.value + "," + sortData.type;
@@ -68,5 +69,11 @@ angular.module('mirna.services', []).factory('AbstractFactory', function($http, 
 	return extended;
 }).factory('PubmedDocument', function(AbstractFactory) {
 	var extended = new AbstractFactory('pubmed_document');
+	return extended;
+}).factory('ExpressionData', function(AbstractFactory) {
+	var extended = new AbstractFactory('expression_data');
+	return extended;
+}).factory('Disease', function(AbstractFactory) {
+	var extended = new AbstractFactory('disease');
 	return extended;
 });

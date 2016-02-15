@@ -1,0 +1,25 @@
+<div class="col-md-12">
+	<div class="panel panel-primary">
+		<div class="panel-heading">Expression Data</div>
+		<div class="panel-body">
+			<div data-ng-include="'partials/snippet/card_expression_data.html'"
+				data-ng-repeat="expression_data in mirna.expression_datas.expression_data">
+			</div>
+			
+			<div class="pull-right">Page {{mirna.expression_datas.page.number+1}} / {{mirna.expression_datas.page.totalPages}}</div>
+			
+			<div class="pull-left">Showing {{mirna.expression_datas.expression_data.length}} of {{mirna.expression_datas.page.totalElements}}</div>
+
+			<nav>
+				<ul class="pager">
+					<li ng-class="{disabled: mirna.expression_datas.page.number === 0}">
+						<a ui-sref="{page: {{mirna.expression_datas.page.number - 1}} }" ng-click="mirna.expression_datas.previousPage()">Previous</a>
+					</li>
+					<li ng-class="{disabled: mirna.expression_datas.page.number === mirna.expression_datas.page.totalPages - 1}">
+						<a ui-sref="{page: {{mirna.expression_datas.page.number + 1}} }" ng-click="mirna.expression_datas.nextPage()">Next</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
