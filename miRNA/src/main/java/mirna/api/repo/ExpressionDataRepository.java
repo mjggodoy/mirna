@@ -14,7 +14,7 @@ import mirna.api.model.projection.InlineDisease;
 @RepositoryRestResource(collectionResourceRel = "expression_data", path = "expression_data", excerptProjection = InlineDisease.class)
 public interface ExpressionDataRepository extends PagingAndSortingRepository<ExpressionData, Integer> {
 	
-	public Page<ExpressionData> findByProvenance(@Param("provenance")String provenance, Pageable pageable);
+	//public Page<ExpressionData> findByProvenance(@Param("provenance")String provenance, Pageable pageable);
 	//public Page<ExpressionData> findBy(@Param("mirna_pk")String mirna_pk, Pageable pageable);
 	
 	@RestResource(path = "mirna_pk")

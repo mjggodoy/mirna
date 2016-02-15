@@ -59,8 +59,20 @@ public class MiRna extends ModelClass {
 			inverseJoinColumns={
 					@JoinColumn(name="expression_data_pk")
 			})
-
 	private Set<ExpressionData> expressionDatas;
+	
+//	@ManyToMany
+//	@JoinTable(
+//			name="mirna_pk_translation",
+//			schema="mirna",
+//			joinColumns={
+//					@JoinColumn(name="mirna_pk")
+//			},
+//			inverseJoinColumns={
+//					@JoinColumn(name="expression_data_pk")
+//			})
+//
+//	private Set<InteractionData> expressionDatas;
 	
 	public MiRna() {}
 

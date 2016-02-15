@@ -13,6 +13,6 @@ import mirna.api.model.InteractionData;
 
 public interface InteractionDataRepository extends PagingAndSortingRepository<InteractionData, Integer> {
 	
-	public Page<InteractionData> findByProvenance(@Param("provenance")String provenance, Pageable pageable);
+	//public Page<InteractionData> findByProvenance(@Param("provenance")String provenance, Pageable pageable);
 
 }
