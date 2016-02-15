@@ -63,14 +63,16 @@ angular.module('mirna.controllers', [])
 			{$scope: $scope, Object : Mirna, elements : 'mirna'}));
 
 }).controller('MirnaViewController',
-		function($scope, $controller, $stateParams, Object, complementary, PubmedDocument) {
+		function($scope, $controller, $stateParams, Object, complementary, PubmedDocument, ExpressionData) {
 	
 	Object.get({ id: $stateParams.id }, function(response) {
 		$scope.mirna = response ? response : {};
 		if ($scope.mirna) {
+			
 			Object.getLink({ id: $stateParams.id, link: complementary }, function(response) {
 				$scope.mirna[complementary] = response ? response[complementary] : {};
 			});
+			
 			$scope.mirna.pubmed_documents = {};
 			$scope.mirna.pubmed_documents.pageSize = 10;
 			$scope.mirna.pubmed_documents.search = {
@@ -80,6 +82,16 @@ angular.module('mirna.controllers', [])
 				};
 			angular.extend(this, $controller('PagedListController',
 					{$scope: $scope.mirna.pubmed_documents, Object : PubmedDocument, elements : 'pubmed_document'}));
+			
+			$scope.mirna.expression_datas = {};
+			$scope.mirna.expression_datas.pageSize = 10;
+			$scope.mirna.expression_datas.search = {
+					searchFunction: "mirna_pk",
+					searchField: "pk",
+					searchValue: $stateParams.id
+				};
+			angular.extend(this, $controller('PagedListController',
+					{$scope: $scope.mirna.expression_datas, Object : ExpressionData, elements : 'expression_data'}));
 		}
 	});
 	

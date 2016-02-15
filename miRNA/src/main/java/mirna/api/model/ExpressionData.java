@@ -1,17 +1,18 @@
 package mirna.api.model;
 
-import java.io.Serializable;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "expression_data", schema = "mirna")
-public class ExpressionData extends ModelClass implements Serializable {
+public class ExpressionData extends ModelClass {
 
 	@Column(name = "title_reference", nullable = true, length = 300)
 	private String titleReference;
@@ -69,6 +70,9 @@ public class ExpressionData extends ModelClass implements Serializable {
 	
 	@Column(name = "interaction_data_pk", nullable = true, length = 80)
 	private Integer interactionDataPk;
+	
+	@ManyToMany(mappedBy = "expressionDatas")
+	private Set<MiRna> mirnas;
 	
 	public ExpressionData() {
 		super();
@@ -148,6 +152,10 @@ public class ExpressionData extends ModelClass implements Serializable {
 
 	public Integer getInteractionDataPk() {
 		return interactionDataPk;
+	}
+	
+	public Set<MiRna> getMirnas() {
+		return mirnas;
 	}
 	
 }

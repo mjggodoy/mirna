@@ -54,10 +54,10 @@ public class MiRna extends ModelClass {
 			name="mirna_has_expression_data2",
 			schema="mirna",
 			joinColumns={
-					@JoinColumn(name="new_pk")
+					@JoinColumn(name="mirna_pk")
 			},
 			inverseJoinColumns={
-					@JoinColumn(name="old_pk")
+					@JoinColumn(name="expression_data_pk")
 			})
 
 	private Set<ExpressionData> expressionDatas;

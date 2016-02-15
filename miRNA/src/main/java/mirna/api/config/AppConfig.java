@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration;
 
+import mirna.api.model.ExpressionData;
 import mirna.api.model.Hairpin;
 import mirna.api.model.Mature;
 import mirna.api.model.MiRna;
@@ -25,7 +26,8 @@ public class AppConfig extends RepositoryRestMvcConfiguration {
 					OLDMiRna.class,
 					MiRna.class,
 					Hairpin.class,
-					Mature.class);
+					Mature.class,
+					ExpressionData.class);
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
