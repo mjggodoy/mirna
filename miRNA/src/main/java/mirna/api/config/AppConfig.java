@@ -9,6 +9,7 @@ import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguratio
 
 import mirna.api.model.Disease;
 import mirna.api.model.ExpressionData;
+import mirna.api.model.Gene;
 import mirna.api.model.Hairpin;
 import mirna.api.model.InteractionData;
 import mirna.api.model.Mature;
@@ -31,7 +32,8 @@ public class AppConfig extends RepositoryRestMvcConfiguration {
 					Mature.class,
 					ExpressionData.class,
 					InteractionData.class,
-					Disease.class);
+					Disease.class,
+					Gene.class);
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}

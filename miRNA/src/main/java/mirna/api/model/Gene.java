@@ -6,19 +6,13 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
-import mirna.integration.exception.ConflictException;
-
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "gene", schema = "mirna")
 public class Gene extends ModelClass {
 
-	//TODO: HACER QUE GENE NO PUEDA TENER NAME NULL
-	@Column(name = "name", nullable = true, length = 45, unique = false)
+	@Column(name = "name", nullable = false, length = 45, unique = false)
 	private String name;// ok
-	
-	@Column(name = "chromosome", nullable = true, length = 45, unique = false)
-	private String chromosome;// ok
 	
 	@Column(name = "accession_number", nullable = true, length = 45, unique = false)
 	private String accessionumber;// ok
@@ -68,10 +62,6 @@ public class Gene extends ModelClass {
 	@Column(name = "hgnc_id", nullable = true, length = 45, unique = false)
 	private String hgnc_id;
 	
-	// XUXA
-//	@Column(name = "chromosome", nullable = true, length = 45, unique = false)
-//	private Integer transcript_id;
-
 	public Gene() {
 		super();
 	}
@@ -80,39 +70,29 @@ public class Gene extends ModelClass {
 		return distance;
 	}
 
-
 	public String getArm() {
 		return arm;
 	}
 
-	
-
 	public String getKegg_id() {
 		return kegg_id;
 	}
-
 	
 	public String getExpression_site() {
 		return expression_site;
 	}
 
-
-
 	public String getHgnc_symbol() {
 		return hgnc_symbol;
 	}
-
-	
 
 	public String getLocation() {
 		return location;
 	}
 
-
 	public String getAccessionumber() {
 		return accessionumber;
 	}
-
 
 	public String getStart_strand() {
 		return start_strand;
@@ -134,22 +114,13 @@ public class Gene extends ModelClass {
 		return year;
 	}
 
-	
-	public String getChromosome() {
-		return chromosome;
-	}
-
 	public String getGeneId() {
 		return geneId;
 	}
 
-	
-
 	public String getDescription() {
 		return description;
 	}
-
-	
 
 	public String getName() {
 		return name;
