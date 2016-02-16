@@ -124,10 +124,27 @@ angular.module('mirna.controllers', [])
 	angular.extend(this, $controller('MirnaViewController',
 			{$scope: $scope, Object : Hairpin, complementary : 'matures'}));
 	
-}).controller('PhenotypeViewController', function($scope, $controller, $stateParams, Disease) {
+}).controller('PhenotypeViewController', function($scope, $controller, $stateParams, Disease, Mirna) {
 	
 	Disease.get({ id: $stateParams.id }, function(response) {
 		$scope.disease = response ? response : {};
+		if ($scope.disease) {
+			$scope.disease.related_mirnas = {};
+			$scope.disease.related_mirnas.pageSize = 50;
+			$scope.disease.related_mirnas.search = {
+					searchFunction: "related_to_disease",
+					searchField: "pk",
+					searchValue: $stateParams.id
+				};
+			angular.extend(this, $controller('PagedListController',
+					{$scope: $scope.disease.related_mirnas, Object : Mirna, elements : 'mirna'}));
+		}
+		
+		$scope.filterByMirna = function(mirna) {
+			console.log(mirna);
+			$scope.filteredMirna = mirna;
+		}
+		
 	});
 
 }).controller('HomeController', function($scope, $state){

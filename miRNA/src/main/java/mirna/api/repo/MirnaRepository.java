@@ -1,7 +1,5 @@
 package mirna.api.repo;
 
-import java.util.Set;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -18,8 +16,8 @@ public interface MirnaRepository extends PagingAndSortingRepository<MiRna, Integ
 	@RestResource(path = "id")
 	public Page<MiRna> findByIdContainingIgnoreCase(@Param("id")String id, Pageable pageable);
 	
-	@Query("SELECT a from MiRna a, MirnaPkTranslation b, ExpressionData c where c.mirnaPk=b.oldPk and b.newPk=a.pk and c.disease.pk=:key")	
+	@Query("SELECT a from MiRna a, MirnaPkTranslation b, ExpressionData c where c.mirnaPk=b.oldPk and b.newPk=a.pk and c.disease.pk=:pk")	
 	@RestResource(path = "related_to_disease")
-	public Set<MiRna> findMirnasRelatedToDisease(@Param("key")int pk);
+	public Page<MiRna> findMirnasRelatedToDisease(@Param("pk")int pk, Pageable pageable);
 	
 }
