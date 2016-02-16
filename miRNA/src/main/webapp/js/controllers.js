@@ -54,6 +54,11 @@ angular.module('mirna.controllers', [])
 	$scope.sortOptions = [ {value: "id", label: "Id"} ];
 	angular.extend(this, $controller('PagedListController',
 			{$scope: $scope, Object : Hairpin, elements : 'mirna'}));
+	
+}).controller('PhenotypeListController', function($scope, $controller, Disease) {
+	$scope.sortOptions = [ {value: "name", label: "Name"} ];
+	angular.extend(this, $controller('PagedListController',
+			{$scope: $scope, Object : Disease, elements : 'disease'}));
 
 }).controller('SearchByIdController', function($scope, $controller, $stateParams, Mirna) {
 	$scope.search = {
@@ -64,6 +69,16 @@ angular.module('mirna.controllers', [])
 	$scope.sortOptions = [ {value: "id", label: "Id"} ];
 	angular.extend(this, $controller('PagedListController',
 			{$scope: $scope, Object : Mirna, elements : 'mirna'}));
+	
+}).controller('SearchByPhenotypeNameController', function($scope, $controller, $stateParams, Disease) {
+	$scope.search = {
+		searchFunction: "name",
+		searchField: "name",
+		searchValue: $stateParams.name
+	};
+	$scope.sortOptions = [ {value: "name", label: "Name"} ];
+	angular.extend(this, $controller('PagedListController',
+			{$scope: $scope, Object : Disease, elements : 'disease'}));
 
 }).controller('MirnaViewController',
 		function($scope, $controller, $stateParams, Object, complementary, PubmedDocument, ExpressionData) {
@@ -99,15 +114,21 @@ angular.module('mirna.controllers', [])
 		}
 	});
 	
-}).controller('MatureViewController', function($scope, $controller, $stateParams, Mature, PubmedDocument) {
+}).controller('MatureViewController', function($scope, $controller, $stateParams, Mature) {
 	
 	angular.extend(this, $controller('MirnaViewController',
 			{$scope: $scope, Object : Mature, complementary : 'hairpins'}));
 	
-}).controller('HairpinViewController', function($scope, $controller, $stateParams, Hairpin) {//}, PubmedDocument) {
+}).controller('HairpinViewController', function($scope, $controller, $stateParams, Hairpin) {
 	
 	angular.extend(this, $controller('MirnaViewController',
 			{$scope: $scope, Object : Hairpin, complementary : 'matures'}));
+	
+}).controller('PhenotypeViewController', function($scope, $controller, $stateParams, Disease) {
+	
+	Disease.get({ id: $stateParams.id }, function(response) {
+		$scope.disease = response ? response : {};
+	});
 
 }).controller('HomeController', function($scope, $state){
 	
@@ -123,6 +144,12 @@ angular.module('mirna.controllers', [])
 	$scope.findById = function() {
 		if ($scope.idText) {
 			$state.go('searchById', {id: $scope.idText});
+		}
+	};
+	
+	$scope.findByPhenotypeName = function() {
+		if ($scope.phenotypeNameText) {
+			$state.go('searchByPhenotypeName', {name: $scope.phenotypeNameText});
 		}
 	};
 	

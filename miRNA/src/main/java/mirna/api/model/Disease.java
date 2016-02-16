@@ -23,16 +23,8 @@ public class Disease extends ModelClass {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public String getDiseaseClass() {
 		return diseaseClass;
-	}
-
-	public void setDiseaseClass(String diseaseClass) {
-		this.diseaseClass = diseaseClass;
 	}
 
 }
