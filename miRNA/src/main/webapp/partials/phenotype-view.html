@@ -1,0 +1,26 @@
+<div class="row">
+	<div class="col-md-12">
+		<ol class="breadcrumb">
+			<li><a href="#">Home</a></li>
+			<li><a data-ui-sref="listPhenotype">Phenotype</a></li>
+			<li class="active">{{disease.name}}</li>
+		</ol>
+	</div>
+</div>
+
+<div class="row">
+
+	<div class="col-md-12">
+		<h1>Phenotype <small>{{disease.name}}</small></h1>
+	</div>
+	
+	<div class="col-md-12" data-ng-if="disease.diseaseClass">
+		<div class="panel panel-primary">
+			<div class="panel-heading">Information</div>
+			<div class="panel-body">
+				<strong>Class:</strong> {{disease.diseaseClass}}<br/>
+			</div>
+		</div>
+	</div>
+	
+</div>
