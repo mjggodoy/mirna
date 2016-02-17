@@ -107,10 +107,10 @@ angular.module('mirna.controllers', [])
 			angular.extend(this, $controller('PagedListController',
 					{$scope: $scope.mirna.pubmed_documents, Object : PubmedDocument, elements : 'pubmed_document'}));
 			
-			$scope.mirna.expression_datas = {};
-			$scope.mirna.expression_datas.pageSize = 10;
-			$scope.mirna.expression_datas.projection = "inlineDisease";
-			$scope.mirna.expression_datas.search = {
+			$scope.expression_datas = {};
+			$scope.expression_datas.pageSize = 10;
+			$scope.expression_datas.projection = "inlineDisease";
+			$scope.expression_datas.search = {
 					searchFunction: "mirna_pk",
 					searchFields: [{
 						key: "pk",
@@ -118,7 +118,7 @@ angular.module('mirna.controllers', [])
 					}]
 				};
 			angular.extend(this, $controller('PagedListController',
-					{$scope: $scope.mirna.expression_datas, Object : ExpressionData, elements : 'expression_data'}));
+					{$scope: $scope.expression_datas, Object : ExpressionData, elements : 'expression_data'}));
 		}
 	});
 	
@@ -152,9 +152,9 @@ angular.module('mirna.controllers', [])
 		
 		$scope.filterByMirna = function(mirna) {
 			$scope.filtered_mirna = mirna;
-			$scope.filtered_mirna.expression_datas = {};
-			$scope.filtered_mirna.expression_datas.pageSize = 5;
-			$scope.filtered_mirna.expression_datas.search = {
+			$scope.expression_datas = {};
+			$scope.expression_datas.pageSize = 5;
+			$scope.expression_datas.search = {
 					searchFunction: "mirna_pk_and_disease_pk",
 					searchFields: [{
 						key: "mirna_pk",
@@ -165,7 +165,7 @@ angular.module('mirna.controllers', [])
 					}]
 				};
 			angular.extend(this, $controller('PagedListController',
-					{$scope: $scope.filtered_mirna.expression_datas, Object : ExpressionData, elements : 'expression_data'}));
+					{$scope: $scope.expression_datas, Object : ExpressionData, elements : 'expression_data'}));
 		}
 		
 	});

@@ -36,7 +36,7 @@
 				
 				<div data-ng-if="disease.related_mirnas.page.totalPages>1">
 					<div class="pull-right">Page {{disease.related_mirnas.page.number+1}} / {{disease.related_mirnas.page.totalPages}}</div>
-					<div class="pull-left">Showing {{disease.related_mirnas.pubmed_document.length}} of {{disease.related_mirnas.page.totalElements}}</div>
+					<div class="pull-left">Showing {{disease.related_mirnas.mirna.length}} of {{disease.related_mirnas.page.totalElements}}</div>
 					<nav>
 						<ul class="pager">
 							<li ng-class="{disabled: disease.related_mirnas.page.number === 0}">
@@ -56,5 +56,7 @@
 	<div class="col-md-12" ng-if="filtered_mirna">
 		<h2>Mirna <small>{{filtered_mirna.id}}</small></h2>
 	</div>
+	
+	<div data-ng-include="'partials/snippet/expression_datas.html'"></div>
 	
 </div>
