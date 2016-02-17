@@ -10,6 +10,7 @@ import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguratio
 import mirna.api.model.Disease;
 import mirna.api.model.ExpressionData;
 import mirna.api.model.Hairpin;
+import mirna.api.model.InteractionData;
 import mirna.api.model.Mature;
 import mirna.api.model.MiRna;
 import mirna.api.model.OLDMiRna;
@@ -29,6 +30,7 @@ public class AppConfig extends RepositoryRestMvcConfiguration {
 					Hairpin.class,
 					Mature.class,
 					ExpressionData.class,
+					InteractionData.class,
 					Disease.class);
 		} catch (URISyntaxException e) {
 			e.printStackTrace();

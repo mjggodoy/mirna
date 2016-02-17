@@ -10,7 +10,7 @@ import org.springframework.data.rest.core.annotation.RestResource;
 
 import mirna.api.model.MiRna;
 
-@RepositoryRestResource(collectionResourceRel = "mirna", path = "mirna")
+@RepositoryRestResource(collectionResourceRel = "mirna", path = "mirna")//, excerptProjection=MiRnaBasicInfo.class)
 public interface MirnaRepository extends PagingAndSortingRepository<MiRna, Integer> {
 	
 	@RestResource(path = "id")

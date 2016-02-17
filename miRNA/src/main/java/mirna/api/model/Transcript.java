@@ -6,21 +6,19 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
-import mirna.integration.exception.ConflictException;
-
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "transcript", schema = "mirna")
 public class Transcript extends ModelClass {
 
 	@Column(name = "id", nullable = true, length = 20, unique = true)
-	private String transcriptID;// ok
+	private String id;
 	
 	@Column(name = "name", nullable = true, length = 20, unique = false)
-	private String name;// ok
+	private String name;
 	
 	@Column(name = "isoform", nullable = true, length = 45, unique = false)
-	private String isoform; // ok
+	private String isoform;
 	
 	@Column(name = "external_name", nullable = true, length = 20, unique = true)
 	private String externalName;
@@ -28,33 +26,29 @@ public class Transcript extends ModelClass {
 	public Transcript() {
 	}
 
-	public Transcript(int pk, String transcriptID, String name, String isoform
+	public Transcript(int pk, String id, String name, String isoform
 			, String externalName) {
 		super(pk);
-		this.transcriptID = transcriptID;
+		this.id = id;
 		this.name = name;
 		this.isoform = isoform;
 		this.externalName = externalName;
 	}
 
-	public String getTranscriptID() {
-		return transcriptID;
+	public String getId() {
+		return id;
 	}
-
 
 	public String getName() {
 		return name;
 	}
-
 	
 	public String getIsoform() {
 		return isoform;
 	}
-
 	
 	public String getExternalName() {
 		return externalName;
 	}
-
 	
 }

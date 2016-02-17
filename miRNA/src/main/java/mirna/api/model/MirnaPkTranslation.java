@@ -11,6 +11,8 @@ import javax.persistence.Table;
 @Table(name = "mirna_pk_translation", schema = "mirna")
 public class MirnaPkTranslation implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@Column(name = "old_pk", nullable = false)
 	private int oldPk;
