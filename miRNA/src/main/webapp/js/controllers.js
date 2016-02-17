@@ -19,6 +19,9 @@ angular.module('mirna.controllers', [])
 	// Fetch all elements. Issues a GET to /api/<elements>
 	$scope.loadPage = function() {
 		Object.query($scope.page, $scope.sort, $scope.search, function(response) {
+			
+			console.log(response);
+			
 			$scope[elements] = response[elements] ? response[elements] : [];
 			$scope.page = response.page ? response.page : {};
 		});
@@ -132,11 +135,12 @@ angular.module('mirna.controllers', [])
 	angular.extend(this, $controller('MirnaViewController',
 			{$scope: $scope, Object : Hairpin, complementary : 'matures'}));
 	
-}).controller('PhenotypeViewController', function($scope, $controller, $stateParams, Disease, Mirna, ExpressionData) {
+}).controller('PhenotypeViewController', function($scope, $controller, $stateParams, Disease, Mirna, ExpressionData, SNP) {
 	
 	Disease.get({ id: $stateParams.id }, function(response) {
 		$scope.disease = response ? response : {};
 		if ($scope.disease) {
+			
 			$scope.disease.related_mirnas = {};
 			$scope.disease.related_mirnas.pageSize = 50;
 			$scope.disease.related_mirnas.search = {
@@ -148,6 +152,18 @@ angular.module('mirna.controllers', [])
 				};
 			angular.extend(this, $controller('PagedListController',
 					{$scope: $scope.disease.related_mirnas, Object : Mirna, elements : 'mirna'}));
+			
+			$scope.snps = {};
+			$scope.snps.pageSize = 10;
+			$scope.snps.search = {
+					searchFunction: "disease_pk",
+					searchFields: [{
+						key: "pk",
+						value: $stateParams.id
+					}]
+				};
+			angular.extend(this, $controller('PagedListController',
+					{$scope: $scope.snps, Object : SNP, elements : 'snp'}));
 		}
 		
 		$scope.filterByMirna = function(mirna) {
