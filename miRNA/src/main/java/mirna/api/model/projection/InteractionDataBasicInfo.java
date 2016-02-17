@@ -7,7 +7,7 @@ import mirna.api.model.InteractionData;
 @Projection(name = "basic_info", types = { InteractionData.class })
 public interface InteractionDataBasicInfo {
 	
-	public int getPk();
+	public Integer getPk();
 	
 	public String getScore();
 

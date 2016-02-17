@@ -63,8 +63,10 @@ angular.module('mirna.controllers', [])
 }).controller('SearchByIdController', function($scope, $controller, $stateParams, Mirna) {
 	$scope.search = {
 		searchFunction: "id",
-		searchField: "id",
-		searchValue: $stateParams.id
+		searchFields: [{
+			key: "id",
+			value: $stateParams.id
+		}]
 	};
 	$scope.sortOptions = [ {value: "id", label: "Id"} ];
 	angular.extend(this, $controller('PagedListController',
@@ -73,8 +75,10 @@ angular.module('mirna.controllers', [])
 }).controller('SearchByPhenotypeNameController', function($scope, $controller, $stateParams, Disease) {
 	$scope.search = {
 		searchFunction: "name",
-		searchField: "name",
-		searchValue: $stateParams.name
+		searchFields: [{
+			key: "name",
+			value: $stateParams.name
+		}]
 	};
 	$scope.sortOptions = [ {value: "name", label: "Name"} ];
 	angular.extend(this, $controller('PagedListController',
@@ -95,8 +99,10 @@ angular.module('mirna.controllers', [])
 			$scope.mirna.pubmed_documents.pageSize = 10;
 			$scope.mirna.pubmed_documents.search = {
 					searchFunction: "mirna_pk",
-					searchField: "pk",
-					searchValue: $stateParams.id
+					searchFields: [{
+						key: "pk",
+						value: $stateParams.id
+					}]
 				};
 			angular.extend(this, $controller('PagedListController',
 					{$scope: $scope.mirna.pubmed_documents, Object : PubmedDocument, elements : 'pubmed_document'}));
@@ -106,8 +112,10 @@ angular.module('mirna.controllers', [])
 			$scope.mirna.expression_datas.projection = "inlineDisease";
 			$scope.mirna.expression_datas.search = {
 					searchFunction: "mirna_pk",
-					searchField: "pk",
-					searchValue: $stateParams.id
+					searchFields: [{
+						key: "pk",
+						value: $stateParams.id
+					}]
 				};
 			angular.extend(this, $controller('PagedListController',
 					{$scope: $scope.mirna.expression_datas, Object : ExpressionData, elements : 'expression_data'}));
@@ -124,7 +132,7 @@ angular.module('mirna.controllers', [])
 	angular.extend(this, $controller('MirnaViewController',
 			{$scope: $scope, Object : Hairpin, complementary : 'matures'}));
 	
-}).controller('PhenotypeViewController', function($scope, $controller, $stateParams, Disease, Mirna) {
+}).controller('PhenotypeViewController', function($scope, $controller, $stateParams, Disease, Mirna, ExpressionData) {
 	
 	Disease.get({ id: $stateParams.id }, function(response) {
 		$scope.disease = response ? response : {};
@@ -133,16 +141,31 @@ angular.module('mirna.controllers', [])
 			$scope.disease.related_mirnas.pageSize = 50;
 			$scope.disease.related_mirnas.search = {
 					searchFunction: "related_to_disease",
-					searchField: "pk",
-					searchValue: $stateParams.id
+					searchFields: [{
+						key: "pk",
+						value: $stateParams.id
+					}]
 				};
 			angular.extend(this, $controller('PagedListController',
 					{$scope: $scope.disease.related_mirnas, Object : Mirna, elements : 'mirna'}));
 		}
 		
 		$scope.filterByMirna = function(mirna) {
-			console.log(mirna);
-			$scope.filteredMirna = mirna;
+			$scope.filtered_mirna = mirna;
+			$scope.filtered_mirna.expression_datas = {};
+			$scope.filtered_mirna.expression_datas.pageSize = 5;
+			$scope.filtered_mirna.expression_datas.search = {
+					searchFunction: "mirna_pk_and_disease_pk",
+					searchFields: [{
+						key: "mirna_pk",
+						value: mirna.pk
+					},{
+						key: "disease_pk",
+						value: $stateParams.id
+					}]
+				};
+			angular.extend(this, $controller('PagedListController',
+					{$scope: $scope.filtered_mirna.expression_datas, Object : ExpressionData, elements : 'expression_data'}));
 		}
 		
 	});
