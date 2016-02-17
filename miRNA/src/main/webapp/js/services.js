@@ -13,8 +13,11 @@ angular.module('mirna.services', []).factory('AbstractFactory', function($http, 
 			var url = this.HATEOAS_URL;
 			if (searchData) {
 				url += "search/"+searchData.searchFunction;
-				url += "?"+searchData.searchField+"="+searchData.searchValue;
-				url += "&page="+page;
+				url += "?page="+page;
+				for (var i in searchData.searchFields) {
+					var par = searchData.searchFields[i];
+					url += "&"+par.key+"="+par.value;
+				}
 			} else {
 				url += "?page="+page;
 			}
@@ -32,6 +35,8 @@ angular.module('mirna.services', []).factory('AbstractFactory', function($http, 
 				});
 				res.page = data.page;
 				callback && callback(res);
+			}, function(error) {
+				console.error(error);
 			});
 		},
 		
@@ -75,5 +80,8 @@ angular.module('mirna.services', []).factory('AbstractFactory', function($http, 
 	return extended;
 }).factory('Disease', function(AbstractFactory) {
 	var extended = new AbstractFactory('disease');
+	return extended;
+}).factory('SNP', function(AbstractFactory) {
+	var extended = new AbstractFactory('snp');
 	return extended;
 });

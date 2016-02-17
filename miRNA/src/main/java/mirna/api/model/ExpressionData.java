@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -67,10 +68,23 @@ public class ExpressionData extends ModelClass {
 	@Column(name = "different_expression_location", nullable = true, length = 80)
 	private String differentExpressionLocation;
 	
-	@Column(name = "interaction_data_pk", nullable = true, length = 80)
-	private Integer interactionDataPk;
+//	@Column(name = "interaction_data_pk", nullable = true, length = 80)
+//	private Integer interactionDataPk;
 	
-	@ManyToMany(mappedBy = "expressionDatas")
+	@ManyToOne
+	@JoinColumn(name = "interaction_data_pk")
+	private InteractionData interactionData;
+	
+	@ManyToMany
+	@JoinTable(
+			name="mirna_has_expression_data2",
+			schema="mirna",
+			joinColumns={
+					@JoinColumn(name="expression_data_pk")
+			},
+			inverseJoinColumns={
+					@JoinColumn(name="mirna_pk")
+			})
 	private Set<MiRna> mirnas;
 	
 	@ManyToOne
@@ -149,9 +163,9 @@ public class ExpressionData extends ModelClass {
 		return differentExpressionLocation;
 	}
 
-	public Integer getInteractionDataPk() {
-		return interactionDataPk;
-	}
+//	public Integer getInteractionDataPk() {
+//		return interactionDataPk;
+//	}
 	
 	public Set<MiRna> getMirnas() {
 		return mirnas;
@@ -161,4 +175,7 @@ public class ExpressionData extends ModelClass {
 		return disease;
 	}
 	
+	public InteractionData getInteractionData() {
+		return interactionData;
+	}
 }

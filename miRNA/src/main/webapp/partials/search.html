@@ -8,10 +8,10 @@
 
 <hr>
 
-<form class="form-inline">
+<form class="form-inline" ng-submit="findByPhenotypeName()">
 	<div class="form-group">
-		<label for="search-opt-2">Search by Organism</label>
-		<input type="text" class="form-control" id="search-opt-2" placeholder="Organism">
+		<label for="search-opt-2">Search by phenotype</label>
+		<input type="text" class="form-control" id="search-opt-2" placeholder="phenotype" ng-model="phenotypeNameText">
 	</div>
 	<button type="submit" class="btn btn-default">Search</button>
 </form>
