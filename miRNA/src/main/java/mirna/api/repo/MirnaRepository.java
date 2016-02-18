@@ -20,4 +20,8 @@ public interface MirnaRepository extends PagingAndSortingRepository<MiRna, Integ
 	@RestResource(path = "related_to_disease")
 	public Page<MiRna> findMirnasRelatedToDisease(@Param("pk")int pk, Pageable pageable);
 	
+	@Query("SELECT a from MiRna a, MirnaPkTranslation b, ExpressionData c where c.mirnaPk=b.oldPk and b.newPk=a.pk and c.environmentalFactorPk=:pk")	
+	@RestResource(path = "related_to_environmental_factor")
+	public Page<MiRna> findMirnasRelatedToEnvironmentalFactor(@Param("pk")int pk, Pageable pageable);
+	
 }

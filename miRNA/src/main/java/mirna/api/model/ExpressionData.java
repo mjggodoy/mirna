@@ -91,6 +91,10 @@ public class ExpressionData extends ModelClass {
 	@JoinColumn(name = "disease_pk")
 	private Disease disease;
 	
+//	@ManyToOne
+//	@JoinColumn(name = "environmental_factor_pk")
+//	private EnvironmentalFactor environmentalFactor;
+	
 	public ExpressionData() {
 		super();
 	}

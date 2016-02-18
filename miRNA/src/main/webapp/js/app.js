@@ -38,6 +38,10 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 		url: '/phenotype/:id',
 		templateUrl: 'partials/phenotype-view.html',
 		controller: 'PhenotypeViewController'
+	}).state('viewEnvironmentalFactor', { //state for showing single small molecule / environmental factor
+		url: '/environmental_factor/:id',
+		templateUrl: 'partials/environmental-factor-view.html',
+		controller: 'EnvironmentalFactorViewController'
 	}).state('search', { //search state
 		url: '/search',
 		templateUrl: 'partials/search.html',
@@ -50,6 +54,10 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 		url: '/search/phenotype_name/:name',
 		templateUrl: 'partials/phenotype-list.html',
 		controller: 'SearchByPhenotypeNameController'
+	}).state('searchByEnvironmentalFactorName', { //results state 3
+		url: '/search/environmental_factor_name/:name',
+		templateUrl: 'partials/environmental-factor-list.html',
+		controller: 'SearchByEnvironmentalFactorNameController'
 	}).state('home', { //home state
 		url: '/home',
 		templateUrl: 'partials/home.html',

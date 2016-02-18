@@ -19,9 +19,6 @@ angular.module('mirna.controllers', [])
 	// Fetch all elements. Issues a GET to /api/<elements>
 	$scope.loadPage = function() {
 		Object.query($scope.page, $scope.sort, $scope.search, function(response) {
-			
-			console.log(response);
-			
 			$scope[elements] = response[elements] ? response[elements] : [];
 			$scope.page = response.page ? response.page : {};
 		});
@@ -86,6 +83,18 @@ angular.module('mirna.controllers', [])
 	$scope.sortOptions = [ {value: "name", label: "Name"} ];
 	angular.extend(this, $controller('PagedListController',
 			{$scope: $scope, Object : Disease, elements : 'disease'}));
+	
+}).controller('SearchByEnvironmentalFactorNameController', function($scope, $controller, $stateParams, EnvironmentalFactor) {
+	$scope.search = {
+		searchFunction: "name",
+		searchFields: [{
+			key: "name",
+			value: $stateParams.name
+		}]
+	};
+	$scope.sortOptions = [ {value: "name", label: "Name"} ];
+	angular.extend(this, $controller('PagedListController',
+			{$scope: $scope, Object : EnvironmentalFactor, elements : 'environmental_factor'}));
 
 }).controller('MirnaViewController',
 		function($scope, $controller, $stateParams, Object, complementary, PubmedDocument, ExpressionData) {
@@ -185,6 +194,45 @@ angular.module('mirna.controllers', [])
 		}
 		
 	});
+	
+}).controller('EnvironmentalFactorViewController', function($scope, $controller, $stateParams, EnvironmentalFactor, Mirna, ExpressionData) {
+	
+	EnvironmentalFactor.get({ id: $stateParams.id }, function(response) {
+		$scope.environmental_factor = response ? response : {};
+		if ($scope.environmental_factor) {
+			
+			$scope.environmental_factor.related_mirnas = {};
+			$scope.environmental_factor.related_mirnas.pageSize = 50;
+			$scope.environmental_factor.related_mirnas.search = {
+					searchFunction: "related_to_environmental_factor",
+					searchFields: [{
+						key: "pk",
+						value: $stateParams.id
+					}]
+				};
+			angular.extend(this, $controller('PagedListController',
+					{$scope: $scope.environmental_factor.related_mirnas, Object : Mirna, elements : 'mirna'}));
+		}
+		
+		$scope.filterByMirna = function(mirna) {
+			$scope.filtered_mirna = mirna;
+			$scope.expression_datas = {};
+			$scope.expression_datas.pageSize = 5;
+			$scope.expression_datas.search = {
+					searchFunction: "mirna_pk_and_environmental_factor_pk",
+					searchFields: [{
+						key: "mirna_pk",
+						value: mirna.pk
+					},{
+						key: "environmental_factor_pk",
+						value: $stateParams.id
+					}]
+				};
+			angular.extend(this, $controller('PagedListController',
+					{$scope: $scope.expression_datas, Object : ExpressionData, elements : 'expression_data'}));
+		}
+		
+	});
 
 }).controller('HomeController', function($scope, $state){
 	
@@ -206,6 +254,12 @@ angular.module('mirna.controllers', [])
 	$scope.findByPhenotypeName = function() {
 		if ($scope.phenotypeNameText) {
 			$state.go('searchByPhenotypeName', {name: $scope.phenotypeNameText});
+		}
+	};
+	
+	$scope.findByEnvironmentalFactorName = function() {
+		if ($scope.environmentalFactorNameText) {
+			$state.go('searchByEnvironmentalFactorName', {name: $scope.environmentalFactorNameText});
 		}
 	};
 	
