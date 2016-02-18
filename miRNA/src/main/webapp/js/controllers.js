@@ -19,9 +19,6 @@ angular.module('mirna.controllers', [])
 	// Fetch all elements. Issues a GET to /api/<elements>
 	$scope.loadPage = function() {
 		Object.query($scope.page, $scope.sort, $scope.search, function(response) {
-			
-			console.log(response);
-			
 			$scope[elements] = response[elements] ? response[elements] : [];
 			$scope.page = response.page ? response.page : {};
 		});
@@ -194,6 +191,61 @@ angular.module('mirna.controllers', [])
 				};
 			angular.extend(this, $controller('PagedListController',
 					{$scope: $scope.expression_datas, Object : ExpressionData, elements : 'expression_data'}));
+		}
+		
+	});
+	
+}).controller('EnvironmentalFactorViewController', function($scope, $controller, $stateParams, EnvironmentalFactor, Mirna, ExpressionData) {
+	
+	EnvironmentalFactor.get({ id: $stateParams.id }, function(response) {
+		$scope.environmental_factor = response ? response : {};
+		if ($scope.environmental_factor) {
+			
+			/*
+			$scope.disease.related_mirnas = {};
+			$scope.disease.related_mirnas.pageSize = 50;
+			$scope.disease.related_mirnas.search = {
+					searchFunction: "related_to_disease",
+					searchFields: [{
+						key: "pk",
+						value: $stateParams.id
+					}]
+				};
+			angular.extend(this, $controller('PagedListController',
+					{$scope: $scope.disease.related_mirnas, Object : Mirna, elements : 'mirna'}));
+			
+			$scope.snps = {};
+			$scope.snps.pageSize = 10;
+			$scope.snps.search = {
+					searchFunction: "disease_pk",
+					searchFields: [{
+						key: "pk",
+						value: $stateParams.id
+					}]
+				};
+			angular.extend(this, $controller('PagedListController',
+					{$scope: $scope.snps, Object : SNP, elements : 'snp'}));
+			*/
+		}
+		
+		$scope.filterByMirna = function(mirna) {
+			/*
+			$scope.filtered_mirna = mirna;
+			$scope.expression_datas = {};
+			$scope.expression_datas.pageSize = 5;
+			$scope.expression_datas.search = {
+					searchFunction: "mirna_pk_and_disease_pk",
+					searchFields: [{
+						key: "mirna_pk",
+						value: mirna.pk
+					},{
+						key: "disease_pk",
+						value: $stateParams.id
+					}]
+				};
+			angular.extend(this, $controller('PagedListController',
+					{$scope: $scope.expression_datas, Object : ExpressionData, elements : 'expression_data'}));
+			*/
 		}
 		
 	});

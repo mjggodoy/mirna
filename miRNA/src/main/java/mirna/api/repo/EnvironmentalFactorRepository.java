@@ -8,8 +8,9 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 
 import mirna.api.model.EnvironmentalFactor;
+import mirna.api.model.projection.OnlyName;
 
-@RepositoryRestResource(collectionResourceRel = "environmental_factor", path = "environmental_factor")
+@RepositoryRestResource(collectionResourceRel = "environmental_factor", path = "environmental_factor", excerptProjection = OnlyName.class)
 public interface EnvironmentalFactorRepository extends PagingAndSortingRepository<EnvironmentalFactor, Integer> {
 	
 	@RestResource(path = "name")
