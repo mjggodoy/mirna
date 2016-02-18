@@ -96,6 +96,18 @@ angular.module('mirna.controllers', [])
 	angular.extend(this, $controller('PagedListController',
 			{$scope: $scope, Object : EnvironmentalFactor, elements : 'environmental_factor'}));
 
+}).controller('SearchByGeneNameController', function($scope, $controller, $stateParams, Gene) {
+	$scope.search = {
+		searchFunction: "name",
+		searchFields: [{
+			key: "name",
+			value: $stateParams.name
+		}]
+	};
+	$scope.sortOptions = [ {value: "name", label: "Name"} ];
+	angular.extend(this, $controller('PagedListController',
+			{$scope: $scope, Object : Gene, elements : 'gene'}));
+	
 }).controller('MirnaViewController',
 		function($scope, $controller, $stateParams, Object, complementary, PubmedDocument, ExpressionData) {
 	
@@ -233,6 +245,45 @@ angular.module('mirna.controllers', [])
 		}
 		
 	});
+	
+}).controller('GeneViewController', function($scope, $controller, $stateParams, Gene, Mirna, InteractionData) {
+	
+	Gene.get({ id: $stateParams.id }, function(response) {
+		$scope.gene = response ? response : {};
+		if ($scope.gene) {
+			
+			$scope.gene.related_mirnas = {};
+			$scope.gene.related_mirnas.pageSize = 50;
+			$scope.gene.related_mirnas.search = {
+					searchFunction: "related_to_gene",
+					searchFields: [{
+						key: "pk",
+						value: $stateParams.id
+					}]
+				};
+			angular.extend(this, $controller('PagedListController',
+					{$scope: $scope.gene.related_mirnas, Object : Mirna, elements : 'mirna'}));
+		}
+		
+		$scope.filterByMirna = function(mirna) {
+			$scope.filtered_mirna = mirna;
+			$scope.interaction_datas = {};
+			$scope.interaction_datas.pageSize = 5;
+			$scope.interaction_datas.search = {
+					searchFunction: "mirna_pk_and_gene_pk",
+					searchFields: [{
+						key: "mirna_pk",
+						value: mirna.pk
+					},{
+						key: "gene_pk",
+						value: $stateParams.id
+					}]
+				};
+			angular.extend(this, $controller('PagedListController',
+					{$scope: $scope.interaction_datas, Object : InteractionData, elements : 'interaction_data'}));
+		}
+		
+	});
 
 }).controller('HomeController', function($scope, $state){
 	
@@ -260,6 +311,12 @@ angular.module('mirna.controllers', [])
 	$scope.findByEnvironmentalFactorName = function() {
 		if ($scope.environmentalFactorNameText) {
 			$state.go('searchByEnvironmentalFactorName', {name: $scope.environmentalFactorNameText});
+		}
+	};
+	
+	$scope.findByGeneName = function() {
+		if ($scope.geneNameText) {
+			$state.go('searchByGeneName', {name: $scope.geneNameText});
 		}
 	};
 	

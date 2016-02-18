@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.rest.core.annotation.RestResource;
 
 import mirna.api.model.InteractionData;
 import mirna.api.model.projection.InteractionDataBasicInfo;
@@ -15,5 +16,8 @@ import mirna.api.model.projection.InteractionDataBasicInfo;
 public interface InteractionDataRepository extends PagingAndSortingRepository<InteractionData, Integer> {
 	
 	public Page<InteractionData> findByProvenance(@Param("provenance")String provenance, Pageable pageable);
+	
+	@RestResource(path = "mirna_pk_and_gene_pk")
+	public Page<InteractionData> findByMirnas_PkAndGenePk(@Param("mirna_pk")int mirnaPk, @Param("gene_pk")int genePk, Pageable pageable);
 
 }

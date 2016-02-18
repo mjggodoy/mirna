@@ -43,6 +43,11 @@
 		<dt data-ng-if="interaction_data.type">Type:</dt>
 		<dd data-ng-if="interaction_data.type">{{interaction_data.type}}</dd>
 		
+		<dt data-ng-if="interaction_data.mirnas">MiRNA:</dt>
+		<dd data-ng-if="interaction_data.mirnas">
+			<span data-ng-repeat="o in interaction_data.mirnas">{{o.id}}<span data-ng-if="$last==false"> / </span></span>
+		</dd>
+		
 		<dt data-ng-if="interaction_data.gene">Gene:</dt>
 		<dd data-ng-if="interaction_data.gene">{{interaction_data.gene.name}}</dd>
 		
