@@ -13,11 +13,15 @@ angular.module('mirna.services', []).factory('AbstractFactory', function($http, 
 			var url = this.HATEOAS_URL;
 			if (searchData) {
 				url += "search/"+searchData.searchFunction;
-				url += "?"+searchData.searchField+"="+searchData.searchValue;
-				url += "&page="+page;
+				url += "?page="+page;
+				for (var i in searchData.searchFields) {
+					var par = searchData.searchFields[i];
+					url += "&"+par.key+"="+par.value;
+				}
 			} else {
 				url += "?page="+page;
 			}
+			if (pageData.projection) url += "&projection="+pageData.projection;
 			if (pageData.size) url += "&size=" + pageData.size;
 			if (sortData.field && sortData.type)
 				url += "&sort=" + sortData.field.value + "," + sortData.type;
@@ -31,6 +35,8 @@ angular.module('mirna.services', []).factory('AbstractFactory', function($http, 
 				});
 				res.page = data.page;
 				callback && callback(res);
+			}, function(error) {
+				console.error(error);
 			});
 		},
 		
@@ -68,5 +74,14 @@ angular.module('mirna.services', []).factory('AbstractFactory', function($http, 
 	return extended;
 }).factory('PubmedDocument', function(AbstractFactory) {
 	var extended = new AbstractFactory('pubmed_document');
+	return extended;
+}).factory('ExpressionData', function(AbstractFactory) {
+	var extended = new AbstractFactory('expression_data');
+	return extended;
+}).factory('Disease', function(AbstractFactory) {
+	var extended = new AbstractFactory('disease');
+	return extended;
+}).factory('SNP', function(AbstractFactory) {
+	var extended = new AbstractFactory('snp');
 	return extended;
 });

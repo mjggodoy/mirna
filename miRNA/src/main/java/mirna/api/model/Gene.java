@@ -6,8 +6,6 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
-import mirna.integration.exception.ConflictException;
-
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "gene", schema = "mirna")

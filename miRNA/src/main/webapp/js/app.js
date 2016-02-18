@@ -30,14 +30,26 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 		url: '/hairpin/:id',
 		templateUrl: 'partials/hairpin-view.html',
 		controller: 'HairpinViewController'
+	}).state('listPhenotype', { // state for showing all phenotypes (diseases para los amigos)
+		url: '/phenotype',
+		templateUrl: 'partials/phenotype-list.html',
+		controller: 'PhenotypeListController'
+	}).state('viewPhenotype', { //state for showing single phenotype
+		url: '/phenotype/:id',
+		templateUrl: 'partials/phenotype-view.html',
+		controller: 'PhenotypeViewController'
 	}).state('search', { //search state
 		url: '/search',
 		templateUrl: 'partials/search.html',
 		controller: 'SearchController'
-	}).state('searchById', { //results state
+	}).state('searchById', { //results state 1
 		url: '/search/id/:id',
 		templateUrl: 'partials/mirna-list.html',
 		controller: 'SearchByIdController'
+	}).state('searchByPhenotypeName', { //results state 2
+		url: '/search/phenotype_name/:name',
+		templateUrl: 'partials/phenotype-list.html',
+		controller: 'SearchByPhenotypeNameController'
 	}).state('home', { //home state
 		url: '/home',
 		templateUrl: 'partials/home.html',

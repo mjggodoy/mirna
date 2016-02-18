@@ -5,6 +5,9 @@ angular.module('mirna.controllers', [])
 	if ($scope.pageSize) {
 		$scope.page.size = $scope.pageSize;
 	}
+	if ($scope.projection) {
+		$scope.page.projection = $scope.projection;
+	}
 	if (!$scope.sort) {
 		$scope.sort = {};
 		if ($scope.sortOptions) {
@@ -16,6 +19,9 @@ angular.module('mirna.controllers', [])
 	// Fetch all elements. Issues a GET to /api/<elements>
 	$scope.loadPage = function() {
 		Object.query($scope.page, $scope.sort, $scope.search, function(response) {
+			
+			console.log(response);
+			
 			$scope[elements] = response[elements] ? response[elements] : [];
 			$scope.page = response.page ? response.page : {};
 		});
@@ -51,47 +57,134 @@ angular.module('mirna.controllers', [])
 	$scope.sortOptions = [ {value: "id", label: "Id"} ];
 	angular.extend(this, $controller('PagedListController',
 			{$scope: $scope, Object : Hairpin, elements : 'mirna'}));
+	
+}).controller('PhenotypeListController', function($scope, $controller, Disease) {
+	$scope.sortOptions = [ {value: "name", label: "Name"} ];
+	angular.extend(this, $controller('PagedListController',
+			{$scope: $scope, Object : Disease, elements : 'disease'}));
 
 }).controller('SearchByIdController', function($scope, $controller, $stateParams, Mirna) {
 	$scope.search = {
 		searchFunction: "id",
-		searchField: "id",
-		searchValue: $stateParams.id
+		searchFields: [{
+			key: "id",
+			value: $stateParams.id
+		}]
 	};
 	$scope.sortOptions = [ {value: "id", label: "Id"} ];
 	angular.extend(this, $controller('PagedListController',
 			{$scope: $scope, Object : Mirna, elements : 'mirna'}));
+	
+}).controller('SearchByPhenotypeNameController', function($scope, $controller, $stateParams, Disease) {
+	$scope.search = {
+		searchFunction: "name",
+		searchFields: [{
+			key: "name",
+			value: $stateParams.name
+		}]
+	};
+	$scope.sortOptions = [ {value: "name", label: "Name"} ];
+	angular.extend(this, $controller('PagedListController',
+			{$scope: $scope, Object : Disease, elements : 'disease'}));
 
 }).controller('MirnaViewController',
-		function($scope, $controller, $stateParams, Object, complementary, PubmedDocument) {
+		function($scope, $controller, $stateParams, Object, complementary, PubmedDocument, ExpressionData) {
 	
 	Object.get({ id: $stateParams.id }, function(response) {
 		$scope.mirna = response ? response : {};
 		if ($scope.mirna) {
+			
 			Object.getLink({ id: $stateParams.id, link: complementary }, function(response) {
 				$scope.mirna[complementary] = response ? response[complementary] : {};
 			});
+			
 			$scope.mirna.pubmed_documents = {};
 			$scope.mirna.pubmed_documents.pageSize = 10;
 			$scope.mirna.pubmed_documents.search = {
 					searchFunction: "mirna_pk",
-					searchField: "pk",
-					searchValue: $stateParams.id
+					searchFields: [{
+						key: "pk",
+						value: $stateParams.id
+					}]
 				};
 			angular.extend(this, $controller('PagedListController',
 					{$scope: $scope.mirna.pubmed_documents, Object : PubmedDocument, elements : 'pubmed_document'}));
+			
+			$scope.expression_datas = {};
+			$scope.expression_datas.pageSize = 10;
+			$scope.expression_datas.projection = "inlineDisease";
+			$scope.expression_datas.search = {
+					searchFunction: "mirna_pk",
+					searchFields: [{
+						key: "pk",
+						value: $stateParams.id
+					}]
+				};
+			angular.extend(this, $controller('PagedListController',
+					{$scope: $scope.expression_datas, Object : ExpressionData, elements : 'expression_data'}));
 		}
 	});
 	
-}).controller('MatureViewController', function($scope, $controller, $stateParams, Mature, PubmedDocument) {
+}).controller('MatureViewController', function($scope, $controller, $stateParams, Mature) {
 	
 	angular.extend(this, $controller('MirnaViewController',
 			{$scope: $scope, Object : Mature, complementary : 'hairpins'}));
 	
-}).controller('HairpinViewController', function($scope, $controller, $stateParams, Hairpin) {//}, PubmedDocument) {
+}).controller('HairpinViewController', function($scope, $controller, $stateParams, Hairpin) {
 	
 	angular.extend(this, $controller('MirnaViewController',
 			{$scope: $scope, Object : Hairpin, complementary : 'matures'}));
+	
+}).controller('PhenotypeViewController', function($scope, $controller, $stateParams, Disease, Mirna, ExpressionData, SNP) {
+	
+	Disease.get({ id: $stateParams.id }, function(response) {
+		$scope.disease = response ? response : {};
+		if ($scope.disease) {
+			
+			$scope.disease.related_mirnas = {};
+			$scope.disease.related_mirnas.pageSize = 50;
+			$scope.disease.related_mirnas.search = {
+					searchFunction: "related_to_disease",
+					searchFields: [{
+						key: "pk",
+						value: $stateParams.id
+					}]
+				};
+			angular.extend(this, $controller('PagedListController',
+					{$scope: $scope.disease.related_mirnas, Object : Mirna, elements : 'mirna'}));
+			
+			$scope.snps = {};
+			$scope.snps.pageSize = 10;
+			$scope.snps.search = {
+					searchFunction: "disease_pk",
+					searchFields: [{
+						key: "pk",
+						value: $stateParams.id
+					}]
+				};
+			angular.extend(this, $controller('PagedListController',
+					{$scope: $scope.snps, Object : SNP, elements : 'snp'}));
+		}
+		
+		$scope.filterByMirna = function(mirna) {
+			$scope.filtered_mirna = mirna;
+			$scope.expression_datas = {};
+			$scope.expression_datas.pageSize = 5;
+			$scope.expression_datas.search = {
+					searchFunction: "mirna_pk_and_disease_pk",
+					searchFields: [{
+						key: "mirna_pk",
+						value: mirna.pk
+					},{
+						key: "disease_pk",
+						value: $stateParams.id
+					}]
+				};
+			angular.extend(this, $controller('PagedListController',
+					{$scope: $scope.expression_datas, Object : ExpressionData, elements : 'expression_data'}));
+		}
+		
+	});
 
 }).controller('HomeController', function($scope, $state){
 	
@@ -107,6 +200,12 @@ angular.module('mirna.controllers', [])
 	$scope.findById = function() {
 		if ($scope.idText) {
 			$state.go('searchById', {id: $scope.idText});
+		}
+	};
+	
+	$scope.findByPhenotypeName = function() {
+		if ($scope.phenotypeNameText) {
+			$state.go('searchByPhenotypeName', {name: $scope.phenotypeNameText});
 		}
 	};
 	

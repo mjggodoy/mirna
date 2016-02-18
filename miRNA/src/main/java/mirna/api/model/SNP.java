@@ -1,9 +1,12 @@
 package mirna.api.model;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -29,10 +32,11 @@ public class SNP extends ModelClass {
 	
 	@Column(name = "orientation", nullable = true, length = 45) //mutation_pk puede ser nulo
 	private String orientation;
-
+	
+	@ManyToMany(mappedBy="snps")
+	private Set<Disease> diseases;
 
 	public SNP(){	}
-
 
 	public String getSnp_id() {
 		return snp_id;
@@ -42,13 +46,9 @@ public class SNP extends ModelClass {
 		return position;
 	}
 
-
-
 	public String getArticle_date() {
 		return article_date;
 	}
-
-	
 
 	public Integer getMutation_pk() {
 		return mutation_pk;
@@ -57,8 +57,6 @@ public class SNP extends ModelClass {
 	public String getChromosome() {
 		return chromosome;
 	}
-
-	
 
 	public String getOrientation() {
 		return orientation;

@@ -1,9 +1,15 @@
 package mirna.api.model;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -37,10 +43,26 @@ public class InteractionData extends ModelClass {
 	protected String type;
 	@Column(name = "mirna_pk", nullable = false, length = 80, unique = true)
 	protected Integer mirnaPk;
-	@Column(name = "target_pk", nullable = true, length = 80, unique = true)
-	protected Integer targetPk;
-	@Column(name = "gene_pk", nullable = true, length = 80, unique = true)
-	protected Integer genePk;
+	
+	@ManyToOne
+	@JoinColumn(name = "gene_pk")
+	private Gene gene;
+	
+	@ManyToOne
+	@JoinColumn(name = "target_pk")
+	private Target target;
+	
+	@ManyToMany
+	@JoinTable(
+			name="mirna_has_interaction_data2",
+			schema="mirna",
+			joinColumns={
+					@JoinColumn(name="interaction_data_pk")
+			},
+			inverseJoinColumns={
+					@JoinColumn(name="mirna_pk")
+			})
+	private Set<MiRna> mirnas;
 
 	public InteractionData() {
 		super();
@@ -98,12 +120,8 @@ public class InteractionData extends ModelClass {
 		return mirnaPk;
 	}
 
-	public Integer getTargetPk() {
-		return targetPk;
-	}
-
-	public Integer getGenePk() {
-		return genePk;
+	public Gene getGene() {
+		return gene;
 	}
 	
 }
