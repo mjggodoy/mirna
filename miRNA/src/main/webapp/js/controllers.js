@@ -86,6 +86,18 @@ angular.module('mirna.controllers', [])
 	$scope.sortOptions = [ {value: "name", label: "Name"} ];
 	angular.extend(this, $controller('PagedListController',
 			{$scope: $scope, Object : Disease, elements : 'disease'}));
+	
+}).controller('SearchByEnvironmentalFactorNameController', function($scope, $controller, $stateParams, EnvironmentalFactor) {
+	$scope.search = {
+		searchFunction: "name",
+		searchFields: [{
+			key: "name",
+			value: $stateParams.name
+		}]
+	};
+	$scope.sortOptions = [ {value: "name", label: "Name"} ];
+	angular.extend(this, $controller('PagedListController',
+			{$scope: $scope, Object : EnvironmentalFactor, elements : 'environmental_factor'}));
 
 }).controller('MirnaViewController',
 		function($scope, $controller, $stateParams, Object, complementary, PubmedDocument, ExpressionData) {
@@ -206,6 +218,12 @@ angular.module('mirna.controllers', [])
 	$scope.findByPhenotypeName = function() {
 		if ($scope.phenotypeNameText) {
 			$state.go('searchByPhenotypeName', {name: $scope.phenotypeNameText});
+		}
+	};
+	
+	$scope.findByEnvironmentalFactorName = function() {
+		if ($scope.environmentalFactorNameText) {
+			$state.go('searchByEnvironmentalFactorName', {name: $scope.environmentalFactorNameText});
 		}
 	};
 	

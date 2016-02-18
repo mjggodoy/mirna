@@ -50,6 +50,10 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 		url: '/search/phenotype_name/:name',
 		templateUrl: 'partials/phenotype-list.html',
 		controller: 'SearchByPhenotypeNameController'
+	}).state('searchByEnvironmentalFactorName', { //results state 3
+		url: '/search/environmental_factor_name/:name',
+		templateUrl: 'partials/environmental-factor-list.html',
+		controller: 'SearchByEnvironmentalFactorNameController'
 	}).state('home', { //home state
 		url: '/home',
 		templateUrl: 'partials/home.html',
