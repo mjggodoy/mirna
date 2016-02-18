@@ -93,4 +93,7 @@ angular.module('mirna.services', []).factory('AbstractFactory', function($http, 
 }).factory('Gene', function(AbstractFactory) {
 	var extended = new AbstractFactory('gene');
 	return extended;
+}).factory('BiologicalProcess', function(AbstractFactory) {
+	var extended = new AbstractFactory('biological_process');
+	return extended;
 });

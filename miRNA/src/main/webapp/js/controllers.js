@@ -107,7 +107,23 @@ angular.module('mirna.controllers', [])
 	$scope.sortOptions = [ {value: "name", label: "Name"} ];
 	angular.extend(this, $controller('PagedListController',
 			{$scope: $scope, Object : Gene, elements : 'gene'}));
+
+}).controller('SearchByBiologicalProcessNameController', function($scope, $controller, $stateParams, BiologicalProcess) {
+	$scope.search = {
+		searchFunction: "name",
+		searchFields: [{
+			key: "name",
+			value: $stateParams.name
+		}]
+	};
+	$scope.sortOptions = [ {value: "name", label: "Name"} ];
+	angular.extend(this, $controller('PagedListController',
+			{$scope: $scope, Object : BiologicalProcess, elements : 'biological_process'}));
 	
+	
+	
+	
+
 }).controller('MirnaViewController',
 		function($scope, $controller, $stateParams, Object, complementary, PubmedDocument, ExpressionData) {
 	
@@ -317,6 +333,12 @@ angular.module('mirna.controllers', [])
 	$scope.findByGeneName = function() {
 		if ($scope.geneNameText) {
 			$state.go('searchByGeneName', {name: $scope.geneNameText});
+		}
+	};
+	
+	$scope.findByBiologicalProcessName = function() {
+		if ($scope.biologicalProcessNameText) {
+			$state.go('searchByBiologicalProcessName', {name: $scope.biologicalProcessNameText});
 		}
 	};
 	

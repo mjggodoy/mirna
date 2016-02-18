@@ -66,6 +66,10 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 		url: '/search/gene_name/:name',
 		templateUrl: 'partials/gene-list.html',
 		controller: 'SearchByGeneNameController'
+	}).state('searchByBiologicalProcessName', { //results state 4
+		url: '/search/biological_process/:name',
+		templateUrl: 'partials/biological-process-list.html',
+		controller: 'SearchByBiologicalProcessNameController'
 	}).state('home', { //home state
 		url: '/home',
 		templateUrl: 'partials/home.html',
