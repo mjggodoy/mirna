@@ -1,4 +1,4 @@
-<div class="col-md-12" ng-if="expression_datas">
+<div class="col-md-12" data-ng-if="expression_datas">
 	<div class="panel panel-primary">
 		<div class="panel-heading">Expression Data</div>
 		<div class="panel-body">
@@ -11,11 +11,11 @@
 				<div class="pull-left">Showing {{expression_datas.expression_data.length}} of {{expression_datas.page.totalElements}}</div>
 				<nav>
 					<ul class="pager">
-						<li ng-class="{disabled: expression_datas.page.number === 0}">
-							<a ui-sref="{page: {{expression_datas.page.number - 1}} }" ng-click="expression_datas.previousPage()">Previous</a>
+						<li data-ng-class="{disabled: expression_datas.page.number === 0}">
+							<a data-ui-sref="{page: {{expression_datas.page.number - 1}} }" data-ng-click="expression_datas.previousPage()">Previous</a>
 						</li>
-						<li ng-class="{disabled: expression_datas.page.number === expression_datas.page.totalPages - 1}">
-							<a ui-sref="{page: {{expression_datas.page.number + 1}} }" ng-click="expression_datas.nextPage()">Next</a>
+						<li data-ng-class="{disabled: expression_datas.page.number === expression_datas.page.totalPages - 1}">
+							<a data-ui-sref="{page: {{expression_datas.page.number + 1}} }" data-ng-click="expression_datas.nextPage()">Next</a>
 						</li>
 					</ul>
 				</nav>

@@ -27,11 +27,11 @@
 
 			<nav>
 				<ul class="pager">
-					<li ng-class="{disabled: mirna.pubmed_documents.page.number === 0}">
-						<a ui-sref="{page: {{mirna.pubmed_documents.page.number - 1}} }" ng-click="mirna.pubmed_documents.previousPage()">Previous</a>
+					<li data-ng-class="{disabled: mirna.pubmed_documents.page.number === 0}">
+						<a data-ui-sref="{page: {{mirna.pubmed_documents.page.number - 1}} }" data-ng-click="mirna.pubmed_documents.previousPage()">Previous</a>
 					</li>
-					<li ng-class="{disabled: mirna.pubmed_documents.page.number === mirna.pubmed_documents.page.totalPages - 1}">
-						<a ui-sref="{page: {{mirna.pubmed_documents.page.number + 1}} }" ng-click="mirna.pubmed_documents.nextPage()">Next</a>
+					<li data-ng-class="{disabled: mirna.pubmed_documents.page.number === mirna.pubmed_documents.page.totalPages - 1}">
+						<a data-ui-sref="{page: {{mirna.pubmed_documents.page.number + 1}} }" data-ng-click="mirna.pubmed_documents.nextPage()">Next</a>
 					</li>
 				</ul>
 			</nav>
