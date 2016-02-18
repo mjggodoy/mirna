@@ -87,4 +87,7 @@ angular.module('mirna.services', []).factory('AbstractFactory', function($http, 
 }).factory('EnvironmentalFactor', function(AbstractFactory) {
 	var extended = new AbstractFactory('environmental_factor');
 	return extended;
+}).factory('Gene', function(AbstractFactory) {
+	var extended = new AbstractFactory('gene');
+	return extended;
 });
