@@ -201,51 +201,35 @@ angular.module('mirna.controllers', [])
 		$scope.environmental_factor = response ? response : {};
 		if ($scope.environmental_factor) {
 			
-			/*
-			$scope.disease.related_mirnas = {};
-			$scope.disease.related_mirnas.pageSize = 50;
-			$scope.disease.related_mirnas.search = {
-					searchFunction: "related_to_disease",
+			$scope.environmental_factor.related_mirnas = {};
+			$scope.environmental_factor.related_mirnas.pageSize = 50;
+			$scope.environmental_factor.related_mirnas.search = {
+					searchFunction: "related_to_environmental_factor",
 					searchFields: [{
 						key: "pk",
 						value: $stateParams.id
 					}]
 				};
 			angular.extend(this, $controller('PagedListController',
-					{$scope: $scope.disease.related_mirnas, Object : Mirna, elements : 'mirna'}));
-			
-			$scope.snps = {};
-			$scope.snps.pageSize = 10;
-			$scope.snps.search = {
-					searchFunction: "disease_pk",
-					searchFields: [{
-						key: "pk",
-						value: $stateParams.id
-					}]
-				};
-			angular.extend(this, $controller('PagedListController',
-					{$scope: $scope.snps, Object : SNP, elements : 'snp'}));
-			*/
+					{$scope: $scope.environmental_factor.related_mirnas, Object : Mirna, elements : 'mirna'}));
 		}
 		
 		$scope.filterByMirna = function(mirna) {
-			/*
 			$scope.filtered_mirna = mirna;
 			$scope.expression_datas = {};
 			$scope.expression_datas.pageSize = 5;
 			$scope.expression_datas.search = {
-					searchFunction: "mirna_pk_and_disease_pk",
+					searchFunction: "mirna_pk_and_environmental_factor_pk",
 					searchFields: [{
 						key: "mirna_pk",
 						value: mirna.pk
 					},{
-						key: "disease_pk",
+						key: "environmental_factor_pk",
 						value: $stateParams.id
 					}]
 				};
 			angular.extend(this, $controller('PagedListController',
 					{$scope: $scope.expression_datas, Object : ExpressionData, elements : 'expression_data'}));
-			*/
 		}
 		
 	});
