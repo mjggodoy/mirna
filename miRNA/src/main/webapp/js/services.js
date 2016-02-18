@@ -78,6 +78,9 @@ angular.module('mirna.services', []).factory('AbstractFactory', function($http, 
 }).factory('ExpressionData', function(AbstractFactory) {
 	var extended = new AbstractFactory('expression_data');
 	return extended;
+}).factory('InteractionData', function(AbstractFactory) {
+	var extended = new AbstractFactory('interaction_data');
+	return extended;
 }).factory('Disease', function(AbstractFactory) {
 	var extended = new AbstractFactory('disease');
 	return extended;

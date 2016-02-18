@@ -8,9 +8,10 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 
 import mirna.api.model.Gene;
+import mirna.api.model.projection.OnlyName;
 
 
-@RepositoryRestResource(collectionResourceRel = "gene", path = "gene")//, excerptProjection = OnlyName.class)
+@RepositoryRestResource(collectionResourceRel = "gene", path = "gene", excerptProjection = OnlyName.class)
 
 public interface GeneRepository extends PagingAndSortingRepository<Gene, Integer> {
 	
