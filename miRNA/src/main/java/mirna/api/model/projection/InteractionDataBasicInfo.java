@@ -1,8 +1,11 @@
 package mirna.api.model.projection;
 
+import java.util.Set;
+
 import org.springframework.data.rest.core.config.Projection;
 
 import mirna.api.model.InteractionData;
+import mirna.api.model.MiRna;
 
 @Projection(name = "basic_info", types = { InteractionData.class })
 public interface InteractionDataBasicInfo {
@@ -33,7 +36,8 @@ public interface InteractionDataBasicInfo {
 
 	public String getType();
 
-	public Integer getMirnaPk();
+	//public Integer getMirnaPk();
+	public Set<MiRna> getMirnas();
 
 	public OnlyName getGene();
 	

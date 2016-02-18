@@ -42,6 +42,10 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 		url: '/environmental_factor/:id',
 		templateUrl: 'partials/environmental-factor-view.html',
 		controller: 'EnvironmentalFactorViewController'
+	}).state('viewGene', { //state for showing single gene
+		url: '/gene/:id',
+		templateUrl: 'partials/gene-view.html',
+		controller: 'GeneViewController'
 	}).state('search', { //search state
 		url: '/search',
 		templateUrl: 'partials/search.html',
@@ -58,6 +62,10 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 		url: '/search/environmental_factor_name/:name',
 		templateUrl: 'partials/environmental-factor-list.html',
 		controller: 'SearchByEnvironmentalFactorNameController'
+	}).state('searchByGeneName', { //results state 4
+		url: '/search/gene_name/:name',
+		templateUrl: 'partials/gene-list.html',
+		controller: 'SearchByGeneNameController'
 	}).state('home', { //home state
 		url: '/home',
 		templateUrl: 'partials/home.html',
