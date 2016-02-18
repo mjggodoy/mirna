@@ -252,7 +252,6 @@ angular.module('mirna.controllers', [])
 		$scope.gene = response ? response : {};
 		if ($scope.gene) {
 			
-			/*
 			$scope.gene.related_mirnas = {};
 			$scope.gene.related_mirnas.pageSize = 50;
 			$scope.gene.related_mirnas.search = {
@@ -264,27 +263,24 @@ angular.module('mirna.controllers', [])
 				};
 			angular.extend(this, $controller('PagedListController',
 					{$scope: $scope.gene.related_mirnas, Object : Mirna, elements : 'mirna'}));
-			*/
 		}
 		
 		$scope.filterByMirna = function(mirna) {
-			/*
 			$scope.filtered_mirna = mirna;
-			$scope.expression_datas = {};
-			$scope.expression_datas.pageSize = 5;
-			$scope.expression_datas.search = {
-					searchFunction: "mirna_pk_and_environmental_factor_pk",
+			$scope.interaction_datas = {};
+			$scope.interaction_datas.pageSize = 5;
+			$scope.interaction_datas.search = {
+					searchFunction: "mirna_pk_and_gene_pk",
 					searchFields: [{
 						key: "mirna_pk",
 						value: mirna.pk
 					},{
-						key: "environmental_factor_pk",
+						key: "gene_pk",
 						value: $stateParams.id
 					}]
 				};
 			angular.extend(this, $controller('PagedListController',
-					{$scope: $scope.expression_datas, Object : ExpressionData, elements : 'expression_data'}));
-			*/
+					{$scope: $scope.interaction_datas, Object : InteractionData, elements : 'interaction_data'}));
 		}
 		
 	});
