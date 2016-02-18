@@ -2,11 +2,11 @@
 
 <nav>
   <ul class="pager">
-    <li ng-class="{disabled: page.number === 0}">
-      <a ui-sref="{page: {{page.number - 1}} }" ng-click="previousPage()">Previous</a>
+    <li data-ng-class="{disabled: page.number === 0}">
+      <a data-ui-sref="{page: {{page.number - 1}} }" data-ng-click="previousPage()">Previous</a>
     </li>
-    <li ng-class="{disabled: page.number === page.totalPages - 1}">
-      <a ui-sref="{page: {{page.number + 1}} }" ng-click="nextPage()">Next</a>
+    <li data-ng-class="{disabled: page.number === page.totalPages - 1}">
+      <a data-ui-sref="{page: {{page.number + 1}} }" data-ng-click="nextPage()">Next</a>
     </li>
   </ul>
 </nav>
