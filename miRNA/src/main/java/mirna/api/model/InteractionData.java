@@ -12,6 +12,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "interaction_data", schema = "mirna")
@@ -52,6 +54,7 @@ public class InteractionData extends ModelClass {
 	@JoinColumn(name = "target_pk")
 	private Target target;
 	
+	@JsonIgnore
 	@ManyToMany
 	@JoinTable(
 			name="mirna_has_interaction_data2",
@@ -122,6 +125,11 @@ public class InteractionData extends ModelClass {
 
 	public Gene getGene() {
 		return gene;
+	}
+	
+	public Set<MiRna> getMirnas() {
+		if (mirnas.size()==0) return null;
+		else return mirnas;
 	}
 	
 }
