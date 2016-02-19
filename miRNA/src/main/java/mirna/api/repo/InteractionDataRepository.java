@@ -19,5 +19,8 @@ public interface InteractionDataRepository extends PagingAndSortingRepository<In
 	
 	@RestResource(path = "mirna_pk_and_gene_pk")
 	public Page<InteractionData> findByMirnas_PkAndGenePk(@Param("mirna_pk")int mirnaPk, @Param("gene_pk")int genePk, Pageable pageable);
-
+	
+	@RestResource(path = "mirna_pk_and_biological_process_pk")
+	public Page<InteractionData> findByMirnas_PkAndBiologicalProcessPk(@Param("mirna_pk")int mirnaPk, Pageable pageable);
+	
 }
