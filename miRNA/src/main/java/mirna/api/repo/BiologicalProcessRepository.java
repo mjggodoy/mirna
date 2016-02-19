@@ -8,9 +8,10 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 
 import mirna.api.model.BiologicalProcess;
+import mirna.api.model.projection.OnlyName;
 
 
-@RepositoryRestResource(collectionResourceRel = "biological_process", path = "biological_process")
+@RepositoryRestResource(collectionResourceRel = "biological_process", path = "biological_process", excerptProjection = OnlyName.class)
 
 public interface BiologicalProcessRepository extends PagingAndSortingRepository<BiologicalProcess, Integer> {
 

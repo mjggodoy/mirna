@@ -300,6 +300,47 @@ angular.module('mirna.controllers', [])
 		}
 		
 	});
+	
+	
+}).controller('BiologicalProcessViewController', function($scope, $controller, $stateParams, BiologicalProcess, Mirna, InteractionData) {
+	
+	BiologicalProcess.get({ id: $stateParams.id }, function(response) {
+		$scope.biological_process = response ? response : {};
+		if ($scope.biological_process) {
+			
+			$scope.biological_process.related_mirnas = {};
+			$scope.biological_process.related_mirnas.pageSize = 50;
+			$scope.biological_process.related_mirnas.search = {
+					searchFunction: "related_to_biological_process",
+					searchFields: [{
+						key: "pk",
+						value: $stateParams.id
+					}]
+				};
+			angular.extend(this, $controller('PagedListController',
+					{$scope: $scope.biological_process.related_mirnas, Object : Mirna, elements : 'mirna'}));
+		}
+		
+		$scope.filterByMirna = function(mirna) {
+			$scope.filtered_mirna = mirna;
+			$scope.interaction_datas = {};
+			$scope.interaction_datas.pageSize = 5;
+			$scope.interaction_datas.search = {
+					searchFunction: "mirna_pk_and_biological_process_pk",
+					searchFields: [{
+						key: "mirna_pk",
+						value: mirna.pk
+					},{
+						key: "biological_process_pk",
+						value: $stateParams.id
+					}]
+				};
+			angular.extend(this, $controller('PagedListController',
+					{$scope: $scope.interaction_datas, Object : InteractionData, elements : 'interaction_data'}));
+		}
+		
+	});
+
 
 }).controller('HomeController', function($scope, $state){
 	

@@ -46,6 +46,10 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 		url: '/gene/:id',
 		templateUrl: 'partials/gene-view.html',
 		controller: 'GeneViewController'
+	}).state('viewBiologicalProcess', { //state for showing single small molecule / environmental factor
+		url: '/biological_process/:id',
+		templateUrl: 'partials/biological-process-view.html',
+		controller: 'BiologicalProcessViewController'
 	}).state('search', { //search state
 		url: '/search',
 		templateUrl: 'partials/search.html',
