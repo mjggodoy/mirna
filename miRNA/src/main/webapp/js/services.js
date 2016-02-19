@@ -36,7 +36,7 @@ angular.module('mirna.services', []).factory('AbstractFactory', function($http, 
 				res.page = data.page;
 				callback && callback(res);
 			}, function(error) {
-				console.error(error);
+				console.log(error);
 			});
 		},
 		
