@@ -1,0 +1,18 @@
+<h3>Ptorein</h3>
+
+<table class="table table-hover">
+	<thead>
+		<tr>
+			<th>ID</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr data-ng-repeat="o in protein">
+			<td>
+				<a data-ui-sref="viewProtein({id:o.pk})">{{o.id}}</a>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<div data-ng-include="'partials/snippet/pager.html'"></div>

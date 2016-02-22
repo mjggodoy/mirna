@@ -46,6 +46,10 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 		url: '/gene/:id',
 		templateUrl: 'partials/gene-view.html',
 		controller: 'GeneViewController'
+	}).state('viewProtein', { //state for showing single gene
+		url: '/protein/:id',
+		templateUrl: 'partials/protein-view.html',
+		controller: 'ProteinViewController'
 	}).state('search', { //search state
 		url: '/search',
 		templateUrl: 'partials/search.html',
@@ -66,6 +70,10 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 		url: '/search/gene_name/:name',
 		templateUrl: 'partials/gene-list.html',
 		controller: 'SearchByGeneNameController'
+	}).state('searchByProteinId', { //results state 4
+		url: '/search/protein_id/:id',
+		templateUrl: 'partials/protein-list.html',
+		controller: 'SearchByProteinIdController'
 	}).state('home', { //home state
 		url: '/home',
 		templateUrl: 'partials/home.html',
