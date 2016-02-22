@@ -14,7 +14,7 @@ import javax.persistence.OneToMany;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@DiscriminatorValue("1")
+@DiscriminatorValue("mature")
 public class Mature extends MiRna {
 	
 	@ManyToMany

@@ -14,8 +14,7 @@ import javax.persistence.OneToMany;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@DiscriminatorValue("0")
-//@SecondaryTable(name="mirna_mirbase_info", schema="mirna", pkJoinColumns = @PrimaryKeyJoinColumn(name="mirna_pk"))
+@DiscriminatorValue("hairpin")
 public class Hairpin extends MiRna {
 	
 	@ManyToMany
