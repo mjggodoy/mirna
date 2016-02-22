@@ -1,6 +1,7 @@
 package mirna.api.model;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -9,10 +10,12 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @DiscriminatorValue("0")
+//@SecondaryTable(name="mirna_mirbase_info", schema="mirna", pkJoinColumns = @PrimaryKeyJoinColumn(name="mirna_pk"))
 public class Hairpin extends MiRna {
 	
 	@ManyToMany
@@ -21,8 +24,16 @@ public class Hairpin extends MiRna {
 		inverseJoinColumns={@JoinColumn(name="mature_pk")})
 	private List<MiRna> matures;
 	
+	@OneToMany
+	@JoinColumn(name="mirna_pk")
+	private Set<MirbaseMirnaInfo> mirbaseInfo;
+	
 	public List<MiRna> getMatures() {
 		return matures;
+	}
+	
+	public Set<MirbaseMirnaInfo> getMirbaseInfo() {
+		return mirbaseInfo;
 	}
 
 }
