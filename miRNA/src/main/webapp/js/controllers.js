@@ -345,16 +345,15 @@ angular.module('mirna.controllers', [])
 		}
 	};
 	
-<<<<<<< HEAD
-	
 	$scope.findByProteinId = function() {
 		if ($scope.proteinIdText) {
 			$state.go('searchByProteinId', {id: $scope.proteinIdText});
-=======
+		}
+	};
+	
 	$scope.findByPubmedDocumentId = function() {
 		if ($scope.pubmedIdText) {
 			$state.go('searchByPubmedDocumentId', {id: $scope.pubmedIdText});
->>>>>>> feature/pubmed_search
 		}
 	};
 	
