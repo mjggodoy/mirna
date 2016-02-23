@@ -46,6 +46,10 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 		url: '/gene/:id',
 		templateUrl: 'partials/gene-view.html',
 		controller: 'GeneViewController'
+	}).state('viewPubmedDocument', { //results state 4
+		url: '/pubmedDocument_id/:id',
+		templateUrl: 'partials/pubmed-view.html',
+		controller: 'PubmedDocumentViewController'
 	}).state('search', { //search state
 		url: '/search',
 		templateUrl: 'partials/search.html',
@@ -66,6 +70,10 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 		url: '/search/gene_name/:name',
 		templateUrl: 'partials/gene-list.html',
 		controller: 'SearchByGeneNameController'
+	}).state('searchByPubmedDocumentId', { //results state 4
+		url: '/search/pubmed_document_id/:id',
+		templateUrl: 'partials/pubmed-list.html',
+		controller: 'SearchByPubmedDocumentIdController'
 	}).state('home', { //home state
 		url: '/home',
 		templateUrl: 'partials/home.html',

@@ -1,6 +1,6 @@
 <form class="form-inline" data-ng-submit="findById()">
 	<div class="form-group">
-		<label for="search-opt-1">Search by miRNA id</label>
+		<label for="search-opt-1">Search by miRNA ID</label>
 		<input type="text" class="form-control" id="search-opt-1" placeholder="miRNA" data-ng-model="idText">
 	</div>
 	<button type="submit" class="btn btn-default">Search</button>
@@ -35,3 +35,15 @@
 	</div>
 	<button type="submit" class="btn btn-default">Search</button>
 </form>
+
+<hr>
+
+<form class="form-inline" data-ng-submit="findByPubmedDocumentId()">
+	<div class="form-group">
+		<label for="search-opt-5">Search by Pubmed document ID</label>
+		<input type="text" class="form-control" id="search-opt-5" placeholder="Pubmed document identifier" data-ng-model="pubmedIdText">
+	</div>
+	<button type="submit" class="btn btn-default">Search</button>
+</form>
+
+
