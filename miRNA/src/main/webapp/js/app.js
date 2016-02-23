@@ -46,17 +46,14 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 		url: '/gene/:id',
 		templateUrl: 'partials/gene-view.html',
 		controller: 'GeneViewController'
-<<<<<<< HEAD
 	}).state('viewProtein', { //state for showing single gene
 		url: '/protein/:id',
 		templateUrl: 'partials/protein-view.html',
 		controller: 'ProteinViewController'
-=======
 	}).state('viewPubmedDocument', { //results state 4
 		url: '/pubmedDocument_id/:id',
 		templateUrl: 'partials/pubmed-view.html',
 		controller: 'PubmedDocumentViewController'
->>>>>>> feature/pubmed_search
 	}).state('search', { //search state
 		url: '/search',
 		templateUrl: 'partials/search.html',
@@ -77,17 +74,14 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 		url: '/search/gene_name/:name',
 		templateUrl: 'partials/gene-list.html',
 		controller: 'SearchByGeneNameController'
-<<<<<<< HEAD
 	}).state('searchByProteinId', { //results state 4
 		url: '/search/protein_id/:id',
 		templateUrl: 'partials/protein-list.html',
 		controller: 'SearchByProteinIdController'
-=======
 	}).state('searchByPubmedDocumentId', { //results state 4
 		url: '/search/pubmed_document_id/:id',
 		templateUrl: 'partials/pubmed-list.html',
 		controller: 'SearchByPubmedDocumentIdController'
->>>>>>> feature/pubmed_search
 	}).state('home', { //home state
 		url: '/home',
 		templateUrl: 'partials/home.html',
