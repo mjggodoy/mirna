@@ -14,7 +14,11 @@ import mirna.api.model.InteractionData;
 import mirna.api.model.Mature;
 import mirna.api.model.MiRna;
 import mirna.api.model.OLDMiRna;
+<<<<<<< HEAD
 import mirna.api.model.Protein;
+=======
+import mirna.api.model.PubmedDocument;
+>>>>>>> feature/pubmed_search
 
 @Configuration
 public class AppConfig extends RepositoryRestMvcConfiguration {
@@ -33,7 +37,11 @@ public class AppConfig extends RepositoryRestMvcConfiguration {
 					ExpressionData.class,
 					InteractionData.class,
 					Disease.class,
+<<<<<<< HEAD
 					Protein.class);
+=======
+					PubmedDocument.class);
+>>>>>>> feature/pubmed_search
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}

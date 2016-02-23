@@ -121,6 +121,18 @@ angular.module('mirna.controllers', [])
 	angular.extend(this, $controller('PagedListController',
 			{$scope: $scope, Object : Protein, elements : 'protein'}));
 	
+}).controller('SearchByPubmedDocumentIdController', function($scope, $controller, $stateParams, PubmedDocument) {
+	$scope.search = {
+		searchFunction: "id",
+		searchFields: [{
+			key: "id",
+			value: $stateParams.id
+		}]
+	};
+	$scope.sortOptions = [ {value: "id", label: "id"} ];
+	angular.extend(this, $controller('PagedListController',
+			{$scope: $scope, Object : PubmedDocument, elements : 'pubmed_document'}));
+	
 }).controller('MirnaViewController',
 		function($scope, $controller, $stateParams, Object, complementary, PubmedDocument, ExpressionData) {
 	
@@ -333,10 +345,16 @@ angular.module('mirna.controllers', [])
 		}
 	};
 	
+<<<<<<< HEAD
 	
 	$scope.findByProteinId = function() {
 		if ($scope.proteinIdText) {
 			$state.go('searchByProteinId', {id: $scope.proteinIdText});
+=======
+	$scope.findByPubmedDocumentId = function() {
+		if ($scope.pubmedIdText) {
+			$state.go('searchByPubmedDocumentId', {id: $scope.pubmedIdText});
+>>>>>>> feature/pubmed_search
 		}
 	};
 	
