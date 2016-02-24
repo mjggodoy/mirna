@@ -12,11 +12,9 @@ public interface MiRnaBasicInfo {
 	public String getAccessionNumber();
 
 	public String getPreviousId();
-
-	public boolean isMature();
-
-	public boolean isDead();
 	
+	public String getType();
+
 	public Integer getMirBasePk();
 
 }
