@@ -1,0 +1,40 @@
+<div class="row">
+	<div class="col-md-12">
+		<ol class="breadcrumb">
+			<li><a href="#">Home</a></li>
+			<li><a data-ui-sref="listMirna">miRNA</a></li>
+			<li>Dead</li>
+			<li class="active">{{mirna.id}}</li>
+		</ol>
+	</div>
+</div>
+
+<div class="row">
+
+	<div class="col-md-12">
+		<h1>Dead miRNA <small>{{mirna.id}}</small></h1>
+	</div>
+
+	<div class="col-md-12">
+		<div class="panel panel-primary">
+			<div class="panel-heading">Information</div>
+			<div class="panel-body">
+				<strong>Id:</strong> {{mirna.id}}<br/>
+				<strong>Accession number:</strong> {{mirna.accessionNumber}}<br/>
+				<strong>Previous ids:</strong> {{mirna.previousId}}<br/>
+				<div data-ng-repeat="info in mirna.mirbaseInfo">
+					<span data-ng-if="info.comment">
+						<strong>Comment:</strong> {{info.comment}}<br/>
+					</span>
+					<span data-ng-if="info.forwardTo">
+						<strong>Forward to:</strong> {{info.forwardTo}}<br/>
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div data-ng-include="'partials/snippet/pubmed_documents.html'"></div>
+	<div data-ng-include="'partials/snippet/expression_datas.html'"></div>
+	
+</div>

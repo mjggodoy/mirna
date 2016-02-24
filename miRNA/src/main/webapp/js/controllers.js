@@ -115,9 +115,11 @@ angular.module('mirna.controllers', [])
 		$scope.mirna = response ? response : {};
 		if ($scope.mirna) {
 			
-			Object.getLink({ id: $stateParams.id, link: complementary }, function(response) {
-				$scope.mirna[complementary] = response ? response[complementary] : {};
-			});
+			if (complementary) {
+				Object.getLink({ id: $stateParams.id, link: complementary }, function(response) {
+					$scope.mirna[complementary] = response ? response[complementary] : {};
+				});
+			}
 			
 			$scope.mirna.pubmed_documents = {};
 			$scope.mirna.pubmed_documents.pageSize = 10;
@@ -155,6 +157,11 @@ angular.module('mirna.controllers', [])
 	
 	angular.extend(this, $controller('MirnaViewController',
 			{$scope: $scope, Object : Hairpin, complementary : 'matures'}));
+	
+}).controller('DeadMirnaViewController', function($scope, $controller, $stateParams, DeadMirna) {
+	
+	angular.extend(this, $controller('MirnaViewController',
+			{$scope: $scope, Object : DeadMirna, complementary : null}));
 	
 }).controller('PhenotypeViewController', function($scope, $controller, $stateParams, Disease, Mirna, ExpressionData, SNP) {
 	
