@@ -22,7 +22,14 @@
 				<strong>Id:</strong> {{mirna.id}}<br/>
 				<strong>Accession number:</strong> {{mirna.accessionNumber}}<br/>
 				<strong>Previous ids:</strong> {{mirna.previousId}}<br/>
-				<strong>Dead:</strong> {{mirna.dead}}<br/>
+				<div data-ng-repeat="info in mirna.mirbaseInfo">
+					<span data-ng-if="info.description">
+						<strong>Description:</strong> {{info.description}}<br/>
+					</span>
+					<span data-ng-if="info.comment">
+						<strong>Comment:</strong> {{info.comment}}<br/>
+					</span>
+				</div>
 			</div>
 		</div>
 	</div>

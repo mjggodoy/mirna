@@ -22,7 +22,17 @@
 				<strong>Id:</strong> {{mirna.id}}<br/>
 				<strong>Accession number:</strong> {{mirna.accessionNumber}}<br/>
 				<strong>Previous ids:</strong> {{mirna.previousId}}<br/>
-				<strong>Dead:</strong> {{mirna.dead}}<br/>
+				<div data-ng-repeat="info in mirna.mirbaseInfo">
+					<span data-ng-if="info.evidence">
+						<strong>Evidence:</strong> {{info.evidence}}<br/>
+					</span>
+					<span data-ng-if="info.experiment">
+						<strong>Experiment:</strong> {{info.experiment}}<br/>
+					</span>
+					<span data-ng-if="info.similarity">
+						<strong>Similarity:</strong> {{info.similarity}}<br/>
+					</span>
+				</div>
 			</div>
 		</div>
 	</div>
