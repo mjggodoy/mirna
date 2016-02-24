@@ -82,6 +82,10 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 		url: '/search/pubmed_document_id/:id',
 		templateUrl: 'partials/pubmed-list.html',
 		controller: 'SearchByPubmedDocumentIdController'
+	}).state('searchByTranscriptId', { //results state 4
+		url: '/search/transcript_id/:id',
+		templateUrl: 'partials/transcript-list.html',
+		controller: 'SearchByTranscriptIdController'
 	}).state('home', { //home state
 		url: '/home',
 		templateUrl: 'partials/home.html',

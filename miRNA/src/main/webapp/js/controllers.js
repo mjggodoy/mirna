@@ -133,6 +133,18 @@ angular.module('mirna.controllers', [])
 	angular.extend(this, $controller('PagedListController',
 			{$scope: $scope, Object : PubmedDocument, elements : 'pubmed_document'}));
 	
+}).controller('SearchByTranscriptIdController', function($scope, $controller, $stateParams, Transcript) {
+	$scope.search = {
+		searchFunction: "id",
+		searchFields: [{
+			key: "id",
+			value: $stateParams.id
+		}]
+	};
+	$scope.sortOptions = [ {value: "id", label: "id"} ];
+	angular.extend(this, $controller('PagedListController',
+			{$scope: $scope, Object : Transcript, elements : 'transcript'}));
+	
 }).controller('MirnaViewController',
 		function($scope, $controller, $stateParams, Object, complementary, PubmedDocument, ExpressionData) {
 	
@@ -354,6 +366,12 @@ angular.module('mirna.controllers', [])
 	$scope.findByPubmedDocumentId = function() {
 		if ($scope.pubmedIdText) {
 			$state.go('searchByPubmedDocumentId', {id: $scope.pubmedIdText});
+		}
+	};
+	
+	$scope.findByTranscriptId = function() {
+		if ($scope.transcriptIdText) {
+			$state.go('searchByTranscriptId', {id: $scope.transcriptIdText});
 		}
 	};
 	

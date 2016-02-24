@@ -11,7 +11,7 @@
 
 <form class="form-inline" data-ng-submit="findByPhenotypeName()">
 	<div class="form-group">
-		<label for="search-opt-2">Search by phenotype</label> <input
+		<label for="search-opt-2">Search by Phenotype</label> <input
 			type="text" class="form-control" id="search-opt-2"
 			placeholder="phenotype" data-ng-model="phenotypeNameText">
 	</div>
@@ -23,7 +23,7 @@
 <form class="form-inline"
 	data-ng-submit="findByEnvironmentalFactorName()">
 	<div class="form-group">
-		<label for="search-opt-3">Search by environmental factor</label> <input
+		<label for="search-opt-3">Search by Environmental factor</label> <input
 			type="text" class="form-control" id="search-opt-3"
 			placeholder="environmental factor"
 			data-ng-model="environmentalFactorNameText">
@@ -35,7 +35,7 @@
 
 <form class="form-inline" data-ng-submit="findByGeneName()">
 	<div class="form-group">
-		<label for="search-opt-4">Search by gene</label> <input type="text"
+		<label for="search-opt-4">Search by Gene</label> <input type="text"
 			class="form-control" id="search-opt-4" placeholder="gene"
 			data-ng-model="geneNameText">
 	</div>
@@ -46,7 +46,7 @@
 
 <form class="form-inline" data-ng-submit="findByProteinId()">
 	<div class="form-group">
-		<label for="search-opt-5">Search by protein</label> <input type="text"
+		<label for="search-opt-5">Search by Protein ID</label> <input type="text"
 			class="form-control" id="search-opt-5" placeholder="protein"
 			data-ng-model="proteinIdText">
 	</div>
@@ -59,9 +59,21 @@
 	<div class="form-group">
 		<label for="search-opt-6">Search by Pubmed document ID</label> <input
 			type="text" class="form-control" id="search-opt-6"
-			placeholder="Pubmed document identifier" data-ng-model="pubmedIdText">
+			placeholder="Pubmed ID" data-ng-model="pubmedIdText">
 	</div>
 	<button type="submit" class="btn btn-default">Search</button>
 </form>
+
+<hr>
+
+<form class="form-inline" data-ng-submit="findByTranscriptId()">
+	<div class="form-group">
+		<label for="search-opt-7">Search by Transcript ID</label> <input
+			type="text" class="form-control" id="search-opt-7"
+			placeholder="Transcript ID" data-ng-model="transcriptIdText">
+	</div>
+	<button type="submit" class="btn btn-default">Search</button>
+</form>
+
 
 
