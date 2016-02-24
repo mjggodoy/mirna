@@ -3,7 +3,7 @@
 		<ol class="breadcrumb">
 			<li><a href="#">Home</a></li>
 			<li><a data-ui-sref="listMirna">miRNA</a></li>
-			<li><a data-ui-sref="listHairpin">Hairpin</a></li>
+			<li>Dead</li>
 			<li class="active">{{mirna.id}}</li>
 		</ol>
 	</div>
@@ -12,7 +12,7 @@
 <div class="row">
 
 	<div class="col-md-12">
-		<h1>Hairpin <small>{{mirna.id}}</small></h1>
+		<h1>Dead miRNA <small>{{mirna.id}}</small></h1>
 	</div>
 
 	<div class="col-md-12">
@@ -23,26 +23,13 @@
 				<strong>Accession number:</strong> {{mirna.accessionNumber}}<br/>
 				<strong>Previous ids:</strong> {{mirna.previousId}}<br/>
 				<div data-ng-repeat="info in mirna.mirbaseInfo">
-					<span data-ng-if="info.description">
-						<strong>Description:</strong> {{info.description}}<br/>
-					</span>
 					<span data-ng-if="info.comment">
 						<strong>Comment:</strong> {{info.comment}}<br/>
 					</span>
+					<span data-ng-if="info.forwardTo">
+						<strong>Forward to:</strong> {{info.forwardTo}}<br/>
+					</span>
 				</div>
-			</div>
-		</div>
-	</div>
-	
-	<div class="col-md-12">
-		<div class="panel panel-primary">
-			<div class="panel-heading">Matures</div>
-			<div class="panel-body">
-				<ul>
-					<li data-ng-repeat="mature in mirna.matures">
-						<a data-ui-sref="viewMature({id: mature.pk})">{{mature.id}}</a>
-					</li>
-				</ul>
 			</div>
 		</div>
 	</div>

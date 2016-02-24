@@ -30,6 +30,10 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 		url: '/hairpin/:id',
 		templateUrl: 'partials/hairpin-view.html',
 		controller: 'HairpinViewController'
+	}).state('viewDeadMirna', { //state for showing single dead mirna
+		url: '/dead_mirna/:id',
+		templateUrl: 'partials/dead-mirna-view.html',
+		controller: 'DeadMirnaViewController'
 	}).state('listPhenotype', { // state for showing all phenotypes (diseases para los amigos)
 		url: '/phenotype',
 		templateUrl: 'partials/phenotype-list.html',
