@@ -13,11 +13,11 @@ import mirna.api.model.PubmedDocument;
 @RepositoryRestResource(collectionResourceRel = "pubmed_document", path = "pubmed_document")
 
 public interface PubmedDocRepository extends PagingAndSortingRepository<PubmedDocument, Integer> {
-
-    @RestResource(path = "mirna_pk")
-    public Page<PubmedDocument> findByMirnas_Pk(@Param("pk")int pk, Pageable pageable);
+	
+	@RestResource(path = "mirna_pk")
+	public Page<PubmedDocument> findByMirnas_Pk(@Param("pk")int pk, Pageable pageable);
 	
 	@RestResource(path = "id")
-    public Page<PubmedDocument> findById(@Param("id")String id, Pageable pageable);
-	
+	public Page<PubmedDocument> findById(@Param("id")String id, Pageable pageable);
+
 }
