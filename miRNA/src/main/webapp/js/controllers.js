@@ -346,9 +346,12 @@ angular.module('mirna.controllers', [])
 			$scope.expression_datas = {};
 			$scope.expression_datas.pageSize = 5;
 			$scope.expression_datas.search = {
-					searchFunction: "mirna_pk",
+					searchFunction: "mirna_pk_and_pubmed_document_pk",
 					searchFields: [{
-						key: "pk",
+						key: "mirna_pk",
+						value: mirna.pk
+					},{
+						key: "pubmed_document_pk",
 						value: $stateParams.id
 					}]
 				};
