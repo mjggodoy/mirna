@@ -8,6 +8,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 
 import mirna.api.model.BiologicalProcess;
+import mirna.api.model.MiRna;
 import mirna.api.model.projection.OnlyName;
 
 
@@ -17,5 +18,7 @@ public interface BiologicalProcessRepository extends PagingAndSortingRepository<
 
 	@RestResource(path = "name")
 	public Page<BiologicalProcessRepository> findByNameContaining(@Param("name")String name, Pageable pageable);
+	
+	
 	
 }

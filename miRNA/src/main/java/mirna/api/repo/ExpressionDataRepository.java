@@ -24,4 +24,5 @@ public interface ExpressionDataRepository extends PagingAndSortingRepository<Exp
 	@RestResource(path = "mirna_pk_and_environmental_factor_pk")
 	public Page<ExpressionData> findByMirnas_PkAndEnvironmentalFactorPk(@Param("mirna_pk")int mirnaPk, @Param("environmental_factor_pk")int environmentalFactorPk, Pageable pageable);
 
+	
 }
