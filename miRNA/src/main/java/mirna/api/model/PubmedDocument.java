@@ -28,6 +28,9 @@ public class PubmedDocument extends ModelClass {
 	@ManyToMany(mappedBy = "pubmedDocuments")
 	private Set<MiRna> mirnas;
 	
+	@ManyToMany(mappedBy = "pubmedDocuments")
+	private Set<ExpressionData> expressionDatas;
+	
 	public PubmedDocument() {}
 	
 	public String getId() {

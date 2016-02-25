@@ -322,6 +322,44 @@ angular.module('mirna.controllers', [])
 		
 	});
 
+}).controller('PubmedDocumentViewController', function($scope, $controller, $stateParams, PubmedDocument, Mirna, ExpressionData) {
+	
+	PubmedDocument.get({ id: $stateParams.id }, function(response) {
+		$scope.pubmed_document = response ? response : {};
+		if ($scope.pubmed_document) {
+			
+			$scope.pubmed_document.related_mirnas = {};
+			$scope.pubmed_document.related_mirnas.pageSize = 50;
+			$scope.pubmed_document.related_mirnas.search = {
+					searchFunction: "related_to_pubmed_document",
+					searchFields: [{
+						key: "pk",
+						value: $stateParams.id
+					}]
+				};
+			angular.extend(this, $controller('PagedListController',
+					{$scope: $scope.pubmed_document.related_mirnas, Object : Mirna, elements : 'mirna'}));
+		}
+		
+		$scope.filterByMirna = function(mirna) {
+			$scope.filtered_mirna = mirna;
+			$scope.expression_datas = {};
+			$scope.expression_datas.pageSize = 5;
+			$scope.expression_datas.search = {
+					searchFunction: "mirna_pk",
+					searchFields: [{
+						key: "pk",
+						value: $stateParams.id
+					}]
+				};
+			angular.extend(this, $controller('PagedListController',
+					{$scope: $scope.expression_datas, Object : ExpressionData, elements : 'expression_data'}));
+		}
+		
+	});	
+	
+// Hasta aquí	
+	
 }).controller('HomeController', function($scope, $state){
 	
 	$scope.quickSearchText = 'hsa-let-7a';

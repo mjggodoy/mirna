@@ -9,6 +9,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 
 import mirna.api.model.MiRna;
+import mirna.api.model.PubmedDocument;
 
 @RepositoryRestResource(collectionResourceRel = "mirna", path = "mirna")//, excerptProjection=MiRnaBasicInfo.class)
 public interface MirnaRepository extends PagingAndSortingRepository<MiRna, Integer> {
@@ -27,5 +28,12 @@ public interface MirnaRepository extends PagingAndSortingRepository<MiRna, Integ
 	@Query("SELECT a from MiRna a, MirnaPkTranslation b, InteractionData c where c.mirnaPk=b.oldPk and b.newPk=a.pk and c.gene.pk=:pk")	
 	@RestResource(path = "related_to_gene")
 	public Page<MiRna> findMirnasRelatedToGene(@Param("pk")int pk, Pageable pageable);
+	
+	@RestResource(path = "related_to_pubmed_document")
+    public Page<MiRna> findByPubmedDocuments_Pk(@Param("pk")int pk, Pageable pageable);
+	
+//	@Query("SELECT a from MiRna a, MirnaPkTranslation b, PubmedDocument c where c.mirnaPk=b.oldPk and b.newPk=a.pk and c.pubmedDocument.pk=:pk")	
+//	@RestResource(path = "related_to_pubmed_document")
+//	public Page<MiRna> findMirnasRelatedToPubmedDocument(@Param("pk")int pk, Pageable pageable);
 	
 }

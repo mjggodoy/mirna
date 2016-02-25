@@ -91,9 +91,18 @@ public class ExpressionData extends ModelClass {
 	@JoinColumn(name = "disease_pk")
 	private Disease disease;
 	
-//	@ManyToOne
-//	@JoinColumn(name = "environmental_factor_pk")
-//	private EnvironmentalFactor environmentalFactor;
+	@ManyToMany
+	@JoinTable(
+			name="expression_data_has_pubmed_document",
+			schema="mirna",
+			joinColumns={
+					@JoinColumn(name="expression_data_pk")
+			},
+			inverseJoinColumns={
+					@JoinColumn(name="pubmed_document_pk")
+			})
+	
+	private Set<PubmedDocument> pubmedDocuments;
 	
 	public ExpressionData() {
 		super();
@@ -182,4 +191,10 @@ public class ExpressionData extends ModelClass {
 	public InteractionData getInteractionData() {
 		return interactionData;
 	}
+
+	public Set<PubmedDocument> getPubmedDocuments() {
+		return pubmedDocuments;
+	}
+	
+	
 }
