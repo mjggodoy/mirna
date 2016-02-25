@@ -16,6 +16,6 @@ public interface PubmedDocRepository extends PagingAndSortingRepository<PubmedDo
 	public Page<PubmedDocument> findByMirnas_Pk(@Param("pk")int pk, Pageable pageable);
 	
 	@RestResource(path = "id")
-    public Page<PubmedDocument> findById(@Param("id")String id, Pageable pageable);
-	
+	public Page<PubmedDocument> findById(@Param("id")String id, Pageable pageable);
+
 }
