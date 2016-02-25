@@ -8,7 +8,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 
 import mirna.api.model.ExpressionData;
-import mirna.api.model.MiRna;
 import mirna.api.model.projection.ExpressionDataInfo;
 
 @RepositoryRestResource(collectionResourceRel = "expression_data", path = "expression_data", excerptProjection=ExpressionDataInfo.class)
@@ -28,5 +27,7 @@ public interface ExpressionDataRepository extends PagingAndSortingRepository<Exp
 	@RestResource(path = "related_to_pubmed_document_pk")
     public Page<ExpressionData> findByPubmedDocuments_Pk(@Param("pk")int pk, Pageable pageable);
 	
+	@RestResource(path = "mirna_pk_and_pubmed_document_pk")
+    public Page<ExpressionData> findByMirnas_PkAndPubmedDocuments_Pk(@Param("mirna_pk")int mirnaPk, @Param("pubmed_document_pk")int pubmedDocumentPk, Pageable pageable);
 	
 }
