@@ -72,6 +72,9 @@ angular.module('mirna.services', []).factory('AbstractFactory', function($http, 
 }).factory('Hairpin', function(AbstractFactory) {
 	var extended = new AbstractFactory('mirna', 'hairpin');
 	return extended;
+}).factory('DeadMirna', function(AbstractFactory) {
+	var extended = new AbstractFactory('mirna', 'dead_mirna');
+	return extended;
 }).factory('PubmedDocument', function(AbstractFactory) {
 	var extended = new AbstractFactory('pubmed_document');
 	return extended;
@@ -95,5 +98,11 @@ angular.module('mirna.services', []).factory('AbstractFactory', function($http, 
 	return extended;
 }).factory('BiologicalProcess', function(AbstractFactory) {
 	var extended = new AbstractFactory('biological_process');
+	return extended;
+}).factory('Protein', function(AbstractFactory) {
+	var extended = new AbstractFactory('protein');
+	return extended;
+}).factory('Transcript', function(AbstractFactory) {
+	var extended = new AbstractFactory('transcript');
 	return extended;
 });

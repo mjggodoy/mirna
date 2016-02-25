@@ -7,17 +7,20 @@
 			<th>Accession number</th>
 			<th>Mature</th>
 			<th>Hairpin</th>
+			<th>Dead</th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr data-ng-repeat="o in mirna">
 			<td>
-				<a data-ui-sref="viewMature({id:o.pk})" data-ng-if="o.mature">{{o.id}}</a>
-				<a data-ui-sref="viewHairpin({id:o.pk})" data-ng-if="o.mature==false">{{o.id}}</a>
+				<a data-ui-sref="viewMature({id:o.pk})" data-ng-if="o.type=='mature'">{{o.id}}</a>
+				<a data-ui-sref="viewHairpin({id:o.pk})" data-ng-if="o.type=='hairpin'">{{o.id}}</a>
+				<a data-ui-sref="viewDeadMirna({id:o.pk})" data-ng-if="o.type=='dead'">{{o.id}}</a>
 			</td>
 			<td>{{o.accessionNumber}}</td>
-			<td><span data-ng-if="o.mature">&#10004;</span></td>
-			<td><span data-ng-if="o.mature==false">&#10004;</span></td>
+			<td><span data-ng-if="o.type=='mature'">&#10004;</span></td>
+			<td><span data-ng-if="o.type=='hairpin'">&#10004;</span></td>
+			<td><span data-ng-if="o.type=='dead'">&#10004;</span></td>
 		</tr>
 	</tbody>
 	

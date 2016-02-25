@@ -16,7 +16,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "mirna2", schema = "mirna")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "mature", discriminatorType=DiscriminatorType.INTEGER)
+@DiscriminatorColumn(name = "type", discriminatorType=DiscriminatorType.STRING)
 public class MiRna extends ModelClass {
 
 	@Column(name = "id", nullable = false, length = 20)
@@ -28,11 +28,8 @@ public class MiRna extends ModelClass {
 	@Column(name = "previous_id", nullable = true, length = 90)
 	private String previousId;
 	
-	@Column(name = "mature", nullable = true, length = 1, insertable=false, updatable=false)
-	private boolean mature;
-	
-	@Column(name = "dead", nullable = true, length = 1)
-	private boolean dead;
+	@Column(name = "type", nullable = true, insertable=false, updatable=false)
+	private String type;
 	
 	@Column(name = "mirbase_pk", nullable = true)
 	private Integer mirBasePk;
@@ -69,12 +66,8 @@ public class MiRna extends ModelClass {
 		return previousId;
 	}
 
-	public boolean isMature() {
-		return mature;
-	}
-
-	public boolean isDead() {
-		return dead;
+	public String getType() {
+		return type;
 	}
 	
 	public Integer getMirBasePk() {

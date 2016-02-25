@@ -30,6 +30,10 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 		url: '/hairpin/:id',
 		templateUrl: 'partials/hairpin-view.html',
 		controller: 'HairpinViewController'
+	}).state('viewDeadMirna', { //state for showing single dead mirna
+		url: '/dead_mirna/:id',
+		templateUrl: 'partials/dead-mirna-view.html',
+		controller: 'DeadMirnaViewController'
 	}).state('listPhenotype', { // state for showing all phenotypes (diseases para los amigos)
 		url: '/phenotype',
 		templateUrl: 'partials/phenotype-list.html',
@@ -50,6 +54,14 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 		url: '/biological_process/:id',
 		templateUrl: 'partials/biological-process-view.html',
 		controller: 'BiologicalProcessViewController'
+	}).state('viewProtein', { //state for showing single gene
+		url: '/protein/:id',
+		templateUrl: 'partials/protein-view.html',
+		controller: 'ProteinViewController'
+	}).state('viewPubmedDocument', { //results state 4
+		url: '/pubmedDocument_id/:id',
+		templateUrl: 'partials/pubmed-view.html',
+		controller: 'PubmedDocumentViewController'
 	}).state('search', { //search state
 		url: '/search',
 		templateUrl: 'partials/search.html',
@@ -74,6 +86,18 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 		url: '/search/biological_process/:name',
 		templateUrl: 'partials/biological-process-list.html',
 		controller: 'SearchByBiologicalProcessNameController'
+	}).state('searchByProteinId', { //results state 4
+		url: '/search/protein_id/:id',
+		templateUrl: 'partials/protein-list.html',
+		controller: 'SearchByProteinIdController'
+	}).state('searchByPubmedDocumentId', { //results state 4
+		url: '/search/pubmed_document_id/:id',
+		templateUrl: 'partials/pubmed-list.html',
+		controller: 'SearchByPubmedDocumentIdController'
+	}).state('searchByTranscriptId', { //results state 4
+		url: '/search/transcript_id/:id',
+		templateUrl: 'partials/transcript-list.html',
+		controller: 'SearchByTranscriptIdController'
 	}).state('home', { //home state
 		url: '/home',
 		templateUrl: 'partials/home.html',

@@ -7,12 +7,16 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 
-import mirna.api.model.Transcript;
+import mirna.api.model.Gene;
+import mirna.api.model.Protein;
+import mirna.api.model.projection.OnlyName;
 
-@RepositoryRestResource(collectionResourceRel = "transcript", path = "transcript")
-public interface TranscriptRepository extends PagingAndSortingRepository<Transcript, Integer> {
+
+@RepositoryRestResource(collectionResourceRel = "protein", path = "protein")
+
+public interface ProteinRepository extends PagingAndSortingRepository<Protein, Integer> {
 	
 	@RestResource(path = "id")
-	public Page<Transcript> findById(@Param("id")String id, Pageable pageable);
+	public Page<ProteinRepository> findById(@Param("id")String id, Pageable pageable);
 	
 }
