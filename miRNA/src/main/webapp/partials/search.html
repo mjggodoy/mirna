@@ -44,10 +44,23 @@
 
 <hr>
 
+<form class="form-inline" data-ng-submit="findByBiologicalProcessName()">
+	<div class="form-group">
+		<label for="search-opt-5">Search by biological process</label> 
+		<input
+			type="text" class="form-control" id="search-opt-5"
+			placeholder="biological process"
+			data-ng-model="biologicalProcessNameText">
+	</div>
+	<button type="submit" class="btn btn-default">Search</button>
+</form>
+
+<hr>
+
 <form class="form-inline" data-ng-submit="findByProteinId()">
 	<div class="form-group">
-		<label for="search-opt-5">Search by Protein ID</label> <input type="text"
-			class="form-control" id="search-opt-5" placeholder="protein"
+		<label for="search-opt-6">Search by Protein ID</label> <input type="text"
+			class="form-control" id="search-opt-6" placeholder="protein"
 			data-ng-model="proteinIdText">
 	</div>
 	<button type="submit" class="btn btn-default">Search</button>
@@ -57,8 +70,8 @@
 
 <form class="form-inline" data-ng-submit="findByPubmedDocumentId()">
 	<div class="form-group">
-		<label for="search-opt-6">Search by Pubmed document ID</label> <input
-			type="text" class="form-control" id="search-opt-6"
+		<label for="search-opt-7">Search by Pubmed document ID</label> <input
+			type="text" class="form-control" id="search-opt-7"
 			placeholder="Pubmed ID" data-ng-model="pubmedIdText">
 	</div>
 	<button type="submit" class="btn btn-default">Search</button>
@@ -68,8 +81,8 @@
 
 <form class="form-inline" data-ng-submit="findByTranscriptId()">
 	<div class="form-group">
-		<label for="search-opt-7">Search by Transcript ID</label> <input
-			type="text" class="form-control" id="search-opt-7"
+		<label for="search-opt-8">Search by Transcript ID</label> <input
+			type="text" class="form-control" id="search-opt-8"
 			placeholder="Transcript ID" data-ng-model="transcriptIdText">
 	</div>
 	<button type="submit" class="btn btn-default">Search</button>

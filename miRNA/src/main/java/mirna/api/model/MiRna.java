@@ -45,6 +45,10 @@ public class MiRna extends ModelClass {
 					@JoinColumn(name="pubmed_document_pk")
 			})
 	private Set<PubmedDocument> pubmedDocuments;
+	
+	
+	@ManyToMany(mappedBy="mirnas")
+	private Set<BiologicalProcess> biologicalProcess;
 
 	//@ManyToMany(mappedBy = "mirnas")
 	//private Set<ExpressionData> expressionDatas;
@@ -77,5 +81,11 @@ public class MiRna extends ModelClass {
 	public Set<PubmedDocument> getPubmedDocuments() {
 		return pubmedDocuments;
 	}
+
+	public Set<BiologicalProcess> getBiologicalProcess() {
+		return biologicalProcess;
+	}
+	
+	
 
 }

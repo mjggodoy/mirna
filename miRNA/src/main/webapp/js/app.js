@@ -50,6 +50,10 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 		url: '/gene/:id',
 		templateUrl: 'partials/gene-view.html',
 		controller: 'GeneViewController'
+	}).state('viewBiologicalProcess', { //state for showing single small molecule / environmental factor
+		url: '/biological_process/:id',
+		templateUrl: 'partials/biological-process-view.html',
+		controller: 'BiologicalProcessViewController'
 	}).state('viewProtein', { //state for showing single gene
 		url: '/protein/:id',
 		templateUrl: 'partials/protein-view.html',
@@ -78,6 +82,10 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 		url: '/search/gene_name/:name',
 		templateUrl: 'partials/gene-list.html',
 		controller: 'SearchByGeneNameController'
+	}).state('searchByBiologicalProcessName', { //results state 5
+		url: '/search/biological_process/:name',
+		templateUrl: 'partials/biological-process-list.html',
+		controller: 'SearchByBiologicalProcessNameController'
 	}).state('searchByProteinId', { //results state 4
 		url: '/search/protein_id/:id',
 		templateUrl: 'partials/protein-list.html',
