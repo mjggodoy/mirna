@@ -672,6 +672,7 @@ angular
 			};
 
 		
+
 	$scope.nextPage = function() {
 		if ($scope.page.number+1<$scope.page.totalPages) {
 			$scope.page.number++;
