@@ -8,7 +8,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 
-import mirna.api.model.BiologicalProcess;
 import mirna.api.model.MiRna;
 
 @RepositoryRestResource(collectionResourceRel = "mirna", path = "mirna")
