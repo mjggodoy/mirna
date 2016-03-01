@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -42,6 +44,20 @@ public class Transcript extends ModelClass {
 	private Set<Protein> proteins;
 	
 	
+	@ManyToMany
+	@JoinTable(
+			name="transcript_has_gene",
+			schema="mirna",
+			joinColumns={
+					@JoinColumn(name="gene_pk")
+			},
+			inverseJoinColumns={
+					@JoinColumn(name="transcript_pk")
+	})
+	
+	private Set<Gene> genes;
+	
+	
 	public String getId() {
 		return id;
 	}
@@ -60,5 +76,12 @@ public class Transcript extends ModelClass {
 
 	public Set<Protein> getProteins() {
 		return proteins;
+	}
+
+	public Set<Gene> getGenes() {
+		return genes;
 	}	
+	
+	
+	
 }

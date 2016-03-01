@@ -1,9 +1,14 @@
 package mirna.api.model;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -73,6 +78,9 @@ public class Gene extends ModelClass {
 	public Gene() {
 		super();
 	}
+	
+	@ManyToMany(mappedBy="genes")
+	private Set<Transcript> transcripts;
 
 	public String getDistance() {
 		return distance;
@@ -164,5 +172,11 @@ public class Gene extends ModelClass {
 	public String getHgnc_id() {
 		return hgnc_id;
 	}
+
+	public Set<Transcript> getTranscripts() {
+		return transcripts;
+	}
+	
+	
 	
 }
