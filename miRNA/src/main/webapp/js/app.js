@@ -14,6 +14,44 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 //			$state.go('viewMature', {id: '102654'});
 //		}
 //		//controller: 'MatureViewController'
+	}).state('searchByAcc', { // state for seaching mirna by accession number
+		url: '/search/acc/:acc',
+		templateUrl: 'partials/mirna-list.html',
+		controller: 'SearchByAccController'
+//		controller: 'SearchByAccController',
+//		resolve: {
+//			"check": function() {
+//				
+//				console.log("AQUI ESTOY!");
+//				
+////				$scope.search = {
+////					searchFunction: "acc",
+////					searchFields: [{
+////						key: "acc",
+////						value: $stateParams.acc
+////					}]
+////				};
+////				console.log();
+////				$scope.sortOptions = [ {value: "id", label: "Id"} ];
+////				angular.extend(this, $controller('PagedListController',
+////						{$scope: $scope, Object : Mirna, elements : 'mirna'}));
+////				
+////				console.log($scope);
+//				
+//				return true;
+//				
+//				
+////				console.log("PUA!");
+////				if (false) {
+////					console.log("ESTOY AQUI!");
+////					//Do something
+////				} else {
+////					$state.go('home');
+////					//$location.path('/search');    //redirect user to home.
+////					console.log("You don't have access here");
+////				}
+//			}
+//		}
 	}).state('listMature', { // state for showing all matures
 		url: '/mature',
 		templateUrl: 'partials/mirna-list.html',
