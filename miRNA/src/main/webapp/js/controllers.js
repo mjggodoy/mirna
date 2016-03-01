@@ -573,7 +573,7 @@ angular
 											$scope.biological_process.related_mirnas = {};
 											$scope.biological_process.related_mirnas.pageSize = 50;
 											$scope.biological_process.related_mirnas.search = {
-												searchFunction : "biological_process_pk",
+												searchFunction : "related_to_biological_process",
 												searchFields : [ {
 													key : "pk",
 													value : $stateParams.id
@@ -590,9 +590,46 @@ angular
 																		elements : 'mirna'
 																	}));
 										}
-
-										
 									});
+										
+				})		
+					.controller(
+							'ProteinViewController',
+							function($scope, $controller, $stateParams, Protein, Transcript) {
+
+								Protein.get(
+												{
+													id : $stateParams.id
+												},
+												function(response) {
+													$scope.protein = response ? response
+															: {};
+													if ($scope.protein) {
+
+														$scope.protein.related_transcripts = {};
+														$scope.protein.related_transcripts.pageSize = 50;
+														$scope.protein.related_transcripts.search = {
+															searchFunction : "related_to_protein",
+															searchFields : [ {
+																key : "pk",
+																value : $stateParams.id
+															} ]
+														};
+														angular
+																.extend(
+																		this,
+																		$controller(
+																				'PagedListController',
+																				{
+																					$scope : $scope.protein.related_transcripts,
+																					Object : Transcript,
+																					elements : 'transcript'
+																				}));
+													}
+
+													
+												});
+
 
 				}).controller('HomeController', function($scope, $state) {
 
@@ -1018,6 +1055,12 @@ angular
 	});	
 	
 // Hasta aquí	
+	
+}).controller('ProteintViewController', function($scope, $controller, $stateParams, Protein, Transcript) {
+	
+	Protein.get({ id: $stateParams.id }, function(response) {});		
+	
+//hasta aquí	
 	
 }).controller('HomeController', function($scope, $state){
 	

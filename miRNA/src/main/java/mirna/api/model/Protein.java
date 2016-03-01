@@ -1,9 +1,14 @@
 package mirna.api.model;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -26,6 +31,20 @@ public class Protein extends ModelClass {
 		this.id = uniprot_id;
 		this.type = type;
 	}
+	
+	@ManyToMany
+	@JoinTable(
+			name="transcript_produces_protein",
+			schema="mirna",
+			joinColumns={
+					@JoinColumn(name="protein_pk")
+			},
+			inverseJoinColumns={
+					@JoinColumn(name="transcript_pk")
+	})
+	
+	private Set<Transcript> transcripts;
+	
 
 	public String getId() {
 		return id;
@@ -34,4 +53,14 @@ public class Protein extends ModelClass {
 	public String getType() {
 		return type;
 	}
+
+	public Set<Transcript> getTranscripts() {
+		return transcripts;
+	}
+
+	public void setTranscripts(Set<Transcript> transcripts) {
+		this.transcripts = transcripts;
+	}
+	
+	
 }

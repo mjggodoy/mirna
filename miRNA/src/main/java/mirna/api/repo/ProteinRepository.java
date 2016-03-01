@@ -17,6 +17,6 @@ import mirna.api.model.projection.OnlyName;
 public interface ProteinRepository extends PagingAndSortingRepository<Protein, Integer> {
 	
 	@RestResource(path = "id")
-	public Page<ProteinRepository> findById(@Param("id")String id, Pageable pageable);
+	public Page<Protein> findById(@Param("id")String id, Pageable pageable);
 	
 }

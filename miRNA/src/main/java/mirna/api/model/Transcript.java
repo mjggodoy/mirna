@@ -1,9 +1,12 @@
 package mirna.api.model;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -35,6 +38,10 @@ public class Transcript extends ModelClass {
 		this.externalName = externalName;
 	}
 
+	@ManyToMany(mappedBy="transcripts")
+	private Set<Protein> protein;
+	
+	
 	public String getId() {
 		return id;
 	}
@@ -50,5 +57,8 @@ public class Transcript extends ModelClass {
 	public String getExternalName() {
 		return externalName;
 	}
-	
+
+	public Set<Protein> getProtein() {
+		return protein;
+	}	
 }
