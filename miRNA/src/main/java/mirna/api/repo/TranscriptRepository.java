@@ -17,6 +17,6 @@ public interface TranscriptRepository extends PagingAndSortingRepository<Transcr
 	public Page<Transcript> findById(@Param("id")String id, Pageable pageable);
 	
 	@RestResource(path = "related_to_protein")
-    public Page<Transcript> findByProtein_Pk(@Param("pk")int pk, Pageable pageable);
+    public Page<Transcript> findByProteins_Pk(@Param("pk")int pk, Pageable pageable);
 	
 }

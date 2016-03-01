@@ -1054,13 +1054,6 @@ angular
 		
 	});	
 	
-// Hasta aquí	
-	
-}).controller('ProteintViewController', function($scope, $controller, $stateParams, Protein, Transcript) {
-	
-	Protein.get({ id: $stateParams.id }, function(response) {});		
-	
-//hasta aquí	
 	
 }).controller('HomeController', function($scope, $state){
 	

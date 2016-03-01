@@ -31,7 +31,7 @@
 			
 				<span data-ng-if="protein.related_transcripts.page.number != 0">... </span>
 				<span data-ng-repeat="o in protein.related_transcripts.transcript">
-					<button type="button" class="btn btn-default btn-xs" data-ng-click="filterBytranscript(o)">{{o.id}}</button>&nbsp;
+					<button type="button" class="btn btn-default btn-xs" data-ng-click="filterByTranscript(o)">{{o.id}}</button>&nbsp;
 				</span>
 				<span data-ng-if="protein.related_transcripts.page.number != protein.related_transcripts.page.totalPages - 1">...</span>
 				

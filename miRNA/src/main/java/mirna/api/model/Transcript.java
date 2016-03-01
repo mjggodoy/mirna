@@ -39,7 +39,7 @@ public class Transcript extends ModelClass {
 	}
 
 	@ManyToMany(mappedBy="transcripts")
-	private Set<Protein> protein;
+	private Set<Protein> proteins;
 	
 	
 	public String getId() {
@@ -58,7 +58,7 @@ public class Transcript extends ModelClass {
 		return externalName;
 	}
 
-	public Set<Protein> getProtein() {
-		return protein;
+	public Set<Protein> getProteins() {
+		return proteins;
 	}	
 }

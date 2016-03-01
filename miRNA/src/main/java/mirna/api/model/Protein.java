@@ -58,9 +58,6 @@ public class Protein extends ModelClass {
 		return transcripts;
 	}
 
-	public void setTranscripts(Set<Transcript> transcripts) {
-		this.transcripts = transcripts;
-	}
 	
 	
 }
