@@ -14,6 +14,47 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 //			$state.go('viewMature', {id: '102654'});
 //		}
 //		//controller: 'MatureViewController'
+			
+	}).state('goToAcc', { // state to redirect to mirna by accession number
+		url: '/puacc/:acc',
+		controller: 'GoToAccController',
+		resolve: {
+			"count" : function($stateParams, Mirna) {
+				
+				console.log("RESOLVING!");
+				var searchData = {
+					searchFunction: "acc",
+					searchFields: [{
+					key: "acc",
+						value: $stateParams.acc
+					}]
+				};
+				console.log(searchData);
+				
+				console.log("CAMBIO2!");
+				
+				console.log(Mirna);
+				
+				Mirna.query(null, null, searchData, 
+//				function(response) {
+//					console.log("RESPONSE!");
+//					console.log(response);
+//					return response;
+////					$scope[elements] = response[elements] ? response[elements] : [];
+////					$scope.page = response.page ? response.page : {};
+//				}
+				null).then (function (data) {
+					console.log(data);
+	                   return doSomeStuffFirst(data);
+	               });
+				
+				console.log("FIN?");
+				
+			}
+		}
+		
+		
+		
 	}).state('searchByAcc', { // state for seaching mirna by accession number
 		url: '/search/acc/:acc',
 		templateUrl: 'partials/mirna-list.html',
