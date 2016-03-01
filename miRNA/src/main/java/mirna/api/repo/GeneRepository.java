@@ -19,7 +19,7 @@ public interface GeneRepository extends PagingAndSortingRepository<Gene, Integer
 	@RestResource(path = "name")
 	public Page<GeneRepository> findByNameContaining(@Param("name")String name, Pageable pageable);
 	
-	@Query("SELECT a from Gene a, TranscriptHasGene b, TranscriptProducesProtein c "
+	@Query("SELECT distinct a from Gene a, TranscriptHasGene b, TranscriptProducesProtein c "
 			+ "where c.proteinPk=:pk and c.transcriptPk=b.transcriptPk and b.genePk=a.pk")	
 	@RestResource(path = "related_to_protein")
 	public Page<Gene> findGenesRelatedToProtein(@Param("pk")int pk, Pageable pageable);

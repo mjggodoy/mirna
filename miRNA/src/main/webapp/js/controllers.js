@@ -595,7 +595,7 @@ angular
 				})		
 					.controller(
 							'ProteinViewController',
-							function($scope, $controller, $stateParams, Protein, Transcript) {
+							function($scope, $controller, $stateParams, Protein, Transcript, Gene) {
 
 								Protein.get(
 												{
@@ -606,9 +606,9 @@ angular
 															: {};
 													if ($scope.protein) {
 
-														$scope.protein.related_transcripts = {};
-														$scope.protein.related_transcripts.pageSize = 50;
-														$scope.protein.related_transcripts.search = {
+														$scope.protein.related_genes = {};
+														$scope.protein.related_genes.pageSize = 50;
+														$scope.protein.related_genes.search = {
 															searchFunction : "related_to_protein",
 															searchFields : [ {
 																key : "pk",
@@ -621,9 +621,9 @@ angular
 																		$controller(
 																				'PagedListController',
 																				{
-																					$scope : $scope.protein.related_transcripts,
-																					Object : Transcript,
-																					elements : 'transcript'
+																					$scope : $scope.protein.related_genes,
+																					Object : Gene,
+																					elements : 'gene'
 																				}));
 													}
 
