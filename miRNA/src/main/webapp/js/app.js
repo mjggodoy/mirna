@@ -29,7 +29,7 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 							$state.go('viewHairpin', {id: id});
 						} else if (type=='mature') {
 							$state.go('viewMature', {id: id});
-						} else if (type=='hairpin') {
+						} else if (type=='dead') {
 							$state.go('viewDeadMirna', {id: id});
 						}
 					} else {
