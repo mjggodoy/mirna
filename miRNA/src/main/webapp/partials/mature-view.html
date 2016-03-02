@@ -30,7 +30,10 @@
 						<strong>Experiment:</strong> {{info.experiment}}<br/>
 					</span>
 					<span data-ng-if="info.similarity">
-						<strong>Similarity:</strong> {{info.similarity}}<br/>
+						<strong>Similarity:</strong>&nbsp;
+						<a data-ui-sref="goToAcc({acc:info.similarity})" data-ng-if="mirna.accessionNumber!=info.similarity">{{info.similarity}}</a>
+						<span data-ng-if="mirna.accessionNumber==info.similarity">{{info.similarity}}</span>
+						<br/>
 					</span>
 				</div>
 			</div>
