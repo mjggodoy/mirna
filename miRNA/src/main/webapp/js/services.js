@@ -1,4 +1,6 @@
-angular.module('mirna.services', []).factory('AbstractFactory', function($http, SpringDataRestAdapter) {
+var module = angular.module('mirna.services', []);
+
+module.factory('AbstractFactory', function($http, SpringDataRestAdapter) {
 	
 	function AbstractFactory(elements, path) {
 		if (path==undefined) path = elements;
@@ -63,46 +65,74 @@ angular.module('mirna.services', []).factory('AbstractFactory', function($http, 
 	
 	return AbstractFactory;
   
-}).factory('Mirna', function(AbstractFactory) {
+});
+
+module.factory('Mirna', function(AbstractFactory) {
 	var extended = new AbstractFactory('mirna');
 	return extended;
-}).factory('Mature', function(AbstractFactory) {
+});
+
+module.factory('Mature', function(AbstractFactory) {
 	var extended = new AbstractFactory('mirna', 'mature');
 	return extended;
-}).factory('Hairpin', function(AbstractFactory) {
+});
+
+module.factory('Hairpin', function(AbstractFactory) {
 	var extended = new AbstractFactory('mirna', 'hairpin');
 	return extended;
-}).factory('DeadMirna', function(AbstractFactory) {
+});
+
+module.factory('DeadMirna', function(AbstractFactory) {
 	var extended = new AbstractFactory('mirna', 'dead_mirna');
 	return extended;
-}).factory('PubmedDocument', function(AbstractFactory) {
+});
+
+module.factory('PubmedDocument', function(AbstractFactory) {
 	var extended = new AbstractFactory('pubmed_document');
 	return extended;
-}).factory('ExpressionData', function(AbstractFactory) {
+});
+
+module.factory('ExpressionData', function(AbstractFactory) {
 	var extended = new AbstractFactory('expression_data');
 	return extended;
-}).factory('InteractionData', function(AbstractFactory) {
+});
+
+module.factory('InteractionData', function(AbstractFactory) {
 	var extended = new AbstractFactory('interaction_data');
 	return extended;
-}).factory('Disease', function(AbstractFactory) {
+});
+
+module.factory('Disease', function(AbstractFactory) {
 	var extended = new AbstractFactory('disease');
 	return extended;
-}).factory('SNP', function(AbstractFactory) {
+});
+
+module.factory('SNP', function(AbstractFactory) {
 	var extended = new AbstractFactory('snp');
 	return extended;
-}).factory('EnvironmentalFactor', function(AbstractFactory) {
+});
+
+module.factory('EnvironmentalFactor', function(AbstractFactory) {
 	var extended = new AbstractFactory('environmental_factor');
 	return extended;
-}).factory('Gene', function(AbstractFactory) {
+});
+
+module.factory('Gene', function(AbstractFactory) {
 	var extended = new AbstractFactory('gene');
 	return extended;
-}).factory('BiologicalProcess', function(AbstractFactory) {
+});
+
+module.factory('BiologicalProcess', function(AbstractFactory) {
 	var extended = new AbstractFactory('biological_process');
 	return extended;
-}).factory('Protein', function(AbstractFactory) {
+})
+
+module.factory('Protein', function(AbstractFactory) {
 	var extended = new AbstractFactory('protein');
 	return extended;
-}).factory('Transcript', function(AbstractFactory) {
+});
+
+module.factory('Transcript', function(AbstractFactory) {
 	var extended = new AbstractFactory('transcript');
 	return extended;
 });
