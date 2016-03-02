@@ -469,37 +469,79 @@ module.controller('GeneViewController',
 						value : $stateParams.id
 					} ]
 				};
-				angular.extend(this, $controller(
-						'PagedListController', {
-							$scope : $scope.gene.related_mirnas,
-							Object : Mirna,
-							elements : 'mirna'
-						}));
+				angular.extend(this, $controller('PagedListController', {
+						$scope : $scope.gene.related_mirnas,
+						Object : Mirna,
+						elements : 'mirna'
+				}));
 			}
+		});
+	}
+);		
+					
+module.controller('ProteinViewController',
+	function($scope, $controller, $stateParams, Protein, Transcript, Gene, InteractionData) {
 
-			$scope.filterByMirna = function(mirna) {
-				$scope.filtered_mirna = mirna;
-				$scope.interaction_datas = {};
-				$scope.interaction_datas.pageSize = 5;
-				$scope.interaction_datas.search = {
-					searchFunction : "mirna_pk_and_gene_pk",
+		Protein.get({
+			id : $stateParams.id
+		}, function(response) {
+			$scope.protein = response ? response : {};
+			if ($scope.protein) {
+				$scope.protein.related_genes = {};
+				$scope.protein.related_genes.pageSize = 50;
+				$scope.protein.related_genes.search = {
+					searchFunction : "related_to_protein",
 					searchFields : [ {
-						key : "mirna_pk",
-						value : mirna.pk
-					}, {
-						key : "gene_pk",
+						key : "pk",
 						value : $stateParams.id
 					} ]
 				};
-				angular.extend(this, $controller(
-						'PagedListController', {
-							$scope : $scope.interaction_datas,
-							Object : InteractionData,
-							elements : 'interaction_data'
-						}));
+				angular.extend(this, $controller('PagedListController',	{
+					$scope : $scope.protein.related_genes,
+					Object : Gene,
+					elements : 'gene'
+				}));
 			}
-
+			
+			$scope.filterByGene = function(protein) {
+				$scope.filtered_protein = protein;
+				$scope.interaction_datas = {};
+				$scope.interaction_datas.pageSize = 5;
+				$scope.interaction_datas.search = {
+					searchFunction : "interaction_data_related_to_protein",
+					searchFields : [ {
+						key : "pk",
+						value : $stateParams.id
+					} ]
+				};
+				angular.extend(this, $controller('PagedListController', {
+					$scope : $scope.interaction_datas,
+					Object : InteractionData,
+					elements : 'interaction_data'
+				}));
+			}
 		});
+
+		$scope.filterByMirna = function(mirna) {
+			$scope.filtered_mirna = mirna;
+			$scope.interaction_datas = {};
+			$scope.interaction_datas.pageSize = 5;
+			$scope.interaction_datas.search = {
+				searchFunction : "mirna_pk_and_gene_pk",
+				searchFields : [ {
+					key : "mirna_pk",
+					value : mirna.pk
+				}, {
+					key : "gene_pk",
+					value : $stateParams.id
+				} ]
+			};
+			angular.extend(this, $controller('PagedListController', {
+				$scope : $scope.interaction_datas,
+				Object : InteractionData,
+				elements : 'interaction_data'
+			}));
+		};
 	}
 );
 		
@@ -1021,6 +1063,12 @@ module.controller('SearchController', function($scope, $state){
 		}
 	};
 	
+	$scope.findByBiologicalProcessName = function() {
+		if ($scope.biologicalProcessNameText) {
+			$state.go('searchByBiologicalProcessName', {name: $scope.biologicalProcessNameText});
+		}
+	};
+	
 	$scope.findByProteinId = function() {
 		if ($scope.proteinIdText) {
 			$state.go('searchByProteinId', {id: $scope.proteinIdText});
@@ -1040,4 +1088,3 @@ module.controller('SearchController', function($scope, $state){
 	};
 	
 });
-

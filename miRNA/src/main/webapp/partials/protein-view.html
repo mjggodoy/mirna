@@ -1,0 +1,65 @@
+<div class="row">
+	<div class="col-md-12">
+		<ol class="breadcrumb">
+			<li><a href="#">Home</a></li>
+			<li>Protein</li>
+			<li class="active">{{protein.id}}</li>
+		</ol>
+	</div>
+</div>
+
+<div class="row">
+
+	<div class="col-md-12">
+		<h1>Protein <small>{{protein.id}}</small></h1>
+	</div>
+	
+	<div class="col-md-12">
+		<div class="panel panel-primary">
+			<div class="panel-heading">Information</div>
+			<div class="panel-body">
+				<span data-ng-if="protein.id"><strong>ID:</strong> {{protein.id}}<br/></span>
+				<span data-ng-if="protein.type"><strong>Type:</strong> {{protein.type}}<br/></span>
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-md-12">
+		<div class="panel panel-primary">
+			<div class="panel-heading">Gene(s) related to {{protein.id}} </div>
+			<div class="panel-body">
+			
+				<span data-ng-if="protein.related_genes.page.number != 0">... </span>
+				<span data-ng-repeat="o in protein.related_genes.gene">
+					<button type="button" class="btn btn-default btn-xs" data-ng-click="filterByGene(o)">{{o.name}}</button>&nbsp;
+				</span>
+				<span data-ng-if="protein.related_genes.page.number != protein.related_genes.page.totalPages - 1">...</span>
+				
+				<div data-ng-if="protein.related_genes.page.totalPages>1">
+					<div class="pull-right">Page {{protein.related_genes.page.number+1}} / {{protein.related_genes.page.totalPages}}</div>
+					<div class="pull-left">Showing {{protein.related_genes.transcript.length}} of {{protein.related_genes.page.totalElements}}</div>
+					<nav>
+						<ul class="pager">
+							<li data-ng-class="{disabled: protein.related_genes.page.number === 0}">
+								<a data-ui-sref="{page: {{protein.related_genes.page.number - 1}} }" data-ng-click="protein.related_genes.previousPage()">Previous</a>
+							</li>
+							<li data-ng-class="{disabled: protein.related_genes.page.number === protein.related_genes.page.totalPages - 1}">
+								<a data-ui-sref="{page: {{protein.related_genes.page.number + 1}} }" data-ng-click="protein.related_genes.nextPage()">Next</a>
+							</li>
+						</ul>
+					</nav>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	
+	
+	
+	<div class="col-md-12" data-ng-if="filtered_gene">
+		<h2>Gene <small>{{filtered_gene.id}}</small></h2>
+	</div>
+	<div data-ng-include="'partials/snippet/interaction_datas.html'"></div>
+	
+</div>
+

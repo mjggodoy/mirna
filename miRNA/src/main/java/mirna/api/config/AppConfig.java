@@ -16,6 +16,7 @@ import mirna.api.model.MiRna;
 import mirna.api.model.OLDMiRna;
 import mirna.api.model.Protein;
 import mirna.api.model.PubmedDocument;
+import mirna.api.model.Transcript;
 
 @Configuration
 public class AppConfig extends RepositoryRestMvcConfiguration {
@@ -35,6 +36,7 @@ public class AppConfig extends RepositoryRestMvcConfiguration {
 					InteractionData.class,
 					Disease.class,
 					Protein.class,
+					Transcript.class,
 					PubmedDocument.class);
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
