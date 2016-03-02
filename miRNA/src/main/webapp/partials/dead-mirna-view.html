@@ -27,7 +27,10 @@
 						<strong>Comment:</strong> {{info.comment}}<br/>
 					</span>
 					<span data-ng-if="info.forwardTo">
-						<strong>Forward to:</strong> {{info.forwardTo}}<br/>
+						<strong>Forward to:</strong>&nbsp;
+						<a data-ui-sref="goToAcc({acc:info.forwardTo})" data-ng-if="mirna.accessionNumber!=info.forwardTo">{{info.forwardTo}}</a>
+						<span data-ng-if="mirna.accessionNumber==info.forwardTo">{{info.forwardTo}}</span>
+						<br/>
 					</span>
 				</div>
 			</div>

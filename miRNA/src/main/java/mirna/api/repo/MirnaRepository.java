@@ -14,6 +14,9 @@ import mirna.api.model.MiRna;
 @RepositoryRestResource(collectionResourceRel = "mirna", path = "mirna")
 public interface MirnaRepository extends PagingAndSortingRepository<MiRna, Integer> {
 	
+	@RestResource(path = "acc")
+	public Page<MiRna> findByAccessionNumberIgnoreCase(@Param("acc")String acc, Pageable pageable);
+	
 	@RestResource(path = "id")
 	public Page<MiRna> findByIdContainingIgnoreCase(@Param("id")String id, Pageable pageable);
 	

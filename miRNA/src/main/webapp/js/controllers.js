@@ -721,6 +721,30 @@ angular
 	angular.extend(this, $controller('PagedListController',
 			{$scope: $scope, Object : Mirna, elements : 'mirna'}));
 	
+//}).controller('SearchByAccController', 'check', function($scope, $controller, $stateParams, Mirna, check) {
+}).controller('SearchByAccController', function($scope, $controller, $stateParams, Mirna) {
+
+	$scope.search = {
+		searchFunction: "acc",
+		searchFields: [{
+			key: "acc",
+			value: $stateParams.acc
+		}]
+	};
+	$scope.sortOptions = [ {value: "id", label: "Id"} ];
+	angular.extend(this, $controller('PagedListController',
+			{$scope: $scope, Object : Mirna, elements : 'mirna'}));
+	
+//	 if(check){
+//         //authenticated
+//		 console.log(true);
+//         //$state.go('app.home');
+//       } else {
+//         //redirect to unauthenticated page
+//         //$state.go('....');
+//         console.log('false');
+//       }
+	
 }).controller('SearchByPhenotypeNameController', function($scope, $controller, $stateParams, Disease) {
 	$scope.search = {
 		searchFunction: "name",
@@ -1033,6 +1057,14 @@ angular
 	$scope.findById = function() {
 		if ($scope.idText) {
 			$state.go('searchById', {id: $scope.idText});
+		}
+	};
+	
+	$scope.findByAcc = function() {
+		console.log("SEARCHING!");
+		if ($scope.accText) {
+			console.log($scope.accText);
+			$state.go('searchByAcc', {acc: $scope.accText});
 		}
 	};
 	

@@ -14,6 +14,38 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 //			$state.go('viewMature', {id: '102654'});
 //		}
 //		//controller: 'MatureViewController'
+			
+	}).state('goToAcc', { // state to redirect to mirna by accession number
+		url: '/acc/:acc',
+		resolve: {
+			"count" : function($stateParams, $http, $state) {
+				var url = 'api/mirna/search/acc?acc='+$stateParams.acc;
+				return $http({method: 'GET', url: url}).then (function (data) {
+					
+					if (data.data.page.totalElements==1) {
+						var id = data.data._embedded.mirna[0].pk;
+						var type = data.data._embedded.mirna[0].type;
+						if (type=='hairpin') {
+							$state.go('viewHairpin', {id: id});
+						} else if (type=='mature') {
+							$state.go('viewMature', {id: id});
+						} else if (type=='dead') {
+							$state.go('viewDeadMirna', {id: id});
+						}
+					} else {
+						$state.go('searchByAcc', {acc: $stateParams.acc});
+					}
+					return false;
+				}, function(error) {
+					console.log(error);
+					return false;
+				});
+			}
+		}
+	}).state('searchByAcc', { // state for seaching mirna by accession number
+		url: '/search/acc/:acc',
+		templateUrl: 'partials/mirna-list.html',
+		controller: 'SearchByAccController'
 	}).state('listMature', { // state for showing all matures
 		url: '/mature',
 		templateUrl: 'partials/mirna-list.html',

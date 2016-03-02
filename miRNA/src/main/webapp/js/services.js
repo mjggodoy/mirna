@@ -3,7 +3,7 @@ angular.module('mirna.services', []).factory('AbstractFactory', function($http, 
 	function AbstractFactory(elements, path) {
 		if (path==undefined) path = elements;
 		this.elements = elements;
-		this.HATEOAS_URL = 'http://localhost:8080/mirna/api/' + path + '/';
+		this.HATEOAS_URL = 'api/' + path + '/';
 	}
 	
 	AbstractFactory.prototype = {
