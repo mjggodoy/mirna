@@ -1,4 +1,4 @@
-var module = angular.module('mirna.controllers');
+var module = angular.module('mirna.controllers', []);
 
 module.controller('PagedListController', function($scope, $state, Object, elements) {
 
