@@ -66,7 +66,7 @@ public class InteractionData extends ModelClass {
 					@JoinColumn(name="mirna_pk")
 			})
 	private Set<MiRna> mirnas;
-
+	
 	public InteractionData() {
 		super();
 	}

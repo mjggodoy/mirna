@@ -595,7 +595,7 @@ angular
 				})		
 					.controller(
 							'ProteinViewController',
-							function($scope, $controller, $stateParams, Protein, Transcript, Gene) {
+							function($scope, $controller, $stateParams, Protein, Transcript, Gene, InteractionData) {
 
 								Protein.get(
 												{
@@ -625,6 +625,26 @@ angular
 																					Object : Gene,
 																					elements : 'gene'
 																				}));
+													}
+													
+													$scope.filterByGene = function(protein) {
+														
+														$scope.filtered_protein = protein;
+														$scope.interaction_datas = {};
+														$scope.interaction_datas.pageSize = 5;
+														$scope.interaction_datas.search = {
+															searchFunction : "interaction_data_related_to_protein",
+															searchFields : [ {
+																key : "pk",
+																value : $stateParams.id
+															} ]
+														};
+														angular.extend(this, $controller(
+																'PagedListController', {
+																	$scope : $scope.interaction_datas,
+																	Object : InteractionData,
+																	elements : 'interaction_data'
+																}));
 													}
 
 													
