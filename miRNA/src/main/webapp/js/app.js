@@ -16,83 +16,36 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 //		//controller: 'MatureViewController'
 			
 	}).state('goToAcc', { // state to redirect to mirna by accession number
-		url: '/puacc/:acc',
-		controller: 'GoToAccController',
+		url: '/acc/:acc',
 		resolve: {
-			"count" : function($stateParams, Mirna) {
-				
-				console.log("RESOLVING!");
-				var searchData = {
-					searchFunction: "acc",
-					searchFields: [{
-					key: "acc",
-						value: $stateParams.acc
-					}]
-				};
-				console.log(searchData);
-				
-				console.log("CAMBIO2!");
-				
-				console.log(Mirna);
-				
-				Mirna.query(null, null, searchData, 
-//				function(response) {
-//					console.log("RESPONSE!");
-//					console.log(response);
-//					return response;
-////					$scope[elements] = response[elements] ? response[elements] : [];
-////					$scope.page = response.page ? response.page : {};
-//				}
-				null).then (function (data) {
-					console.log(data);
-	                   return doSomeStuffFirst(data);
-	               });
-				
-				console.log("FIN?");
-				
+			"count" : function($stateParams, $http, $state) {
+				var url = 'api/mirna/search/acc?acc='+$stateParams.acc;
+				return $http({method: 'GET', url: url}).then (function (data) {
+					
+					if (data.data.page.totalElements==1) {
+						var id = data.data._embedded.mirna[0].pk;
+						var type = data.data._embedded.mirna[0].type;
+						if (type=='hairpin') {
+							$state.go('viewHairpin', {id: id});
+						} else if (type=='mature') {
+							$state.go('viewMature', {id: id});
+						} else if (type=='hairpin') {
+							$state.go('viewDeadMirna', {id: id});
+						}
+					} else {
+						$state.go('searchByAcc', {acc: $stateParams.acc});
+					}
+					return false;
+				}, function(error) {
+					console.log(error);
+					return false;
+				});
 			}
 		}
-		
-		
-		
 	}).state('searchByAcc', { // state for seaching mirna by accession number
 		url: '/search/acc/:acc',
 		templateUrl: 'partials/mirna-list.html',
 		controller: 'SearchByAccController'
-//		controller: 'SearchByAccController',
-//		resolve: {
-//			"check": function() {
-//				
-//				console.log("AQUI ESTOY!");
-//				
-////				$scope.search = {
-////					searchFunction: "acc",
-////					searchFields: [{
-////						key: "acc",
-////						value: $stateParams.acc
-////					}]
-////				};
-////				console.log();
-////				$scope.sortOptions = [ {value: "id", label: "Id"} ];
-////				angular.extend(this, $controller('PagedListController',
-////						{$scope: $scope, Object : Mirna, elements : 'mirna'}));
-////				
-////				console.log($scope);
-//				
-//				return true;
-//				
-//				
-////				console.log("PUA!");
-////				if (false) {
-////					console.log("ESTOY AQUI!");
-////					//Do something
-////				} else {
-////					$state.go('home');
-////					//$location.path('/search');    //redirect user to home.
-////					console.log("You don't have access here");
-////				}
-//			}
-//		}
 	}).state('listMature', { // state for showing all matures
 		url: '/mature',
 		templateUrl: 'partials/mirna-list.html',
