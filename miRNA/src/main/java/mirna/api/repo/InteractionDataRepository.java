@@ -30,5 +30,10 @@ public interface InteractionDataRepository extends PagingAndSortingRepository<In
 	@RestResource(path = "interaction_data_related_to_protein")
 	public Page<InteractionData> findGenesRelatedToProtein(@Param("pk")int pk, Pageable pageable);
 	
+	@Query("SELECT distinct a from InteractionData a, Gene b, TranscriptHasGene c "
+			+ "where c.transcriptPk=:pk and c.genePk=b.pk and a.pk = b.pk")	
+	@RestResource(path = "interaction_data_related_to_transcript")
+	public Page<InteractionData> findGenesRelatedToTranscript(@Param("pk")int pk, Pageable pageable);
+	
 	
 }

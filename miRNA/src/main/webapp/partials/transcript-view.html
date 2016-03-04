@@ -1,0 +1,32 @@
+<div class="row">
+	<div class="col-md-12">
+		<ol class="breadcrumb">
+			<li><a href="#">Home</a></li>
+			<li>Protein</li>
+			<li class="active">{{transcript.id}}</li>
+		</ol>
+	</div>
+</div>
+
+<div class="row">
+
+	<div class="col-md-12">
+		<h1>Protein <small>{{transcript.id}}</small></h1>
+	</div>
+	
+	<div class="col-md-12">
+		<div class="panel panel-primary">
+			<div class="panel-heading">Information</div>
+			<div class="panel-body">
+				<span data-ng-if="transcript.id"><strong>ID:</strong> {{transcript.id}}<br/></span>
+				<span data-ng-if="transcript.name"><strong>Name:</strong> {{transcript.name}}<br/></span>
+				<span data-ng-if="transcript.isoform"><strong>Isoform:</strong> {{transcript.isoform}}<br/></span>
+				<span data-ng-if="transcript.externalName"><strong>External name:</strong> {{transcript.externalName}}<br/></span>
+				
+			</div>
+		</div>
+	</div>
+	
+	
+</div>
+

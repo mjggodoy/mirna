@@ -575,6 +575,39 @@ module.controller('BiologicalProcessViewController',
 
 });
 
+module.controller('TranscriptViewController',
+		function($scope, $controller, $stateParams, Transcript, Gene, InteractionData) {
+
+	Transcript.get(
+		{
+			id : $stateParams.id
+		},
+		function(response) {
+			$scope.transcript = response ? response : {};
+			if ($scope.transcript) {
+				$scope.transcript.related_genes = {};
+				$scope.transcript.related_genes.pageSize = 50;
+				$scope.transcript.related_genes.search = {
+					searchFunction : "related_to_transcript",
+					searchFields : [ {
+						key : "pk",
+						value : $stateParams.id
+					} ]
+				};
+				angular.extend(this, $controller('PagedListController', {
+					$scope : $scope.transcript.related_genes,
+					Object : Gene,
+					elements : 'gene'
+				}));
+			}
+		}
+	);
+
+});
+
+
+
+
 module.controller('HomeController', function($scope, $state) {
 	$scope.quickSearchText = 'hsa-let-7a';
 	$scope.quickSearch = function() {

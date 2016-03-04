@@ -24,5 +24,10 @@ public interface GeneRepository extends PagingAndSortingRepository<Gene, Integer
 	@RestResource(path = "related_to_protein")
 	public Page<Gene> findGenesRelatedToProtein(@Param("pk")int pk, Pageable pageable);
 	
+	@Query("SELECT distinct a from Gene a, TranscriptHasGene b "
+			+ "where b.transcriptPk=:pk and b.transcriptPk=b.genePk and b.genePk=a.pk")	
+	@RestResource(path = "related_to_transcript")
+	public Page<Gene> findGenesRelatedToTranscript(@Param("pk")int pk, Pageable pageable);
+	
 	
 }

@@ -94,6 +94,10 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 		url: '/pubmedDocument_id/:id',
 		templateUrl: 'partials/pubmed-view.html',
 		controller: 'PubmedDocumentViewController'
+	}).state('viewTranscript', { //results state 4
+		url: '/transcript_id/:id',
+		templateUrl: 'partials/transcript-view.html',
+		controller: 'TranscriptViewController'
 	}).state('search', { //search state
 		url: '/search',
 		templateUrl: 'partials/search.html',
