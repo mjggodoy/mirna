@@ -132,4 +132,33 @@ public class InteractionData extends ModelClass {
 		else return mirnas;
 	}
 	
+	
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		InteractionData other = (InteractionData) obj;
+		if (score != other.score)
+			return false;
+		if (gene!= other.gene)
+			return false;
+		if (mirnaPk != other.mirnaPk)
+			return false;
+		if (miTGScore != other.miTGScore)
+			return false;
+		if (target != other.target)
+			return false;
+		if (gene.getTranscripts() != other.gene.getTranscripts())
+			return false;		
+		
+		return true;
+	}
+	
+	
+	
 }
