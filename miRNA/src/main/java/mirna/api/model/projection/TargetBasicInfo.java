@@ -19,6 +19,8 @@ public interface TargetBasicInfo {
 	
 	public String getGc_proportion();
 	
+	public String getGu_proportion();
+	
 	public String getCds_start();
 	
 	public String getCds_end();
