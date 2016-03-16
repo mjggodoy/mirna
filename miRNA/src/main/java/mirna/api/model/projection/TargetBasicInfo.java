@@ -9,6 +9,14 @@ public interface TargetBasicInfo {
 	
 	public Integer getPk();
 	
+	public String getChromosome();
+	
+	public String getCoordinates();
+	
+	public String getRegion();
+	
+	public String getPolarity();
+
 	public TranscriptBasicInfo getTranscript();
 
 }

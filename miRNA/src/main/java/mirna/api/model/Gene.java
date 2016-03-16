@@ -176,6 +176,154 @@ public class Gene extends ModelClass {
 	public Set<Transcript> getTranscripts() {
 		return transcripts;
 	}
+
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((accessionumber == null) ? 0 : accessionumber.hashCode());
+		result = prime * result + ((arm == null) ? 0 : arm.hashCode());
+		result = prime * result
+				+ ((chromosome == null) ? 0 : chromosome.hashCode());
+		result = prime * result
+				+ ((description == null) ? 0 : description.hashCode());
+		result = prime * result
+				+ ((distance == null) ? 0 : distance.hashCode());
+		result = prime * result
+				+ ((end_strand == null) ? 0 : end_strand.hashCode());
+		result = prime * result
+				+ ((ensembl_id == null) ? 0 : ensembl_id.hashCode());
+		result = prime * result
+				+ ((expression_site == null) ? 0 : expression_site.hashCode());
+		result = prime * result + ((geneId == null) ? 0 : geneId.hashCode());
+		result = prime * result + ((hgnc_id == null) ? 0 : hgnc_id.hashCode());
+		result = prime * result
+				+ ((hgnc_symbol == null) ? 0 : hgnc_symbol.hashCode());
+		result = prime * result + ((kegg_id == null) ? 0 : kegg_id.hashCode());
+		result = prime * result
+				+ ((location == null) ? 0 : location.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result
+				+ ((organism_pk == null) ? 0 : organism_pk.hashCode());
+		result = prime * result
+				+ ((resource == null) ? 0 : resource.hashCode());
+		result = prime * result
+				+ ((start_strand == null) ? 0 : start_strand.hashCode());
+		result = prime * result
+				+ ((transcripts == null) ? 0 : transcripts.hashCode());
+		result = prime * result + ((year == null) ? 0 : year.hashCode());
+		return result;
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Gene other = (Gene) obj;
+		if (accessionumber == null) {
+			if (other.accessionumber != null)
+				return false;
+		} else if (!accessionumber.equals(other.accessionumber))
+			return false;
+		if (arm == null) {
+			if (other.arm != null)
+				return false;
+		} else if (!arm.equals(other.arm))
+			return false;
+		if (chromosome == null) {
+			if (other.chromosome != null)
+				return false;
+		} else if (!chromosome.equals(other.chromosome))
+			return false;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (distance == null) {
+			if (other.distance != null)
+				return false;
+		} else if (!distance.equals(other.distance))
+			return false;
+		if (end_strand == null) {
+			if (other.end_strand != null)
+				return false;
+		} else if (!end_strand.equals(other.end_strand))
+			return false;
+		if (ensembl_id == null) {
+			if (other.ensembl_id != null)
+				return false;
+		} else if (!ensembl_id.equals(other.ensembl_id))
+			return false;
+		if (expression_site == null) {
+			if (other.expression_site != null)
+				return false;
+		} else if (!expression_site.equals(other.expression_site))
+			return false;
+		if (geneId == null) {
+			if (other.geneId != null)
+				return false;
+		} else if (!geneId.equals(other.geneId))
+			return false;
+		if (hgnc_id == null) {
+			if (other.hgnc_id != null)
+				return false;
+		} else if (!hgnc_id.equals(other.hgnc_id))
+			return false;
+		if (hgnc_symbol == null) {
+			if (other.hgnc_symbol != null)
+				return false;
+		} else if (!hgnc_symbol.equals(other.hgnc_symbol))
+			return false;
+		if (kegg_id == null) {
+			if (other.kegg_id != null)
+				return false;
+		} else if (!kegg_id.equals(other.kegg_id))
+			return false;
+		if (location == null) {
+			if (other.location != null)
+				return false;
+		} else if (!location.equals(other.location))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (organism_pk == null) {
+			if (other.organism_pk != null)
+				return false;
+		} else if (!organism_pk.equals(other.organism_pk))
+			return false;
+		if (resource == null) {
+			if (other.resource != null)
+				return false;
+		} else if (!resource.equals(other.resource))
+			return false;
+		if (start_strand == null) {
+			if (other.start_strand != null)
+				return false;
+		} else if (!start_strand.equals(other.start_strand))
+			return false;
+		if (transcripts == null) {
+			if (other.transcripts != null)
+				return false;
+		} else if (!transcripts.equals(other.transcripts))
+			return false;
+		if (year == null) {
+			if (other.year != null)
+				return false;
+		} else if (!year.equals(other.year))
+			return false;
+		return true;
+	}
 	
 	
 	
