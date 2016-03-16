@@ -58,6 +58,8 @@
 		<dd data-ng-if="interaction_data.target">
 		<dd data-ng-if="interaction_data.target"><strong>Chromosome:</strong>
 		{{interaction_data.target.chromosome}}</dd>
+		<dd data-ng-if="interaction_data.target.polarity !=== null"><strong>Polarity:</strong>
+		{{interaction_data.target.polarity}}</dd>
 		<dd data-ng-if="interaction_data.target"><strong>Coordinates:</strong>
 		{{interaction_data.target.coordinates}}</dd>
 		<dd data-ng-if="interaction_data.target"><strong>Region:</strong>
