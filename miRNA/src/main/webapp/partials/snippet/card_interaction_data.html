@@ -56,15 +56,16 @@
 		
 		<dt data-ng-if="interaction_data.target">Target:
 		<dd data-ng-if="interaction_data.target">
-		<dd data-ng-if="interaction_data.target"><strong>Chromosome:</strong>
+		<dd data-ng-if="interaction_data.target.chromosome != null"><strong>Chromosome:</strong>
 		{{interaction_data.target.chromosome}}</dd>
-		<dd data-ng-if="interaction_data.target.polarity !=== null"><strong>Polarity:</strong>
+		<dd data-ng-if="interaction_data.target.polarity != null"><strong>Polarity:</strong>
 		{{interaction_data.target.polarity}}</dd>
-		<dd data-ng-if="interaction_data.target"><strong>Coordinates:</strong>
+		<dd data-ng-if="interaction_data.target.coordinates != null"><strong>Coordinates:</strong>
 		{{interaction_data.target.coordinates}}</dd>
-		<dd data-ng-if="interaction_data.target"><strong>Region:</strong>
+		<dd data-ng-if="interaction_data.target.region != null"><strong>Region:</strong>
 		{{interaction_data.target.region}}</dd>
-		
+		<dd data-ng-if="interaction_data.target.gc_proportion != null"><strong>GC proportion:</strong>
+		{{interaction_data.target.gc_proportion}}</dd>
 		</dd>
 		</dt>
 		
