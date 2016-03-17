@@ -1,0 +1,27 @@
+<div class="col-md-12" data-ng-if="interaction_datas">
+	<div class="panel panel-primary">
+		<div class="panel-heading">Interaction Data related to Gene(s)
+		<span data-ng-repeat="o in protein.related_genes.gene">{{o.name}}</span></div>
+		<div class="panel-body">
+			<div data-ng-include="'partials/snippet/card_interaction_data.html'"
+				data-ng-repeat="interaction_data in interaction_datas.interaction_data">
+			</div>
+			
+			<div data-ng-if="interaction_datas.page.totalPages>1">
+				<div class="pull-right">Page {{interaction_datas.page.number+1}} / {{interaction_datas.page.totalPages}}</div>
+				<div class="pull-left">Showing {{interaction_datas.interaction_data.length}} of {{interaction_datas.page.totalElements}}</div>
+				<nav>
+					<ul class="pager">
+						<li data-ng-class="{disabled: interaction_datas.page.number === 0}">
+							<a data-ui-sref="{page: {{interaction_datas.page.number - 1}} }" data-ng-click="interaction_datas.previousPage()">Previous</a>
+						</li>
+						<li data-ng-class="{disabled: interaction_datas.page.number === interaction_datas.page.totalPages - 1}">
+							<a data-ui-sref="{page: {{interaction_datas.page.number + 1}} }" data-ng-click="interaction_datas.nextPage()">Next</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
+			
+		</div>
+	</div>
+</div>

@@ -11,7 +11,7 @@
 <div class="row">
 
 	<div class="col-md-12">
-		<h1>Trasncript <small>{{transcript.id}}</small></h1>
+		<h1>Transcript <small>{{transcript.id}}</small></h1>
 	</div>
 	
 	<div class="col-md-12">
@@ -29,7 +29,7 @@
 	
 	<div class="col-md-12">
 		<div class="panel panel-primary">
-			<div class="panel-heading">Gene(s) related to {{transcript.id}} </div>
+			<div class="panel-heading">Gene(s) related to transcript {{transcript.id}} </div>
 			<div class="panel-body">
 			
 				<span data-ng-if="transcript.related_genes.page.number != 0">... </span>
@@ -62,7 +62,7 @@
 	<div class="col-md-12" data-ng-if="filtered_gene">
 		<h2>Gene <small>{{filtered_gene.id}}</small></h2>
 	</div>
-	<div data-ng-include="'partials/snippet/interaction_datas.html'"></div>
+	<div data-ng-include="'partials/snippet/interaction_datas_transcript.html'"></div>
 	
 </div>
 

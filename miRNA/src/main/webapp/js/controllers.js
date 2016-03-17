@@ -503,6 +503,24 @@ module.controller('ProteinViewController',
 				}));
 			}
 			
+			$scope.filterByTranscript = function(protein) {
+				$scope.related_transcript = protein;
+				$scope.related_transcript = {};
+				$scope.related_transcript.pageSize = 5;
+				$scope.related_transcript.search = {
+					searchFunction : "proteins_related",
+					searchFields : [ {
+						key : "pk",
+						value : $stateParams.id
+					} ]
+				};
+				angular.extend(this, $controller('PagedListController', {
+					$scope : $scope.related_transcript,
+					Object : Transcript,
+					elements : 'transcript'
+				}));
+			}
+			
 			$scope.filterByGene = function(protein) {
 				$scope.filtered_protein = protein;
 				$scope.interaction_datas = {};

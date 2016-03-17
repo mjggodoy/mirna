@@ -24,7 +24,39 @@
 		</div>
 	</div>
 	
-	<div class="col-md-12">
+ 	<div class="col-md-12">
+		<div class="panel panel-primary">
+			<div class="panel-heading">Transcripts(s) related to {{protein.id}} </div>
+			<div class="panel-body">
+			
+				<span data-ng-if="protein.transcript.page.number != 0">... </span>
+				<span data-ng-repeat="o in protein.transcript">
+					<button type="button" class="btn btn-default btn-xs" data-ng-click="filterByGene(o)">{{o.id}}</button>&nbsp;
+				</span>
+				<span data-ng-if="protein.transcript.page.number != protein.related_genes.page.totalPages - 1">...</span>
+				
+				<div data-ng-if="protein.transcript.page.totalPages>1">
+					<div class="pull-right">Page {{protein.transcript.page.number+1}} / {{protein.transcript.page.totalPages}}</div>
+					<div class="pull-left">Showing {{protein.transcript.length}} of {{protein.transcript.page.totalElements}}</div>
+					<nav>
+						<ul class="pager">
+							<li data-ng-class="{disabled: protein.transcript.page.number === 0}">
+								<a data-ui-sref="{page: {{protein.transcript.page.number - 1}} }" data-ng-click="protein.transcript.previousPage()">Previous</a>
+							</li>
+							<li data-ng-class="{disabled: protein.transcript.page.number === protein.transcript.page.totalPages - 1}">
+								<a data-ui-sref="{page: {{protein.transcript.page.number + 1}} }" data-ng-click="protein.transcript.nextPage()">Next</a>
+							</li>
+						</ul>
+					</nav>
+				</div>
+				
+			</div>
+		</div>
+	</div> 
+	
+	<!--  Include the proteins_related -->
+
+	<!-- <div class="col-md-12">
 		<div class="panel panel-primary">
 			<div class="panel-heading">Gene(s) related to {{protein.id}} </div>
 			<div class="panel-body">
@@ -52,14 +84,14 @@
 				
 			</div>
 		</div>
-	</div>
+	</div> -->
 	
 	
 	
 	<div class="col-md-12" data-ng-if="filtered_gene">
 		<h2>Gene <small>{{filtered_gene.id}}</small></h2>
 	</div>
-	<div data-ng-include="'partials/snippet/interaction_datas.html'"></div>
+	<div data-ng-include="'partials/snippet/interaction_datas_protein.html'"></div>
 	
 </div>
 
