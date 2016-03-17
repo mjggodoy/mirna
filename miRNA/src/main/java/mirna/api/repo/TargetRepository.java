@@ -15,6 +15,7 @@ import mirna.api.model.projection.InteractionDataBasicInfo;
 @RepositoryRestResource(collectionResourceRel = "target", path = "target")
 public interface TargetRepository extends PagingAndSortingRepository<Target, Integer> {
 	
-	
+	@RestResource(path = "related_to_organism")
+    public Page<Target> findByOrganism_Pk(@Param("pk")int pk, Pageable pageable);
 
 }

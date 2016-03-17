@@ -136,3 +136,10 @@ module.factory('Transcript', function(AbstractFactory) {
 	var extended = new AbstractFactory('transcript');
 	return extended;
 });
+
+module.factory('Target', function(AbstractFactory) {
+	var extended = new AbstractFactory('target');
+	return extended;
+});
+
+

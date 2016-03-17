@@ -45,8 +45,6 @@ public class Target extends ModelClass {
 	private String coordinates;
 	@Column(name = "gc_proportion", nullable = true, length = 80, unique = true)
 	private String gc_proportion;
-	@Column(name = "organism_pk", nullable = true, length = 80, unique = true)
-	private Integer organism_pk;
 	@Column(name = "sequence_pk", nullable = true, length = 80, unique = true) //TODO: Sequence_pk no deber�a ser nulo.
 	private Integer sequence_pk;
 	@Column(name = "target_ref", nullable = true, length = 80, unique = true)
@@ -60,7 +58,16 @@ public class Target extends ModelClass {
 	@JoinColumn(name = "transcript_pk")
 	private Transcript transcript;
 	
+	@ManyToOne
+	@JoinColumn(name = "organism_pk")
+	private Organism organism;
+	
 	public Target() { }
+	
+
+	public Organism getOrganism() {
+		return organism;
+	}
 
 	@Override
 	public int hashCode() {
@@ -85,7 +92,7 @@ public class Target extends ModelClass {
 		result = prime * result
 				+ ((gu_proportion == null) ? 0 : gu_proportion.hashCode());
 		result = prime * result
-				+ ((organism_pk == null) ? 0 : organism_pk.hashCode());
+				+ ((organism == null) ? 0 : organism.hashCode());
 		result = prime * result
 				+ ((polarity == null) ? 0 : polarity.hashCode());
 		result = prime * result + ((region == null) ? 0 : region.hashCode());
@@ -167,10 +174,10 @@ public class Target extends ModelClass {
 				return false;
 		} else if (!gu_proportion.equals(other.gu_proportion))
 			return false;
-		if (organism_pk == null) {
-			if (other.organism_pk != null)
+		if (organism == null) {
+			if (other.organism != null)
 				return false;
-		} else if (!organism_pk.equals(other.organism_pk))
+		} else if (!organism.equals(other.organism))
 			return false;
 		if (polarity == null) {
 			if (other.polarity != null)

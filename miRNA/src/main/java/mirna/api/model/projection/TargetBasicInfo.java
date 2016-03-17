@@ -46,11 +46,11 @@ public interface TargetBasicInfo {
 	public String getTarget_ref();
 	
 	public String getSite_conservation_score();
-	
-	// Organism:
-	
 
 	public TranscriptBasicInfo getTranscript();
+	
+	public OrganismBasicInfo getOrganism();
+
 	
 	
 

@@ -14,6 +14,7 @@ import mirna.api.model.InteractionData;
 import mirna.api.model.Mature;
 import mirna.api.model.MiRna;
 import mirna.api.model.OLDMiRna;
+import mirna.api.model.Organism;
 import mirna.api.model.Protein;
 import mirna.api.model.PubmedDocument;
 import mirna.api.model.Transcript;
@@ -37,7 +38,8 @@ public class AppConfig extends RepositoryRestMvcConfiguration {
 					Disease.class,
 					Protein.class,
 					Transcript.class,
-					PubmedDocument.class);
+					PubmedDocument.class,
+					Organism.class);
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
