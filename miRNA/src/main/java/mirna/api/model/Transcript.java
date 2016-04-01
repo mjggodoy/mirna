@@ -80,7 +80,55 @@ public class Transcript extends ModelClass {
 
 	public Set<Gene> getGenes() {
 		return genes;
-	}	
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((externalName == null) ? 0 : externalName.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((isoform == null) ? 0 : isoform.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Transcript other = (Transcript) obj;
+		if (externalName == null) {
+			if (other.externalName != null)
+				return false;
+		} else if (!externalName.equals(other.externalName))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (isoform == null) {
+			if (other.isoform != null)
+				return false;
+		} else if (!isoform.equals(other.isoform))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+	
+		return true;
+	}
+
+	
+
 	
 	
 	

@@ -19,12 +19,13 @@
 			<div class="panel-heading">Information</div>
 			<div class="panel-body">
 				<span data-ng-if="protein.id"><strong>Protein ID:</strong> {{protein.id}}<br/></span>
-				<span data-ng-if="protein.type"><strong>Proein type:</strong> {{protein.type}}<br/></span>
+				<span data-ng-if="protein.type"><strong>Protein type:</strong> {{protein.type}}<br/></span>
 			</div>
 		</div>
 	</div>
-	
-	<div class="col-md-12">
+		
+
+	 <div class="col-md-12">
 		<div class="panel panel-primary">
 			<div class="panel-heading">Gene(s) related to {{protein.id}} </div>
 			<div class="panel-body">
@@ -52,14 +53,14 @@
 				
 			</div>
 		</div>
-	</div>
+	</div> 
 	
-	
-	
+
+		
 	<div class="col-md-12" data-ng-if="filtered_gene">
 		<h2>Gene <small>{{filtered_gene.id}}</small></h2>
 	</div>
-	<div data-ng-include="'partials/snippet/interaction_datas.html'"></div>
+	<div data-ng-include="'partials/snippet/interaction_datas_protein.html'"></div>
 	
 </div>
 
