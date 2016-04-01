@@ -60,7 +60,7 @@
 		<label for="search-opt-5">Search by Biological process</label> 
 		<input
 			type="text" class="form-control" id="search-opt-5"
-			placeholder="biological process"
+			placeholder="E.g. Replication"
 			data-ng-model="biologicalProcessNameText">
 	</div>
 	<button type="submit" class="btn btn-default">Search</button>
@@ -68,22 +68,12 @@
 
 <hr>
 
-<form class="form-inline" data-ng-submit="findByProteinId()">
-	<div class="form-group">
-		<label for="search-opt-6">Search by Protein ID</label> <input type="text"
-			class="form-control" id="search-opt-6" placeholder="protein"
-			data-ng-model="proteinIdText">
-	</div>
-	<button type="submit" class="btn btn-default">Search</button>
-</form>
-
-<hr>
 
 <form class="form-inline" data-ng-submit="findByPubmedDocumentId()">
 	<div class="form-group">
 		<label for="search-opt-7">Search by Pubmed document ID</label> <input
 			type="text" class="form-control" id="search-opt-7"
-			placeholder="Pubmed ID" data-ng-model="pubmedIdText">
+			placeholder="E.g. 17965831" data-ng-model="pubmedIdText">
 	</div>
 	<button type="submit" class="btn btn-default">Search</button>
 </form>
@@ -94,10 +84,22 @@
 	<div class="form-group">
 		<label for="search-opt-8">Search by Transcript ID</label> <input
 			type="text" class="form-control" id="search-opt-8"
-			placeholder="Transcript ID" data-ng-model="transcriptIdText">
+			placeholder="E.g. F52F10.2" data-ng-model="transcriptIdText">
 	</div>
 	<button type="submit" class="btn btn-default">Search</button>
 </form>
 
+<hr>
+
+<form class="form-inline" data-ng-submit="findByProteinId()">
+	<div class="form-group">
+		<label for="search-opt-6">Search by Protein ID</label> <input type="text"
+			class="form-control" id="search-opt-6" placeholder="e.g. P21108"
+			data-ng-model="proteinIdText">
+	</div>
+	<button type="submit" class="btn btn-default">Search</button>
+</form>
+
+<hr>
 
 
