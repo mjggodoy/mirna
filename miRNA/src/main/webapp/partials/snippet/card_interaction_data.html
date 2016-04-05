@@ -1,4 +1,4 @@
-<div class="panel">
+<div class="panel" style="margin-bottom: 5px; margin-top: 5px;">
 	<dl class="dl-horizontal">
 	
 		<dt data-ng-if="interaction_data.provenance">Provenance:</dt>
@@ -54,8 +54,27 @@
 		<dt data-ng-if="interaction_data.target && interaction_data.target.transcript">Transcript ID:</dt>
 		<dd data-ng-if="interaction_data.target && interaction_data.target.transcript">{{interaction_data.target.transcript.id}}</dd>
 		
-		<dt data-ng-if="interaction_data.target">Target:</dt>
-		<dd data-ng-if="interaction_data.target"></dd>
+		<dt data-ng-if="(interaction_data.target != null && 
+		(interaction_data.target.chromosome != null 
+		|| interaction_data.target.polarity != null
+		|| interaction_data.target.coordinates != null
+	    || interaction_data.target.region != null
+		|| interaction_data.target.gc_proportion != null
+		|| interaction_data.target.gu_proportion != null
+		|| interaction_data.target.cds_start != null
+		|| interaction_data.target.cds_end != null
+		|| interaction_data.target.utr3_start != null
+		|| interaction_data.target.utr3_end != null
+		|| interaction_data.target.strand_start != null
+		|| interaction_data.target.strand_end != null
+		|| interaction_data.target.binding_site_start != null
+		|| interaction_data.target.binding_site_end != null
+		|| interaction_data.target.repeated_motifs != null
+		|| interaction_data.target.utr3_conservation_score != null
+		|| interaction_data.target.seed_match != null
+		|| interaction_data.target.site_conservation_score != null
+		|| interaction_data.target.target_ref != null
+		|| interaction_data.target.organism.name != null))">Target:</dt>
 		<dd data-ng-if="interaction_data.target.chromosome != null"><strong>Chromosome:</strong>
 		{{interaction_data.target.chromosome}}</dd>
 		<dd data-ng-if="interaction_data.target.polarity != null"><strong>Polarity:</strong>

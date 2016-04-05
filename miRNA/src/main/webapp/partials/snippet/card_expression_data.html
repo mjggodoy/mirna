@@ -46,7 +46,7 @@
 		<dt data-ng-if="expression_data.dataType">Data type:</dt>
 		<dd data-ng-if="expression_data.dataType">{{expression_data.dataType}}</dd>
 		
-		<dt data-ng-if="expression_data.differentExpressionLocation">Different expression location:</dt>
+		<dt data-ng-if="expression_data.differentExpressionLocation">Expression location:</dt>
 		<dd data-ng-if="expression_data.differentExpressionLocation">{{expression_data.differentExpressionLocation}}</dd>
 		
 		<dt data-ng-if="expression_data.interactionData">Interaction Data:</dt>
@@ -56,7 +56,8 @@
 				data-ng-if="true"
 				onload="interaction_data = expression_data.interactionData">
 			</div>
-		</dd>
-
+		</dd>			
 	</dl>
+	<hr>
+	
 </div>
