@@ -1,5 +1,6 @@
-package mirna.integration.database;
+package mirna.integration.database.virmirna;
 
+import mirna.integration.database.NewMirnaDatabase;
 import mirna.integration.exception.MiRnaException;
 
 public abstract class VirmiRNA extends NewMirnaDatabase {

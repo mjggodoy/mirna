@@ -1,4 +1,4 @@
-package mirna.integration.database;
+package mirna.integration.database.virmirna;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -26,6 +26,7 @@ import mirna.integration.exception.MiRnaException;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+import mirna.integration.database.NewMirnaDatabase;
 
 public class VirmiRNA1 extends NewMirnaDatabase{
 
@@ -359,9 +360,9 @@ public class VirmiRNA1 extends NewMirnaDatabase{
 
 	}
 
-	public static void main(String[] args) throws Exception {
+	/*public static void main(String[] args) throws Exception {
 		VirmiRNA1 virmirRNA1 = new VirmiRNA1();
 		virmirRNA1.insertIntoSQLModel();
-	}
+	}*/
 
 }

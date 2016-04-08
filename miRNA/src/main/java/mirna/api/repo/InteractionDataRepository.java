@@ -17,13 +17,11 @@ import mirna.api.model.projection.InteractionDataBasicInfo;
 
 public interface InteractionDataRepository extends PagingAndSortingRepository<InteractionData, Integer> {
 	
+	
 	public Page<InteractionData> findByProvenance(@Param("provenance")String provenance, Pageable pageable);
 	
 	@RestResource(path = "mirna_pk_and_gene_pk")
 	public Page<InteractionData> findByMirnas_PkAndGenePk(@Param("mirna_pk")int mirnaPk, @Param("gene_pk")int genePk, Pageable pageable);
-	
-	/*@RestResource(path = "mirna_pk_and_biological_process_pk")
-	public Page<InteractionData> findByMirnas_PkAndBiologicalProcessPk(@Param("mirna_pk")int mirnaPk, Pageable pageable);*/
 	
 	@Query("SELECT distinct a from InteractionData a, Gene b, TranscriptHasGene c, TranscriptProducesProtein d "
 			+ "where d.proteinPk=:pk and d.transcriptPk=c.transcriptPk and c.genePk=b.pk and b.pk = a.gene")	
@@ -34,6 +32,15 @@ public interface InteractionDataRepository extends PagingAndSortingRepository<In
 			+ "where c.transcriptPk=:pk and c.genePk=b.pk and b.pk = a.gene")	
 	@RestResource(path = "interaction_data_related_to_transcript")
 	public Page<InteractionData> findGenesRelatedToTranscript(@Param("pk")int pk, Pageable pageable);
+	
+	@Query("SELECT distinct a from InteractionData a, MirnaHasInteractionData b,"
+			+ " MirnaInvolvesBiologicalProcess c "
+			+ "where c.biologicalProcessPk=:pk and c.mirnaPk= b.mirnaPk and "
+			+ "b.interactionDataPk = a.pk and a.provenance = 'VirmiRNA'")	
+	@RestResource(path = "interaction_data_related_to_biological_process")
+	public Page<InteractionData> findMirnasRelatedToBiologicalProcessandfindByNameContaining(@Param("pk")int pk, Pageable pageable);
+	
+	
 	
 	
 }

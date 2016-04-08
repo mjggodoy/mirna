@@ -564,7 +564,7 @@ module.controller('ProteinViewController',
 );
 		
 module.controller('BiologicalProcessViewController',
-		function($scope, $controller, $stateParams, BiologicalProcess, Mirna) {
+		function($scope, $controller, $stateParams, BiologicalProcess, Mirna, InteractionData) {
 
 	BiologicalProcess.get(
 		{
@@ -587,6 +587,27 @@ module.controller('BiologicalProcessViewController',
 					Object : Mirna,
 					elements : 'mirna'
 				}));
+				
+				$scope.filterByMirna = function(mirna) {
+					$scope.filtered_mirna = mirna;
+					$scope.interaction_datas = {};
+					$scope.interaction_datas.pageSize = 5;
+					$scope.interaction_datas.search = {
+						searchFunction : "interaction_data_related_to_biological_process",
+						searchFields : [ {
+							key : "pk",
+							value : $stateParams.id
+						} ]
+							
+					};
+					angular.extend(this, $controller('PagedListController', {
+						$scope : $scope.interaction_datas,
+						Object : InteractionData,
+						elements : 'interaction_data'
+					}));
+				};
+				
+				
 			}
 		}
 	);

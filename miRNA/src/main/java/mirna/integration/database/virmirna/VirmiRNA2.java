@@ -1,6 +1,8 @@
-package mirna.integration.database;
+package mirna.integration.database.virmirna;
 
 import java.io.BufferedReader;
+import mirna.integration.database.NewMirnaDatabase;
+
 import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -524,11 +526,11 @@ public class VirmiRNA2 extends NewMirnaDatabase {
 		}
 	}
 
-	public static void main(String[] args) throws Exception {
+/*	public static void main(String[] args) throws Exception {
 
 		VirmiRNA2 virmirRNA2 = new VirmiRNA2();
 		virmirRNA2.insertIntoSQLModel();
 
 	}
-
+*/
 }
