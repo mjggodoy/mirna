@@ -15,7 +15,10 @@ import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.stereotype.Controller;
 
+import com.jcraft.jsch.JSchException;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
+
+import mirna.ssh.CTestDriver;
 
 
 @Configuration
@@ -30,8 +33,25 @@ public class AppMirnaConfig extends RepositoryRestMvcConfiguration {
 
 	@Bean(name = "mirnaDataSource")
 	public DataSource dataSource() {
+		
+		System.out.println("USING SSH!!!");
+		String strSshUser = "root";              // SSH loging username
+		String strSshPassword = "lnkdkhaos";     // SSH login password
+		String strSshHost = "150.214.214.5";     // hostname or ip or SSH server
+		int nSshPort = 22;                       // remote SSH host port number
+		String strRemoteHost = "192.168.44.23";  // hostname or ip of your database server
+		int nLocalPort = 3366;                   // local port number use to bind SSH tunnel
+		int nRemotePort = 3306;                  // remote port number of your database
+		
+		try {
+			CTestDriver.doSshTunnel(strSshUser, strSshPassword, strSshHost, nSshPort, strRemoteHost, nLocalPort, nRemotePort);
+		} catch (JSchException e) {
+			e.printStackTrace();
+		}
+		
 		MysqlDataSource dataSource = new MysqlDataSource();
-		dataSource.setUrl("jdbc:mysql://192.168.44.23:3306");
+		//dataSource.setUrl("jdbc:mysql://192.168.44.23:3306");
+		dataSource.setUrl("jdbc:mysql://localhost:3366");
 	    dataSource.setDatabaseName("mirna");
 	    dataSource.setUser("mirna");
 	    dataSource.setPassword("mirna");
