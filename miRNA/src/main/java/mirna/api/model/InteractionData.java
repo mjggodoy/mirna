@@ -67,6 +67,12 @@ public class InteractionData extends ModelClass {
 			})
 	private Set<MiRna> mirnas;
 	
+
+	@ManyToMany(mappedBy="interactiondatas")
+	private Set<BiologicalProcess> biologicalProcess;
+	
+	
+
 	public InteractionData() {
 		super();
 	}
@@ -131,6 +137,7 @@ public class InteractionData extends ModelClass {
 		if (mirnas.size()==0) return null;
 		else return mirnas;
 	}
+	
 
 	@Override
 	public int hashCode() {
@@ -252,15 +259,6 @@ public class InteractionData extends ModelClass {
 			return false;
 		return true;
 	}
-
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 }

@@ -33,14 +33,11 @@ public interface InteractionDataRepository extends PagingAndSortingRepository<In
 	@RestResource(path = "interaction_data_related_to_transcript")
 	public Page<InteractionData> findGenesRelatedToTranscript(@Param("pk")int pk, Pageable pageable);
 	
-	@Query("SELECT distinct a from InteractionData a, MirnaHasInteractionData b,"
-			+ " MirnaInvolvesBiologicalProcess c "
-			+ "where c.biologicalProcessPk=:pk and c.mirnaPk= b.mirnaPk and "
-			+ "b.interactionDataPk = a.pk and a.provenance = 'VirmiRNA'")	
-	@RestResource(path = "interaction_data_related_to_biological_process")
-	public Page<InteractionData> findMirnasRelatedToBiologicalProcessandfindByNameContaining(@Param("pk")int pk, Pageable pageable);
-	
-	
+	//@Query("SELECT distinct a from InteractionData a, InteractionDataHasBiologicalProcess b "
+		//	+ "where b.biologicalProcessPk=:pk and "
+		//	+ "b.interactionDataPk = a.pk")	
+	@RestResource(path = "biological_process_pk_and_mirna_pk")
+	public Page<InteractionData> findByMirnas_PkAndBiologicalProcess_Pk(@Param("mirna_pk")int mirnaPk, @Param("biological_process_pk")int biologicalProcessPk, Pageable pageable);
 	
 	
 }

@@ -593,9 +593,12 @@ module.controller('BiologicalProcessViewController',
 					$scope.interaction_datas = {};
 					$scope.interaction_datas.pageSize = 5;
 					$scope.interaction_datas.search = {
-						searchFunction : "interaction_data_related_to_biological_process",
+						searchFunction : "biological_process_pk_and_mirna_pk",
 						searchFields : [ {
-							key : "pk",
+							key : "mirna_pk",
+							value : mirna.pk
+						}, {
+							key : "biological_process_pk",
 							value : $stateParams.id
 						} ]
 							

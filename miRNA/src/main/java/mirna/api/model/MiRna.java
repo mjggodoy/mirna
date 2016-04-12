@@ -49,7 +49,8 @@ public class MiRna extends ModelClass {
 	
 	@ManyToMany(mappedBy="mirnas")
 	private Set<BiologicalProcess> biologicalProcess;
-
+	
+	
 	//@ManyToMany(mappedBy = "mirnas")
 	//private Set<ExpressionData> expressionDatas;
 	

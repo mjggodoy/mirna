@@ -76,7 +76,7 @@ public class Reparing extends NewMirnaDatabase {
 	public static void main(String[] args) throws Exception {
 	
 		Reparing rp = new Reparing(null); 
-		rp.insertInTable();
+		//rp.insertInTable();
 		
 	}
 

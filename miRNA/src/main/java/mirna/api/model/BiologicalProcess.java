@@ -31,8 +31,20 @@ public class BiologicalProcess extends ModelClass {
 			inverseJoinColumns={
 					@JoinColumn(name="mirna_pk")
 	})
-	
 	private Set<MiRna> mirnas;
+	
+	
+	@ManyToMany
+	@JoinTable(
+			name="interaction_data_has_biological_process",
+			schema="mirna",
+			joinColumns={
+					@JoinColumn(name="biological_process_pk")
+			},
+			inverseJoinColumns={
+					@JoinColumn(name="interaction_data_pk")
+			})
+	private Set<InteractionData> interactiondatas;
 
 	public String getName() {
 		return name;
