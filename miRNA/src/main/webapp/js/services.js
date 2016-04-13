@@ -142,4 +142,16 @@ module.factory('Target', function(AbstractFactory) {
 	return extended;
 });
 
+//An Util service
+module.factory('Util', function () {
+	return {
+		capitalize: function(str) {
+			console.log("CAPITALIZE!");
+			console.log(str);
+			console.log(str.charAt(0).toUpperCase() + str.slice(1));
+			return str.charAt(0).toUpperCase() + str.slice(1);
+		}
+	};
+}); 
+
 

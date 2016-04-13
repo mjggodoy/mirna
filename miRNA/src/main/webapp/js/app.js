@@ -144,6 +144,7 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 		controller: 'HomeController'
 	});
 
-}).run(function($state) {
+}).run(function($state, $rootScope, Util) {
+	$rootScope.Util = Util;
 	$state.go('home'); //make a transition to movies state when app starts
 });
