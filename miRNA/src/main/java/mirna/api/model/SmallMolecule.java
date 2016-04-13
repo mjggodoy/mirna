@@ -25,7 +25,7 @@ public class SmallMolecule extends ModelClass  {
 	}
 
 	public String getFda() {
-		return fda;
+		return fda.substring(0, 1).toUpperCase() + fda.substring(1);
 	}
 
 	public String getDb() {

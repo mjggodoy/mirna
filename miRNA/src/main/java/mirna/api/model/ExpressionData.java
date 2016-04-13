@@ -133,7 +133,15 @@ public class ExpressionData extends ModelClass {
 	}
 
 	public String getMethod() {
+		//if(method.contains("pcr")){
+			
+			//method = method.replace("pcr", "pcr".toUpperCase());
+			//return method.substring(0,1).toUpperCase() + method.substring(1);
+			//return method;
+				
+		//}
 		return method;
+		//return method.substring(0,1).toUpperCase() + method.substring(1);
 	}
 
 	public String getTreatment() {
@@ -141,6 +149,7 @@ public class ExpressionData extends ModelClass {
 	}
 
 	public String getEvidence() {
+		//return evidence.substring(0,1).toUpperCase() + evidence.substring(1);
 		return evidence;
 	}
 
@@ -158,6 +167,7 @@ public class ExpressionData extends ModelClass {
 
 	public String getCondition() {
 		return condition;
+		//return condition.substring(0,1).toUpperCase() + condition.substring(1);
 	}
 
 	public Integer getMirnaPk() {

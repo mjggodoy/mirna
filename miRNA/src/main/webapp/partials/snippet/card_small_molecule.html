@@ -1,13 +1,13 @@
-<div class="panel">
+<div class="class="col-md-12" style="padding:13x">
 	<dl class="dl-horizontal">
 	
-		<dt  data-ng-if="small_molecule.fda != 'null'">fda:</dt>
+		<dt  data-ng-if="small_molecule.fda != 'null'">FDA:</dt>
 		<dd  data-ng-if="small_molecule.fda != 'null'">{{small_molecule.fda}}</dd>
 		
-		<dt  data-ng-if="small_molecule.db != 'null'">db:</dt>
+		<dt  data-ng-if="small_molecule.db != 'null'">DB:</dt>
 		<dd  data-ng-if="small_molecule.db !='null'">{{small_molecule.db}}</dd>
 		
-		<dt data-ng-if="small_molecule.cid != 'null'">cid:</dt>
+		<dt data-ng-if="small_molecule.cid != 'null'">CID:</dt>
 		<dd data-ng-if="small_molecule.cid != 'null'">{{small_molecule.cid}}</dd>
 		
 	</dl>

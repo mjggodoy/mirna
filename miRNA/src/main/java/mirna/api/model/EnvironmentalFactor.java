@@ -27,12 +27,9 @@ public class EnvironmentalFactor extends ModelClass  {
 	}
 
 	public String getName() {
-		return name;
+		return name.substring(0,1).toUpperCase()+name.substring(1);
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
 	
 	public Set<SmallMolecule> getSmallMolecules() {
 		return smallMolecules;
