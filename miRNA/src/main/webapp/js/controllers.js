@@ -340,67 +340,8 @@ module.controller('DeadMirnaViewController',
 	}
 );
 		
-module.controller('PhenotypeViewController',
-	function($scope, $controller, $stateParams, Disease, Mirna, ExpressionData, SNP) {
-		Disease.get({
-			id : $stateParams.id
-		}, function(response) {
-			$scope.disease = response ? response : {};
-			if ($scope.disease) {
-				$scope.disease.related_mirnas = {};
-				$scope.disease.related_mirnas.pageSize = 50;
-				$scope.disease.related_mirnas.search = {
-					searchFunction : "related_to_disease",
-					searchFields : [ {
-						key : "pk",
-						value : $stateParams.id
-					} ]
-				};
-				angular.extend(this, $controller('PagedListController', {
-					$scope : $scope.disease.related_mirnas,
-					Object : Mirna,
-					elements : 'mirna'
-				}));
 
-				$scope.snps = {};
-				$scope.snps.pageSize = 10;
-				$scope.snps.search = {
-					searchFunction : "disease_pk",
-					searchFields : [ {
-						key : "pk",
-						value : $stateParams.id
-					} ]
-				};
-				angular.extend(this, $controller('PagedListController', {
-					$scope : $scope.snps,
-					Object : SNP,
-					elements : 'snp'
-				}));
-			}
-
-			$scope.filterByMirna = function(mirna) {
-				$scope.filtered_mirna = mirna;
-				$scope.expression_datas = {};
-				$scope.expression_datas.pageSize = 5;
-				$scope.expression_datas.search = {
-					searchFunction : "mirna_pk_and_disease_pk",
-					searchFields : [ {
-						key : "mirna_pk",
-						value : mirna.pk
-					}, {
-						key : "disease_pk",
-						value : $stateParams.id
-					} ]
-				};
-				angular.extend(this, $controller('PagedListController', {
-					$scope : $scope.expression_datas,
-					Object : ExpressionData,
-					elements : 'expression_data'
-				}));
-			}
-		});
-	}
-);
+			
 
 module.controller('EnvironmentalFactorViewController',
 	function($scope, $controller, $stateParams,	EnvironmentalFactor, Mirna, ExpressionData) {
@@ -979,7 +920,7 @@ module.controller('DeadMirnaViewController',
 });
 
 module.controller('PhenotypeViewController',
-		function($scope, $controller, $stateParams, Disease, Mirna, ExpressionData, SNP) {
+		function($scope, $controller, $stateParams, Disease, Mirna, ExpressionData, InteractionData, SNP) {
 	
 	Disease.get({ id: $stateParams.id }, function(response) {
 		$scope.disease = response ? response : {};
@@ -1025,7 +966,25 @@ module.controller('PhenotypeViewController',
 			};
 			angular.extend(this, $controller('PagedListController',
 					{$scope: $scope.expression_datas, Object : ExpressionData, elements : 'expression_data'}));
+		
+			$scope.filtered_mirna = mirna;
+			$scope.interaction_datas = {};
+			$scope.interaction_datas.pageSize = 5;
+			$scope.interaction_datas.search = {
+				searchFunction: "interaction_data_related_to_mirna_and_disease",
+				searchFields: [{
+					key: "mirna_pk",
+					value: mirna.pk
+				},{
+					key: "disease_pk",
+					value: $stateParams.id
+				}]
+			};
+			angular.extend(this, $controller('PagedListController',
+					{$scope: $scope.interaction_datas, Object : InteractionData, elements : 'interaction_data'}));
+		
 		}
+			
 	});
 });
 

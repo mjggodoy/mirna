@@ -25,7 +25,7 @@
 	
 	<div class="col-md-12">
 		<div class="panel panel-primary">
-			<div class="panel-heading">miRNA involved</div>
+			<div class="panel-heading">miRNA involved in {{disease.name}}</div>
 			<div class="panel-body">
 			
 				<span data-ng-if="disease.related_mirnas.page.number != 0">... </span>
@@ -51,14 +51,22 @@
 				
 			</div>
 		</div>
-	</div>
+	</div> 
 	
-	<div data-ng-include="'partials/snippet/snps.html'"></div>
-	
+
 	<div class="col-md-12" data-ng-if="filtered_mirna">
 		<h2>Mirna <small>{{filtered_mirna.id}}</small></h2>
-	</div>
+	</div> 
 	
-	<div data-ng-include="'partials/snippet/expression_datas.html'"></div>
-	
+ 	
+ 	
+ 	
+	<div data-ng-if="interaction_datas.interaction_data.length>0" data-ng-include="'partials/snippet/interaction_datas_phenotype.html'"></div>
+ 	<div data-ng-if="expression_datas.expression_data.length>0" data-ng-include="'partials/snippet/expression_datas_phenotype.html'"></div>
+ 	
+ 	 
+ 	 
+ 	 
+ 	
+ 	
 </div>

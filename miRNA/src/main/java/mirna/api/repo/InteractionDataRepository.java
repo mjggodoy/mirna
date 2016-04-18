@@ -39,5 +39,10 @@ public interface InteractionDataRepository extends PagingAndSortingRepository<In
 	@RestResource(path = "biological_process_pk_and_mirna_pk")
 	public Page<InteractionData> findByMirnas_PkAndBiologicalProcess_Pk(@Param("mirna_pk")int mirnaPk, @Param("biological_process_pk")int biologicalProcessPk, Pageable pageable);
 	
+	@Query("SELECT distinct a from InteractionData a, ExpressionData b, MirnaHasExpressionData c "
+			+ "where b.disease.pk = :disease_pk and c.expressionDataPk=b.pk and c.mirnaPk=:mirna_pk and "
+			+ "b.interactionData.pk = a.pk")	
+	@RestResource(path = "interaction_data_related_to_mirna_and_disease")
+	public Page<InteractionData> findInteractionDatasrelatedtoMirnaandPhenotype(@Param("disease_pk")int diseasePk, @Param("mirna_pk")int mirnaPk, Pageable pageable);
 	
 }
