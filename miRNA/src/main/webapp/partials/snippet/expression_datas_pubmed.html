@@ -1,7 +1,7 @@
 <div class="col-md-12" data-ng-if="expression_datas">
-	<div class="panel panel-primary">
-		<div class="panel-heading">Expression data for Pubmed document {{pubmed_document.id}}</div>
-		<div class="panel-body">
+	<div class="card">
+		<h2 class="card card__title">Expression data for Pubmed document {{pubmed_document.id}}</h2>
+		<div class="card__text">
 			<div data-ng-include="'partials/snippet/card_expression_data.html'"
 				data-ng-repeat="expression_data in expression_datas.expression_data">
 			</div>

@@ -1,64 +1,96 @@
 <div class="row">
-	<div class="col-md-12">
+<!-- 	<div class="col-md-12"> -->
 		<ol class="breadcrumb">
 			<li><a href="#">Home</a></li>
 			<li>Pubmed document</li>
 			<li class="active">{{pubmed_document.id}}</li>
 		</ol>
-	</div>
+<!-- 	</div> -->
 </div>
 
-<div class="row">
+<div class="row card-container">
 
 	<div class="col-md-12"> 
-		<h1>Pubmed Document ID: 
-		<small>{{pubmed_document.id}}</small>		
+		<h1>Pubmed Document ID 
+			<small>{{pubmed_document.id}}</small>		
 		</h1>
 	</div>
 	
 	<div class="col-md-12"> 
-		<div class="panel panel-primary">
-			<div class="panel-heading">Information</div>
-			<div class="panel-body">
+		<div class="card">
+			<h2 class="card card__title">Information</h2>
+			<p class="card__text">
 				<strong>ID:</strong> {{pubmed_document.id}}<br/>
 				<span data-ng-if="pubmed_document.description"><strong>Description:</strong> {{pubmed_document.description}}<br/></span>
 				<span data-ng-if="pubmed_document.resource"><strong>Resource:</strong> <a
 					data-ng-href={{pubmed_document.resource}} target="_blank">{{pubmed_document.resource}}</a></span>
-			</div>
+			</p>
 		</div>
 	</div>
 	
+	<!--
+	<div class="col-md-12"> 
+		<h3>Expression Data</h3>
+	</div>
+	-->
+	
 	<div class="col-md-12">
-		<div class="panel panel-primary">
-			<div class="panel-heading">miRNA involved</div>
-			<div class="panel-body">
+		<div class="card">
+			<h2 class="card card__title">miRNA involved</h2>
+			<div class="card__text">
 			
-				<span data-ng-if="pubmed_document.related_mirnas.page.number != 0">... </span>
-				<span data-ng-repeat="o in pubmed_document.related_mirnas.mirna">
-					<button type="button" class="btn btn-default btn-xs" data-ng-click="filterByMirna(o)">{{o.id}}</button>&nbsp;
-				</span>
-				<span data-ng-if="pubmed_document.related_mirnas.page.number != pubmed_document.related_mirnas.page.totalPages - 1">...</span>
-				
-				<div data-ng-if="pubmed_document.related_mirnas.page.totalPages>1">
-					<div class="pull-right">Page {{pubmed_document.related_mirnas.page.number+1}} / {{pubmed_document.related_mirnas.page.totalPages}}</div>
-					<div class="pull-left">Showing {{pubmed_document.related_mirnas.mirna.length}} of {{pubmed_document.related_mirnas.page.totalElements}}</div>
-					<nav>
-						<ul class="pager">
-							<li data-ng-class="{disabled: pubmed_document.related_mirnas.page.number === 0}">
-								<a data-ui-sref="{page: {{pubmed_document.related_mirnas.page.number - 1}} }" data-ng-click="pubmed_document.related_mirnas.previousPage()">Previous</a>
-							</li>
-							<li data-ng-class="{disabled: pubmed_document.related_mirnas.page.number === pubmed_document.related_mirnas.page.totalPages - 1}">
-								<a data-ui-sref="{page: {{pubmed_document.related_mirnas.page.number + 1}} }" data-ng-click="pubmed_document.related_mirnas.nextPage()">Next</a>
-							</li>
-						</ul>
-					</nav>
+<!-- 				<div class="row" data-ng-if="pubmed_document.related_mirnas.page.number != 0"> -->
+<!-- 					<div class="col-sm-3">...</div> -->
+<!-- 				</div> -->
+
+				<div class="row" >
+					<div class="col-sm-3 col-md-2" data-ng-repeat="item in pubmed_document.related_mirnas.mirna">
+						<button type="button" class="btn btn-link filter-button"
+								data-ng-click="filterByMirna(item)">{{item.id}}</button>
+					</div>
 				</div>
+
+<!-- 				<div class="row" -->
+<!-- 						data-ng-repeat="item in pubmed_document.related_mirnas.mirna track by $index" -->
+<!-- 						data-ng-if="$index % 4 == 0"> -->
+<!-- 					<div class="col-sm-3 col-md-2" -->
+<!-- 							data-ng-repeat="i in [$index, $index + 1, $index + 2, $index + 3]" -->
+<!-- 							data-ng-if="pubmed_document.related_mirnas.mirna[i] != null"> -->
+<!-- 						<button type="button" class="btn btn-link" -->
+<!-- 								data-ng-click="filterByMirna(item)">{{pubmed_document.related_mirnas.mirna[i].id}}</button> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+
+<!-- 				<span data-ng-if="pubmed_document.related_mirnas.page.number != pubmed_document.related_mirnas.page.totalPages - 1">...</span> -->
 				
+<!-- 				<div data-ng-if="pubmed_document.related_mirnas.page.totalPages>1"> -->
+<!-- 					<div class="pull-right">Page {{pubmed_document.related_mirnas.page.number+1}} / {{pubmed_document.related_mirnas.page.totalPages}}</div> -->
+<!-- 					<div class="pull-left">Showing {{pubmed_document.related_mirnas.mirna.length}} of {{pubmed_document.related_mirnas.page.totalElements}}</div> -->
+<!-- 					<nav> -->
+<!-- 						<ul class="pager"> -->
+<!-- 							<li data-ng-class="{disabled: pubmed_document.related_mirnas.page.number === 0}"> -->
+<!-- 								<a data-ui-sref="{page: {{pubmed_document.related_mirnas.page.number - 1}} }" data-ng-click="pubmed_document.related_mirnas.previousPage()">Previous</a> -->
+<!-- 							</li> -->
+<!-- 							<li data-ng-class="{disabled: pubmed_document.related_mirnas.page.number === pubmed_document.related_mirnas.page.totalPages - 1}"> -->
+<!-- 								<a data-ui-sref="{page: {{pubmed_document.related_mirnas.page.number + 1}} }" data-ng-click="pubmed_document.related_mirnas.nextPage()">Next</a> -->
+<!-- 							</li> -->
+<!-- 						</ul> -->
+<!-- 					</nav> -->
+<!-- 				</div> -->
+				
+			</div>
+			
+			<div class="card__footer center-block">
+				<button type="button" class="btn btn-pager pull-left" data-ui-sref="{page: {{pubmed_document.related_mirnas.page.number - 1}} }" data-ng-click="pubmed_document.related_mirnas.previousPage()">&lt;&lt;</button>
+				<button type="button" class="btn btn-pager pull-right" data-ng-click="pubmed_document.related_mirnas.nextPage()">&gt;&gt;</button>
+				<div class="center-pager">Page {{pubmed_document.related_mirnas.page.number+1}} / {{pubmed_document.related_mirnas.page.totalPages}}</div>
+				<div class="clearfix"></div>
 			</div>
 		</div>
 	</div>
 	<div class="col-md-12" data-ng-if="filtered_mirna">
-		<h2>Mirna <small>{{filtered_mirna.id}}</small></h2>
+		<h3>Expression Data</h3>
+<!-- 		<h2>Mirna <small>{{filtered_mirna.id}}</small></h2> -->
 	</div>
 	
 	<div data-ng-include="'partials/snippet/expression_datas_pubmed.html'"></div>
