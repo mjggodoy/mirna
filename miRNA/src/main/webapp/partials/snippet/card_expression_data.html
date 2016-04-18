@@ -5,8 +5,7 @@
 		<dd data-ng-if="expression_data.provenance">{{expression_data.provenance}}</dd>
 		
 		<dt data-ng-if="expression_data.disease">Disease:</dt>
-		<dd data-ng-if="expression_data.disease">
-			{{expression_data.disease.name}}
+		<dd data-ng-if="expression_data.disease">{{Util.capitalize(expression_data.disease.name)}}
 			<span data-ng-if="expression_data.disease.diseaseClass"> ({{expression_data.disease.diseaseClass}})</span>
 		</dd>
 		
