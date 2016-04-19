@@ -967,7 +967,6 @@ module.controller('PhenotypeViewController',
 			angular.extend(this, $controller('PagedListController',
 					{$scope: $scope.expression_datas, Object : ExpressionData, elements : 'expression_data'}));
 		
-			$scope.filtered_mirna = mirna;
 			$scope.interaction_datas = {};
 			$scope.interaction_datas.pageSize = 5;
 			$scope.interaction_datas.search = {
@@ -984,11 +983,10 @@ module.controller('PhenotypeViewController',
 					{$scope: $scope.interaction_datas, Object : InteractionData, elements : 'interaction_data'}));
 		
 			
-			$scope.filtered_mirna = mirna;
 			$scope.pubmed_documents = {};
 			$scope.pubmed_documents.pageSize = 5;
 			$scope.pubmed_documents.search = {
-				searchFunction: "pubmed_document_related_to_phenotype_and_mirna",
+				searchFunction: "pubmed_document_related_to_phenotype_and_mirna_and_expression_data",
 				searchFields: [{
 					key: "mirna_pk",
 					value: mirna.pk
@@ -1001,6 +999,7 @@ module.controller('PhenotypeViewController',
 					{$scope: $scope.pubmed_documents, Object : PubmedDocument, elements : 'pubmed_document'}));
 			
 		}
+			
 			
 	});
 });

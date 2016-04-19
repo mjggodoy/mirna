@@ -20,13 +20,23 @@ public interface PubmedDocRepository extends PagingAndSortingRepository<PubmedDo
 	public Page<PubmedDocument> findById(@Param("id")String id, Pageable pageable);
 	
 	
-	@RestResource(path = "pubmed_document_related_to_phenotype_and_mirna")
+	@RestResource(path = "pubmed_document_related_to_phenotype_and_mirna_and_expression_data")
 	@Query("select distinct d from MirnaHasExpressionData a, ExpressionData b,"
 			+ " ExpressionDataHasPubmedDocument c, PubmedDocument d "
 			+ " where b.disease.pk = :disease_pk and a.mirnaPk=:mirna_pk and "
 			+ " a.expressionDataPk=b.pk and b.pk = c.expressionDataPk "
 			+ " and c.pubmedDocumentPk= d.pk")
-	public Page<PubmedDocument> findByPhenotypeandMirna(@Param("disease_pk")int diseasePk, @Param("mirna_pk")int mirnaPk, Pageable pageable);
+	public Page<PubmedDocument> findByPhenotypeandMirnaandExpressionData(@Param("disease_pk")int diseasePk, @Param("mirna_pk")int mirnaPk, Pageable pageable);
+	
+	/*@RestResource(path = "pubmed_document_related_to_phenotype_and_mirna_and_interaction_data")
+	@Query("select distinct d from MirnaHasExpressionData a, ExpressionData b,"
+			+ " ExpressionDataHasPubmedDocument c, PubmedDocument d "
+			+ " where b.disease.pk = :disease_pk and a.mirnaPk=:mirna_pk and "
+			+ " a.expressionDataPk=b.pk and b.pk = c.expressionDataPk and b.interactionData.pk is not null "
+			+ " and c.pubmedDocumentPk= d.pk")
+	public Page<PubmedDocument> findByPhenotypeandMirnaandInteractionData(@Param("disease_pk")int diseasePk, @Param("mirna_pk")int mirnaPk, Pageable pageable);
+	*/
+	
 	
 
 }
