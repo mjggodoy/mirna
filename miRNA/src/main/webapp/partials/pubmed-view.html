@@ -1,11 +1,9 @@
 <div class="row">
-<!-- 	<div class="col-md-12"> -->
-		<ol class="breadcrumb">
-			<li><a href="#">Home</a></li>
-			<li>Pubmed document</li>
-			<li class="active">{{pubmed_document.id}}</li>
-		</ol>
-<!-- 	</div> -->
+	<ol class="breadcrumb">
+		<li><a href="#">Home</a></li>
+		<li>Pubmed document</li>
+		<li class="active">{{pubmed_document.id}}</li>
+	</ol>
 </div>
 
 <div class="row card-container">
@@ -25,6 +23,9 @@
 				<span data-ng-if="pubmed_document.resource"><strong>Resource:</strong> <a
 					data-ng-href={{pubmed_document.resource}} target="_blank">{{pubmed_document.resource}}</a></span>
 			</p>
+			<div class="card__action-bar">
+				<a class="card__button" href="http://www.ncbi.nlm.nih.gov/pubmed/{{pubmed_document.id}}" target="_BLANK">PUBMED</a>
+			</div>
 		</div>
 	</div>
 	
@@ -45,8 +46,10 @@
 
 				<div class="row" >
 					<div class="col-sm-3 col-md-2" data-ng-repeat="item in pubmed_document.related_mirnas.mirna">
+						<div class="filter-button-container">
 						<button type="button" class="btn btn-link filter-button"
 								data-ng-click="filterByMirna(item)">{{item.id}}</button>
+						</div>
 					</div>
 				</div>
 

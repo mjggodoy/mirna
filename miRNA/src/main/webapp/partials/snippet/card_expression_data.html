@@ -1,4 +1,4 @@
-<div class="panel">
+<div class="dl-container">
 	<dl class="dl-horizontal">
 	
 		<dt data-ng-if="expression_data.provenance">Provenance:</dt>
@@ -6,8 +6,10 @@
 		
 		<dt data-ng-if="expression_data.disease">Disease:</dt>
 		<dd data-ng-if="expression_data.disease">
-			{{expression_data.disease.name}}
-			<span data-ng-if="expression_data.disease.diseaseClass"> ({{expression_data.disease.diseaseClass}})</span>
+			<a data-ui-sref="viewPhenotype({id: expression_data.disease.pk})">
+				{{expression_data.disease.name}}
+				<span data-ng-if="expression_data.disease.diseaseClass"> ({{expression_data.disease.diseaseClass}})</span>
+			</a>
 		</dd>
 		
 		<dt data-ng-if="expression_data.titleReference">Title reference:</dt>
@@ -56,8 +58,7 @@
 				data-ng-if="true"
 				onload="interaction_data = expression_data.interactionData">
 			</div>
-		</dd>			
+		</dd>
+		
 	</dl>
-	<hr>
-	
 </div>

@@ -1,24 +1,22 @@
 <div class="row">
-	<div class="col-md-12">
-		<ol class="breadcrumb">
-			<li><a href="#">Home</a></li>
-			<li><a data-ui-sref="listMirna">miRNA</a></li>
-			<li><a data-ui-sref="listMature">Mature</a></li>
-			<li class="active">{{mirna.id}}</li>
-		</ol>
-	</div>
+	<ol class="breadcrumb">
+		<li><a href="#">Home</a></li>
+		<li><a data-ui-sref="listMirna">miRNA</a></li>
+		<li><a data-ui-sref="listMature">Mature</a></li>
+		<li class="active">{{mirna.id}}</li>
+	</ol>
 </div>
 
-<div class="row">
+<div class="row card-container">
 
 	<div class="col-md-12">
 		<h1>Mature <small>{{mirna.id}}</small></h1>
 	</div>
 
 	<div class="col-md-12">
-		<div class="panel panel-primary">
-			<div class="panel-heading">Information</div>
-			<div class="panel-body">
+		<div class="card">
+			<div class="card card__title">Information</div>
+			<div class="card__text">
 				<strong>Id:</strong> {{mirna.id}}<br/>
 				<strong>Accession number:</strong> {{mirna.accessionNumber}}<br/>
 				<strong>Previous ids:</strong> {{mirna.previousId}}<br/>
@@ -37,13 +35,18 @@
 					</span>
 				</div>
 			</div>
+			<div class="card__action-bar">
+				<a data-ng-if="mirna.accessionNumber" class="card__button" target="_BLANK"
+						href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={{mirna.accessionNumber}}">
+					MIRBASE</a>
+			</div>
 		</div>
 	</div>
 	
 	<div class="col-md-12">
-		<div class="panel panel-primary">
-			<div class="panel-heading">Hairpins</div>
-			<div class="panel-body">
+		<div class="card">
+			<div class="card card__title">Hairpins</div>
+			<div class="card__text">
 				<ul>
 					<li data-ng-repeat="hairpin in mirna.hairpins">
 						<a data-ui-sref="viewHairpin({id: hairpin.pk})">{{hairpin.id}}</a>

@@ -1115,7 +1115,7 @@ module.controller('PubmedDocumentViewController',
 		if ($scope.pubmed_document) {
 			
 			$scope.pubmed_document.related_mirnas = {};
-			$scope.pubmed_document.related_mirnas.pageSize = 50;
+			$scope.pubmed_document.related_mirnas.pageSize = 12;
 			$scope.pubmed_document.related_mirnas.search = {
 				searchFunction: "related_to_pubmed_document",
 				searchFields: [{
