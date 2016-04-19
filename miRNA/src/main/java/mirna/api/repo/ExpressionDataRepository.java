@@ -2,6 +2,7 @@ package mirna.api.repo;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
@@ -19,6 +20,10 @@ public interface ExpressionDataRepository extends PagingAndSortingRepository<Exp
 	public Page<ExpressionData> findByMirnas_Pk(@Param("pk")int pk, Pageable pageable);
 	
 	@RestResource(path = "mirna_pk_and_disease_pk")
+	@Query("select distinct b from  MirnaHasExpressionData a, ExpressionData b " +
+			" where a.mirnaPk=:mirna_pk and b.disease.pk=:disease_pk and a.expressionDataPk=b.pk and"
+		    + " (b.description is not null" 
+			+ " or b.evidence is not null)")
 	public Page<ExpressionData> findByMirnas_PkAndDiseasePk(@Param("mirna_pk")int mirnaPk, @Param("disease_pk")int diseasePk, Pageable pageable);
 	
 	@RestResource(path = "mirna_pk_and_environmental_factor_pk")

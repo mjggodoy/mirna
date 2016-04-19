@@ -7,7 +7,7 @@
 		<dt data-ng-if="expression_data.disease">Disease:</dt>
 		<dd data-ng-if="expression_data.disease">
 			<a data-ui-sref="viewPhenotype({id: expression_data.disease.pk})">
-				{{expression_data.disease.name}}
+				{{Util.capitalize(expression_data.disease.name)}}
 				<span data-ng-if="expression_data.disease.diseaseClass"> ({{expression_data.disease.diseaseClass}})</span>
 			</a>
 		</dd>

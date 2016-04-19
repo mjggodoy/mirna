@@ -19,7 +19,7 @@ public interface MirnaRepository extends PagingAndSortingRepository<MiRna, Integ
 	@RestResource(path = "id")
 	public Page<MiRna> findByIdContainingIgnoreCase(@Param("id")String id, Pageable pageable);
 	
-	@Query("SELECT a from MiRna a, MirnaPkTranslation b, ExpressionData c where c.mirnaPk=b.oldPk and b.newPk=a.pk and c.disease.pk=:pk")	
+	@Query("SELECT distinct a from MiRna a, MirnaPkTranslation b, ExpressionData c where c.mirnaPk=b.oldPk and b.newPk=a.pk and c.disease.pk=:pk")	
 	@RestResource(path = "related_to_disease")
 	public Page<MiRna> findMirnasRelatedToDisease(@Param("pk")int pk, Pageable pageable);
 	
