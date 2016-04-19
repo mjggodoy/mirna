@@ -920,7 +920,7 @@ module.controller('DeadMirnaViewController',
 });
 
 module.controller('PhenotypeViewController',
-		function($scope, $controller, $stateParams, Disease, Mirna, ExpressionData, InteractionData, SNP) {
+		function($scope, $controller, $stateParams, Disease, Mirna, ExpressionData, InteractionData, SNP, PubmedDocument) {
 	
 	Disease.get({ id: $stateParams.id }, function(response) {
 		$scope.disease = response ? response : {};
@@ -983,6 +983,23 @@ module.controller('PhenotypeViewController',
 			angular.extend(this, $controller('PagedListController',
 					{$scope: $scope.interaction_datas, Object : InteractionData, elements : 'interaction_data'}));
 		
+			
+			$scope.filtered_mirna = mirna;
+			$scope.pubmed_documents = {};
+			$scope.pubmed_documents.pageSize = 5;
+			$scope.pubmed_documents.search = {
+				searchFunction: "pubmed_document_related_to_phenotype_and_mirna",
+				searchFields: [{
+					key: "mirna_pk",
+					value: mirna.pk
+				},{
+					key: "disease_pk",
+					value: $stateParams.id
+				}]
+			};
+			angular.extend(this, $controller('PagedListController',
+					{$scope: $scope.pubmed_documents, Object : PubmedDocument, elements : 'pubmed_document'}));
+			
 		}
 			
 	});

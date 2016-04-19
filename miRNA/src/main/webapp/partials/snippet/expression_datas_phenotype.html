@@ -1,6 +1,6 @@
 <div class="col-md-12" data-ng-if="expression_datas" >
 	<div class="panel panel-primary">
-		<div class="panel-heading">Expression data related to {{filtered_mirna.id}}</div>
+		<div class="panel-heading">Expression data related to {{filtered_mirna.id}} and {{Util.capitalize(disease.name)}}</div>
 		<div class="panel-body" >
 		<div data-ng-include="'partials/snippet/card_expression_data.html'"
 				data-ng-repeat="expression_data in expression_datas.expression_data">
