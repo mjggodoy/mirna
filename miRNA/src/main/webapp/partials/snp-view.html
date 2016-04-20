@@ -8,5 +8,22 @@
 	</div>
 </div>
 
+<div class="row">
 
+		<div class="col-md-12">
+			<h1>SNP<small>{{snp.id}}</small></h1>
+		</div>
 	
+	<div class="col-md-12">
+		<div class="panel panel-primary">
+			<div class="panel-heading">Information</div>
+			<div class="panel-body">
+				<span data-ng-if="snp.id"><strong>SNP ID:&nbsp;</strong>{{snp.id}}<br/></span>
+				<span data-ng-if="snp.position"><strong>Position:</strong>&nbsp;{{snp.position}}<br/></span>
+				<span data-ng-if="snp.article_date"><strong>Pubmed document:</strong>&nbsp;{{snp.article_date}}<br/></span>
+				<span data-ng-if="snp.chromosome"><strong>Chromosome:</strong>&nbsp;{{snp.chromosome}}<br/></span>
+				<span data-ng-if="snp.orientation"><strong>Polarity:</strong>&nbsp;{{snp.orientation}}<br/></span>
+			</div>
+		</div>
+	</div>
+</div>
