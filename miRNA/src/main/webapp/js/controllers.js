@@ -233,6 +233,31 @@ module.controller('SearchByPubmedDocumentIdController',
 
 	}
 );
+
+
+module.controller('SearchBySnpIdController',
+		function($scope, $controller, $stateParams, SNP) {
+			$scope.search = {
+				searchFunction : "id",
+				searchFields : [ {
+					key : "id",
+					value : $stateParams.id
+				} ]
+			};
+			$scope.sortOptions = [ {
+				value : "id",
+				label : "id"
+			} ];
+			angular.extend(this, $controller('PagedListController', {
+				$scope : $scope,
+				Object : SNP,
+				elements : 'snp'
+			}));
+
+		}
+	);
+
+
 		
 module.controller('SearchByTranscriptIdController',
 	function($scope, $controller, $stateParams, Transcript) {
@@ -719,6 +744,15 @@ module.controller('SearchController', function($scope, $state) {
 			});
 		}
 	};
+	
+	
+	$scope.findBySnpId = function() {
+		if ($scope.SNPIdText) {
+			$state.go('searchBySNPId', {
+				id : $scope.SNPIdText
+			});
+		}
+	};
   
 });
 
@@ -858,6 +892,21 @@ module.controller('SearchByTranscriptIdController',
 	$scope.sortOptions = [ {value: "id", label: "id"} ];
 	angular.extend(this, $controller('PagedListController',
 			{$scope: $scope, Object : Transcript, elements : 'transcript'}));
+});
+
+
+module.controller('SearchBySnpIdController',
+		function($scope, $controller, $stateParams, SNP) {
+	$scope.search = {
+		searchFunction: "id",
+		searchFields: [{
+			key: "id",
+			value: $stateParams.id
+		}]
+	};
+	$scope.sortOptions = [ {value: "id", label: "id"} ];
+	angular.extend(this, $controller('PagedListController',
+			{$scope: $scope, Object : SNP, elements : 'snp'}));
 });
 
 module.controller('MirnaViewController',
@@ -1121,6 +1170,16 @@ module.controller('PubmedDocumentViewController',
 		}
 	});	
 });
+
+module.controller('SNPViewController',
+		function($scope, $controller, $stateParams, SNP) {
+	
+		SNP.get({ id: $stateParams.id }, function(response) {
+        $scope.snp = response ? response : {};
+		
+	});	
+});
+
 		
 module.controller('HomeController', function($scope, $state){
 	$scope.quickSearchText = 'hsa-let-7a';
@@ -1188,5 +1247,12 @@ module.controller('SearchController', function($scope, $state){
 			$state.go('searchByTranscriptId', {id: $scope.transcriptIdText});
 		}
 	};
+	
+	$scope.findBySNPId = function() {
+		if ($scope.SNPIdText) {
+			$state.go('searchBySnpId', {id: $scope.SNPIdText});
+		}
+	};
+	
 	
 });

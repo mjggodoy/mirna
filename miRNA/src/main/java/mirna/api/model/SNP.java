@@ -16,7 +16,7 @@ import javax.persistence.Table;
 public class SNP extends ModelClass {
 
 	@Column(name = "snp_id", nullable = false, length = 80, unique = true)
-	private String snp_id;
+	private String id;
 
 	@Column(name = "position", nullable = true)
 	private String position;
@@ -38,8 +38,10 @@ public class SNP extends ModelClass {
 
 	public SNP(){	}
 
-	public String getSnp_id() {
-		return snp_id;
+	
+
+	public String getId() {
+		return id;
 	}
 
 	public String getPosition() {

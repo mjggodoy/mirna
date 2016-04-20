@@ -17,6 +17,7 @@ import mirna.api.model.OLDMiRna;
 import mirna.api.model.Organism;
 import mirna.api.model.Protein;
 import mirna.api.model.PubmedDocument;
+import mirna.api.model.SNP;
 import mirna.api.model.Transcript;
 
 @Configuration
@@ -39,6 +40,7 @@ public class AppConfig extends RepositoryRestMvcConfiguration {
 					Protein.class,
 					Transcript.class,
 					PubmedDocument.class,
+					SNP.class,
 					Organism.class);
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
