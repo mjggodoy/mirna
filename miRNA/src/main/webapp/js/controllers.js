@@ -1181,8 +1181,8 @@ module.controller('SNPViewController',
 		} 
         
         
-        $scope.filterByGene = function(snp) {
-			$scope.filtered_snp = snp;
+        $scope.filterByGene = function(gene) {
+			$scope.filtered_gene = gene;
 			$scope.interaction_datas = {};
 			$scope.interaction_datas.pageSize = 5;
 			$scope.interaction_datas.search = {
