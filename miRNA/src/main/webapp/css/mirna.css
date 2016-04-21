@@ -58,6 +58,17 @@ body {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
+.card-info {
+/*     will-change: transform; */
+/*     margin-bottom: 8px; */
+/*     border-radius: 2px; */
+/*     overflow: hidden; */
+/*     background-color: #fafafa; */
+/*     -webkit-transition: all 400ms cubic-bezier(0.165, 0.84, 0.44, 1); */
+/*     transition: all 400ms cubic-bezier(0.165, 0.84, 0.44, 1); */
+/*     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
+}
+
 .card-container {
 	box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.37);
 	border-radius: 0px;
@@ -104,6 +115,11 @@ body {
     -webkit-transition: all 200ms cubic-bezier(0.075, 0.82, 0.165, 1);
     transition: all 200ms cubic-bezier(0.075, 0.82, 0.165, 1);
     border-radius: 0px;
+}
+
+.card-info > .card__title {
+/* 	font-size: 14px; */
+/* 	padding: 10px 10px 10px 10px; */
 }
 
 .card__text {
@@ -164,20 +180,38 @@ body {
 /* 	border: solid 1px #EB6909; */
 }
 
+.filter-button {
+	padding: 3px 6px;
+    margin-bottom: 5px;
+    border-color: #EB6909;
+    color: #EB6909;
+}
+
+.filter-button:hover {
+	border-color: #EB6909;
+	color: #EB6909;
+	background-color: white;
+    -webkit-transition: all 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition: all 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.filter-button.actived:hover {
+	background-color: #EB6909;
+	color: white;
+	box-shadow: none;
+}
+
+.filter-button.actived, .filter-button.actived:focus {
+	background-color: #EB6909;
+	color: white;
+	border-color: #EB6909;
+}
+
 .filter-button, .filter-button:hover, .filter-button:active,
 .filter-button:focus, .filter-button:visited  {
 	text-decoration: none;
 	outline:0;
-}
-
-.filter-button:hover {
-    -webkit-transition: all 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
-    transition: all 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
-    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.37);
-    /* color: white; */
-    /* background-color: white; */
-    border: solid 1px rgb(33,150,243);
-    border-radius: 2px;
 }
 
 .footer {
@@ -206,6 +240,7 @@ body {
 
 .dl-container {
 	border-left: solid #EB6909;
+	padding-left: 10px;
 }
 
 .dl-container:hover {
