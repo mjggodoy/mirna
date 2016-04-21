@@ -873,9 +873,9 @@ module.controller('MirnaViewController',
 				});
 			}
 			
-			$scope.mirna.pubmed_documents = {};
-			$scope.mirna.pubmed_documents.pageSize = 10;
-			$scope.mirna.pubmed_documents.search = {
+			$scope.pubmed_documents = {};
+			$scope.pubmed_documents.pageSize = 10;
+			$scope.pubmed_documents.search = {
 				searchFunction: "mirna_pk",
 				searchFields: [{
 					key: "pk",
@@ -883,7 +883,7 @@ module.controller('MirnaViewController',
 				}]
 			};
 			angular.extend(this, $controller('PagedListController',
-					{$scope: $scope.mirna.pubmed_documents, Object : PubmedDocument, elements : 'pubmed_document'}));
+					{$scope: $scope.pubmed_documents, Object : PubmedDocument, elements : 'pubmed_document'}));
 			
 			$scope.expression_datas = {};
 			$scope.expression_datas.pageSize = 10;
@@ -925,9 +925,9 @@ module.controller('PhenotypeViewController',
 	Disease.get({ id: $stateParams.id }, function(response) {
 		$scope.disease = response ? response : {};
 		if ($scope.disease) {
-			$scope.disease.related_mirnas = {};
-			$scope.disease.related_mirnas.pageSize = 50;
-			$scope.disease.related_mirnas.search = {
+			$scope.related_mirnas = {};
+			$scope.related_mirnas.pageSize = 48;
+			$scope.related_mirnas.search = {
 				searchFunction: "related_to_disease",
 				searchFields: [{
 					key: "pk",
@@ -935,7 +935,7 @@ module.controller('PhenotypeViewController',
 				}]
 			};
 			angular.extend(this, $controller('PagedListController',
-					{$scope: $scope.disease.related_mirnas, Object : Mirna, elements : 'mirna'}));
+					{$scope: $scope.related_mirnas, Object : Mirna, elements : 'mirna'}));
 			
 			$scope.snps = {};
 			$scope.snps.pageSize = 10;
@@ -1089,9 +1089,9 @@ module.controller('PubmedDocumentViewController',
 		$scope.pubmed_document = response ? response : {};
 		if ($scope.pubmed_document) {
 			
-			$scope.pubmed_document.related_mirnas = {};
-			$scope.pubmed_document.related_mirnas.pageSize = 12;
-			$scope.pubmed_document.related_mirnas.search = {
+			$scope.related_mirnas = {};
+			$scope.related_mirnas.pageSize = 12;
+			$scope.related_mirnas.search = {
 				searchFunction: "related_to_pubmed_document",
 				searchFields: [{
 					key: "pk",
@@ -1099,7 +1099,7 @@ module.controller('PubmedDocumentViewController',
 				}]
 			};
 			angular.extend(this, $controller('PagedListController',
-					{$scope: $scope.pubmed_document.related_mirnas, Object : Mirna, elements : 'mirna'}));
+					{$scope: $scope.related_mirnas, Object : Mirna, elements : 'mirna'}));
 		}
 		
 		$scope.filterByMirna = function(mirna) {

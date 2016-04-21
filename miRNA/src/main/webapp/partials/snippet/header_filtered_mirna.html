@@ -1,0 +1,23 @@
+<div class="col-sm-6" data-ng-if="filtered_mirna">
+	<h3>Related data</h3>
+</div>
+
+<div class="col-sm-6" data-ng-if="filtered_mirna">
+	<div class="card card-info">
+		<div class="card__text" data-ng-if="filtered_mirna.type=='mature'">
+			<strong>miRNA:</strong>
+			&nbsp;
+			<a data-ui-sref="viewMature({id:filtered_mirna.pk})">{{filtered_mirna.id}}</a>
+		</div>
+		<div class="card__text" data-ng-if="filtered_mirna.type=='hairpin'">
+			<strong>miRNA:</strong>
+			&nbsp;
+			<a data-ui-sref="viewHairpin({id:filtered_mirna.pk})">{{filtered_mirna.id}}</a>
+		</div>
+		<div class="card__text" data-ng-if="filtered_mirna.type=='dead'">
+			<strong>miRNA:</strong>
+			&nbsp;
+			<a data-ui-sref="viewDeadMirna({id:filtered_mirna.pk})">{{filtered_mirna.id}}</a>
+		</div>
+	</div>
+</div>

@@ -1,6 +1,6 @@
 <div class="row">
 	<ol class="breadcrumb">
-		<li><a href="#">Home</a></li>
+		<li><a data-ui-sref="home">Home</a></li>
 		<li><a data-ui-sref="listMirna">miRNA</a></li>
 		<li><a data-ui-sref="listHairpin">Hairpin</a></li>
 		<li class="active">{{mirna.id}}</li>
@@ -9,11 +9,11 @@
 
 <div class="row card-container">
 
-	<div class="col-md-12">
+	<div class="col-sm-12">
 		<h1>Hairpin <small>{{mirna.id}}</small></h1>
 	</div>
 
-	<div class="col-md-12">
+	<div class="col-sm-12">
 		<div class="card">
 			<div class="card card__title">Information</div>
 			<div class="card__text">
@@ -37,7 +37,7 @@
 		</div>
 	</div>
 	
-	<div class="col-md-12">
+	<div class="col-sm-12">
 		<div class="card">
 			<div class="card card__title">Matures</div>
 			<div class="card__text">
@@ -50,7 +50,7 @@
 		</div>
 	</div>
 	
-	<div data-ng-include="'partials/snippet/pubmed_documents.html'"></div>
-	<div data-ng-include="'partials/snippet/expression_datas.html'"></div>
+	<div data-ng-include="'partials/snippet/card_pubmed_documents.html'"></div>
+	<div data-ng-include="'partials/snippet/card_expression_datas.html'"></div>
 	
 </div>

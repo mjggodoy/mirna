@@ -168,12 +168,18 @@ body {
 
 .btn-pager:hover {
 	background-color: white;
-	color: #1067AD;
+	color: #EB6909;
 }
 
 .center-pager {
-	padding: 6px 0px;
+	/* padding: 6px 0px; */
 	text-align: center;
+}
+
+.footer_text {
+    line-height: 32px;
+    margin: 6px;
+    padding: 6px 10px;
 }
 
 .filter-button-container {
@@ -261,4 +267,9 @@ a:hover, a:focus {
 
 .btn-link:focus, .btn-link:hover {
     color: #C4551C;
+}
+
+/* FIX FOR INTERACTION_DATA INSIDE EXPRESSION_DATA */
+dl.dl-horizontal dl dt {
+	clear: inherit !important;
 }

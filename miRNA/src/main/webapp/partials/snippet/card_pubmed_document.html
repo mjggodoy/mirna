@@ -1,16 +1,21 @@
-<div class="panel">
+<div class="dl-container">
 	<dl class="dl-horizontal">
 	
 		<dt data-ng-if="pubmed_document.id">Pubmed ID:</dt>
-		<dd data-ng-if="pubmed_document.id">{{pubmed_document.id}}</dd>
+		<dd data-ng-if="pubmed_document.id">
+			<a data-ui-sref="viewPubmedDocument({id: pubmed_document.pk})">
+				{{pubmed_document.id}}
+			</a>
+		</dd>
 		
-		<dt data-ng-if="pubmed_document.description">Pubmed document description:</dt>
+		<dt data-ng-if="pubmed_document.title">Title:</dt>
+		<dd data-ng-if="pubmed_document.description">{{pubmed_document.title}}</dd>
+		
+		<dt data-ng-if="pubmed_document.description">Description:</dt>
 		<dd data-ng-if="pubmed_document.description">{{pubmed_document.description}}</dd>
 		
-		<dt data-ng-if="pubmed_document.resource">Pubmed document resource:</dt>
+		<dt data-ng-if="pubmed_document.resource">Resource:</dt>
 		<dd data-ng-if="pubmed_document.resource">{{pubmed_document.resource}}</dd>
 					
 	</dl>
-	<hr>
-	
 </div>

@@ -1,65 +1,32 @@
 <div class="row">
-	<div class="col-md-12">
-		<ol class="breadcrumb">
-			<li><a href="#">Home</a></li>
-			<li><a data-ui-sref="listPhenotype">Phenotype</a></li>
-			<li class="active">{{Util.capitalize(disease.name)}}</li>
-		</ol>
-	</div>
+	<ol class="breadcrumb">
+		<li><a data-ui-sref="home">Home</a></li>
+		<li><a data-ui-sref="listPhenotype">Phenotype</a></li>
+		<li class="active">{{Util.capitalize(disease.name)}}</li>
+	</ol>
 </div>
 
-<div class="row">
+<div class="row card-container">
 
-	<div class="col-md-12">
+	<div class="col-sm-12">
 		<h1>Phenotype <small>{{Util.capitalize(disease.name)}}</small></h1>
 	</div>
 	
-	<div class="col-md-12" data-ng-if="disease.diseaseClass">
-		<div class="panel panel-primary">
-			<div class="panel-heading">Information</div>
-			<div class="panel-body">
+	<div class="col-sm-12" data-ng-if="disease.diseaseClass">
+		<div class="card">
+			<div class="card card__title">Information</div>
+			<div class="card__text">
 				<strong>Class:</strong> {{disease.diseaseClass}}<br/>
 			</div>
 		</div>
 	</div>
 	
-	<div class="col-md-12">
-		<div class="panel panel-primary">
-			<div class="panel-heading">miRNA involved in {{Util.capitalize(disease.name)}}</div>
-			<div class="panel-body">
-			
-				<span data-ng-if="disease.related_mirnas.page.number != 0">... </span>
-				<span data-ng-repeat="o in disease.related_mirnas.mirna">
-					<button type="button" class="btn btn-default btn-xs" data-ng-click="filterByMirna(o)">{{o.id}}</button>&nbsp;
-				</span>
-				<span data-ng-if="disease.related_mirnas.page.number != disease.related_mirnas.page.totalPages - 1">...</span>
-				
-				<div data-ng-if="disease.related_mirnas.page.totalPages>1">
-					<div class="pull-right">Page {{disease.related_mirnas.page.number+1}} / {{disease.related_mirnas.page.totalPages}}</div>
-					<div class="pull-left">Showing {{disease.related_mirnas.mirna.length}} of {{disease.related_mirnas.page.totalElements}}</div>
-					<nav>
-						<ul class="pager">
-							<li data-ng-class="{disabled: disease.related_mirnas.page.number === 0}">
-								<a data-ui-sref="{page: {{disease.related_mirnas.page.number - 1}} }" data-ng-click="disease.related_mirnas.previousPage()">Previous</a>
-							</li>
-							<li data-ng-class="{disabled: disease.related_mirnas.page.number === disease.related_mirnas.page.totalPages - 1}">
-								<a data-ui-sref="{page: {{disease.related_mirnas.page.number + 1}} }" data-ng-click="disease.related_mirnas.nextPage()">Next</a>
-							</li>
-						</ul>
-					</nav>
-				</div>
-				
-			</div>
-		</div>
-	</div> 
-	
+	<div data-ng-include="'partials/snippet/card_filter_mirna.html'"></div>
 
-	<div class="col-md-12" data-ng-if="filtered_mirna">
-		<h2>Mirna <small>{{filtered_mirna.id}}</small></h2>
-	</div> 
+	<div data-ng-include="'partials/snippet/header_filtered_mirna.html'"></div>
 	
-	<div data-ng-if="interaction_datas.interaction_data.length>0" data-ng-include="'partials/snippet/interaction_datas_phenotype.html'"></div>
- 	<div data-ng-if="expression_datas.expression_data.length>0" data-ng-include="'partials/snippet/expression_datas_phenotype.html'"></div>
- 	<div data-ng-if="pubmed_documents.pubmed_document.length>0" data-ng-include="'partials/snippet/pubmed_documents2.html'"></div>
+	<div data-ng-if="interaction_datas.interaction_data.length>0" data-ng-include="'partials/snippet/card_interaction_datas.html'"></div>
+ 	<div data-ng-if="expression_datas.expression_data.length>0" data-ng-include="'partials/snippet/card_expression_datas.html'"></div>
+ 	<div data-ng-if="pubmed_documents.pubmed_document.length>0" data-ng-include="'partials/snippet/card_pubmed_documents.html'"></div>
  	
 </div>

@@ -1,0 +1,16 @@
+<div class="col-sm-12" data-ng-if="pubmed_documents">
+	<div class="card">
+		<div class="card card__title">Pubmed Documents</div>
+		<div class="card__text">
+			<div data-ng-include="'partials/snippet/card_pubmed_document.html'"
+				data-ng-repeat="pubmed_document in pubmed_documents.pubmed_document">
+			</div>
+		</div>
+		
+		<div data-ng-include="'partials/snippet/card_pager_footer.html'"
+				data-ng-if="true"
+				onload="e=pubmed_documents;element='pubmed_document';">
+		</div>
+	
+	</div>
+</div>
