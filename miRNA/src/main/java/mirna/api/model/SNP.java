@@ -35,6 +35,10 @@ public class SNP extends ModelClass {
 	
 	@ManyToMany(mappedBy="snps")
 	private Set<Disease> diseases;
+	
+	
+	@ManyToMany(mappedBy="snps")
+	private Set<Gene> genes;
 
 	public SNP(){	}
 

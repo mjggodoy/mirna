@@ -986,17 +986,7 @@ module.controller('PhenotypeViewController',
 			angular.extend(this, $controller('PagedListController',
 					{$scope: $scope.disease.related_mirnas, Object : Mirna, elements : 'mirna'}));
 			
-			$scope.snps = {};
-			$scope.snps.pageSize = 10;
-			$scope.snps.search = {
-				searchFunction: "disease_pk",
-				searchFields: [{
-					key: "pk",
-					value: $stateParams.id
-				}]
-			};
-			angular.extend(this, $controller('PagedListController',
-					{$scope: $scope.snps, Object : SNP, elements : 'snp'}));
+			
 		}
 		
 		$scope.filterByMirna = function(mirna) {
@@ -1172,11 +1162,40 @@ module.controller('PubmedDocumentViewController',
 });
 
 module.controller('SNPViewController',
-		function($scope, $controller, $stateParams, SNP) {
+		function($scope, $controller, $stateParams, SNP, Gene, InteractionData) {
 	
 		SNP.get({ id: $stateParams.id }, function(response) {
         $scope.snp = response ? response : {};
-		
+        if ($scope.snp) {	
+        	$scope.snp.related_genes = {};
+			$scope.snp.related_genes.pageSize = 50;
+			$scope.snp.related_genes.search = {
+				searchFunction: "genes_related_to_snp",
+				searchFields: [{
+					key: "pk",
+					value: $stateParams.id
+				}]
+			};
+			angular.extend(this, $controller('PagedListController',
+					{$scope: $scope.snp.related_genes, Object : Gene, elements : 'gene'}));
+		} 
+        
+        
+        $scope.filterByGene = function(snp) {
+			$scope.filtered_snp = snp;
+			$scope.interaction_datas = {};
+			$scope.interaction_datas.pageSize = 5;
+			$scope.interaction_datas.search = {
+				searchFunction: "interaction_data_related_to_gene_and_snp",
+				searchFields: [{
+					key: "pk",
+					value: $stateParams.id
+				}]
+			};
+			angular.extend(this, $controller('PagedListController',
+					{$scope: $scope.interaction_datas, Object : InteractionData, elements : 'interaction_data'}));
+		}
+       	
 	});	
 });
 

@@ -34,7 +34,7 @@ public class AppMirnaConfig extends RepositoryRestMvcConfiguration {
 	@Bean(name = "mirnaDataSource")
 	public DataSource dataSource() {
 		
-		System.out.println("USING SSH!!!");
+		/*System.out.println("USING SSH!!!");
 		String strSshUser = "root";              // SSH loging username
 		String strSshPassword = "lnkdkhaos";     // SSH login password
 		String strSshHost = "150.214.214.5";     // hostname or ip or SSH server
@@ -47,11 +47,11 @@ public class AppMirnaConfig extends RepositoryRestMvcConfiguration {
 			CTestDriver.doSshTunnel(strSshUser, strSshPassword, strSshHost, nSshPort, strRemoteHost, nLocalPort, nRemotePort);
 		} catch (JSchException e) {
 			e.printStackTrace();
-		}
+		}*/
 		
 		MysqlDataSource dataSource = new MysqlDataSource();
-		//dataSource.setUrl("jdbc:mysql://192.168.44.23:3306");
-		dataSource.setUrl("jdbc:mysql://localhost:3366");
+		dataSource.setUrl("jdbc:mysql://192.168.44.23:3306");
+		//dataSource.setUrl("jdbc:mysql://localhost:3366");
 	    dataSource.setDatabaseName("mirna");
 	    dataSource.setUser("mirna");
 	    dataSource.setPassword("mirna");
