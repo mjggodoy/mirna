@@ -6,7 +6,7 @@
 				data-ng-repeat="interaction_data in interaction_datas.interaction_data">
 			</div>
 			<div data-ng-include="'partials/snippet/card_pager_footer.html'"
-				data-ng-if="true"
+				data-ng-if="interaction_datas"
 				onload="e=interaction_datas;element='interaction_data';">
 			</div>
 		</div>

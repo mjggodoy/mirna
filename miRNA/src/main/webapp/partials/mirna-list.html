@@ -1,29 +1,51 @@
-<h3>Mirna</h3>
+<div class="row">
+	<ol class="breadcrumb">
+		<li><a href="#">Home</a></li>
+		<li class="active">miRNA</li>
+	</ol>
+</div>
 
-<table class="table table-hover">
-	<thead>
-		<tr>
-			<th>Id</th>
-			<th>Accession number</th>
-			<th>Mature</th>
-			<th>Hairpin</th>
-			<th>Dead</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr data-ng-repeat="o in mirna">
-			<td>
-				<a data-ui-sref="viewMature({id:o.pk})" data-ng-if="o.type=='mature'">{{o.id}}</a>
-				<a data-ui-sref="viewHairpin({id:o.pk})" data-ng-if="o.type=='hairpin'">{{o.id}}</a>
-				<a data-ui-sref="viewDeadMirna({id:o.pk})" data-ng-if="o.type=='dead'">{{o.id}}</a>
-			</td>
-			<td>{{o.accessionNumber}}</td>
-			<td><span data-ng-if="o.type=='mature'">&#10004;</span></td>
-			<td><span data-ng-if="o.type=='hairpin'">&#10004;</span></td>
-			<td><span data-ng-if="o.type=='dead'">&#10004;</span></td>
-		</tr>
-	</tbody>
+<div class="row card-container">
+
+	<div class="col-sm-12">
+		<h1>Mirna</h1>
+	</div>
 	
-</table>
+	<div class="col-sm-12">
+		<div class="card">
+			<div class="card card__title">Mirna</div>
+			<div class="card__text">
+				
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>Id</th>
+							<th>Accession number</th>
+							<th>Mature</th>
+							<th>Hairpin</th>
+							<th>Dead</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr data-ng-repeat="o in mirna">
+							<td>
+								<a data-ui-sref="viewMature({id:o.pk})" data-ng-if="o.type=='mature'">{{o.id}}</a>
+								<a data-ui-sref="viewHairpin({id:o.pk})" data-ng-if="o.type=='hairpin'">{{o.id}}</a>
+								<a data-ui-sref="viewDeadMirna({id:o.pk})" data-ng-if="o.type=='dead'">{{o.id}}</a>
+							</td>
+							<td>{{o.accessionNumber}}</td>
+							<td><span data-ng-if="o.type=='mature'">&#10004;</span></td>
+							<td><span data-ng-if="o.type=='hairpin'">&#10004;</span></td>
+							<td><span data-ng-if="o.type=='dead'">&#10004;</span></td>
+						</tr>
+					</tbody>
+				</table>
 
-<div data-ng-include="'partials/snippet/pager.html'"></div>
+			</div>
+			
+			<div data-ng-include="'partials/snippet/pager.html'"></div>
+		</div>
+	</div>
+	
+</div>
+

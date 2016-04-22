@@ -1,30 +1,37 @@
 <div class="row">
-	<div class="col-md-12">
-		<ol class="breadcrumb">
-			<li><a href="#">Home</a></li>
-			<li>Environmental Factor</li>
-			<li data-ng-if="environmental_factor.smallMolecules.length>0">Small Molecule</li>
-			<li class="active">{{environmental_factor.name}}</li>
-		</ol>
-	</div>
+	<ol class="breadcrumb">
+		<li><a data-ui-sref="home">Home</a></li>
+		<li>Environmental Factor</li>
+		<li data-ng-if="environmental_factor.smallMolecules.length>0">Small Molecule</li>
+		<li class="active">{{environmental_factor.name}}</li>
+	</ol>
 </div>
 
-<div class="row">
+<div class="row card-container">
 
-	<div class="col-md-12">
+	<div class="col-sm-12">
 		<h1 data-ng-if="environmental_factor.smallMolecules.length>0">Small Molecule <small>{{environmental_factor.name}}</small></h1>
 		<h1 data-ng-if="environmental_factor.smallMolecules.length==0">Environmental Factor <small>{{environmental_factor.name}}</small></h1>
 	</div>
 	
-	<div class="col-md-12" data-ng-if="environmental_factor.smallMolecules.length>0">
-		<div class="panel panel-primary">
-			<div class="panel-heading">Information of {{environmental_factor.name}}</div>
-			<div class="panel-body">
+	<div class="col-sm-12" data-ng-if="environmental_factor.smallMolecules.length>0">
+		<div class="card">
+			<div class="card card__title">Information</div>
+			<div class="card__text">
 				<div data-ng-include="'partials/snippet/card_small_molecule.html'"
 					data-ng-repeat="small_molecule in environmental_factor.smallMolecules">
 				</div>
 			</div>
 		</div>
+	</div>
+	
+<!-- 	<div data-ng-include="'partials/snippet/card_filter_mirna.html'" -->
+<!-- 		data-ng-if="environmental_factor.related_mirnas.mirna.length>0" -->
+<!-- 		onload="related_mirnas=environmental_factor.related_mirnas"> -->
+<!-- 	</div> -->
+
+	<div data-ng-include="'partials/snippet/card_filter_mirna.html'"
+		data-ng-if="related_mirnas.mirna.length>0">
 	</div>
 	
 	<div class="col-md-12">

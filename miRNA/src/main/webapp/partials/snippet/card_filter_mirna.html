@@ -1,4 +1,5 @@
 <div class="col-sm-12" data-ng-if="related_mirnas">
+
 	<div class="card">
 		<h2 class="card card__title">miRNA involved</h2>
 		<div class="card__text">
@@ -16,7 +17,7 @@
 		</div>
 		
 		<div data-ng-include="'partials/snippet/card_pager_footer.html'"
-				data-ng-if="true"
+				data-ng-if="related_mirnas"
 				onload="e=related_mirnas;element='mirna';">
 		</div>
 	</div>

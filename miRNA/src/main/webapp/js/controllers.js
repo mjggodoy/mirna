@@ -20,10 +20,9 @@ module.controller('PagedListController', function($scope, $state, Object, elemen
 	// Fetch all elements. Issues a GET to /api/<elements>
 	$scope.loadPage = function() {
 		Object.query($scope.page, $scope.sort, $scope.search, function(response) {
-			$scope[elements] = response[elements] ? response[elements]
-					: [];
-			$scope.page = response.page ? response.page
-					: {};
+			$scope[elements] = response[elements] ? response[elements] : [];
+			$scope.page = response.page ? response.page : {};
+			console.log(response);
 		});
 	};
 
@@ -351,9 +350,9 @@ module.controller('EnvironmentalFactorViewController',
 		function(response) {
 			$scope.environmental_factor = response ? response : {};
 			if ($scope.environmental_factor) {
-				$scope.environmental_factor.related_mirnas = {};
-				$scope.environmental_factor.related_mirnas.pageSize = 50;
-				$scope.environmental_factor.related_mirnas.search = {
+				$scope.related_mirnas = {};
+				$scope.related_mirnas.pageSize = 50;
+				$scope.related_mirnas.search = {
 					searchFunction : "related_to_environmental_factor",
 					searchFields : [ {
 						key : "pk",
@@ -361,7 +360,7 @@ module.controller('EnvironmentalFactorViewController',
 					} ]
 				};
 				angular.extend(this, $controller('PagedListController', {
-					$scope : $scope.environmental_factor.related_mirnas,
+					$scope : $scope.related_mirnas,
 					Object : Mirna,
 					elements : 'mirna'
 				}));
