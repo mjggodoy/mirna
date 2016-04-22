@@ -256,9 +256,9 @@ module.controller('GeneViewController',
 		}, function(response) {
 			$scope.gene = response ? response : {};
 			if ($scope.gene) {
-				$scope.gene.related_mirnas = {};
-				$scope.gene.related_mirnas.pageSize = 50;
-				$scope.gene.related_mirnas.search = {
+				$scope.related_mirnas = {};
+				$scope.related_mirnas.pageSize = 48;
+				$scope.related_mirnas.search = {
 					searchFunction : "related_to_gene",
 					searchFields : [ {
 						key : "pk",
@@ -266,7 +266,7 @@ module.controller('GeneViewController',
 					} ]
 				};
 				angular.extend(this, $controller('PagedListController', {
-						$scope : $scope.gene.related_mirnas,
+						$scope : $scope.related_mirnas,
 						Object : Mirna,
 						elements : 'mirna'
 				}));

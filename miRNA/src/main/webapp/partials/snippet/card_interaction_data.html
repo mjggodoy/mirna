@@ -45,11 +45,18 @@
 		
 		<dt data-ng-if="interaction_data.mirnas">MiRNA:</dt>
 		<dd data-ng-if="interaction_data.mirnas">
-			<span data-ng-repeat="o in interaction_data.mirnas">{{o.id}}<span data-ng-if="$last==false"> / </span></span>
+			<span data-ng-repeat="o in interaction_data.mirnas">
+				<a data-ui-sref="viewMature({id:o.pk})" data-ng-if="o.type=='mature'">{{o.id}}</a>
+				<a data-ui-sref="viewHairpin({id:o.pk})" data-ng-if="o.type=='hairpin'">{{o.id}}</a>
+				<a data-ui-sref="viewDeadMirna({id:o.pk})" data-ng-if="o.type=='dead'">{{o.id}}</a>
+				<span data-ng-if="$last==false"> / </span>
+			</span>
 		</dd>
 		
 		<dt data-ng-if="interaction_data.gene">Gene:</dt>
-		<dd data-ng-if="interaction_data.gene">{{interaction_data.gene.name}}</dd>
+		<dd data-ng-if="interaction_data.gene">
+			<a data-ui-sref="viewGene({id:interaction_data.gene.pk})">{{interaction_data.gene.name}}</a>
+		</dd>
 		
 		<dt data-ng-if="interaction_data.target != null && interaction_data.target.transcript != null && interaction_data.target.transcript.id != null">Transcript ID:</dt>
 		<dd data-ng-if="interaction_data.target != null && interaction_data.target.transcript != null && interaction_data.target.transcript.id != null">{{interaction_data.target.transcript.id}}</dd>
