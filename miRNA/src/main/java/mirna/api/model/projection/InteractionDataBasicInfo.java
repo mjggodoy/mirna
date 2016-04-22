@@ -42,5 +42,6 @@ public interface InteractionDataBasicInfo {
 	public OnlyName getGene();
 	
 	public TargetBasicInfo getTarget();
+	
 
 }

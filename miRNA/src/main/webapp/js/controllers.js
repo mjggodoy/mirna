@@ -1162,7 +1162,7 @@ module.controller('PubmedDocumentViewController',
 });
 
 module.controller('SNPViewController',
-		function($scope, $controller, $stateParams, SNP, Gene, InteractionData, Disease) {
+		function($scope, $controller, $stateParams, SNP, Gene, InteractionData, ExpressionData, Disease) {
 	
 		SNP.get({ id: $stateParams.id }, function(response) {
         $scope.snp = response ? response : {};
@@ -1196,9 +1196,9 @@ module.controller('SNPViewController',
 					{$scope: $scope.interaction_datas, Object : InteractionData, elements : 'interaction_data'}));
 		
 			
-			$scope.diseases = {};
-			$scope.diseases.pageSize = 5;
-			$scope.diseases.search = {
+			$scope.expression_datas = {};
+			$scope.expression_datas.pageSize = 5;
+			$scope.expression_datas.search = {
 				searchFunction: "disease_related_to_snp",
 				searchFields: [{
 					key: "pk",
@@ -1206,7 +1206,7 @@ module.controller('SNPViewController',
 				}]
 			};
 			angular.extend(this, $controller('PagedListController',
-					{$scope: $scope.diseases, Object : Disease, elements : 'disease'}));
+					{$scope: $scope.expression_datas, Object : ExpressionData, elements : 'expression_data'}));
         
   
         
