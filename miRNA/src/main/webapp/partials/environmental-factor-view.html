@@ -25,49 +25,10 @@
 		</div>
 	</div>
 	
-<!-- 	<div data-ng-include="'partials/snippet/card_filter_mirna.html'" -->
-<!-- 		data-ng-if="environmental_factor.related_mirnas.mirna.length>0" -->
-<!-- 		onload="related_mirnas=environmental_factor.related_mirnas"> -->
-<!-- 	</div> -->
-
-	<div data-ng-include="'partials/snippet/card_filter_mirna.html'"
-		data-ng-if="related_mirnas.mirna.length>0">
-	</div>
+	<div data-ng-include="'partials/snippet/card_filter_mirna.html'"></div>
 	
-	<div class="col-md-12">
-		<div class="panel panel-primary">
-			<div class="panel-heading">miRNA involved in {{environmental_factor.name}}</div>
-			<div class="panel-body">
-			
-				<span data-ng-if="environmental_factor.related_mirnas.page.number != 0">... </span>
-				<span data-ng-repeat="o in environmental_factor.related_mirnas.mirna">
-					<button type="button" class="btn btn-default btn-xs" data-ng-click="filterByMirna(o)">{{o.id}}</button>&nbsp;
-				</span>
-				<span data-ng-if="environmental_factor.related_mirnas.page.number != environmental_factor.related_mirnas.page.totalPages - 1">...</span>
-				
-				<div data-ng-if="environmental_factor.related_mirnas.page.totalPages>1">
-					<div class="pull-right">Page {{environmental_factor.related_mirnas.page.number+1}} / {{environmental_factor.related_mirnas.page.totalPages}}</div>
-					<div class="pull-left">Showing {{environmental_factor.related_mirnas.mirna.length}} of {{environmental_factor.related_mirnas.page.totalElements}}</div>
-					<nav>
-						<ul class="pager">
-							<li data-ng-class="{disabled: environmental_factor.related_mirnas.page.number === 0}">
-								<a data-ui-sref="{page: {{environmental_factor.related_mirnas.page.number - 1}} }" data-ng-click="environmental_factor.related_mirnas.previousPage()">Previous</a>
-							</li>
-							<li data-ng-class="{disabled: environmental_factor.related_mirnas.page.number === environmental_factor.related_mirnas.page.totalPages - 1}">
-								<a data-ui-sref="{page: {{environmental_factor.related_mirnas.page.number + 1}} }" data-ng-click="environmental_factor.related_mirnas.nextPage()">Next</a>
-							</li>
-						</ul>
-					</nav>
-				</div>
-				
-			</div>
-		</div>
-	</div>
+	<div data-ng-include="'partials/snippet/header_filtered_mirna.html'"></div>
 	
-	<div class="col-md-12" data-ng-if="filtered_mirna">
-		<h2>Mirna <small>{{filtered_mirna.id}}</small></h2>
-	</div>
-	
-	<div data-ng-include="'partials/snippet/expression_datas_environmental_factor.html'"></div>
+	<div data-ng-include="'partials/snippet/card_expression_datas.html'"></div>
 	
 </div>

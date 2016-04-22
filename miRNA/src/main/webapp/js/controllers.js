@@ -27,7 +27,6 @@ module.controller('PagedListController', function($scope, $state, Object, elemen
 		Object.query($scope.page, $scope.sort, $scope.search, function(response) {
 			$scope[elements] = response[elements] ? response[elements] : [];
 			$scope.page = response.page ? response.page : {};
-			console.log(response);
 		});
 	};
 
@@ -211,7 +210,7 @@ module.controller('EnvironmentalFactorViewController',
 			$scope.environmental_factor = response ? response : {};
 			if ($scope.environmental_factor) {
 				$scope.related_mirnas = {};
-				$scope.related_mirnas.pageSize = 50;
+				$scope.related_mirnas.pageSize = 48;
 				$scope.related_mirnas.search = {
 					searchFunction : "related_to_environmental_factor",
 					searchFields : [ {
