@@ -81,6 +81,22 @@ public class Gene extends ModelClass {
 	
 	@ManyToMany(mappedBy="genes")
 	private Set<Transcript> transcripts;
+	
+	
+	@ManyToMany
+	@JoinTable(
+			name="snp_has_gene",
+			schema="mirna",
+			joinColumns={
+					@JoinColumn(name="gene_pk")
+			},
+			inverseJoinColumns={
+					@JoinColumn(name="snp_pk")
+			})
+	private Set<SNP> snps;
+	
+	
+	
 
 	public String getDistance() {
 		return distance;

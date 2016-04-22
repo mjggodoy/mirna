@@ -232,6 +232,31 @@ module.controller('SearchByPubmedDocumentIdController',
 
 	}
 );
+
+
+module.controller('SearchBySnpIdController',
+		function($scope, $controller, $stateParams, SNP) {
+			$scope.search = {
+				searchFunction : "id",
+				searchFields : [ {
+					key : "id",
+					value : $stateParams.id
+				} ]
+			};
+			$scope.sortOptions = [ {
+				value : "id",
+				label : "id"
+			} ];
+			angular.extend(this, $controller('PagedListController', {
+				$scope : $scope,
+				Object : SNP,
+				elements : 'snp'
+			}));
+
+		}
+	);
+
+
 		
 module.controller('SearchByTranscriptIdController',
 	function($scope, $controller, $stateParams, Transcript) {
@@ -718,6 +743,15 @@ module.controller('SearchController', function($scope, $state) {
 			});
 		}
 	};
+	
+	
+	$scope.findBySnpId = function() {
+		if ($scope.SNPIdText) {
+			$state.go('searchBySNPId', {
+				id : $scope.SNPIdText
+			});
+		}
+	};
   
 });
 
@@ -859,6 +893,21 @@ module.controller('SearchByTranscriptIdController',
 			{$scope: $scope, Object : Transcript, elements : 'transcript'}));
 });
 
+
+module.controller('SearchBySnpIdController',
+		function($scope, $controller, $stateParams, SNP) {
+	$scope.search = {
+		searchFunction: "id",
+		searchFields: [{
+			key: "id",
+			value: $stateParams.id
+		}]
+	};
+	$scope.sortOptions = [ {value: "id", label: "id"} ];
+	angular.extend(this, $controller('PagedListController',
+			{$scope: $scope, Object : SNP, elements : 'snp'}));
+});
+
 module.controller('MirnaViewController',
 		function($scope, $controller, $stateParams, Object, complementary, PubmedDocument, ExpressionData) {
 	
@@ -936,17 +985,7 @@ module.controller('PhenotypeViewController',
 			angular.extend(this, $controller('PagedListController',
 					{$scope: $scope.related_mirnas, Object : Mirna, elements : 'mirna'}));
 			
-			$scope.snps = {};
-			$scope.snps.pageSize = 10;
-			$scope.snps.search = {
-				searchFunction: "disease_pk",
-				searchFields: [{
-					key: "pk",
-					value: $stateParams.id
-				}]
-			};
-			angular.extend(this, $controller('PagedListController',
-					{$scope: $scope.snps, Object : SNP, elements : 'snp'}));
+			
 		}
 		
 		$scope.filterByMirna = function(mirna) {
@@ -1120,6 +1159,61 @@ module.controller('PubmedDocumentViewController',
 		}
 	});	
 });
+
+module.controller('SNPViewController',
+		function($scope, $controller, $stateParams, SNP, Gene, InteractionData, Disease) {
+	
+		SNP.get({ id: $stateParams.id }, function(response) {
+        $scope.snp = response ? response : {};
+        if ($scope.snp) {	
+        	$scope.snp.related_genes = {};
+			$scope.snp.related_genes.pageSize = 50;
+			$scope.snp.related_genes.search = {
+				searchFunction: "genes_related_to_snp",
+				searchFields: [{
+					key: "pk",
+					value: $stateParams.id
+				}]
+			};
+			angular.extend(this, $controller('PagedListController',
+					{$scope: $scope.snp.related_genes, Object : Gene, elements : 'gene'}));
+		} 
+        
+        
+        $scope.filterByGene = function(gene) {
+			$scope.filtered_gene = gene;
+			$scope.interaction_datas = {};
+			$scope.interaction_datas.pageSize = 5;
+			$scope.interaction_datas.search = {
+				searchFunction: "interaction_data_related_to_gene_and_snp",
+				searchFields: [{
+					key: "pk",
+					value: $stateParams.id
+				}]
+			};
+			angular.extend(this, $controller('PagedListController',
+					{$scope: $scope.interaction_datas, Object : InteractionData, elements : 'interaction_data'}));
+		
+			
+			$scope.diseases = {};
+			$scope.diseases.pageSize = 5;
+			$scope.diseases.search = {
+				searchFunction: "disease_related_to_snp",
+				searchFields: [{
+					key: "pk",
+					value: $stateParams.id
+				}]
+			};
+			angular.extend(this, $controller('PagedListController',
+					{$scope: $scope.diseases, Object : Disease, elements : 'disease'}));
+        
+  
+        
+        }
+       	
+	});	
+});
+
 		
 module.controller('HomeController', function($scope, $state){
 	$scope.quickSearchText = 'hsa-let-7a';
@@ -1187,5 +1281,12 @@ module.controller('SearchController', function($scope, $state){
 			$state.go('searchByTranscriptId', {id: $scope.transcriptIdText});
 		}
 	};
+	
+	$scope.findBySNPId = function() {
+		if ($scope.SNPIdText) {
+			$state.go('searchBySnpId', {id: $scope.SNPIdText});
+		}
+	};
+	
 	
 });

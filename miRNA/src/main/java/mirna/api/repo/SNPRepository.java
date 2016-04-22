@@ -12,7 +12,8 @@ import mirna.api.model.SNP;
 @RepositoryRestResource(collectionResourceRel = "snp", path = "snp")
 public interface SNPRepository extends PagingAndSortingRepository<SNP, Integer> {
 	
-	public Page<SNP> findBy(@Param("snp_id")String name, Pageable pageable);
+	@RestResource(path = "id")
+	public Page<SNP> findById(@Param("id")String id, Pageable pageable);
 	
 	@RestResource(path = "disease_pk")
 	public Page<SNP> findByDiseases_Pk(@Param("pk")int pk, Pageable pageable);

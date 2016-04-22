@@ -114,7 +114,15 @@
 		<dd data-ng-if="interaction_data.target.target_ref != null"><strong>Target reference:</strong>
 		{{interaction_data.target.target_ref}}</dd>
 		<dd data-ng-if="interaction_data.target.organism.name != null"><strong>Organism:</strong>
-		{{interaction_data.target.organism.name}}</dd>
+		{{interaction_data.target.organism.name}}</dd>	
+		
+		<dd data-ng-if="expression_data.disease">
+			&nbsp;
+			<div data-ng-include="'partials/snippet/card_disease.html'"
+				data-ng-if="true"
+				onload="disease = expression_data.disease">
+			</div>
+		</dd>			
 		
 	</dl>
 </div>

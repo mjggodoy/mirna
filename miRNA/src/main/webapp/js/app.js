@@ -102,6 +102,10 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 		url: '/target_id/:id',
 		templateUrl: 'partials/target-view.html',
 		controller: 'TargetViewController'
+	}).state('viewSNP', { //view for SNP
+		url: '/snp_id/:id',
+		templateUrl: 'partials/snp-view.html',
+		controller: 'SNPViewController'
 	}).state('search', { //search state
 		url: '/search',
 		templateUrl: 'partials/search.html',
@@ -138,6 +142,10 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 		url: '/search/transcript_id/:id',
 		templateUrl: 'partials/transcript-list.html',
 		controller: 'SearchByTranscriptIdController'
+	}).state('searchBySnpId', { //results state snp
+		url: '/search/snp_id/:id',
+		templateUrl: 'partials/snp-list.html',
+		controller: 'SearchBySnpIdController'
 	}).state('home', { //home state
 		url: '/home',
 		templateUrl: 'partials/home.html',
