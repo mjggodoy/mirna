@@ -937,9 +937,9 @@ module.controller('SearchController', function($scope, $state) {
 		}
 	};
 	
-	$scope.findBySnpId = function() {
+	$scope.findBySNPId = function() {
 		if ($scope.SNPIdText) {
-			$state.go('searchBySNPId', {
+			$state.go('searchBySnpId', {
 				id : $scope.SNPIdText
 			});
 		}
