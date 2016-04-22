@@ -1,6 +1,6 @@
 <div class="col-md-12" data-ng-if="interaction_datas">
 	<div class="panel panel-primary">
-		<div class="panel-heading">Interaction data related to {{snp.id}} and {{filtered_gene.name}}</div>
+		<div class="panel-heading">Interaction data related to {{filtered_gene.name}} associated to {{snp.id}}</div>
 		<div class="panel-body">
 			<div data-ng-include="'partials/snippet/card_interaction_data.html'"
 				data-ng-repeat="interaction_data in interaction_datas.interaction_data">

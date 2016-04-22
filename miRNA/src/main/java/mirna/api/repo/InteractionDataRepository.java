@@ -54,5 +54,8 @@ public interface InteractionDataRepository extends PagingAndSortingRepository<In
 	public Page<InteractionData> findInteractionDatasrelatedtoGeneandSNP(@Param("pk")int snpPk, Pageable pageable);
 	
 	
+
+	
+	
 	
 }
