@@ -1,0 +1,18 @@
+<div class="card__footer center-block">
+	
+	<div class="center-pager">
+		<div class="pull-right">
+			<span class="footer_text">Page {{e.page.number+1}} / {{e.page.totalPages}}</span>
+		</div>
+		<div class="pull-left">
+			<span class="footer_text">Showing {{e[element].length}} of {{e.page.totalElements}}</span>
+		</div>
+		<div>
+			<button type="button" class="btn btn-pager" data-ng-click="e.previousPage()">&lt;&lt;</button>
+			<button type="button" class="btn btn-pager" data-ng-click="e.nextPage()">&gt;&gt;</button>
+		</div>
+		
+	</div>
+
+	<div class="clearfix"></div>
+</div>

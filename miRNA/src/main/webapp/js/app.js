@@ -91,7 +91,7 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 		templateUrl: 'partials/protein-view.html',
 		controller: 'ProteinViewController'
 	}).state('viewPubmedDocument', { //results state 4
-		url: '/pubmedDocument_id/:id',
+		url: '/pubmed_document/:id',
 		templateUrl: 'partials/pubmed-view.html',
 		controller: 'PubmedDocumentViewController'
 	}).state('viewTranscript', { //results state 4

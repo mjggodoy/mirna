@@ -1,7 +1,7 @@
 <div class="col-md-12">
-	<div class="panel panel-primary">
-		<div class="panel-heading">Pubmed Documents</div>
-		<div class="panel-body">
+	<div class="card">
+		<div class="card card__title">Pubmed Documents</div>
+		<div class="card__text">
 			<table class="table table-hover">
 				<thead>
 					<tr>
@@ -12,8 +12,8 @@
 				<tbody>
 					<tr data-ng-repeat="o in mirna.pubmed_documents.pubmed_document">
 						<td>
-							<a href="http://www.ncbi.nlm.nih.gov/pubmed/{{o.id}}" target="_blank">
-								{{o.id}} <span class="glyphicon glyphicon-share" aria-hidden="true"></span>
+							<a data-ui-sref="viewPubmedDocument({id: o.pk})">
+								{{o.id}}
 							</a>
 						</td>
 						<td>Nombre provisional {{o.id}}</td>
@@ -21,20 +21,13 @@
 				</tbody>
 			</table>
 			
-			<div class="pull-right">Page {{mirna.pubmed_documents.page.number+1}} / {{mirna.pubmed_documents.page.totalPages}}</div>
-			
-			<div class="pull-left">Showing {{mirna.pubmed_documents.pubmed_document.length}} of {{mirna.pubmed_documents.page.totalElements}}</div>
-
-			<nav>
-				<ul class="pager">
-					<li data-ng-class="{disabled: mirna.pubmed_documents.page.number === 0}">
-						<a data-ui-sref="{page: {{mirna.pubmed_documents.page.number - 1}} }" data-ng-click="mirna.pubmed_documents.previousPage()">Previous</a>
-					</li>
-					<li data-ng-class="{disabled: mirna.pubmed_documents.page.number === mirna.pubmed_documents.page.totalPages - 1}">
-						<a data-ui-sref="{page: {{mirna.pubmed_documents.page.number + 1}} }" data-ng-click="mirna.pubmed_documents.nextPage()">Next</a>
-					</li>
-				</ul>
-			</nav>
+		</div>
+	
+		<div class="card__footer center-block">
+			<button data-ng-if= "" type="button" class="btn btn-pager pull-left" data-ng-click="mirna.pubmed_documents.previousPage()">&lt;&lt;</button>
+			<button type="button" class="btn btn-pager pull-right" data-ng-click="mirna.pubmed_documents.nextPage()">&gt;&gt;</button>
+			<div class="center-pager">Page {{mirna.pubmed_documents.page.number+1}} / {{mirna.pubmed_documents.page.totalPages}}</div>
+			<div class="clearfix"></div>
 		</div>
 	</div>
 </div>

@@ -1,12 +1,15 @@
-<div class="panel">
+<div class="dl-container">
 	<dl class="dl-horizontal">
 	
 		<dt data-ng-if="expression_data.provenance">Provenance:</dt>
 		<dd data-ng-if="expression_data.provenance">{{expression_data.provenance}}</dd>
 		
 		<dt data-ng-if="expression_data.disease">Disease:</dt>
-		<dd data-ng-if="expression_data.disease">{{Util.capitalize(expression_data.disease.name)}}
-			<span data-ng-if="expression_data.disease.diseaseClass"> ({{expression_data.disease.diseaseClass}})</span>
+		<dd data-ng-if="expression_data.disease">
+			<a data-ui-sref="viewPhenotype({id: expression_data.disease.pk})">
+				{{Util.capitalize(expression_data.disease.name)}}
+				<span data-ng-if="expression_data.disease.diseaseClass"> ({{expression_data.disease.diseaseClass}})</span>
+			</a>
 		</dd>
 		
 		<dt data-ng-if="expression_data.titleReference">Title reference:</dt>
@@ -50,13 +53,12 @@
 		
 		<dt data-ng-if="expression_data.interactionData">Interaction Data:</dt>
 		<dd data-ng-if="expression_data.interactionData">
-			&nbsp;
 			<div data-ng-include="'partials/snippet/card_interaction_data.html'"
 				data-ng-if="true"
 				onload="interaction_data = expression_data.interactionData">
 			</div>
-		</dd>			
+			<div class="clearfix"></div>
+		</dd>
+		
 	</dl>
-	<hr>
-	
 </div>

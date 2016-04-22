@@ -146,10 +146,9 @@ module.factory('Target', function(AbstractFactory) {
 module.factory('Util', function () {
 	return {
 		capitalize: function(str) {
-			console.log("CAPITALIZE!");
-			console.log(str);
-			console.log(str.charAt(0).toUpperCase() + str.slice(1));
-			return str.charAt(0).toUpperCase() + str.slice(1);
+			if (str) {
+				return str.charAt(0).toUpperCase() + str.slice(1);
+			}
 		}
 	};
 }); 
