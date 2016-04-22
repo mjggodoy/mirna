@@ -35,4 +35,14 @@ public interface ExpressionDataRepository extends PagingAndSortingRepository<Exp
 	@RestResource(path = "mirna_pk_and_pubmed_document_pk")
     public Page<ExpressionData> findByMirnas_PkAndPubmedDocuments_Pk(@Param("mirna_pk")int mirnaPk, @Param("pubmed_document_pk")int pubmedDocumentPk, Pageable pageable);
 	
+	
+	@Query("select distinct c from SnpHasGene a, SnpHasDisease b, ExpressionData c, "
+			+ "InteractionData d, Disease e where "
+			+ "a.snpPk = :pk and a.snpPk = b.snpPk and b.diseasePk = c.disease.pk "
+			+ "and a.genePk = d.gene.pk and c.interactionData.pk = d.pk "
+			+ "and c.disease.pk = e.pk")	
+	@RestResource(path = "disease_related_to_snp")
+	public Page<ExpressionData> findDiseasesBySNP(@Param("pk")int snpPk, Pageable pageable);
+	
+	
 }
