@@ -59,7 +59,9 @@
 		</dd>
 		
 		<dt data-ng-if="interaction_data.target != null && interaction_data.target.transcript != null && interaction_data.target.transcript.id != null">Transcript ID:</dt>
-		<dd data-ng-if="interaction_data.target != null && interaction_data.target.transcript != null && interaction_data.target.transcript.id != null">{{interaction_data.target.transcript.id}}</dd>
+		<dd data-ng-if="interaction_data.target != null && interaction_data.target.transcript != null && interaction_data.target.transcript.id != null">
+			<a data-ui-sref="viewTranscript({id:interaction_data.target.transcript.pk})">{{interaction_data.target.transcript.id}}</a>
+		</dd>
 		
 		<dt data-ng-if="(interaction_data.target != null && 
 		(interaction_data.target.chromosome != null 
