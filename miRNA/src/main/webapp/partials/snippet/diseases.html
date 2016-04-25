@@ -1,0 +1,26 @@
+<div class="col-md-12" data-ng-if="diseases">
+	<div class="panel panel-primary">
+		<div class="panel-heading">Diseases</div>
+		<div class="panel-body">
+			<div data-ng-include="'partials/snippet/card_disease.html'"
+				data-ng-repeat="disease in diseases.disease">
+			</div>
+			
+			<div data-ng-if="diseases.page.totalPages>1">
+				<div class="pull-right">Page {{diseases.page.number+1}} / {{diseases.page.totalPages}}</div>
+				<div class="pull-left">Showing {{diseases.snp.length}} of {{diseases.page.totalElements}}</div>
+				<nav>
+					<ul class="pager">
+						<li data-ng-class="{disabled: diseases.page.number === 0}">
+							<a data-ui-sref="{page: {{diseases.page.number - 1}} }" data-ng-click="diseases.previousPage()">Previous</a>
+						</li>
+						<li data-ng-class="{disabled: diseases.page.number === diseases.page.totalPages - 1}">
+							<a data-ui-sref="{page: {{diseases.page.number + 1}} }" data-ng-click="diseases.nextPage()">Next</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
+			
+		</div>
+	</div>
+</div>
