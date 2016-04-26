@@ -26,13 +26,10 @@
 			</div>
 		</div>
 	</div>
-	
-	<div data-ng-if="snp.related_pubmedDocuments.pubmed_document.length>0" data-ng-include="'partials/snippet/pubmed_documents3.html'"></div>
-	
-	
+		
 	<div class="col-md-12">
 		<div class="panel panel-primary">
-			<div class="panel-heading">Gene(s) related to {{snp.id}} </div>
+			<div class="panel-heading">Gene(s) included in {{snp.id}}</div>
 			<div class="panel-body">
 			
 				<span data-ng-if="snp.related_genes.page.number != 0">... </span>
@@ -64,6 +61,7 @@
 	<div class="col-md-12" data-ng-if="filtered_gene">
 		<h2>Gene<small>{{filtered_gene.name}}</small></h2>
 	</div>
+	<div data-ng-if="snp.related_pubmedDocuments.pubmed_document.length>0" data-ng-include="'partials/snippet/pubmed_documents3.html'"></div>
 	<div data-ng-if="expression_datas.expression_data.length>0" data-ng-include="'partials/snippet/expression_datas_snp.html'"></div>
 	
 	
