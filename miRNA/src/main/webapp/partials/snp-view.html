@@ -27,6 +27,9 @@
 		</div>
 	</div>
 	
+	<div data-ng-if="snp.related_pubmedDocuments.pubmed_document.length>0" data-ng-include="'partials/snippet/pubmed_documents3.html'"></div>
+	
+	
 	<div class="col-md-12">
 		<div class="panel panel-primary">
 			<div class="panel-heading">Gene(s) related to {{snp.id}} </div>
