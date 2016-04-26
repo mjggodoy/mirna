@@ -1,0 +1,33 @@
+<div class="col-md-12">
+	<div class="card">
+		<div class="card card__title">Pubmed Documents related to {{snp.id}} and {{filtered_gene.name}}</div>
+		<div class="card__text">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Name</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr data-ng-repeat="o in snp.related_pubmedDocuments.pubmed_document">
+						<td>
+							<a data-ui-sref="viewPubmedDocument({id: o.pk})">
+								{{o.id}}
+							</a>
+						</td>
+						<td>Nombre provisional {{o.id}}</td>
+					</tr>
+				</tbody>
+			</table>
+			
+		</div>
+	
+		<div class="card__footer center-block">
+			<button data-ng-if= "" type="button" class="btn btn-pager pull-left" data-ng-click="snp.pubmed_documents.previousPage()">&lt;&lt;</button>
+			<button type="button" class="btn btn-pager pull-right" data-ng-click="snp.pubmed_documents.nextPage()">&gt;&gt;</button>
+			<div class="center-pager">Page {{snp.pubmed_documents.page.number+1}} / {{snp.pubmed_documents.page.totalPages}}</div>
+			<div class="clearfix"></div>
+		</div>
+	</div>
+</div>

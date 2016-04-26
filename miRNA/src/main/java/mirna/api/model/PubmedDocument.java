@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -24,6 +26,20 @@ public class PubmedDocument extends ModelClass {
 	
 	@Column(name = "resource", nullable = true, length = 300, unique = true)
 	private String resource;
+	
+	@ManyToMany
+	@JoinTable(
+			name="snp_has_pubmed_document",
+			schema="mirna",
+			joinColumns={
+					@JoinColumn(name="pubmed_document_pk")
+			},
+			inverseJoinColumns={
+					@JoinColumn(name="snp_pk")
+			})
+	private Set<SNP> snps;
+	
+	
 	
 	@ManyToMany(mappedBy = "pubmedDocuments")
 	private Set<MiRna> mirnas;

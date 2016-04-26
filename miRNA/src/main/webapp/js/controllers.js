@@ -468,7 +468,7 @@ module.controller('PubmedDocumentViewController',
 );
 
 module.controller('SNPViewController',
-	function($scope, $controller, $stateParams, SNP, Gene, InteractionData, ExpressionData, Disease) {
+	function($scope, $controller, $stateParams, SNP, Gene, InteractionData, ExpressionData, Disease, PubmedDocument) {
 		SNP.get({ id: $stateParams.id }, function(response) {
 			$scope.snp = response ? response : {};
 	        if ($scope.snp) {	
@@ -486,9 +486,13 @@ module.controller('SNPViewController',
 					Object : Gene,
 					elements : 'gene'
 				}));
+				
+				
 			} 
+	        
 	        $scope.filterByGene = function(gene) {
-				$scope.filtered_gene = gene;
+				
+	        	$scope.filtered_gene = gene;
 				$scope.interaction_datas = {};
 				$scope.interaction_datas.pageSize = 5;
 				$scope.interaction_datas.search = {
@@ -503,6 +507,7 @@ module.controller('SNPViewController',
 					Object : InteractionData,
 					elements : 'interaction_data'
 				}));
+				
 				$scope.expression_datas = {};
 				$scope.expression_datas.pageSize = 5;
 				$scope.expression_datas.search = {
@@ -517,6 +522,22 @@ module.controller('SNPViewController',
 					Object : ExpressionData,
 					elements : 'expression_data'
 				}));
+				
+				$scope.snp.related_pubmedDocuments = {};
+				$scope.snp.related_pubmedDocuments.pageSize = 50;
+				$scope.snp.related_pubmedDocuments.search = {
+					searchFunction: "pubmed_document_related_to_snp",
+					searchFields: [{
+						key: "pk",
+						value: $stateParams.id
+					}]
+				};
+				angular.extend(this, $controller('PagedListController', {
+					$scope : $scope.snp.related_pubmedDocuments,
+					Object : PubmedDocument,
+					elements : 'pubmed_document'
+				}));		
+				
 	        }
 		});	
 	}
