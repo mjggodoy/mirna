@@ -8,8 +8,8 @@
 				<div class="col-sm-3 col-md-2" data-ng-repeat="item in related_genes.gene">
 					<div class="filter-button-container">
 						<button type="button" class="btn btn-default filter-button"
-							data-ng-class="{'actived': item.pk==filtered_mirna.pk}"
-							data-ng-click="filterByMirna(item)">{{item.id}}</button>
+							data-ng-class="{'actived': item.pk==filtered_gene.pk}"
+							data-ng-click="filterByGene(item)">{{item.name}}</button>
 					</div>
 				</div>
 			</div>
@@ -17,8 +17,8 @@
 		</div>
 		
 		<div data-ng-include="'partials/snippet/card_pager_footer.html'"
-				data-ng-if="related_mirnas"
-				onload="e=related_mirnas;element='mirna';">
+				data-ng-if="related_genes"
+				onload="e=related_genes;element='gene';">
 		</div>
 	</div>
 </div>

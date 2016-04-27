@@ -549,9 +549,9 @@ module.controller('TranscriptViewController',
 	}, function(response) {
 		$scope.transcript = response ? response : {};
 		if ($scope.transcript) {
-			$scope.transcript.related_genes = {};
-			$scope.transcript.related_genes.pageSize = 50;
-			$scope.transcript.related_genes.search = {
+			$scope.genes = {};
+			$scope.genes.pageSize = 10;
+			$scope.genes.search = {
 					searchFunction : "related_to_transcript",
 					searchFields : [ {
 						key : "pk",
@@ -559,27 +559,24 @@ module.controller('TranscriptViewController',
 					} ]
 			};
 			angular.extend(this, $controller('PagedListController', {
-				$scope : $scope.transcript.related_genes,
+				$scope : $scope.genes,
 				Object : Gene,
 				elements : 'gene'
 			}));
-			$scope.filterByGene = function(transcript) {
-				$scope.filtered_transcript = transcript;
-				$scope.interaction_datas = {};
-				$scope.interaction_datas.pageSize = 5;
-				$scope.interaction_datas.search = {
-						searchFunction : "interaction_data_related_to_transcript",
-						searchFields : [ {
-							key : "pk",
-							value : $stateParams.id
-						} ]
-				};
-				angular.extend(this, $controller('PagedListController', {
-					$scope : $scope.interaction_datas,
-					Object : InteractionData,
-					elements : 'interaction_data'
-				}));
-			}
+			$scope.interaction_datas = {};
+			$scope.interaction_datas.pageSize = 5;
+			$scope.interaction_datas.search = {
+					searchFunction : "transcript_pk",
+					searchFields : [ {
+						key : "pk",
+						value : $stateParams.id
+					} ]
+			};
+			angular.extend(this, $controller('PagedListController', {
+				$scope : $scope.interaction_datas,
+				Object : InteractionData,
+				elements : 'interaction_data'
+			}));
 		}
 	});
 });
