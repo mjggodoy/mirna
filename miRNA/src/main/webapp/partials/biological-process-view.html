@@ -1,61 +1,65 @@
 <div class="row">
-	<div class="col-md-12">
-		<ol class="breadcrumb">
-			<li><a href="#">Home</a></li>
-			<li>Biological process</li>
-			<li class="active">{{biological_process.name}}</li>
-		</ol>
-	</div>
+	<ol class="breadcrumb">
+		<li><a href="#">Home</a></li>
+		<li>Biological process</li>
+		<li class="active">{{biological_process.name}}</li>
+	</ol>
 </div>
 
-<div class="row">
+<div class="row card-container">
 
-	<div class="col-md-12">
+	<div class="col-sm-12">
 		<h1>Biological process <small>{{biological_process.name}}</small></h1>
 	</div>
 	
-	<div class="col-md-12">
-		<div class="panel panel-primary">
-			<div class="panel-heading">Information</div>
-			<div class="panel-body">
+	<div class="col-sm-12">
+		<div class="card">
+			<div class="card card__title">Information</div>
+			<div class="card__text">
 				<span data-ng-if="biological_process.name"><strong>Name:</strong> {{biological_process.name}}<br/></span>
 			</div>
 		</div>
 	</div>
 	
-	<div class="col-md-12">
-		<div class="panel panel-primary">
-			<div class="panel-heading">miRNA involved</div>
-			<div class="panel-body">
+	<div data-ng-include="'partials/snippet/card_filter_mirna.html'"></div>
+
+	<div data-ng-include="'partials/snippet/header_filtered_mirna.html'"></div>
+	
+	<div data-ng-include="'partials/snippet/card_interaction_datas.html'"></div>
+	
+<!-- 	<div class="col-md-12"> -->
+<!-- 		<div class="panel panel-primary"> -->
+<!-- 			<div class="panel-heading">miRNA involved</div> -->
+<!-- 			<div class="panel-body"> -->
 			
-				<span data-ng-if="biological_process.related_mirnas.page.number != 0">... </span>
-				<span data-ng-repeat="o in biological_process.related_mirnas.mirna">
-					<button type="button" class="btn btn-default btn-xs" data-ng-click="filterByMirna(o)">{{o.id}}</button>&nbsp;
-				</span>
-				<span data-ng-if="biological_process.related_mirnas.page.number != biological_process.related_mirnas.page.totalPages - 1">...</span>
+<!-- 				<span data-ng-if="biological_process.related_mirnas.page.number != 0">... </span> -->
+<!-- 				<span data-ng-repeat="o in biological_process.related_mirnas.mirna"> -->
+<!-- 					<button type="button" class="btn btn-default btn-xs" data-ng-click="filterByMirna(o)">{{o.id}}</button>&nbsp; -->
+<!-- 				</span> -->
+<!-- 				<span data-ng-if="biological_process.related_mirnas.page.number != biological_process.related_mirnas.page.totalPages - 1">...</span> -->
 				
-				<div data-ng-if="biological_process.related_mirnas.page.totalPages>1">
-					<div class="pull-right">Page {{biological_process.related_mirnas.page.number+1}} / {{biological_process.related_mirnas.page.totalPages}}</div>
-					<div class="pull-left">Showing {{biological_process.related_mirnas.mirna.length}} of {{biological_process.related_mirnas.page.totalElements}}</div>
-					<nav>
-						<ul class="pager">
-							<li data-ng-class="{disabled: biological_process.related_mirnas.page.number === 0}">
-								<a data-ui-sref="{page: {{biological_process.related_mirnas.page.number - 1}} }" data-ng-click="biological_process.related_mirnas.previousPage()">Previous</a>
-							</li>
-							<li data-ng-class="{disabled: biological_process.related_mirnas.page.number === biological_process.related_mirnas.page.totalPages - 1}">
-								<a data-ui-sref="{page: {{biological_process.related_mirnas.page.number + 1}} }" data-ng-click="biological_process.related_mirnas.nextPage()">Next</a>
-							</li>
-						</ul>
-					</nav>
-				</div>
+<!-- 				<div data-ng-if="biological_process.related_mirnas.page.totalPages>1"> -->
+<!-- 					<div class="pull-right">Page {{biological_process.related_mirnas.page.number+1}} / {{biological_process.related_mirnas.page.totalPages}}</div> -->
+<!-- 					<div class="pull-left">Showing {{biological_process.related_mirnas.mirna.length}} of {{biological_process.related_mirnas.page.totalElements}}</div> -->
+<!-- 					<nav> -->
+<!-- 						<ul class="pager"> -->
+<!-- 							<li data-ng-class="{disabled: biological_process.related_mirnas.page.number === 0}"> -->
+<!-- 								<a data-ui-sref="{page: {{biological_process.related_mirnas.page.number - 1}} }" data-ng-click="biological_process.related_mirnas.previousPage()">Previous</a> -->
+<!-- 							</li> -->
+<!-- 							<li data-ng-class="{disabled: biological_process.related_mirnas.page.number === biological_process.related_mirnas.page.totalPages - 1}"> -->
+<!-- 								<a data-ui-sref="{page: {{biological_process.related_mirnas.page.number + 1}} }" data-ng-click="biological_process.related_mirnas.nextPage()">Next</a> -->
+<!-- 							</li> -->
+<!-- 						</ul> -->
+<!-- 					</nav> -->
+<!-- 				</div> -->
 				
-			</div>
-		</div>
-	</div>
-	<div class="col-md-12" data-ng-if="filtered_mirna">
-		<h2>Mirna <small>{{filtered_mirna.id}}</small></h2>
-	</div>
-		<div data-ng-include="'partials/snippet/interaction_datas_biological_process.html'"></div>
+<!-- 			</div> -->
+<!-- 		</div> -->
+<!-- 	</div> -->
+<!-- 	<div class="col-md-12" data-ng-if="filtered_mirna"> -->
+<!-- 		<h2>Mirna <small>{{filtered_mirna.id}}</small></h2> -->
+<!-- 	</div> -->
+<!-- 		<div data-ng-include="'partials/snippet/interaction_datas_biological_process.html'"></div> -->
 	
 	
 </div>

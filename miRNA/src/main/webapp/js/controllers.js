@@ -27,7 +27,6 @@ module.controller('PagedListController', function($scope, $state, Object, elemen
 		Object.query($scope.page, $scope.sort, $scope.search, function(response) {
 			$scope[elements] = response[elements] ? response[elements] : [];
 			$scope.page = response.page ? response.page : {};
-			console.log(response);
 		});
 	};
 
@@ -211,7 +210,7 @@ module.controller('EnvironmentalFactorViewController',
 			$scope.environmental_factor = response ? response : {};
 			if ($scope.environmental_factor) {
 				$scope.related_mirnas = {};
-				$scope.related_mirnas.pageSize = 50;
+				$scope.related_mirnas.pageSize = 48;
 				$scope.related_mirnas.search = {
 					searchFunction : "related_to_environmental_factor",
 					searchFields : [ {
@@ -257,9 +256,9 @@ module.controller('GeneViewController',
 		}, function(response) {
 			$scope.gene = response ? response : {};
 			if ($scope.gene) {
-				$scope.gene.related_mirnas = {};
-				$scope.gene.related_mirnas.pageSize = 50;
-				$scope.gene.related_mirnas.search = {
+				$scope.related_mirnas = {};
+				$scope.related_mirnas.pageSize = 48;
+				$scope.related_mirnas.search = {
 					searchFunction : "related_to_gene",
 					searchFields : [ {
 						key : "pk",
@@ -267,7 +266,7 @@ module.controller('GeneViewController',
 					} ]
 				};
 				angular.extend(this, $controller('PagedListController', {
-						$scope : $scope.gene.related_mirnas,
+						$scope : $scope.related_mirnas,
 						Object : Mirna,
 						elements : 'mirna'
 				}));
@@ -305,9 +304,9 @@ module.controller('BiologicalProcessViewController',
 		function(response) {
 			$scope.biological_process = response ? response : {};
 			if ($scope.biological_process) {
-				$scope.biological_process.related_mirnas = {};
-				$scope.biological_process.related_mirnas.pageSize = 50;
-				$scope.biological_process.related_mirnas.search = {
+				$scope.related_mirnas = {};
+				$scope.related_mirnas.pageSize = 48;
+				$scope.related_mirnas.search = {
 					searchFunction : "biological_process_pk",
 					searchFields : [ {
 						key : "pk",
@@ -315,7 +314,7 @@ module.controller('BiologicalProcessViewController',
 					} ]
 				};
 				angular.extend(this, $controller('PagedListController', {
-					$scope : $scope.biological_process.related_mirnas,
+					$scope : $scope.related_mirnas,
 					Object : Mirna,
 					elements : 'mirna'
 				}));

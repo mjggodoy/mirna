@@ -1,23 +1,21 @@
 <div class="row">
-	<div class="col-md-12">
-		<ol class="breadcrumb">
-			<li><a href="#">Home</a></li>
-			<li>Gene</li>
-			<li class="active">{{gene.name}}</li>
-		</ol>
-	</div>
+	<ol class="breadcrumb">
+		<li><a href="#">Home</a></li>
+		<li>Gene</li>
+		<li class="active">{{gene.name}}</li>
+	</ol>
 </div>
 
-<div class="row">
+<div class="row card-container">
 
-	<div class="col-md-12">
+	<div class="col-sm-12">
 		<h1>Gene <small>{{gene.name}}</small></h1>
 	</div>
 	
-	<div class="col-md-12">
-		<div class="panel panel-primary">
-			<div class="panel-heading">Information</div>
-			<div class="panel-body">
+	<div class="col-sm-12">
+		<div class="card">
+			<div class="card card__title">Information</div>
+			<div class="card__text">
 				<strong>Name:</strong> {{gene.name}}<br/>
 				<span data-ng-if="gene.chromosome"><strong>Chromosome:</strong> {{gene.chromosome}}<br/></span>
 				<span data-ng-if="gene.accessionumber"><strong>Accession Number:</strong> {{gene.accessionumber}}<br/></span>
@@ -39,39 +37,10 @@
 		</div>
 	</div>
 	
-	<div class="col-md-12">
-		<div class="panel panel-primary">
-			<div class="panel-heading">miRNA involved</div>
-			<div class="panel-body">
-			
-				<span data-ng-if="gene.related_mirnas.page.number != 0">... </span>
-				<span data-ng-repeat="o in gene.related_mirnas.mirna">
-					<button type="button" class="btn btn-default btn-xs" data-ng-click="filterByMirna(o)">{{o.id}}</button>&nbsp;
-				</span>
-				<span data-ng-if="gene.related_mirnas.page.number != gene.related_mirnas.page.totalPages - 1">...</span>
-				
-				<div data-ng-if="gene.related_mirnas.page.totalPages>1">
-					<div class="pull-right">Page {{gene.related_mirnas.page.number+1}} / {{gene.related_mirnas.page.totalPages}}</div>
-					<div class="pull-left">Showing {{gene.related_mirnas.mirna.length}} of {{gene.related_mirnas.page.totalElements}}</div>
-					<nav>
-						<ul class="pager">
-							<li data-ng-class="{disabled: gene.related_mirnas.page.number === 0}">
-								<a data-ui-sref="{page: {{gene.related_mirnas.page.number - 1}} }" data-ng-click="gene.related_mirnas.previousPage()">Previous</a>
-							</li>
-							<li data-ng-class="{disabled: gene.related_mirnas.page.number === gene.related_mirnas.page.totalPages - 1}">
-								<a data-ui-sref="{page: {{gene.related_mirnas.page.number + 1}} }" data-ng-click="gene.related_mirnas.nextPage()">Next</a>
-							</li>
-						</ul>
-					</nav>
-				</div>
-				
-			</div>
-		</div>
-	</div>
-	<div class="col-md-12" data-ng-if="filtered_mirna">
-		<h2>Mirna <small>{{filtered_mirna.id}}</small></h2>
-	</div>
+	<div data-ng-include="'partials/snippet/card_filter_mirna.html'"></div>
+
+	<div data-ng-include="'partials/snippet/header_filtered_mirna.html'"></div>
 	
-	<div data-ng-include="'partials/snippet/interaction_datas_gene.html'"></div>
+	<div data-ng-include="'partials/snippet/card_interaction_datas.html'"></div>
 	
 </div>
