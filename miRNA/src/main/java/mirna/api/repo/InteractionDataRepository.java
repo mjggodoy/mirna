@@ -8,7 +8,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 
-import mirna.api.model.Gene;
 import mirna.api.model.InteractionData;
 import mirna.api.model.projection.InteractionDataBasicInfo;
 
@@ -28,10 +27,10 @@ public interface InteractionDataRepository extends PagingAndSortingRepository<In
 	@RestResource(path = "interaction_data_related_to_protein")
 	public Page<InteractionData> findGenesRelatedToProtein(@Param("pk")int pk, Pageable pageable);
 	
-	@Query("SELECT distinct a from InteractionData a, Gene b, TranscriptHasGene c "
-			+ "where c.transcriptPk=:pk and c.genePk=b.pk and b.pk = a.gene")	
-	@RestResource(path = "interaction_data_related_to_transcript")
-	public Page<InteractionData> findGenesRelatedToTranscript(@Param("pk")int pk, Pageable pageable);
+	@Query("SELECT distinct a from InteractionData a, TranscriptHasGene b "
+			+ "where b.transcriptPk=:pk and b.genePk=a.gene")	
+	@RestResource(path = "transcript_pk")
+	public Page<InteractionData> findByTranscriptPk(@Param("pk")int pk, Pageable pageable);
 	
 	//@Query("SELECT distinct a from InteractionData a, InteractionDataHasBiologicalProcess b "
 		//	+ "where b.biologicalProcessPk=:pk and "

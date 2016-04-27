@@ -1,0 +1,13 @@
+<div class="col-sm-6" data-ng-if="filtered_gene">
+	<h3>Related data</h3>
+</div>
+
+<div class="col-sm-6" data-ng-if="filtered_gene">
+	<div class="card card-info">
+		<div class="card__text">
+			<strong>Gene:</strong>
+			&nbsp;
+			<a data-ui-sref="viewGene({id:filtered_gene.pk})">{{filtered_gene.name}}</a>
+		</div>
+	</div>
+</div>

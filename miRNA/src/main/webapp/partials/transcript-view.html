@@ -1,6 +1,6 @@
 <div class="row">
 	<ol class="breadcrumb">
-		<li><a href="#">Home</a></li>
+		<li><a data-ui-sref="home">Home</a></li>
 		<li>Transcript</li>
 		<li class="active">{{transcript.id}}</li>
 	</ol>
@@ -24,6 +24,7 @@
 		</div>
 	</div>
 	
+	<!--
 	<div class="col-md-12">
 		<div class="panel panel-primary">
 			<div class="panel-heading">Gene(s) related to transcript {{transcript.id}} </div>
@@ -53,11 +54,21 @@
 			</div>
 		</div>
 	</div>
+	-->
 	
+<!-- 	<div data-ng-include="'partials/snippet/card_filter_gene.html'"></div> -->
+	
+<!-- 	<div data-ng-include="'partials/snippet/header_filtered_gene.html'"></div> -->
+	
+	<!--
 	<div class="col-md-12" data-ng-if="filtered_gene">
 		<h2>Gene <small>{{filtered_gene.id}}</small></h2>
 	</div>
-	<div data-ng-include="'partials/snippet/interaction_datas_transcript.html'"></div>
+	-->
+	
+	<div data-ng-if="genes.gene.length>0" data-ng-include="'partials/snippet/card_genes.html'"></div>
+	
+	<div data-ng-if="interaction_datas.interaction_data.length>0" data-ng-include="'partials/snippet/card_interaction_datas.html'"></div>
 	
 </div>
 
