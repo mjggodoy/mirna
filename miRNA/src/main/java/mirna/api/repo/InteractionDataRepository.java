@@ -22,8 +22,8 @@ public interface InteractionDataRepository extends PagingAndSortingRepository<In
 	@RestResource(path = "mirna_pk_and_gene_pk")
 	public Page<InteractionData> findByMirnas_PkAndGenePk(@Param("mirna_pk")int mirnaPk, @Param("gene_pk")int genePk, Pageable pageable);
 	
-	@Query("SELECT distinct a from InteractionData a, Gene b, TranscriptHasGene c, TranscriptProducesProtein d "
-			+ "where d.proteinPk=:pk and d.transcriptPk=c.transcriptPk and c.genePk=b.pk and b.pk = a.gene")	
+	@Query("SELECT distinct a from InteractionData a, TranscriptHasGene b, TranscriptProducesProtein c "
+			+ "where c.proteinPk=:pk and c.transcriptPk=b.transcriptPk and b.genePk=a.gene")	
 	@RestResource(path = "interaction_data_related_to_protein")
 	public Page<InteractionData> findGenesRelatedToProtein(@Param("pk")int pk, Pageable pageable);
 	
