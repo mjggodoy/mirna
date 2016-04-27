@@ -663,6 +663,20 @@ module.controller('PhenotypeListController', function($scope, $controller, Disea
 });
 
 
+module.controller('ProteinListController', function($scope, $controller, Protein) {
+	$scope.sortOptions = [ {
+		value : "id",
+		label : "ID"
+	} ];
+	angular.extend(this, $controller('PagedListController', {
+		$scope : $scope,
+		Object : Protein,
+		elements : 'protein'
+	}));
+});
+
+
+
 /****************************************
  * Search controllers
  ****************************************/
