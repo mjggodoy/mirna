@@ -675,6 +675,19 @@ module.controller('ProteinListController', function($scope, $controller, Protein
 	}));
 });
 
+module.controller('BiologicalProcessListController', function($scope, $controller, BiologicalProcess) {
+	$scope.sortOptions = [ {
+		value : "name",
+		label : "Name"
+	} ];
+	angular.extend(this, $controller('PagedListController', {
+		$scope : $scope,
+		Object : BiologicalProcess,
+		elements : 'biological_process'
+	}));
+});
+
+
 
 
 /****************************************
