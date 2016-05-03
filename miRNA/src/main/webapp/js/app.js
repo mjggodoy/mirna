@@ -70,6 +70,14 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 		url: '/phenotype',
 		templateUrl: 'partials/phenotype-list.html',
 		controller: 'PhenotypeListController'
+	}).state('listBiologicalProcess', { // state for showing all phenotypes (diseases para los amigos)
+		url: '/biologicalProcess',
+		templateUrl: 'partials/biological-process-list.html',
+		controller: 'BiologicalProcessListController'
+	}).state('listProtein', { // state for showing all phenotypes (diseases para los amigos)
+		url: '/protein',
+		templateUrl: 'partials/protein-list.html',
+		controller: 'ProteinListController'		
 	}).state('viewPhenotype', { //state for showing single phenotype
 		url: '/phenotype/:id',
 		templateUrl: 'partials/phenotype-view.html',

@@ -1,15 +1,15 @@
 <div class="row">
-	<ol class="breadcrumb">
-		<li><a data-ui-sref="home">Home</a></li>
-		<li>Protein</li>
-		<li class="active">{{protein.id}}</li>
-	</ol>
+		<ol class="breadcrumb">
+			<li><a data-ui-sref="home">Home</a></li>
+			<li><a data-ui-sref="listProtein">Protein</a></li>
+			<li class="active">{{Util.capitalize(protein.id)}}</li>
+		</ol>
 </div>
 
 <div class="row card-container">
 
 	<div class="col-sm-12">
-		<h1>Protein <small>{{protein.id}}</small></h1>
+		<h1>Protein <small>{{Util.capitalize(protein.id)}}</small></h1>
 	</div>
 	
 	<div class="col-sm-12">
@@ -22,12 +22,11 @@
 		</div>
 	</div>
 		
-	<!--
 	<div class="col-sm-12">
-		<div class="panel panel-primary">
-			<div class="panel-heading">Gene(s) related to {{protein.id}} </div>
-			<div class="panel-body">
-			
+		<div class="card">
+			<div class="card card__title">Gene(s) related to {{protein.id}} </div>
+			<div class="card__text">
+
 				<span data-ng-if="protein.related_genes.page.number != 0">... </span>
 				<span data-ng-repeat="o in protein.related_genes.gene">
 					<button type="button" class="btn btn-default btn-xs" data-ng-click="filterByGene(o)">{{o.name}}</button>&nbsp;
@@ -52,17 +51,15 @@
 			</div>
 		</div>
 	</div>
-	--> 
 
 	<div data-ng-if="genes.gene.length>0" data-ng-include="'partials/snippet/card_genes.html'"></div>
 	
 	<div data-ng-if="interaction_datas.interaction_data.length>0" data-ng-include="'partials/snippet/card_interaction_datas.html'"></div>
 	
 	<!-- 
-	<div class="col-md-12" data-ng-if="filtered_gene">
-		<h2>Gene <small>{{filtered_gene.id}}</small></h2>
-	</div>
 	<div data-ng-include="'partials/snippet/interaction_datas_protein.html'"></div>
 	 -->
+	<div data-ng-if="interaction_datas.interaction_data.length>0" data-ng-include="'partials/snippet/card_interaction_datas.html'"></div>
+
 </div>
 
