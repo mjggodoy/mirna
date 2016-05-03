@@ -1,6 +1,7 @@
 <div class="col-sm-12" data-ng-if="genes">
 	<div class="card">
-		<div class="card card__title">Related genes</div>
+		<div class="card card__title" data-ng-if="card_title">{{card_title}}</div>
+		<div class="card card__title" data-ng-if="!card_title">Related genes</div>
 		<div class="card__text">
 			<div data-ng-include="'partials/snippet/card_gene.html'"
 				data-ng-repeat="gene in genes.gene">
