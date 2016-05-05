@@ -42,28 +42,28 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 				});
 			}
 		}
-	}).state('searchByAcc', { // state for seaching mirna by accession number
+	}).state('searchByAcc', { // state for searching mirna by accession number
 		url: '/search/acc/:acc',
 		templateUrl: 'partials/mirna-list.html',
 		controller: 'SearchByAccController'
 	}).state('listMature', { // state for showing all matures
-		url: '/mature',
+		url: '/mirna/mature',
 		templateUrl: 'partials/mirna-list.html',
 		controller: 'MatureListController'
 	}).state('viewMature', { //state for showing single mature
-		url: '/mature/:id',
+		url: '/mirna/mature/:id',
 		templateUrl: 'partials/mature-view.html',
 		controller: 'MatureViewController'
 	}).state('listHairpin', { // state for showing all hairpins
-		url: '/hairpin',
+		url: '/mirna/hairpin',
 		templateUrl: 'partials/mirna-list.html',
 		controller: 'HairpinListController'
 	}).state('viewHairpin', { //state for showing single hairpin
-		url: '/hairpin/:id',
+		url: '/mirna/hairpin/:id',
 		templateUrl: 'partials/hairpin-view.html',
 		controller: 'HairpinViewController'
 	}).state('viewDeadMirna', { //state for showing single dead mirna
-		url: '/dead_mirna/:id',
+		url: '/mirna/dead_mirna/:id',
 		templateUrl: 'partials/dead-mirna-view.html',
 		controller: 'DeadMirnaViewController'
 	}).state('listPhenotype', { // state for showing all phenotypes (diseases para los amigos)
@@ -162,5 +162,6 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 
 }).run(function($state, $rootScope, Util) {
 	$rootScope.Util = Util;
-	$state.go('home'); //make a transition to movies state when app starts
+	$rootScope.$state = $state;
+	$state.go('home'); //make a transition to home state when app starts
 });

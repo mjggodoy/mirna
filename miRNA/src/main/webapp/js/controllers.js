@@ -590,6 +590,7 @@ module.controller('MatureListController', function($scope, $controller, Mature) 
 		Object : Mature,
 		elements : 'mirna'
 	}));
+	$scope.card_title = 'Matures';
 });
 		
 module.controller('HairpinListController', function($scope, $controller, Hairpin) {
@@ -602,6 +603,7 @@ module.controller('HairpinListController', function($scope, $controller, Hairpin
 		Object : Hairpin,
 		elements : 'mirna'
 	}));
+	$scope.card_title = 'Hairpins';
 });
 
 module.controller('PhenotypeListController', function($scope, $controller, Disease) {
