@@ -1,74 +1,77 @@
 <div class="row">
-	<ol class="breadcrumb">
-		<li><a data-ui-sref="home">Home</a></li>
-		<li>Transcript</li>
-		<li class="active">{{transcript.id}}</li>
-	</ol>
-</div>
-
-<div class="row card-container">
-
 	<div class="col-sm-12">
-		<h1>Transcript <small>{{transcript.id}}</small></h1>
-	</div>
-	
-	<div class="col-sm-12">
-		<div class="card">
-			<div class="card card__title">Information</div>
-			<div class="card__text">
-				<span data-ng-if="transcript.id"><strong>Transcript ID:</strong> {{transcript.id}}<br/></span>
-				<span data-ng-if="transcript.isoform"><strong>Transcript isoform:</strong> {{transcript.isoform}}<br/></span>
-				<span data-ng-if="transcript.name"><strong>Transcript name:</strong> {{transcript.name}}<br/></span>
-				<span data-ng-if="transcript.external_name"><strong>Transcript name synonyms:</strong> {{transcript.external_name}}<br/></span>
+
+		<ol class="breadcrumb">
+			<li><a data-ui-sref="home">Home</a></li>
+			<li>Transcript</li>
+			<li class="active">{{transcript.id}}</li>
+		</ol>
+
+		<div class="card-container">
+
+			<div class="col-sm-12">
+				<h1>Transcript <small>{{transcript.id}}</small></h1>
 			</div>
-		</div>
-	</div>
-	
-	<!--
-	<div class="col-md-12">
-		<div class="panel panel-primary">
-			<div class="panel-heading">Gene(s) related to transcript {{transcript.id}} </div>
-			<div class="panel-body">
-			
-				<span data-ng-if="transcript.related_genes.page.number != 0">... </span>
-				<span data-ng-repeat="o in transcript.related_genes.gene">
-					<button type="button" class="btn btn-default btn-xs" data-ng-click="filterByGene(o)">{{o.name}}</button>&nbsp;
-				</span>
-				<span data-ng-if="transcript.related_genes.page.number != transcript.related_genes.page.totalPages - 1">...</span>
-				
-				<div data-ng-if="transcript.related_genes.page.totalPages>1">
-					<div class="pull-right">Page {{transcript.related_genes.page.number+1}} / {{transcript.related_genes.page.totalPages}}</div>
-					<div class="pull-left">Showing {{transcript.related_genes.transcript.length}} of {{transcript.related_genes.page.totalElements}}</div>
-					<nav>
-						<ul class="pager">
-							<li data-ng-class="{disabled: transcript.related_genes.page.number === 0}">
-								<a data-ui-sref="{page: {{transcript.related_genes.page.number - 1}} }" data-ng-click="transcript.related_genes.previousPage()">Previous</a>
-							</li>
-							<li data-ng-class="{disabled: transcript.related_genes.page.number === transcript.related_genes.page.totalPages - 1}">
-								<a data-ui-sref="{page: {{transcript.related_genes.page.number + 1}} }" data-ng-click="transcript.related_genes.nextPage()">Next</a>
-							</li>
-						</ul>
-					</nav>
+
+			<div class="col-sm-12">
+				<div class="card">
+					<div class="card card__title">Information</div>
+					<div class="card__text">
+						<span data-ng-if="transcript.id"><strong>Transcript ID:</strong> {{transcript.id}}<br/></span>
+						<span data-ng-if="transcript.isoform"><strong>Transcript isoform:</strong> {{transcript.isoform}}<br/></span>
+						<span data-ng-if="transcript.name"><strong>Transcript name:</strong> {{transcript.name}}<br/></span>
+						<span data-ng-if="transcript.external_name"><strong>Transcript name synonyms:</strong> {{transcript.external_name}}<br/></span>
+					</div>
 				</div>
-				
 			</div>
-		</div>
-	</div>
-	-->
-	
-<!-- 	<div data-ng-include="'partials/snippet/card_filter_gene.html'"></div> -->
-	
-<!-- 	<div data-ng-include="'partials/snippet/header_filtered_gene.html'"></div> -->
-	
-	<!--
-	<div class="col-md-12" data-ng-if="filtered_gene">
-		<h2>Gene <small>{{filtered_gene.id}}</small></h2>
-	</div>
-	-->
-	
-	<div data-ng-if="genes.gene.length>0" data-ng-include="'partials/snippet/card_genes.html'"></div>
-	
-	<div data-ng-if="interaction_datas.interaction_data.length>0" data-ng-include="'partials/snippet/card_interaction_datas.html'"></div>
-	
-</div>
 
+			<!--
+			<div class="col-md-12">
+				<div class="panel panel-primary">
+					<div class="panel-heading">Gene(s) related to transcript {{transcript.id}} </div>
+					<div class="panel-body">
+
+						<span data-ng-if="transcript.related_genes.page.number != 0">... </span>
+						<span data-ng-repeat="o in transcript.related_genes.gene">
+							<button type="button" class="btn btn-default btn-xs" data-ng-click="filterByGene(o)">{{o.name}}</button>&nbsp;
+						</span>
+						<span data-ng-if="transcript.related_genes.page.number != transcript.related_genes.page.totalPages - 1">...</span>
+
+						<div data-ng-if="transcript.related_genes.page.totalPages>1">
+							<div class="pull-right">Page {{transcript.related_genes.page.number+1}} / {{transcript.related_genes.page.totalPages}}</div>
+							<div class="pull-left">Showing {{transcript.related_genes.transcript.length}} of {{transcript.related_genes.page.totalElements}}</div>
+							<nav>
+								<ul class="pager">
+									<li data-ng-class="{disabled: transcript.related_genes.page.number === 0}">
+										<a data-ui-sref="{page: {{transcript.related_genes.page.number - 1}} }" data-ng-click="transcript.related_genes.previousPage()">Previous</a>
+									</li>
+									<li data-ng-class="{disabled: transcript.related_genes.page.number === transcript.related_genes.page.totalPages - 1}">
+										<a data-ui-sref="{page: {{transcript.related_genes.page.number + 1}} }" data-ng-click="transcript.related_genes.nextPage()">Next</a>
+									</li>
+								</ul>
+							</nav>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			-->
+
+		<!-- 	<div data-ng-include="'partials/snippet/card_filter_gene.html'"></div> -->
+
+		<!-- 	<div data-ng-include="'partials/snippet/header_filtered_gene.html'"></div> -->
+
+			<!--
+			<div class="col-md-12" data-ng-if="filtered_gene">
+				<h2>Gene <small>{{filtered_gene.id}}</small></h2>
+			</div>
+			-->
+
+			<div data-ng-if="genes.gene.length>0" data-ng-include="'partials/snippet/card_genes.html'"></div>
+
+			<div data-ng-if="interaction_datas.interaction_data.length>0" data-ng-include="'partials/snippet/card_interaction_datas.html'"></div>
+
+		</div>
+
+	</div>
+</div>
