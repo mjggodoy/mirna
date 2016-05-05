@@ -23,7 +23,11 @@
 					<div class="card card__title" data-ng-if="!card_title">Mirna</div>
 					<div class="card__text">
 
-						<table class="table table-hover">
+						<div data-ng-include="'partials/snippet/loading_animation.html'"
+						     data-ng-if="!mirna">
+						</div>
+
+						<table class="table table-hover" data-ng-if="mirna">
 							<thead>
 								<tr>
 									<th>Id</th>
