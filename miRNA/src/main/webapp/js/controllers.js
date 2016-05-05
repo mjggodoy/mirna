@@ -687,9 +687,20 @@ module.controller('BiologicalProcessListController', function($scope, $controlle
 	}));
 });
 
+module.controller('GeneListController', function($scope, $controller, Gene) {
+	$scope.sortOptions = [ {
+		value : "name",
+		label : "Name"
+	} ];
+	angular.extend(this, $controller('PagedListController', {
+		$scope : $scope,
+		Object : Gene,
+		elements : 'gene'
+	}));
+});
 
 
-
+// Por aquí me quedé
 /****************************************
  * Search controllers
  ****************************************/
