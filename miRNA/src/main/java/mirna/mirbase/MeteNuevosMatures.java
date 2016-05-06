@@ -217,7 +217,7 @@ public class MeteNuevosMatures {
 			
 			
 		} catch (MySQLIntegrityConstraintViolationException e) {
-			System.err.println("Se intentó meter a: id="+id+", acc="+acc+", preId="+preId+", mature="+mature+", dead="+dead+", mirbasePk="+mirbasePk);
+			System.err.println("Se intentÃ³ meter a: id="+id+", acc="+acc+", preId="+preId+", mature="+mature+", dead="+dead+", mirbasePk="+mirbasePk);
 			throw e;	
 		} catch (SQLException e) {
 			throw e;

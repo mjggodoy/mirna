@@ -1,41 +1,45 @@
 <div class="row">
-	<ol class="breadcrumb">
-		<li><a data-ui-sref="home">Home</a></li>
-		<li><a data-ui-sref="listMirna">miRNA</a></li>
-		<li>Dead</li>
-		<li class="active">{{mirna.id}}</li>
-	</ol>
-</div>
-
-<div class="row card-container">
-
 	<div class="col-sm-12">
-		<h1>Dead miRNA <small>{{mirna.id}}</small></h1>
-	</div>
 
-	<div class="col-sm-12">
-		<div class="card">
-			<div class="card card__title">Information</div>
-			<div class="card__text">
-				<strong>Id:</strong> {{mirna.id}}<br/>
-				<strong>Accession number:</strong> {{mirna.accessionNumber}}<br/>
-				<strong>Previous ids:</strong> {{mirna.previousId}}<br/>
-				<div data-ng-repeat="info in mirna.mirbaseInfo">
-					<span data-ng-if="info.comment">
-						<strong>Comment:</strong> {{info.comment}}<br/>
-					</span>
-					<span data-ng-if="info.forwardTo">
-						<strong>Forward to:</strong>&nbsp;
-						<a data-ui-sref="goToAcc({acc:info.forwardTo})" data-ng-if="mirna.accessionNumber!=info.forwardTo">{{info.forwardTo}}</a>
-						<span data-ng-if="mirna.accessionNumber==info.forwardTo">{{info.forwardTo}}</span>
-						<br/>
-					</span>
+		<ol class="breadcrumb">
+			<li><a data-ui-sref="home">Home</a></li>
+			<li><a data-ui-sref="listMirna">miRNA</a></li>
+			<li>Dead</li>
+			<li class="active">{{mirna.id}}</li>
+		</ol>
+
+		<div class="card-container">
+
+			<div class="col-sm-12">
+				<h1>Dead miRNA <small>{{mirna.id}}</small></h1>
+			</div>
+
+			<div class="col-sm-12">
+				<div class="card">
+					<div class="card card__title">Information</div>
+					<div class="card__text">
+						<strong>Id:</strong> {{mirna.id}}<br/>
+						<strong>Accession number:</strong> {{mirna.accessionNumber}}<br/>
+						<strong>Previous ids:</strong> {{mirna.previousId}}<br/>
+						<div data-ng-repeat="info in mirna.mirbaseInfo">
+							<span data-ng-if="info.comment">
+								<strong>Comment:</strong> {{info.comment}}<br/>
+							</span>
+							<span data-ng-if="info.forwardTo">
+								<strong>Forward to:</strong>&nbsp;
+								<a data-ui-sref="goToAcc({acc:info.forwardTo})" data-ng-if="mirna.accessionNumber!=info.forwardTo">{{info.forwardTo}}</a>
+								<span data-ng-if="mirna.accessionNumber==info.forwardTo">{{info.forwardTo}}</span>
+								<br/>
+							</span>
+						</div>
+					</div>
 				</div>
 			</div>
+
+			<div data-ng-include="'partials/snippet/card_pubmed_documents.html'"></div>
+			<div data-ng-include="'partials/snippet/card_expression_datas.html'"></div>
+
 		</div>
+
 	</div>
-	
-	<div data-ng-include="'partials/snippet/card_pubmed_documents.html'"></div>
-	<div data-ng-include="'partials/snippet/card_expression_datas.html'"></div>
-	
 </div>

@@ -1,34 +1,38 @@
 <div class="row">
-	<ol class="breadcrumb">
-		<li><a data-ui-sref="home">Home</a></li>
-		<li>Environmental Factor</li>
-		<li data-ng-if="environmental_factor.smallMolecules.length>0">Small Molecule</li>
-		<li class="active">{{environmental_factor.name}}</li>
-	</ol>
-</div>
-
-<div class="row card-container">
-
 	<div class="col-sm-12">
-		<h1 data-ng-if="environmental_factor.smallMolecules.length>0">Small Molecule <small>{{environmental_factor.name}}</small></h1>
-		<h1 data-ng-if="environmental_factor.smallMolecules.length==0">Environmental Factor <small>{{environmental_factor.name}}</small></h1>
-	</div>
-	
-	<div class="col-sm-12" data-ng-if="environmental_factor.smallMolecules.length>0">
-		<div class="card">
-			<div class="card card__title">Information</div>
-			<div class="card__text">
-				<div data-ng-include="'partials/snippet/card_small_molecule.html'"
-					data-ng-repeat="small_molecule in environmental_factor.smallMolecules">
+
+		<ol class="breadcrumb">
+			<li><a data-ui-sref="home">Home</a></li>
+			<li>Environmental Factor</li>
+			<li data-ng-if="environmental_factor.smallMolecules.length>0">Small Molecule</li>
+			<li class="active">{{environmental_factor.name}}</li>
+		</ol>
+
+		<div class="card-container">
+
+			<div class="col-sm-12">
+				<h1 data-ng-if="environmental_factor.smallMolecules.length>0">Small Molecule <small>{{environmental_factor.name}}</small></h1>
+				<h1 data-ng-if="environmental_factor.smallMolecules.length==0">Environmental Factor <small>{{environmental_factor.name}}</small></h1>
+			</div>
+
+			<div class="col-sm-12" data-ng-if="environmental_factor.smallMolecules.length>0">
+				<div class="card">
+					<div class="card card__title">Information</div>
+					<div class="card__text">
+						<div data-ng-include="'partials/snippet/card_small_molecule.html'"
+							data-ng-repeat="small_molecule in environmental_factor.smallMolecules">
+						</div>
+					</div>
 				</div>
 			</div>
+
+			<div data-ng-include="'partials/snippet/card_filter_mirna.html'"></div>
+
+			<div data-ng-include="'partials/snippet/header_filtered_mirna.html'"></div>
+
+			<div data-ng-include="'partials/snippet/card_expression_datas.html'"></div>
+
 		</div>
+
 	</div>
-	
-	<div data-ng-include="'partials/snippet/card_filter_mirna.html'"></div>
-	
-	<div data-ng-include="'partials/snippet/header_filtered_mirna.html'"></div>
-	
-	<div data-ng-include="'partials/snippet/card_expression_datas.html'"></div>
-	
 </div>

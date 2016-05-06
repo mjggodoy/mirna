@@ -1,51 +1,69 @@
 <div class="row">
-	<ol class="breadcrumb">
-		<li><a href="#">Home</a></li>
-		<li class="active">miRNA</li>
-	</ol>
-</div>
-
-<div class="row card-container">
 
 	<div class="col-sm-12">
-		<h1>Mirna</h1>
-	</div>
-	
-	<div class="col-sm-12">
-		<div class="card">
-			<div class="card card__title">Mirna</div>
-			<div class="card__text">
-				
-				<table class="table table-hover">
-					<thead>
-						<tr>
-							<th>Id</th>
-							<th>Accession number</th>
-							<th>Mature</th>
-							<th>Hairpin</th>
-							<th>Dead</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr data-ng-repeat="o in mirna">
-							<td>
-								<a data-ui-sref="viewMature({id:o.pk})" data-ng-if="o.type=='mature'">{{o.id}}</a>
-								<a data-ui-sref="viewHairpin({id:o.pk})" data-ng-if="o.type=='hairpin'">{{o.id}}</a>
-								<a data-ui-sref="viewDeadMirna({id:o.pk})" data-ng-if="o.type=='dead'">{{o.id}}</a>
-							</td>
-							<td>{{o.accessionNumber}}</td>
-							<td><span data-ng-if="o.type=='mature'">&#10004;</span></td>
-							<td><span data-ng-if="o.type=='hairpin'">&#10004;</span></td>
-							<td><span data-ng-if="o.type=='dead'">&#10004;</span></td>
-						</tr>
-					</tbody>
-				</table>
 
+		<ol class="breadcrumb">
+			<li><a data-ui-sref="home">Home</a></li>
+			<li data-ng-if="$state.current.name!='listMirna'"><a data-ui-sref="listMirna">miRNA</a></li>
+			<li class="active" data-ng-if="$state.current.name=='listMirna'">miRNA</li>
+			<li class="active" data-ng-if="$state.current.name=='listMature'">Mature</li>
+			<li class="active" data-ng-if="$state.current.name=='listHairpin'">Hairpin</li>
+			<li class="active" data-ng-if="$state.current.name=='listDeadMirna'">Dead miRNA</li>
+		</ol>
+
+		<div class="card-container">
+
+			<div class="col-sm-12">
+				<h1>Mirna list</h1>
 			</div>
-			
-			<div data-ng-include="'partials/snippet/pager.html'"></div>
+
+			<div class="col-sm-12">
+				<div class="card">
+					<div class="card card__title" data-ng-if="card_title">{{card_title}}</div>
+					<div class="card card__title" data-ng-if="!card_title">Mirna</div>
+					<div class="card__text">
+
+						<div data-ng-include="'partials/snippet/loading_animation.html'"
+						     data-ng-if="!mirna">
+						</div>
+
+						<table class="table table-hover" data-ng-if="mirna">
+							<thead>
+								<tr>
+									<th>Id</th>
+									<th>Accession number</th>
+									<th>Mature</th>
+									<th>Hairpin</th>
+									<th>Dead</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr data-ng-repeat="o in mirna">
+									<td>
+										<a data-ui-sref="viewMature({id:o.pk})" data-ng-if="o.type=='mature'">{{o.id}}</a>
+										<a data-ui-sref="viewHairpin({id:o.pk})" data-ng-if="o.type=='hairpin'">{{o.id}}</a>
+										<a data-ui-sref="viewDeadMirna({id:o.pk})" data-ng-if="o.type=='dead'">{{o.id}}</a>
+									</td>
+									<td>{{o.accessionNumber}}</td>
+									<td><span data-ng-if="o.type=='mature'">&#10004;</span></td>
+									<td><span data-ng-if="o.type=='hairpin'">&#10004;</span></td>
+									<td><span data-ng-if="o.type=='dead'">&#10004;</span></td>
+								</tr>
+							</tbody>
+						</table>
+
+					</div>
+
+					<div data-ng-include="'partials/snippet/card_pager_footer.html'"
+					     data-ng-if="mirna"
+					     onload="e=$parent;element='mirna';">
+					</div>
+
+				</div>
+			</div>
+
 		</div>
+
 	</div>
-	
 </div>
 

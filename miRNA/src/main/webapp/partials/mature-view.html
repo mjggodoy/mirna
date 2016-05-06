@@ -1,62 +1,66 @@
 <div class="row">
-	<ol class="breadcrumb">
-		<li><a data-ui-sref="home">Home</a></li>
-		<li><a data-ui-sref="listMirna">miRNA</a></li>
-		<li><a data-ui-sref="listMature">Mature</a></li>
-		<li class="active">{{mirna.id}}</li>
-	</ol>
-</div>
-
-<div class="row card-container">
-
 	<div class="col-sm-12">
-		<h1>Mature <small>{{mirna.id}}</small></h1>
-	</div>
 
-	<div class="col-sm-12">
-		<div class="card">
-			<div class="card card__title">Information</div>
-			<div class="card__text">
-				<strong>Id:</strong> {{mirna.id}}<br/>
-				<strong>Accession number:</strong> {{mirna.accessionNumber}}<br/>
-				<strong>Previous ids:</strong> {{mirna.previousId}}<br/>
-				<div data-ng-repeat="info in mirna.mirbaseInfo">
-					<span data-ng-if="info.evidence">
-						<strong>Evidence:</strong> {{info.evidence}}<br/>
-					</span>
-					<span data-ng-if="info.experiment">
-						<strong>Experiment:</strong> {{info.experiment}}<br/>
-					</span>
-					<span data-ng-if="info.similarity">
-						<strong>Similarity:</strong>&nbsp;
-						<a data-ui-sref="goToAcc({acc:info.similarity})" data-ng-if="mirna.accessionNumber!=info.similarity">{{info.similarity}}</a>
-						<span data-ng-if="mirna.accessionNumber==info.similarity">{{info.similarity}}</span>
-						<br/>
-					</span>
+		<ol class="breadcrumb">
+			<li><a data-ui-sref="home">Home</a></li>
+			<li><a data-ui-sref="listMirna">miRNA</a></li>
+			<li><a data-ui-sref="listMature">Mature</a></li>
+			<li class="active">{{mirna.id}}</li>
+		</ol>
+
+		<div class="card-container">
+
+			<div class="col-sm-12">
+				<h1>Mature <small>{{mirna.id}}</small></h1>
+			</div>
+
+			<div class="col-sm-12">
+				<div class="card">
+					<div class="card card__title">Information</div>
+					<div class="card__text">
+						<strong>Id:</strong> {{mirna.id}}<br/>
+						<strong>Accession number:</strong> {{mirna.accessionNumber}}<br/>
+						<strong>Previous ids:</strong> {{mirna.previousId}}<br/>
+						<div data-ng-repeat="info in mirna.mirbaseInfo">
+							<span data-ng-if="info.evidence">
+								<strong>Evidence:</strong> {{info.evidence}}<br/>
+							</span>
+							<span data-ng-if="info.experiment">
+								<strong>Experiment:</strong> {{info.experiment}}<br/>
+							</span>
+							<span data-ng-if="info.similarity">
+								<strong>Similarity:</strong>&nbsp;
+								<a data-ui-sref="goToAcc({acc:info.similarity})" data-ng-if="mirna.accessionNumber!=info.similarity">{{info.similarity}}</a>
+								<span data-ng-if="mirna.accessionNumber==info.similarity">{{info.similarity}}</span>
+								<br/>
+							</span>
+						</div>
+					</div>
+					<div class="card__action-bar">
+						<a data-ng-if="mirna.accessionNumber" class="card__button" target="_BLANK"
+								href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={{mirna.accessionNumber}}">
+							MIRBASE</a>
+					</div>
 				</div>
 			</div>
-			<div class="card__action-bar">
-				<a data-ng-if="mirna.accessionNumber" class="card__button" target="_BLANK"
-						href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={{mirna.accessionNumber}}">
-					MIRBASE</a>
+	
+			<div class="col-sm-12">
+				<div class="card">
+					<div class="card card__title">Hairpins</div>
+					<div class="card__text">
+						<ul>
+							<li data-ng-repeat="hairpin in mirna.hairpins">
+								<a data-ui-sref="viewHairpin({id: hairpin.pk})">{{hairpin.id}}</a>
+							</li>
+						</ul>
+					</div>
+				</div>
 			</div>
+
+			<div data-ng-include="'partials/snippet/card_pubmed_documents.html'"></div>
+			<div data-ng-include="'partials/snippet/card_expression_datas.html'"></div>
+
 		</div>
+
 	</div>
-	
-	<div class="col-sm-12">
-		<div class="card">
-			<div class="card card__title">Hairpins</div>
-			<div class="card__text">
-				<ul>
-					<li data-ng-repeat="hairpin in mirna.hairpins">
-						<a data-ui-sref="viewHairpin({id: hairpin.pk})">{{hairpin.id}}</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</div>
-	
-	<div data-ng-include="'partials/snippet/card_pubmed_documents.html'"></div>
-	<div data-ng-include="'partials/snippet/card_expression_datas.html'"></div>
-	
 </div>
