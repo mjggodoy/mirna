@@ -660,6 +660,44 @@ module.controller('PhenotypeListController', function($scope, $controller, Disea
 });
 
 
+module.controller('ProteinListController', function($scope, $controller, Protein) {
+	$scope.sortOptions = [ {
+		value : "id",
+		label : "ID"
+	} ];
+	angular.extend(this, $controller('PagedListController', {
+		$scope : $scope,
+		Object : Protein,
+		elements : 'protein'
+	}));
+});
+
+module.controller('BiologicalProcessListController', function($scope, $controller, BiologicalProcess) {
+	$scope.sortOptions = [ {
+		value : "name",
+		label : "Name"
+	} ];
+	angular.extend(this, $controller('PagedListController', {
+		$scope : $scope,
+		Object : BiologicalProcess,
+		elements : 'biological_process'
+	}));
+});
+
+module.controller('GeneListController', function($scope, $controller, Gene) {
+	$scope.sortOptions = [ {
+		value : "name",
+		label : "Name"
+	} ];
+	angular.extend(this, $controller('PagedListController', {
+		$scope : $scope,
+		Object : Gene,
+		elements : 'gene'
+	}));
+});
+
+
+// Por aquí me quedé
 /****************************************
  * Search controllers
  ****************************************/

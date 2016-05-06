@@ -1,15 +1,15 @@
 <div class="row">
 	<ol class="breadcrumb">
-		<li><a href="#">Home</a></li>
-		<li>Biological process</li>
-		<li class="active">{{biological_process.name}}</li>
+		<li><a data-ui-sref="home">Home</a></li>
+		<li><a data-ui-sref="listBiologicalProcess">Biological process</a></li>
+		<li class="active">{{Util.capitalize(biological_process.name)}}</li>
 	</ol>
 </div>
 
 <div class="row card-container">
 
 	<div class="col-sm-12">
-		<h1>Biological process <small>{{biological_process.name}}</small></h1>
+		<h1>Biological process<small>{{biological_process.name}}</small></h1>
 	</div>
 	
 	<div class="col-sm-12">
