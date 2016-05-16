@@ -643,6 +643,7 @@ module.controller('BiologicalProcessListController', function($scope, $controlle
 	}));
 });
 
+
 module.controller('GeneListController', function($scope, $controller, Gene) {
 	$scope.sortOptions = [ {
 		value : "name",
@@ -653,10 +654,22 @@ module.controller('GeneListController', function($scope, $controller, Gene) {
 		Object : Gene,
 		elements : 'gene'
 	}));
+
+});
+
+module.controller('SNPListController', function($scope, $controller, SNP) {
+	$scope.sortOptions = [ {
+		value : "id",
+		label : "Id"
+	} ];
+	angular.extend(this, $controller('PagedListController', {
+		$scope : $scope,
+		Object : SNP,
+		elements : 'snp'
+	}));
 });
 
 
-// Por aquí me quedé
 /****************************************
  * Search controllers
  ****************************************/
