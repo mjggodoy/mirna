@@ -273,6 +273,10 @@ a:hover, a:focus {
     color: #C4551C;
 }
 
+.search-form {
+    margin: 20px 0px;
+}
+
 /* FIX FOR INTERACTION_DATA INSIDE EXPRESSION_DATA */
 dl.dl-horizontal dl dt {
 	clear: inherit !important;

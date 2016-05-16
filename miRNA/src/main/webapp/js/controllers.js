@@ -878,6 +878,9 @@ module.controller('HomeController', function($scope, $state) {
 });
 
 module.controller('SearchController', function($scope, $state) {
+	
+	$scope.search_opt = 'mirna';
+	$scope.search_opt_mirna = 'mirnaId';
 
 	$scope.findById = function() {
 		if ($scope.idText) {
