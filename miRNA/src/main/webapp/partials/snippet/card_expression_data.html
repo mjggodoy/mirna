@@ -53,11 +53,189 @@
 		
 		<dt data-ng-if="expression_data.interactionData">Interaction Data:</dt>
 		<dd data-ng-if="expression_data.interactionData">
+			<!--
 			<div data-ng-include="'partials/snippet/card_interaction_data.html'"
 				data-ng-if="true"
 				onload="interaction_data = expression_data.interactionData">
 			</div>
 			<div class="clearfix"></div>
+			-->
+
+			<span data-ng-if="expression_data.interactionData.provenance">
+				<strong>Provenance:</strong> {{expression_data.interactionData.provenance}}<br/>
+			</span>
+
+			<span data-ng-if="expression_data.interactionData.score">
+				<strong>Score:</strong> {{expression_data.interactionData.score}}<br/>
+			</span>
+
+			<span data-ng-if="expression_data.interactionData.pvalueLog">
+				<strong>P Value Log:</strong> {{expression_data.interactionData.pvalueLog}}<br/>
+			</span>
+
+			<span data-ng-if="expression_data.interactionData.pvalueOg">
+				<strong>P Value Og:</strong> {{expression_data.interactionData.pvalueOg}}<br/>
+			</span>
+
+			<span data-ng-if="expression_data.interactionData.miTGScore">
+				<strong>miTG Score:</strong> {{expression_data.interactionData.miTGScore}}<br/>
+			</span>
+
+			<span data-ng-if="expression_data.interactionData.method">
+				<strong>Method:</strong> {{expression_data.interactionData.method}}<br/>
+			</span>
+
+			<span data-ng-if="expression_data.interactionData.feature">
+				<strong>Feature:</strong> {{expression_data.interactionData.feature}}<br/>
+			</span>
+
+			<span data-ng-if="expression_data.interactionData.phase">
+				<strong>Phase:</strong> {{expression_data.interactionData.phase}}<br/>
+			</span>
+
+			<span data-ng-if="expression_data.interactionData.rank">
+				<strong>Rank:</strong> {{expression_data.interactionData.rank}}<br/>
+			</span>
+
+			<span data-ng-if="expression_data.interactionData.reference">
+				<strong>Reference:</strong> {{expression_data.interactionData.reference}}<br/>
+			</span>
+
+			<span data-ng-if="expression_data.interactionData.cellularLine">
+				<strong>Cellular Line:</strong> {{expression_data.interactionData.cellularLine}}<br/>
+			</span>
+
+			<span data-ng-if="expression_data.interactionData.type">
+				<strong>Type:</strong> {{expression_data.interactionData.type}}<br/>
+			</span>
+
+			<span data-ng-if="expression_data.interactionData.mirnas">
+				<strong>miRNA:</strong>
+				<span data-ng-repeat="o in expression_data.interactionData.mirnas">
+					<a data-ui-sref="viewMature({id:o.pk})" data-ng-if="o.type=='mature'">{{o.id}}</a>
+					<a data-ui-sref="viewHairpin({id:o.pk})" data-ng-if="o.type=='hairpin'">{{o.id}}</a>
+					<a data-ui-sref="viewDeadMirna({id:o.pk})" data-ng-if="o.type=='dead'">{{o.id}}</a>
+					<span data-ng-if="$last==false"> / </span>
+				</span>
+				<br/>
+			</span>
+
+			<span data-ng-if="expression_data.interactionData.gene">
+				<strong>Gene:</strong>&nbsp;
+				<a data-ui-sref="viewGene({id:expression_data.interactionData.gene.pk})">{{expression_data.interactionData.gene.name}}</a>
+				<br/>
+			</span>
+
+			<span data-ng-if="expression_data.interactionData.target">
+				<strong>Target:</strong><br>
+				<span style="padding-left:10px;">
+
+					<span data-ng-if="expression_data.interactionData.target.transcript &&
+								(expression_data.interactionData.target.transcript.id != null
+								|| expression_data.interactionData.target.transcript.name != null
+								|| expression_data.interactionData.target.transcript.isoform != null)">
+						<strong>Transcript:</strong><br>
+
+						<span style="padding-left:20px;">
+							<span data-ng-if="expression_data.interactionData.target.transcript.id">
+								<strong>ID:</strong>&nbsp;
+								<a data-ui-sref="viewTranscript({id:expression_data.interactionData.target.transcript.pk})">{{expression_data.interactionData.target.transcript.id}}</a><br/>
+							</span>
+							<span data-ng-if="expression_data.interactionData.target.transcript.name">
+								<strong>Name:</strong>&nbsp;
+								{{expression_data.interactionData.target.transcript.name}}<br/>
+							</span>
+							<span data-ng-if="expression_data.interactionData.target.transcript.isoform">
+								<strong>Isoform:</strong>&nbsp;
+								{{expression_data.interactionData.target.transcript.isoform}}<br/>
+							</span>
+						</span>
+
+					</span>
+
+					<span data-ng-if="expression_data.interactionData.target.chromosome">
+						<strong>Chromosome:</strong>&nbsp;
+						{{expression_data.interactionData.target.chromosome}}<br/>
+					</span>
+					<span data-ng-if="expression_data.interactionData.target.polarity">
+						<strong>Polarity:</strong>&nbsp;
+						{{expression_data.interactionData.target.polarity}}<br/>
+					</span>
+					<span data-ng-if="expression_data.interactionData.target.coordinates">
+						<strong>Coordinates:</strong>&nbsp;
+						{{expression_data.interactionData.target.coordinates}}<br/>
+					</span>
+					<span data-ng-if="expression_data.interactionData.target.region">
+						<strong>Region:</strong>&nbsp;
+						{{expression_data.interactionData.target.region}}<br/>
+					</span>
+					<span data-ng-if="expression_data.interactionData.target.gc_proportion">
+						<strong>GC proportion:</strong>&nbsp;
+						{{expression_data.interactionData.target.gc_proportion}}<br/>
+					</span>
+					<span data-ng-if="expression_data.interactionData.target.gu_proportion">
+						<strong>GU proportion:</strong>&nbsp;
+						{{expression_data.interactionData.target.gu_proportion}}<br/>
+					</span>
+					<span data-ng-if="expression_data.interactionData.target.cds_start">
+						<strong>CDS start:</strong>&nbsp;
+						{{expression_data.interactionData.target.cds_start}}<br/>
+					</span>
+					<span data-ng-if="expression_data.interactionData.target.cds_end">
+						<strong>CDS end:</strong>&nbsp;
+						{{expression_data.interactionData.target.cds_end}}<br/>
+					</span>
+					<span data-ng-if="expression_data.interactionData.target.utr3_start">
+						<strong>UTR3 start:</strong>&nbsp;
+						{{expression_data.interactionData.target.utr3_start}}<br/>
+					</span>
+					<span data-ng-if="expression_data.interactionData.target.utr3_end">
+						<strong>UTR3 end:</strong>&nbsp;
+						{{expression_data.interactionData.target.utr3_start}}<br/>
+					</span>
+					<span data-ng-if="expression_data.interactionData.target.strand_start">
+						<strong>Strand start:</strong>&nbsp;
+						{{expression_data.interactionData.target.strand_start}}<br/>
+					</span>
+					<span data-ng-if="expression_data.interactionData.target.strand_end">
+						<strong>Strand end:</strong>&nbsp;
+						{{expression_data.interactionData.target.strand_end}}<br/>
+					</span>
+					<span data-ng-if="expression_data.interactionData.target.binding_site_start">
+						<strong>Binding site start:</strong>&nbsp;
+						{{expression_data.interactionData.target.binding_site_start}}<br/>
+					</span>
+					<span data-ng-if="expression_data.interactionData.target.binding_site_end">
+						<strong>Binding site end:</strong>&nbsp;
+						{{expression_data.interactionData.target.binding_site_end}}<br/>
+					</span>
+					<span data-ng-if="expression_data.interactionData.target.repeated_motifs">
+						<strong>Repeated motifs:</strong>&nbsp;
+						{{expression_data.interactionData.target.repeated_motifs}}<br/>
+					</span>
+					<span data-ng-if="expression_data.interactionData.target.utr3_conservation_score">
+						<strong>UTR3 conservation score:</strong>&nbsp;
+						{{expression_data.interactionData.target.utr3_conservation_score}}<br/>
+					</span>
+					<span data-ng-if="expression_data.interactionData.target.seed_match">
+						<strong>Seed match:</strong>&nbsp;
+						{{expression_data.interactionData.target.seed_match}}<br/>
+					</span>
+					<span data-ng-if="expression_data.interactionData.target.site_conservation_score">
+						<strong>Site conservation score:</strong>&nbsp;
+						{{expression_data.interactionData.target.site_conservation_score}}<br/>
+					</span>
+					<span data-ng-if="expression_data.interactionData.target.target_ref">
+						<strong>Target reference:</strong>&nbsp;
+						{{expression_data.interactionData.target.target_ref}}<br/>
+					</span>
+					<span data-ng-if="expression_data.interactionData.target.organism.name">
+						<strong>Organism:</strong>&nbsp;
+						{{expression_data.interactionData.target.organism.name}}<br/>
+					</span>
+				</span>
+			</span>
+
 		</dd>
 		
 	</dl>

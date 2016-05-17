@@ -11,4 +11,8 @@ public interface TranscriptBasicInfo {
 	
 	public String getId();
 
+	public String getName();
+
+	public String getIsoform();
+
 }
