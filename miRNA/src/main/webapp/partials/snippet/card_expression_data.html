@@ -61,7 +61,9 @@
 			<div class="clearfix"></div>
 			-->
 
-			<span data-ng-if="expression_data.interactionData.provenance">
+			<span data-ng-if="expression_data.interactionData.provenance and
+					( expression_data.provenance == null
+					|| expression_data.interactionData.provenance != expression_data.provenance )">
 				<strong>Provenance:</strong> {{expression_data.interactionData.provenance}}<br/>
 			</span>
 
