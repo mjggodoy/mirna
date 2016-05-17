@@ -8,7 +8,7 @@
 		<dd data-ng-if="expression_data.disease">
 			<a data-ui-sref="viewPhenotype({id: expression_data.disease.pk})">
 				{{Util.capitalize(expression_data.disease.name)}}
-				<span data-ng-if="expression_data.disease.diseaseClass"> ({{expression_data.disease.diseaseClass}})</span>
+				<div data-ng-if="expression_data.disease.diseaseClass"> ({{expression_data.disease.diseaseClass}})</div>
 			</a>
 		</dd>
 			
@@ -53,11 +53,90 @@
 		
 		<dt data-ng-if="expression_data.interactionData">Interaction Data:</dt>
 		<dd data-ng-if="expression_data.interactionData">
+			<!--
 			<div data-ng-include="'partials/snippet/card_interaction_data.html'"
 				data-ng-if="true"
 				onload="interaction_data = expression_data.interactionData">
 			</div>
 			<div class="clearfix"></div>
+			-->
+
+			<div data-ng-if="expression_data.interactionData.provenance &&
+					( expression_data.provenance == null
+					|| expression_data.interactionData.provenance != expression_data.provenance )">
+				<strong>Provenance:</strong> {{expression_data.interactionData.provenance}}<br/>
+			</div>
+
+			<div data-ng-if="expression_data.interactionData.score">
+				<strong>Score:</strong> {{expression_data.interactionData.score}}<br/>
+			</div>
+
+			<div data-ng-if="expression_data.interactionData.pvalueLog">
+				<strong>P Value Log:</strong> {{expression_data.interactionData.pvalueLog}}<br/>
+			</div>
+
+			<div data-ng-if="expression_data.interactionData.pvalueOg">
+				<strong>P Value Og:</strong> {{expression_data.interactionData.pvalueOg}}<br/>
+			</div>
+
+			<div data-ng-if="expression_data.interactionData.miTGScore">
+				<strong>miTG Score:</strong> {{expression_data.interactionData.miTGScore}}<br/>
+			</div>
+
+			<div data-ng-if="expression_data.interactionData.method">
+				<strong>Method:</strong> {{expression_data.interactionData.method}}<br/>
+			</div>
+
+			<div data-ng-if="expression_data.interactionData.feature">
+				<strong>Feature:</strong> {{expression_data.interactionData.feature}}<br/>
+			</div>
+
+			<div data-ng-if="expression_data.interactionData.phase">
+				<strong>Phase:</strong> {{expression_data.interactionData.phase}}<br/>
+			</div>
+
+			<div data-ng-if="expression_data.interactionData.rank">
+				<strong>Rank:</strong> {{expression_data.interactionData.rank}}<br/>
+			</div>
+
+			<div data-ng-if="expression_data.interactionData.reference">
+				<strong>Reference:</strong> {{expression_data.interactionData.reference}}<br/>
+			</div>
+
+			<div data-ng-if="expression_data.interactionData.cellularLine">
+				<strong>Cellular Line:</strong> {{expression_data.interactionData.cellularLine}}<br/>
+			</div>
+
+			<div data-ng-if="expression_data.interactionData.type">
+				<strong>Type:</strong> {{expression_data.interactionData.type}}<br/>
+			</div>
+
+			<div data-ng-if="expression_data.interactionData.mirnas">
+				<strong>miRNA:</strong>
+				<span data-ng-repeat="o in expression_data.interactionData.mirnas">
+					<a data-ui-sref="viewMature({id:o.pk})" data-ng-if="o.type=='mature'">{{o.id}}</a>
+					<a data-ui-sref="viewHairpin({id:o.pk})" data-ng-if="o.type=='hairpin'">{{o.id}}</a>
+					<a data-ui-sref="viewDeadMirna({id:o.pk})" data-ng-if="o.type=='dead'">{{o.id}}</a>
+					<span data-ng-if="$last==false"> / </span>
+				</span>
+				<br/>
+			</div>
+
+			<div data-ng-if="expression_data.interactionData.gene">
+				<strong>Gene:</strong>&nbsp;
+				<a data-ui-sref="viewGene({id:expression_data.interactionData.gene.pk})">{{expression_data.interactionData.gene.name}}</a>
+				<br/>
+			</div>
+
+			<div data-ng-if="expression_data.interactionData.target">
+				<strong>Target:</strong><br>
+				<div data-ng-include="'partials/snippet/card_target.html'"
+				     data-ng-if="true"
+				     onload="target = expression_data.interactionData.target"
+				     style="padding-left:15px;">
+				</div>
+			</div>
+
 		</dd>
 		
 	</dl>

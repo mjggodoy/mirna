@@ -1,0 +1,103 @@
+<div data-ng-if="target.transcript &&
+							(target.transcript.id != null
+							|| target.transcript.name != null
+							|| target.transcript.isoform != null)">
+	<strong>Transcript:</strong><br>
+
+	<div style="padding-left:15px;">
+		<div data-ng-if="target.transcript.id">
+			<strong>ID:</strong>&nbsp;
+			<a data-ui-sref="viewTranscript({id:target.transcript.pk})">{{target.transcript.id}}</a><br/>
+		</div>
+		<div data-ng-if="target.transcript.name">
+			<strong>Name:</strong>&nbsp;
+			{{target.transcript.name}}<br/>
+		</div>
+		<div data-ng-if="target.transcript.isoform">
+			<strong>Isoform:</strong>&nbsp;
+			{{target.transcript.isoform}}<br/>
+		</div>
+	</div>
+
+</div>
+
+<div data-ng-if="target.chromosome">
+	<strong>Chromosome:</strong>&nbsp;
+	{{target.chromosome}}<br/>
+</div>
+<div data-ng-if="target.polarity">
+	<strong>Polarity:</strong>&nbsp;
+	{{target.polarity}}<br/>
+</div>
+<div data-ng-if="target.coordinates">
+	<strong>Coordinates:</strong>&nbsp;
+	{{target.coordinates}}<br/>
+</div>
+<div data-ng-if="target.region">
+	<strong>Region:</strong>&nbsp;
+	{{target.region}}<br/>
+</div>
+<div data-ng-if="target.gc_proportion">
+	<strong>GC proportion:</strong>&nbsp;
+	{{target.gc_proportion}}<br/>
+</div>
+<div data-ng-if="target.gu_proportion">
+	<strong>GU proportion:</strong>&nbsp;
+	{{target.gu_proportion}}<br/>
+</div>
+<div data-ng-if="target.cds_start">
+	<strong>CDS start:</strong>&nbsp;
+	{{target.cds_start}}<br/>
+</div>
+<div data-ng-if="target.cds_end">
+	<strong>CDS end:</strong>&nbsp;
+	{{target.cds_end}}<br/>
+</div>
+<div data-ng-if="target.utr3_start">
+	<strong>UTR3 start:</strong>&nbsp;
+	{{target.utr3_start}}<br/>
+</div>
+<div data-ng-if="target.utr3_end">
+	<strong>UTR3 end:</strong>&nbsp;
+	{{target.utr3_start}}<br/>
+</div>
+<div data-ng-if="target.strand_start">
+	<strong>Strand start:</strong>&nbsp;
+	{{target.strand_start}}<br/>
+</div>
+<div data-ng-if="target.strand_end">
+	<strong>Strand end:</strong>&nbsp;
+	{{target.strand_end}}<br/>
+</div>
+<div data-ng-if="target.binding_site_start">
+	<strong>Binding site start:</strong>&nbsp;
+	{{target.binding_site_start}}<br/>
+</div>
+<div data-ng-if="target.binding_site_end">
+	<strong>Binding site end:</strong>&nbsp;
+	{{target.binding_site_end}}<br/>
+</div>
+<div data-ng-if="target.repeated_motifs">
+	<strong>Repeated motifs:</strong>&nbsp;
+	{{target.repeated_motifs}}<br/>
+</div>
+<div data-ng-if="target.utr3_conservation_score">
+	<strong>UTR3 conservation score:</strong>&nbsp;
+	{{target.utr3_conservation_score}}<br/>
+</div>
+<div data-ng-if="target.seed_match">
+	<strong>Seed match:</strong>&nbsp;
+	{{target.seed_match}}<br/>
+</div>
+<div data-ng-if="target.site_conservation_score">
+	<strong>Site conservation score:</strong>&nbsp;
+	{{target.site_conservation_score}}<br/>
+</div>
+<div data-ng-if="target.target_ref">
+	<strong>Target reference:</strong>&nbsp;
+	{{target.target_ref}}<br/>
+</div>
+<div data-ng-if="target.organism.name">
+	<strong>Organism:</strong>&nbsp;
+	{{target.organism.name}}<br/>
+</div>
