@@ -58,16 +58,11 @@
 			<a data-ui-sref="viewGene({id:interaction_data.gene.pk})">{{interaction_data.gene.name}}</a>
 		</dd>
 		
-		<dt data-ng-if="interaction_data.target != null && interaction_data.target.transcript != null && interaction_data.target.transcript.id != null">Transcript ID:</dt>
-		<dd data-ng-if="interaction_data.target != null && interaction_data.target.transcript != null && interaction_data.target.transcript.id != null">
-			<a data-ui-sref="viewTranscript({id:interaction_data.target.transcript.pk})">{{interaction_data.target.transcript.id}}</a>
-		</dd>
-		
-		<dt data-ng-if="(interaction_data.target != null && 
+		<dt data-ng-if="interaction_data.target != null &&
 		(interaction_data.target.chromosome != null 
 		|| interaction_data.target.polarity != null
 		|| interaction_data.target.coordinates != null
-	    || interaction_data.target.region != null
+	  || interaction_data.target.region != null
 		|| interaction_data.target.gc_proportion != null
 		|| interaction_data.target.gu_proportion != null
 		|| interaction_data.target.cds_start != null
@@ -83,47 +78,15 @@
 		|| interaction_data.target.seed_match != null
 		|| interaction_data.target.site_conservation_score != null
 		|| interaction_data.target.target_ref != null
-		|| interaction_data.target.organism.name != null))">Target:</dt>
-		<dd data-ng-if="interaction_data.target.chromosome != null"><strong>Chromosome:</strong>
-		{{interaction_data.target.chromosome}}</dd>
-		<dd data-ng-if="interaction_data.target.polarity != null"><strong>Polarity:</strong>
-		{{interaction_data.target.polarity}}</dd>
-		<dd data-ng-if="interaction_data.target.coordinates != null"><strong>Coordinates:</strong>
-		{{interaction_data.target.coordinates}}</dd>
-		<dd data-ng-if="interaction_data.target.region != null"><strong>Region:</strong>
-		{{interaction_data.target.region}}</dd>
-		<dd data-ng-if="interaction_data.target.gc_proportion != null"><strong>GC proportion:</strong>
-		{{interaction_data.target.gc_proportion}}</dd>
-		<dd data-ng-if="interaction_data.target.gu_proportion != null"><strong>GU proportion:</strong>
-		{{interaction_data.target.gu_proportion}}</dd>
-		<dd data-ng-if="interaction_data.target.cds_start != null"><strong>CDS start:</strong>
-		{{interaction_data.target.cds_start}}</dd>
-		<dd data-ng-if="interaction_data.target.cds_end != null"><strong>CDS end:</strong>
-		{{interaction_data.target.cds_end}}</dd>
-		<dd data-ng-if="interaction_data.target.utr3_start != null"><strong>UTR3 start:</strong>
-		{{interaction_data.target.utr3_start}}</dd>
-		<dd data-ng-if="interaction_data.target.utr3_end != null"><strong>UTR3 end:</strong>
-		{{interaction_data.target.utr3_start}}</dd>
-		<dd data-ng-if="interaction_data.target.strand_start != null"><strong>Strand start:</strong>
-		{{interaction_data.target.strand_start}}</dd>
-		<dd data-ng-if="interaction_data.target.strand_end != null"><strong>Strand end:</strong>
-		{{interaction_data.target.strand_end}}</dd>
-		<dd data-ng-if="interaction_data.target.binding_site_start != null"><strong>Binding site start:</strong>
-		{{interaction_data.target.binding_site_start}}</dd>
-		<dd data-ng-if="interaction_data.target.binding_site_end != null"><strong>Binding site end:</strong>
-		{{interaction_data.target.binding_site_end}}</dd>
-		<dd data-ng-if="interaction_data.target.repeated_motifs != null"><strong>Repeated motifs:</strong>
-		{{interaction_data.target.repeated_motifs}}</dd>
-		<dd data-ng-if="interaction_data.target.utr3_conservation_score != null"><strong>UTR3 conservation score:</strong>
-		{{interaction_data.target.utr3_conservation_score}}</dd>
-		<dd data-ng-if="interaction_data.target.seed_match != null"><strong>Seed match:</strong>
-		{{interaction_data.target.seed_match}}</dd>
-		<dd data-ng-if="interaction_data.target.site_conservation_score != null"><strong>Site conservation score:</strong>
-		{{interaction_data.target.site_conservation_score}}</dd>
-		<dd data-ng-if="interaction_data.target.target_ref != null"><strong>Target reference:</strong>
-		{{interaction_data.target.target_ref}}</dd>
-		<dd data-ng-if="interaction_data.target.organism.name != null"><strong>Organism:</strong>
-		{{interaction_data.target.organism.name}}</dd>	
+		|| interaction_data.target.organism.name != null
+		|| interaction_data.target.transcript
+		&& (interaction_data.target.transcript.id != null
+		|| interaction_data.target.transcript.name != null
+		|| interaction_data.target.transcript.isoform != null))">Target:</dt>
+
+		<dd data-ng-include="'partials/snippet/card_target.html'"
+		    data-ng-if="true"
+		    onload="target = interaction_data.target"></dd>
 		
 	</dl>
 </div>
