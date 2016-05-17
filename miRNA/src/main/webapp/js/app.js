@@ -87,7 +87,7 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 		templateUrl: 'partials/snp-list.html',
 		controller: 'SNPListController'	
 	}).state('listPubmedDocument', { // state for showing all Pubmed documents 
-		url: '/PubmedDocument',
+		url: '/pubmed_document',
 		templateUrl: 'partials/pubmed-list.html',
 		controller: 'PubmedDocumentListController'
 	}).state('listTranscript', { // state for showing all Transcripts 
@@ -123,15 +123,15 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 		templateUrl: 'partials/pubmed-view.html',
 		controller: 'PubmedDocumentViewController'
 	}).state('viewTranscript', { //state for showing single Transcript
-		url: '/transcript_id/:id',
+		url: '/transcript/:id',
 		templateUrl: 'partials/transcript-view.html',
 		controller: 'TranscriptViewController'
 	}).state('viewTarget', { //state for showing single Target
-		url: '/target_id/:id',
+		url: '/target/:id',
 		templateUrl: 'partials/target-view.html',
 		controller: 'TargetViewController'
 	}).state('viewSNP', { //state for showing single SNP
-		url: '/snp_id/:id',
+		url: '/snp/:id',
 		templateUrl: 'partials/snp-view.html',
 		controller: 'SNPViewController'
 	}).state('search', { //search state
