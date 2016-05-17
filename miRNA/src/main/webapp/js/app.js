@@ -93,7 +93,11 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 	}).state('listTranscript', { // state for showing all phenotypes (diseases para los amigos)
 		url: '/transcript',
 		templateUrl: 'partials/transcript-list.html',
-		controller: 'TranscriptListController'		
+		controller: 'TranscriptListController'	
+	}).state('listEnvironmentalFactor', { // state for showing all phenotypes (diseases para los amigos)
+		url: '/environmental_factor',
+		templateUrl: 'partials/environmental-factor-list.html',
+		controller: 'EnvironmentalFactorListController'			
 	}).state('viewPhenotype', { //state for showing single phenotype
 		url: '/phenotype/:id',
 		templateUrl: 'partials/phenotype-view.html',

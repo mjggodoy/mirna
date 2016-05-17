@@ -693,6 +693,18 @@ module.controller('TranscriptListController', function($scope, $controller, Tran
 	}));
 });
 
+module.controller('EnvironmentalFactorListController', function($scope, $controller, EnvironmentalFactor) {
+	$scope.sortOptions = [ {
+		value : "name",
+		label : "Name"
+	} ];
+	angular.extend(this, $controller('PagedListController', {
+		$scope : $scope,
+		Object : EnvironmentalFactor,
+		elements : 'environmental_factor'
+	}));
+});
+
 
 
 
