@@ -86,6 +86,14 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 		url: '/snp',
 		templateUrl: 'partials/snp-list.html',
 		controller: 'SNPListController'	
+	}).state('listPubmedDocument', { // state for showing all phenotypes (diseases para los amigos)
+		url: '/PubmedDocument',
+		templateUrl: 'partials/pubmed-list.html',
+		controller: 'PubmedDocumentListController'
+	}).state('listTranscript', { // state for showing all phenotypes (diseases para los amigos)
+		url: '/transcript',
+		templateUrl: 'partials/transcript-list.html',
+		controller: 'TranscriptListController'		
 	}).state('viewPhenotype', { //state for showing single phenotype
 		url: '/phenotype/:id',
 		templateUrl: 'partials/phenotype-view.html',

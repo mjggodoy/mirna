@@ -669,6 +669,33 @@ module.controller('SNPListController', function($scope, $controller, SNP) {
 	}));
 });
 
+module.controller('PubmedDocumentListController', function($scope, $controller, PubmedDocument) {
+	$scope.sortOptions = [ {
+		value : "id",
+		label : "Id"
+	} ];
+	angular.extend(this, $controller('PagedListController', {
+		$scope : $scope,
+		Object : PubmedDocument,
+		elements : 'pubmed_document'
+	}));
+});
+
+module.controller('TranscriptListController', function($scope, $controller, Transcript) {
+	$scope.sortOptions = [ {
+		value : "id",
+		label : "Id"
+	} ];
+	angular.extend(this, $controller('PagedListController', {
+		$scope : $scope,
+		Object : Transcript,
+		elements : 'transcript'
+	}));
+});
+
+
+
+
 
 /****************************************
  * Search controllers
