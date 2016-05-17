@@ -70,18 +70,34 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 		url: '/phenotype',
 		templateUrl: 'partials/phenotype-list.html',
 		controller: 'PhenotypeListController'
-	}).state('listBiologicalProcess', { // state for showing all phenotypes (diseases para los amigos)
+	}).state('listBiologicalProcess', { // state for showing all Biological Process
 		url: '/biologicalProcess',
 		templateUrl: 'partials/biological-process-list.html',
 		controller: 'BiologicalProcessListController'
-	}).state('listProtein', { // state for showing all phenotypes (diseases para los amigos)
+	}).state('listProtein', { // state for showing all Proteins
 		url: '/protein',
 		templateUrl: 'partials/protein-list.html',
 		controller: 'ProteinListController'	
-	}).state('listGene', { // state for showing all phenotypes (diseases para los amigos)
+	}).state('listGene', { // state for showing all Genes
 		url: '/gene',
 		templateUrl: 'partials/gene-list.html',
 		controller: 'GeneListController'	
+	}).state('listSNP', { // state for showing all SNPs
+		url: '/snp',
+		templateUrl: 'partials/snp-list.html',
+		controller: 'SNPListController'	
+	}).state('listPubmedDocument', { // state for showing all Pubmed documents 
+		url: '/pubmed_document',
+		templateUrl: 'partials/pubmed-list.html',
+		controller: 'PubmedDocumentListController'
+	}).state('listTranscript', { // state for showing all Transcripts 
+		url: '/transcript',
+		templateUrl: 'partials/transcript-list.html',
+		controller: 'TranscriptListController'	
+	}).state('listEnvironmentalFactor', { // state for showing all Environmental Factor
+		url: '/environmental_factor',
+		templateUrl: 'partials/environmental-factor-list.html',
+		controller: 'EnvironmentalFactorListController'			
 	}).state('viewPhenotype', { //state for showing single phenotype
 		url: '/phenotype/:id',
 		templateUrl: 'partials/phenotype-view.html',
@@ -102,20 +118,20 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 		url: '/protein/:id',
 		templateUrl: 'partials/protein-view.html',
 		controller: 'ProteinViewController'
-	}).state('viewPubmedDocument', { //results state 4
+	}).state('viewPubmedDocument', { //state for showing single Pubmed Document
 		url: '/pubmed_document/:id',
 		templateUrl: 'partials/pubmed-view.html',
 		controller: 'PubmedDocumentViewController'
-	}).state('viewTranscript', { //results state 4
-		url: '/transcript_id/:id',
+	}).state('viewTranscript', { //state for showing single Transcript
+		url: '/transcript/:id',
 		templateUrl: 'partials/transcript-view.html',
 		controller: 'TranscriptViewController'
-	}).state('viewTarget', { //results state 4
-		url: '/target_id/:id',
+	}).state('viewTarget', { //state for showing single Target
+		url: '/target/:id',
 		templateUrl: 'partials/target-view.html',
 		controller: 'TargetViewController'
-	}).state('viewSNP', { //view for SNP
-		url: '/snp_id/:id',
+	}).state('viewSNP', { //state for showing single SNP
+		url: '/snp/:id',
 		templateUrl: 'partials/snp-view.html',
 		controller: 'SNPViewController'
 	}).state('search', { //search state
@@ -126,35 +142,35 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 		url: '/search/id/:id',
 		templateUrl: 'partials/mirna-list.html',
 		controller: 'SearchByIdController'
-	}).state('searchByPhenotypeName', { //results state 2
+	}).state('searchByPhenotypeName', { //results state Phenotype name
 		url: '/search/phenotype_name/:name',
 		templateUrl: 'partials/phenotype-list.html',
 		controller: 'SearchByPhenotypeNameController'
-	}).state('searchByEnvironmentalFactorName', { //results state 3
+	}).state('searchByEnvironmentalFactorName', {  //results state EF name
 		url: '/search/environmental_factor_name/:name',
 		templateUrl: 'partials/environmental-factor-list.html',
 		controller: 'SearchByEnvironmentalFactorNameController'
-	}).state('searchByGeneName', { //results state 4
+	}).state('searchByGeneName', { //results state Gene name
 		url: '/search/gene_name/:name',
 		templateUrl: 'partials/gene-list.html',
 		controller: 'SearchByGeneNameController'
-	}).state('searchByBiologicalProcessName', { //results state 5
+	}).state('searchByBiologicalProcessName', { //results state Biological Process name
 		url: '/search/biological_process/:name',
 		templateUrl: 'partials/biological-process-list.html',
 		controller: 'SearchByBiologicalProcessNameController'
-	}).state('searchByProteinId', { //results state 4
+	}).state('searchByProteinId', { //results state Protein id
 		url: '/search/protein_id/:id',
 		templateUrl: 'partials/protein-list.html',
 		controller: 'SearchByProteinIdController'
-	}).state('searchByPubmedDocumentId', { //results state 4
+	}).state('searchByPubmedDocumentId', { //results state Pubmed Document Id
 		url: '/search/pubmed_document_id/:id',
 		templateUrl: 'partials/pubmed-list.html',
 		controller: 'SearchByPubmedDocumentIdController'
-	}).state('searchByTranscriptId', { //results state 4
+	}).state('searchByTranscriptId', { //results state Transcript Id
 		url: '/search/transcript_id/:id',
 		templateUrl: 'partials/transcript-list.html',
 		controller: 'SearchByTranscriptIdController'
-	}).state('searchBySnpId', { //results state snp
+	}).state('searchBySnpId', { //results state SNP Id
 		url: '/search/snp_id/:id',
 		templateUrl: 'partials/snp-list.html',
 		controller: 'SearchBySnpIdController'

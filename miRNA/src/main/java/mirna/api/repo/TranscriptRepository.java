@@ -13,6 +13,9 @@ import mirna.api.model.Transcript;
 
 @RepositoryRestResource(collectionResourceRel = "transcript", path = "transcript")
 public interface TranscriptRepository extends PagingAndSortingRepository<Transcript, Integer> {
+
+	@Query("SELECT distinct c from Transcript c where c.id is not null")
+	public Page<Transcript> findAll(Pageable pageable);
 	
 	@RestResource(path = "id")
 	public Page<Transcript> findById(@Param("id")String id, Pageable pageable);

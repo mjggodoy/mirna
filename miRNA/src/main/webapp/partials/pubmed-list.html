@@ -1,18 +1,53 @@
-<h3>Pubmed document</h3>
+<div class="row">
 
-<table class="table table-hover">
-	<thead>
-		<tr>
-			<th>Pubmed document ID</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr data-ng-repeat="o in pubmed_document">
-			<td>
-				<a data-ui-sref="viewPubmedDocument({id:o.pk})">{{o.id}}</a>
-			</td>
-		</tr>
-	</tbody>
-</table>
+	<div class="col-sm-12">
 
-<div data-ng-include="'partials/snippet/pager.html'"></div>
+		<ol class="breadcrumb">
+			<li><a data-ui-sref="home">Home</a></li>
+			<li class="active">Pubmed document</li>
+		</ol>
+
+		<div class="card-container">
+
+			<div class="col-sm-12">
+				<h1>Pubmed document list</h1>
+			</div>
+
+			<div class="col-sm-12">
+				<div class="card">
+					<div class="card card__title">Pubmed document</div>
+					<div class="card__text">
+
+						<div data-ng-include="'partials/snippet/loading_animation.html'"
+						     data-ng-if="!pubmed_document">
+						</div>
+
+						<table class="table table-hover" data-ng-if="pubmed_document">
+							<thead>
+								<tr>
+									<th>Pubmed ID</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr data-ng-repeat="o in pubmed_document">
+									<td>
+										<a data-ui-sref="viewPubmedDocument({id:o.pk})">{{o.id}}</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+
+					</div>
+
+					<div data-ng-include="'partials/snippet/card_pager_footer.html'"
+					     data-ng-if="pubmed_document"
+					     onload="e=$parent;element='pubmed_document';">
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+</div>

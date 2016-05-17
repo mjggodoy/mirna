@@ -643,6 +643,7 @@ module.controller('BiologicalProcessListController', function($scope, $controlle
 	}));
 });
 
+
 module.controller('GeneListController', function($scope, $controller, Gene) {
 	$scope.sortOptions = [ {
 		value : "name",
@@ -653,10 +654,61 @@ module.controller('GeneListController', function($scope, $controller, Gene) {
 		Object : Gene,
 		elements : 'gene'
 	}));
+
+});
+
+module.controller('SNPListController', function($scope, $controller, SNP) {
+	$scope.sortOptions = [ {
+		value : "id",
+		label : "Id"
+	} ];
+	angular.extend(this, $controller('PagedListController', {
+		$scope : $scope,
+		Object : SNP,
+		elements : 'snp'
+	}));
+});
+
+module.controller('PubmedDocumentListController', function($scope, $controller, PubmedDocument) {
+	$scope.sortOptions = [ {
+		value : "id",
+		label : "Id"
+	} ];
+	angular.extend(this, $controller('PagedListController', {
+		$scope : $scope,
+		Object : PubmedDocument,
+		elements : 'pubmed_document'
+	}));
+});
+
+module.controller('TranscriptListController', function($scope, $controller, Transcript) {
+	$scope.sortOptions = [ {
+		value : "id",
+		label : "Id"
+	} ];
+	angular.extend(this, $controller('PagedListController', {
+		$scope : $scope,
+		Object : Transcript,
+		elements : 'transcript'
+	}));
+});
+
+module.controller('EnvironmentalFactorListController', function($scope, $controller, EnvironmentalFactor) {
+	$scope.sortOptions = [ {
+		value : "name",
+		label : "Name"
+	} ];
+	angular.extend(this, $controller('PagedListController', {
+		$scope : $scope,
+		Object : EnvironmentalFactor,
+		elements : 'environmental_factor'
+	}));
 });
 
 
-// Por aquí me quedé
+
+
+
 /****************************************
  * Search controllers
  ****************************************/
