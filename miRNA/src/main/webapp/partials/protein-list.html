@@ -1,0 +1,73 @@
+<div class="row">
+
+	<div class="col-sm-12">
+
+		<ol class="breadcrumb">
+			<li><a data-ui-sref="home">Home</a></li>
+			<li class="active">Protein</li>
+		</ol>
+
+		<div class="card-container">
+
+			<div class="col-sm-12">
+				<h1>Protein ID list</h1>
+			</div>
+
+			<div class="col-sm-12">
+				<div class="card">
+					<div class="card card__title">Protein ID</div>
+					<div class="card__text">
+
+						<div data-ng-include="'partials/snippet/loading_animation.html'"
+						     data-ng-if="!protein">
+						</div>
+
+						<table class="table table-hover" data-ng-if="protein">
+							<thead>
+								<tr>
+									<th>Protein ID</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr data-ng-repeat="o in protein">
+									<td>
+										<a data-ui-sref="viewProtein({id:o.pk})">{{o.id}}</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+
+					</div>
+
+					<div data-ng-include="'partials/snippet/card_pager_footer.html'"
+					     data-ng-if="protein"
+					     onload="e=$parent;element='protein';">
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+</div>
+
+
+<!-- <h3>Protein</h3>
+ -->
+<!-- <table class="table table-hover">
+	<thead>
+		<tr>
+			<th>ID</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr data-ng-repeat="o in protein">
+			<td>
+				<a data-ui-sref="viewProtein({id:o.pk})">{{o.id}}</a>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<div data-ng-include="'partials/snippet/pager.html'"></div> -->

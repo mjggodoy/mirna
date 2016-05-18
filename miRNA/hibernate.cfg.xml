@@ -23,41 +23,41 @@
   <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property> 
  
   <!-- mapping file, we can use Bean annotations too -->
-  <mapping class="mirna.beans.MiRna" />
-  <mapping class="mirna.beans.Sequence" />
-  <mapping class="mirna.beans.Disease" />
-  <mapping class="mirna.beans.ExpressionData" />
-  <mapping class="mirna.beans.PubmedDocument" />
-  <mapping class="mirna.beans.Organism" />
-  <mapping class="mirna.beans.Gene" />
-  <mapping class="mirna.beans.Hairpin" />
-  <mapping class="mirna.beans.Mature" />
-  <mapping class="mirna.beans.Transcript" />
-  <mapping class="mirna.beans.Target" />
-  <mapping class="mirna.beans.Mutation" />
-  <mapping class="mirna.beans.SNP" />
-  <mapping class="mirna.beans.Complex" />
-  <mapping class="mirna.beans.BiologicalProcess" />
-  <mapping class="mirna.beans.InteractionData" />
-  <mapping class="mirna.beans.Protein" />
-  <mapping class="mirna.beans.nToM.MirnaHasOrganism" />
-  <mapping class="mirna.beans.nToM.ExpressionDataHasPubmedDocument" />
-  <mapping class="mirna.beans.nToM.MirnaHasPubmedDocument" />
-  <mapping class="mirna.beans.nToM.MirnaHasSequence" />
-  <mapping class="mirna.beans.nToM.MirnaInvolvesBiologicalProcess" />
-  <mapping class="mirna.beans.nToM.SnpHasDisease" />
-  <mapping class="mirna.beans.nToM.SnpHasGene" />
-  <mapping class="mirna.beans.nToM.TranscriptProducesProtein" />
-  <mapping class="mirna.beans.nToM.SnpHasPubmedDocument" />
-  <mapping class="mirna.beans.nToM.HairpinHasSequence" />
-  <mapping class="mirna.beans.nToM.MatureHasSequence" />
-  <mapping class="mirna.beans.nToM.MirnaHasHairpin" />
-  <mapping class="mirna.beans.nToM.MirnaHasMature" />
-  <mapping class="mirna.beans.nToM.TranscriptHasGene" />
-  <mapping class="mirna.beans.SmallMolecule" />
-  <mapping class="mirna.beans.EnvironmentalFactor" />
+  <mapping class="mirna.integration.beans.MiRna" />
+  <mapping class="mirna.integration.beans.Sequence" />
+  <mapping class="mirna.integration.beans.Disease" />
+  <mapping class="mirna.integration.beans.ExpressionData" />
+  <mapping class="mirna.integration.beans.PubmedDocument" />
+  <mapping class="mirna.integration.beans.Organism" />
+  <mapping class="mirna.integration.beans.Gene" />
+  <mapping class="mirna.integration.beans.Hairpin" />
+  <mapping class="mirna.integration.beans.Mature" />
+  <mapping class="mirna.integration.beans.Transcript" />
+  <mapping class="mirna.integration.beans.Target" />
+  <mapping class="mirna.integration.beans.Mutation" />
+  <mapping class="mirna.integration.beans.SNP" />
+  <mapping class="mirna.integration.beans.Complex" />
+  <mapping class="mirna.integration.beans.BiologicalProcess" />
+  <mapping class="mirna.integration.beans.InteractionData" />
+  <mapping class="mirna.integration.beans.Protein" />
+  <mapping class="mirna.integration.beans.nToM.MirnaHasOrganism" />
+  <mapping class="mirna.integration.beans.nToM.ExpressionDataHasPubmedDocument" />
+  <mapping class="mirna.integration.beans.nToM.MirnaHasPubmedDocument" />
+  <mapping class="mirna.integration.beans.nToM.MirnaHasSequence" />
+  <mapping class="mirna.integration.beans.nToM.MirnaInvolvesBiologicalProcess" />
+  <mapping class="mirna.integration.beans.nToM.SnpHasDisease" />
+  <mapping class="mirna.integration.beans.nToM.SnpHasGene" />
+  <mapping class="mirna.integration.beans.nToM.TranscriptProducesProtein" />
+  <mapping class="mirna.integration.beans.nToM.SnpHasPubmedDocument" />
+  <mapping class="mirna.integration.beans.nToM.HairpinHasSequence" />
+  <mapping class="mirna.integration.beans.nToM.MatureHasSequence" />
+  <mapping class="mirna.integration.beans.nToM.MirnaHasHairpin" />
+  <mapping class="mirna.integration.beans.nToM.MirnaHasMature" />
+  <mapping class="mirna.integration.beans.nToM.TranscriptHasGene" />
+  <mapping class="mirna.integration.beans.SmallMolecule" />
+  <mapping class="mirna.integration.beans.EnvironmentalFactor" />
   
-  <mapping class="mirna.database.beans.DiseasePk" />
+  <mapping class="mirna.integration.database.beans.DiseasePk" />
    
  </session-factory>
 </hibernate-configuration>

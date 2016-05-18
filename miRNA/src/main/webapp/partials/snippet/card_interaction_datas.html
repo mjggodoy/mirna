@@ -1,0 +1,14 @@
+<div class="col-sm-12" data-ng-if="interaction_datas">
+	<div class="card">
+		<div class="card card__title">Interaction Data</div>
+		<div class="card__text">
+			<div data-ng-include="'partials/snippet/card_interaction_data.html'"
+				data-ng-repeat="interaction_data in interaction_datas.interaction_data">
+			</div>
+		</div>
+		<div data-ng-include="'partials/snippet/card_pager_footer.html'"
+				data-ng-if="interaction_datas"
+				onload="e=interaction_datas;element='interaction_data';">
+		</div>
+	</div>
+</div>

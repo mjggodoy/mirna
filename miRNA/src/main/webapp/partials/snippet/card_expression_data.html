@@ -1,0 +1,143 @@
+<div class="dl-container">
+	<dl class="dl-horizontal">
+	
+		<dt data-ng-if="expression_data.provenance">Provenance:</dt>
+		<dd data-ng-if="expression_data.provenance">{{expression_data.provenance}}</dd>
+		
+		<dt data-ng-if="expression_data.disease">Disease:</dt>
+		<dd data-ng-if="expression_data.disease">
+			<a data-ui-sref="viewPhenotype({id: expression_data.disease.pk})">
+				{{Util.capitalize(expression_data.disease.name)}}
+				<div data-ng-if="expression_data.disease.diseaseClass"> ({{expression_data.disease.diseaseClass}})</div>
+			</a>
+		</dd>
+			
+		<dt data-ng-if="expression_data.titleReference">Title reference:</dt>
+		<dd data-ng-if="expression_data.titleReference">{{expression_data.titleReference}}</dd>
+		
+		<dt data-ng-if="expression_data.foldchangeMin">Fold change min:</dt>
+		<dd data-ng-if="expression_data.foldchangeMin">{{expression_data.foldchangeMin}}</dd>
+		
+		<dt data-ng-if="expression_data.foldchangeMax">Fold change max:</dt>
+		<dd data-ng-if="expression_data.foldchangeMax">{{expression_data.foldchangeMax}}</dd>
+		
+		<dt data-ng-if="expression_data.studyDesign">Study design:</dt>
+		<dd data-ng-if="expression_data.studyDesign">{{expression_data.studyDesign}}</dd>
+		
+		<dt data-ng-if="expression_data.method">Method:</dt>
+		<dd data-ng-if="expression_data.method">{{Util.capitalize(expression_data.method)}}</dd>
+		
+		<dt data-ng-if="expression_data.treatment">Treatment:</dt>
+		<dd data-ng-if="expression_data.treatment">{{expression_data.treatment}}</dd>
+		
+		<dt data-ng-if="expression_data.evidence">Evidence:</dt>
+		<dd data-ng-if="expression_data.evidence">{{expression_data.evidence}}</dd>
+		
+		<dt data-ng-if="expression_data.year">Year:</dt>
+		<dd data-ng-if="expression_data.year">{{expression_data.year}}</dd>
+		
+		<dt data-ng-if="expression_data.description">Description:</dt>
+		<dd data-ng-if="expression_data.description">{{expression_data.description}}</dd>
+		
+		<dt data-ng-if="expression_data.cellularLine">Cellular line:</dt>
+		<dd data-ng-if="expression_data.cellularLine">{{expression_data.cellularLine}}</dd>
+		
+		<dt data-ng-if="expression_data.condition">Condition:</dt>
+		<dd data-ng-if="expression_data.condition">{{expression_data.condition}}</dd>
+		
+		<dt data-ng-if="expression_data.dataType">Data type:</dt>
+		<dd data-ng-if="expression_data.dataType">{{expression_data.dataType}}</dd>
+		
+		<dt data-ng-if="expression_data.differentExpressionLocation">Expression location:</dt>
+		<dd data-ng-if="expression_data.differentExpressionLocation">{{expression_data.differentExpressionLocation}}</dd>
+		
+		<dt data-ng-if="expression_data.interactionData">Interaction Data:</dt>
+		<dd data-ng-if="expression_data.interactionData">
+			<!--
+			<div data-ng-include="'partials/snippet/card_interaction_data.html'"
+				data-ng-if="true"
+				onload="interaction_data = expression_data.interactionData">
+			</div>
+			<div class="clearfix"></div>
+			-->
+
+			<div data-ng-if="expression_data.interactionData.provenance &&
+					( expression_data.provenance == null
+					|| expression_data.interactionData.provenance != expression_data.provenance )">
+				<strong>Provenance:</strong> {{expression_data.interactionData.provenance}}<br/>
+			</div>
+
+			<div data-ng-if="expression_data.interactionData.score">
+				<strong>Score:</strong> {{expression_data.interactionData.score}}<br/>
+			</div>
+
+			<div data-ng-if="expression_data.interactionData.pvalueLog">
+				<strong>P Value Log:</strong> {{expression_data.interactionData.pvalueLog}}<br/>
+			</div>
+
+			<div data-ng-if="expression_data.interactionData.pvalueOg">
+				<strong>P Value Og:</strong> {{expression_data.interactionData.pvalueOg}}<br/>
+			</div>
+
+			<div data-ng-if="expression_data.interactionData.miTGScore">
+				<strong>miTG Score:</strong> {{expression_data.interactionData.miTGScore}}<br/>
+			</div>
+
+			<div data-ng-if="expression_data.interactionData.method">
+				<strong>Method:</strong> {{expression_data.interactionData.method}}<br/>
+			</div>
+
+			<div data-ng-if="expression_data.interactionData.feature">
+				<strong>Feature:</strong> {{expression_data.interactionData.feature}}<br/>
+			</div>
+
+			<div data-ng-if="expression_data.interactionData.phase">
+				<strong>Phase:</strong> {{expression_data.interactionData.phase}}<br/>
+			</div>
+
+			<div data-ng-if="expression_data.interactionData.rank">
+				<strong>Rank:</strong> {{expression_data.interactionData.rank}}<br/>
+			</div>
+
+			<div data-ng-if="expression_data.interactionData.reference">
+				<strong>Reference:</strong> {{expression_data.interactionData.reference}}<br/>
+			</div>
+
+			<div data-ng-if="expression_data.interactionData.cellularLine">
+				<strong>Cellular Line:</strong> {{expression_data.interactionData.cellularLine}}<br/>
+			</div>
+
+			<div data-ng-if="expression_data.interactionData.type">
+				<strong>Type:</strong> {{expression_data.interactionData.type}}<br/>
+			</div>
+
+			<div data-ng-if="expression_data.interactionData.mirnas">
+				<strong>miRNA:</strong>
+				<span data-ng-repeat="o in expression_data.interactionData.mirnas">
+					<a data-ui-sref="viewMature({id:o.pk})" data-ng-if="o.type=='mature'">{{o.id}}</a>
+					<a data-ui-sref="viewHairpin({id:o.pk})" data-ng-if="o.type=='hairpin'">{{o.id}}</a>
+					<a data-ui-sref="viewDeadMirna({id:o.pk})" data-ng-if="o.type=='dead'">{{o.id}}</a>
+					<span data-ng-if="$last==false"> / </span>
+				</span>
+				<br/>
+			</div>
+
+			<div data-ng-if="expression_data.interactionData.gene">
+				<strong>Gene:</strong>&nbsp;
+				<a data-ui-sref="viewGene({id:expression_data.interactionData.gene.pk})">{{expression_data.interactionData.gene.name}}</a>
+				<br/>
+			</div>
+
+			<div data-ng-if="expression_data.interactionData.target">
+				<strong>Target:</strong><br>
+				<div data-ng-include="'partials/snippet/card_target.html'"
+				     data-ng-if="true"
+				     onload="target = expression_data.interactionData.target"
+				     style="padding-left:15px;">
+				</div>
+			</div>
+
+		</dd>
+		
+	</dl>
+</div>

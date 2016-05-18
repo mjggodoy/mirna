@@ -1,2 +1,4 @@
 *.mwb.bak
 *.nt
+.idea
+*.iml

@@ -1,0 +1,12 @@
+<div class="pull-right">Page {{page.number+1}} / {{page.totalPages}}</div>
+
+<nav>
+  <ul class="pager">
+    <li data-ng-class="{disabled: page.number === 0}">
+      <a data-ui-sref="{page: {{page.number - 1}} }" data-ng-click="previousPage()">Previous</a>
+    </li>
+    <li data-ng-class="{disabled: page.number === page.totalPages - 1}">
+      <a data-ui-sref="{page: {{page.number + 1}} }" data-ng-click="nextPage()">Next</a>
+    </li>
+  </ul>
+</nav>

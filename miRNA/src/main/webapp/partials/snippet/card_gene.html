@@ -1,0 +1,24 @@
+<div class="dl-container">
+	<dl class="dl-horizontal">
+	
+		<dt data-ng-if="gene.name">Name:</dt>
+		<dd data-ng-if="gene.name">
+			<a data-ui-sref="viewGene({id: gene.pk})">
+				{{gene.name}}
+			</a>
+		</dd>
+		
+		<dt data-ng-if="gene.accessionumber">Accession Number:</dt>
+		<dd data-ng-if="gene.accessionumber">{{gene.accessionumber}}</dd>
+		
+		<dt data-ng-if="gene.hgnc_id">HGNC ID:</dt>
+		<dd data-ng-if="gene.hgnc_id">{{gene.hgnc_id}}</dd>
+		
+		<dt data-ng-if="gene.kegg_id">Kegg ID:</dt>
+		<dd data-ng-if="gene.kegg_id">{{gene.kegg_id}}</dd>
+		
+		<dt data-ng-if="gene.ensembl_id">Ensembl ID:</dt>
+		<dd data-ng-if="gene.ensembl_id">{{gene.ensembl_id}}</dd>
+					
+	</dl>
+</div>

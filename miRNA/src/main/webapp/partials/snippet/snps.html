@@ -1,0 +1,26 @@
+<div class="col-md-12" data-ng-if="snps">
+	<div class="panel panel-primary">
+		<div class="panel-heading">SNP related to 3'UTR of miRNA</div>
+		<div class="panel-body">
+			<div data-ng-include="'partials/snippet/card_snp.html'"
+				data-ng-repeat="snp in snps.snp">
+			</div>
+			
+			<div data-ng-if="snps.page.totalPages>1">
+				<div class="pull-right">Page {{snps.page.number+1}} / {{snps.page.totalPages}}</div>
+				<div class="pull-left">Showing {{snps.snp.length}} of {{snps.page.totalElements}}</div>
+				<nav>
+					<ul class="pager">
+						<li data-ng-class="{disabled: snps.page.number === 0}">
+							<a data-ui-sref="{page: {{snps.page.number - 1}} }" data-ng-click="snps.previousPage()">Previous</a>
+						</li>
+						<li data-ng-class="{disabled: snps.page.number === snps.page.totalPages - 1}">
+							<a data-ui-sref="{page: {{snps.page.number + 1}} }" data-ng-click="snps.nextPage()">Next</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
+			
+		</div>
+	</div>
+</div>

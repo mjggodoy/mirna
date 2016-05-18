@@ -1,0 +1,35 @@
+<div class="row">
+
+	<div class="col-sm-12">
+	
+		<ol class="breadcrumb">
+			<li><a data-ui-sref="home">Home</a></li>
+			<li><a data-ui-sref="listPhenotype">Phenotype</a></li>
+			<li class="active">{{Util.capitalize(disease.name)}}</li>
+		</ol>
+
+		<div class="card-container">
+			<div class="col-sm-12">
+				<h1>Phenotype <small>{{Util.capitalize(disease.name)}}</small></h1>
+			</div>
+			
+			<div class="col-sm-12" data-ng-if="disease.diseaseClass">
+				<div class="card">
+					<div class="card card__title">Information</div>
+					<div class="card__text">
+						<strong>Class:</strong> {{disease.diseaseClass}}<br/>
+					</div>
+				</div>
+			</div>
+			
+			<div data-ng-include="'partials/snippet/card_filter_mirna.html'"></div>
+		
+			<div data-ng-include="'partials/snippet/header_filtered_mirna.html'"></div>
+			
+			<div data-ng-if="interaction_datas.interaction_data.length>0" data-ng-include="'partials/snippet/card_interaction_datas.html'"></div>
+		 	<div data-ng-if="expression_datas.expression_data.length>0" data-ng-include="'partials/snippet/card_expression_datas.html'"></div>
+		 	<div data-ng-if="pubmed_documents.pubmed_document.length>0" data-ng-include="'partials/snippet/card_pubmed_documents.html'"></div>
+	 	</div>
+	 	
+ 	</div>
+</div>

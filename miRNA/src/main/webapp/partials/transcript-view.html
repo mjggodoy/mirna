@@ -1,0 +1,38 @@
+<div class="row">
+
+	<div class="col-sm-12">
+
+		<ol class="breadcrumb">
+			<li><a data-ui-sref="home">Home</a></li>
+			<li><a data-ui-sref="listTranscript">Transcript</a></li>
+			<li class="active">{{transcript.id}}</li>
+		</ol>
+
+		<div class="card-container">
+
+			<div class="col-sm-12">
+				<h1>Transcript <small>{{transcript.id}}</small></h1>
+			</div>
+
+
+			<div class="col-sm-12">
+				<div class="card">
+					<div class="card card__title">Information</div>
+					<div class="card__text">
+						<span data-ng-if="transcript.id"><strong>Transcript ID:</strong> {{transcript.id}}<br/></span>
+						<span data-ng-if="transcript.isoform"><strong>Transcript isoform:</strong> {{transcript.isoform}}<br/></span>
+						<span data-ng-if="transcript.name"><strong>Transcript name:</strong> {{transcript.name}}<br/></span>
+						<span data-ng-if="transcript.external_name"><strong>Transcript name synonyms:</strong> {{transcript.external_name}}<br/></span>
+					</div>
+				</div>
+			</div>
+
+			<div data-ng-if="genes.gene.length>0" data-ng-include="'partials/snippet/card_genes.html'"></div>
+
+			<div data-ng-if="interaction_datas.interaction_data.length>0" data-ng-include="'partials/snippet/card_interaction_datas.html'"></div>
+
+		</div>
+
+	</div>
+
+</div>

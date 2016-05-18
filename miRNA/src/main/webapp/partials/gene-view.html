@@ -1,0 +1,50 @@
+<div class="row">
+	<div class="col-sm-12">
+
+		<ol class="breadcrumb">
+			<li><a data-ui-sref="home">Home</a></li>
+			<li><a data-ui-sref="listGene">Gene</a></li>
+			<li class="active">{{gene.name}}</li>
+		</ol>
+
+		<div class="card-container">
+
+			<div class="col-sm-12">
+				<h1>Gene <small>{{gene.name}}</small></h1>
+			</div>
+
+			<div class="col-sm-12">
+				<div class="card">
+					<div class="card card__title">Information</div>
+					<div class="card__text">
+						<strong>Name:</strong> {{gene.name}}<br/>
+						<span data-ng-if="gene.chromosome"><strong>Chromosome:</strong> {{gene.chromosome}}<br/></span>
+						<span data-ng-if="gene.accessionumber"><strong>Accession Number:</strong> {{gene.accessionumber}}<br/></span>
+						<span data-ng-if="gene.geneId"><strong>Gene ID:</strong> {{gene.geneId}}<br/></span>
+						<span data-ng-if="gene.description"><strong>Description:</strong> {{gene.description}}<br/></span>
+						<span data-ng-if="gene.year"><strong>Year:</strong> {{gene.year}}<br/></span>
+						<span data-ng-if="gene.resource"><strong>Resource:</strong> {{gene.resource}}<br/></span>
+						<span data-ng-if="gene.start_strand"><strong>Start Strand:</strong> {{gene.start_strand}}<br/></span>
+						<span data-ng-if="gene.end_strand"><strong>End Strand:</strong> {{gene.end_strand}}<br/></span>
+						<span data-ng-if="gene.hgnc_symbol"><strong>HGNC Symbol:</strong> {{gene.hgnc_symbol}}<br/></span>
+						<span data-ng-if="gene.hgnc_id"><strong>HGNC ID:</strong> {{gene.hgnc_id}}<br/></span>
+						<span data-ng-if="gene.location"><strong>Location:</strong> {{gene.location}}<br/></span>
+						<span data-ng-if="gene.expression_site"><strong>Expression Site:</strong> {{gene.expression_site}}<br/></span>
+						<span data-ng-if="gene.kegg_id"><strong>Kegg ID:</strong> {{gene.kegg_id}}<br/></span>
+						<span data-ng-if="gene.arm"><strong>Arm:</strong> {{gene.arm}}<br/></span>
+						<span data-ng-if="gene.distance"><strong>Distance:</strong> {{gene.distance}}<br/></span>
+						<span data-ng-if="gene.ensembl_id"><strong>Ensembl ID:</strong> {{gene.ensembl_id}}<br/></span>
+					</div>
+				</div>
+			</div>
+
+			<div data-ng-include="'partials/snippet/card_filter_mirna.html'"></div>
+
+			<div data-ng-include="'partials/snippet/header_filtered_mirna.html'"></div>
+
+			<div data-ng-include="'partials/snippet/card_interaction_datas.html'"></div>
+
+		</div>
+
+	</div>
+</div>

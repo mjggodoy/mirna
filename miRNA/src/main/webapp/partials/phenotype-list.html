@@ -1,0 +1,57 @@
+<div class="row">
+
+	<div class="col-sm-12">
+
+		<ol class="breadcrumb">
+			<li><a data-ui-sref="home">Home</a></li>
+			<li class="active">Phenotype</li>
+		</ol>
+
+		<div class="card-container">
+
+			<div class="col-sm-12">
+				<h1>Disease list</h1>
+			</div>
+
+			<div class="col-sm-12">
+				<div class="card">
+					<div class="card card__title">Disease</div>
+					<div class="card__text">
+
+						<div data-ng-include="'partials/snippet/loading_animation.html'"
+						     data-ng-if="!disease">
+						</div>
+
+						<table class="table table-hover" data-ng-if="disease">
+							<thead>
+								<tr>
+									<th>Name</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr data-ng-repeat="o in disease">
+									<td>
+										<a data-ui-sref="viewPhenotype({id:o.pk})">{{o.name}}</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+
+					</div>
+
+					<div data-ng-include="'partials/snippet/card_pager_footer.html'"
+					     data-ng-if="disease"
+					     onload="e=$parent;element='disease';">
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+</div>
+
+
+
+

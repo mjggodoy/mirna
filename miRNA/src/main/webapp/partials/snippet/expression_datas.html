@@ -1,0 +1,20 @@
+<div class="col-sm-12" data-ng-if="expression_datas">
+	<div class="card">
+		<div class="card card__title">Expression Data</div>
+		<div class="card__text">
+			<div data-ng-include="'partials/snippet/card_expression_data.html'"
+				data-ng-repeat="expression_data in expression_datas.expression_data">
+			</div>
+		</div>
+		
+		<div class="card__footer center-block">
+			<button data-ng-if="expression_datas.page.number > 0" type="button"
+					class="btn btn-pager pull-left" data-ng-click="expression_datas.previousPage()">&lt;&lt;</button>
+			<button data-ng-if="expression_datas.page.number < expression_datas.page.totalPages - 1" type="button"
+					type="button" class="btn btn-pager pull-right" data-ng-click="expression_datas.nextPage()">&gt;&gt;</button>
+			<div class="center-pager">Page {{expression_datas.page.number+1}} / {{expression_datas.page.totalPages}}</div>
+			<div class="clearfix"></div>
+		</div>
+		
+	</div>
+</div>

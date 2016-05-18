@@ -1,0 +1,171 @@
+<div class="row">
+	<div class="col-sm-12">
+
+		<ol class="breadcrumb">
+			<li><a data-ui-sref="home">Home</a></li>
+			<li class="active">Search</li>
+		</ol>
+
+		<div class="card-container">
+
+			<div class="col-sm-12">
+				<h1>Search</h1>
+			</div>
+
+			<div class="col-sm-12">
+
+				<form class="form-inline">
+					<div class="form-group">
+						<label for="search-opt">Search</label>
+						<select ng-model="search_opt" id="search-opt" class="form-control">
+							<option value="mirna">miRNA</option>
+							<option value="phenotype">Phenotype</option>
+							<option value="environmentalFactor">Environmental Factor</option>
+							<option value="gene">Gene</option>
+							<option value="snp">SNP</option>
+							<option value="biologicalProcess">Biological Process</option>
+							<option value="pubmedDocument">Pubmed Document</option>
+							<option value="transcript">Transcript</option>
+							<option value="protein">Protein</option>
+						</select>
+					</div>
+					<div class="form-group" ng-show="search_opt=='mirna'">
+						<label for="search-opt-mirna">by</label>
+						<select ng-model="search_opt_mirna" id="search-opt-mirna" class="form-control">
+							<option value="mirnaId">miRNA ID</option>
+							<option value="accNumber">Accession number</option>
+						</select>
+					</div>
+				</form>
+
+				<form class="form-inline search-form" data-ng-submit="findById()"
+						ng-show="search_opt=='mirna' && search_opt_mirna=='mirnaId'">
+					<div class="form-group">
+						<label for="search-opt-1">miRNA ID</label>
+						<input
+							type="text" class="form-control" id="search-opt-1"
+							placeholder="e.g. hsa-let-7a" data-ng-model="idText">
+					</div>
+					<button type="submit" class="btn btn-primary">
+						<span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search
+					</button>
+				</form>
+
+				<form class="form-inline search-form" data-ng-submit="findByAcc()"
+				      ng-show="search_opt=='mirna' && search_opt_mirna=='accNumber'">
+					<div class="form-group">
+						<label for="search-opt-1b">miRNA accession number</label>
+						<input type="text" class="form-control" id="search-opt-1b"
+							placeholder="e.g. MI0000060" data-ng-model="accText">
+					</div>
+					<button type="submit" class="btn btn-primary">
+						<span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search
+					</button>
+				</form>
+
+				<form class="form-inline search-form" data-ng-submit="findByPhenotypeName()"
+				      ng-show="search_opt=='phenotype'">
+					<div class="form-group">
+						<label for="search-opt-2">Phenotype</label> <input
+							type="text" class="form-control" id="search-opt-2"
+							placeholder="e.g. cancer" data-ng-model="phenotypeNameText">
+					</div>
+					<button type="submit" class="btn btn-primary">
+						<span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search
+					</button>
+				</form>
+
+				<form class="form-inline search-form"
+				      data-ng-submit="findByEnvironmentalFactorName()"
+				      ng-show="search_opt=='environmentalFactor'">
+					<div class="form-group">
+						<label for="search-opt-3">Environmental factor</label> <input
+							type="text" class="form-control" id="search-opt-3"
+							placeholder="e.g. Alcohol"
+							data-ng-model="environmentalFactorNameText">
+					</div>
+					<button type="submit" class="btn btn-primary">
+						<span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search
+					</button>
+				</form>
+
+				<form class="form-inline search-form" data-ng-submit="findByGeneName()"
+				      ng-show="search_opt=='gene'">
+					<div class="form-group">
+						<label for="search-opt-4">Gene</label> <input type="text"
+							class="form-control" id="search-opt-4" placeholder="e.g. bcl6"
+							data-ng-model="geneNameText">
+					</div>
+					<button type="submit" class="btn btn-primary">
+						<span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search
+					</button>
+				</form>
+
+				<form class="form-inline search-form" data-ng-submit="findBySNPId()"
+				      ng-show="search_opt=='snp'">
+					<div class="form-group">
+						<label for="search-opt-5">SNP id</label> <input type="text"
+							class="form-control" id="search-opt-5" placeholder="e.g. rs56871920"
+							data-ng-model="SNPIdText">
+					</div>
+					<button type="submit" class="btn btn-primary">
+						<span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search
+					</button>
+				</form>
+
+				<form class="form-inline search-form" data-ng-submit="findByBiologicalProcessName()"
+				      ng-show="search_opt=='biologicalProcess'">
+					<div class="form-group">
+						<label for="search-opt-6">Biological process</label>
+						<input
+							type="text" class="form-control" id="search-opt-6"
+							placeholder="e.g. Replication"
+							data-ng-model="biologicalProcessNameText">
+					</div>
+					<button type="submit" class="btn btn-primary">
+						<span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search
+					</button>
+				</form>
+
+				<form class="form-inline search-form" data-ng-submit="findByPubmedDocumentId()"
+				      ng-show="search_opt=='pubmedDocument'">
+					<div class="form-group">
+						<label for="search-opt-7">Pubmed document ID</label> <input
+							type="text" class="form-control" id="search-opt-7"
+							placeholder="e.g. 17965831" data-ng-model="pubmedIdText">
+					</div>
+					<button type="submit" class="btn btn-primary">
+						<span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search
+					</button>
+				</form>
+
+				<form class="form-inline search-form" data-ng-submit="findByTranscriptId()"
+				      ng-show="search_opt=='transcript'">
+					<div class="form-group">
+						<label for="search-opt-8">Transcript ID</label> <input
+							type="text" class="form-control" id="search-opt-8"
+							placeholder="e.g. F52F10.2" data-ng-model="transcriptIdText">
+					</div>
+					<button type="submit" class="btn btn-primary">
+						<span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search
+					</button>
+				</form>
+
+				<form class="form-inline search-form" data-ng-submit="findByProteinId()"
+				      ng-show="search_opt=='protein'">
+					<div class="form-group">
+						<label for="search-opt-9">Protein ID</label> <input type="text"
+							class="form-control" id="search-opt-9" placeholder="e.g. P21108"
+							data-ng-model="proteinIdText">
+					</div>
+					<button type="submit" class="btn btn-primary">
+						<span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search
+					</button>
+				</form>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+

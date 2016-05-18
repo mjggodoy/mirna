@@ -1,0 +1,42 @@
+<div class="row">
+	<div class="col-sm-12">
+
+		<ol class="breadcrumb">
+			<li><a href="#">Home</a></li>
+			<li><a data-ui-sref="listPubmedDocument">Pubmed document</a></li>
+			<li class="active">{{pubmed_document.id}}</li>
+		</ol>
+
+		<div class="card-container">
+
+			<div class="col-sm-12">
+				<h1>Pubmed Document
+					<small>{{pubmed_document.id}}</small>
+				</h1>
+			</div>
+
+			<div class="col-sm-12">
+				<div class="card">
+					<h2 class="card card__title">Information</h2>
+					<p class="card__text">
+						<strong>ID:</strong> {{pubmed_document.id}}<br/>
+						<span data-ng-if="pubmed_document.description"><strong>Description:</strong> {{pubmed_document.description}}<br/></span>
+						<span data-ng-if="pubmed_document.resource"><strong>Resource:</strong> <a
+							data-ng-href={{pubmed_document.resource}} target="_blank">{{pubmed_document.resource}}</a></span>
+					</p>
+					<div class="card__action-bar">
+						<a class="card__button" href="http://www.ncbi.nlm.nih.gov/pubmed/{{pubmed_document.id}}" target="_BLANK">PUBMED</a>
+					</div>
+				</div>
+			</div>
+
+			<div data-ng-include="'partials/snippet/card_filter_mirna.html'"></div>
+
+			<div data-ng-include="'partials/snippet/header_filtered_mirna.html'"></div>
+
+			<div data-ng-if="expression_datas.expression_data.length>0"  data-ng-include="'partials/snippet/card_expression_datas.html'"></div>
+
+		</div>
+
+	</div>
+</div>
