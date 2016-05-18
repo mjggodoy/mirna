@@ -178,7 +178,11 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 		url: '/home',
 		templateUrl: 'partials/home.html',
 		controller: 'HomeController'
-	});
+	}).state('about', { //search state
+		url: '/about',
+		templateUrl: 'partials/about.html',
+	
+});
 
 }).run(function($state, $rootScope, Util) {
 	$rootScope.Util = Util;
