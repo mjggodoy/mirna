@@ -1,6 +1,8 @@
 package mirna.conversion.main;
 
 import mirna.conversion.rdf.BiologicalProcessRdf;
+import mirna.conversion.rdf.ExpressionDataRdf;
+import mirna.conversion.rdf.InteractionDataRdf;
 import mirna.conversion.rdf.PhenotypeRdf;
 import mirna.integration.utils.HibernateUtil;
 
@@ -9,8 +11,10 @@ import mirna.integration.utils.HibernateUtil;
  */
 public class RdfExecute {
 	public static void main(String[] args) {
-		(new PhenotypeRdf()).execute();
-		(new BiologicalProcessRdf()).execute();
+//		(new InteractionDataRdf()).execute();
+		(new ExpressionDataRdf()).execute();
+//		(new PhenotypeRdf()).execute();
+//		(new BiologicalProcessRdf()).execute();
 		HibernateUtil.closeSessionFactory();
 	}
 }

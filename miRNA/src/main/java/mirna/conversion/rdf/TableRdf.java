@@ -13,6 +13,10 @@ import java.util.List;
  */
 public abstract class TableRdf {
 
+	private final int BATCH_SIZE = 10000;
+
+	private Session session = null;
+
 	protected String ns = "http://khaos.uma.es/imirna/";
 	protected String resourcePrefix = ns + "resource/";
 	protected String folder = "C:/temp/imirna/";
@@ -25,9 +29,16 @@ public abstract class TableRdf {
 
 	protected abstract String getName();
 
+	private List<ModelClass> getAllModelsIterable(int offset, int max) {
+		String query = getQuery();
+		return session.createQuery(query).setFirstResult(offset).setMaxResults(max).list();
+	}
+
 	public void execute() {
 
-		String query = getQuery();
+		int offset = 0;
+
+		List<ModelClass> list;
 		String ntFile = folder + getNtFile();
 		String name = getName();
 
@@ -37,14 +48,11 @@ public abstract class TableRdf {
 		File file;
 
 		SessionFactory sessionFactory;
-		Session session = null;
 
 		try {
 
 			sessionFactory = HibernateUtil.getSessionFactory();
 			session = sessionFactory.getCurrentSession();
-			session.beginTransaction();
-			List<ModelClass> list = session.createQuery(query).list();
 
 			file = new File(ntFile);
 			fop = new FileOutputStream(file);
@@ -54,20 +62,33 @@ public abstract class TableRdf {
 				file.createNewFile();
 			}
 
-			for (ModelClass object : list) {
-				processBean(object, fop);
+			session.getTransaction().begin();
+
+			while ((list = getAllModelsIterable(offset, BATCH_SIZE)).size() > 0) {
+
+				//session.getTransaction().begin();
+
+				for (ModelClass object : list) {
+					processBean(object, fop);
+				}
+				System.out.println(list.size()+" rows converted.");
+
+				session.flush();
+				session.clear();
+				//session.getTransaction().commit();
+				offset += list.size();
 			}
 
 			fop.flush();
 			fop.close();
 
-			System.out.println(name + " ended!");
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
 			try {
-				if (session != null) session.close();
+				if (session != null) {
+					session.close();
+				}
 				if (fop != null) {
 					fop.close();
 				}
