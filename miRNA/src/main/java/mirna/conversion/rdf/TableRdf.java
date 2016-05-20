@@ -64,6 +64,8 @@ public abstract class TableRdf {
 
 			session.getTransaction().begin();
 
+			int size = 0;
+
 			while ((list = getAllModelsIterable(offset, BATCH_SIZE)).size() > 0) {
 
 				//session.getTransaction().begin();
@@ -71,7 +73,9 @@ public abstract class TableRdf {
 				for (ModelClass object : list) {
 					processBean(object, fop);
 				}
-				System.out.println(list.size()+" rows converted.");
+
+				size += list.size();
+				System.out.println(size+" rows converted.");
 
 				session.flush();
 				session.clear();
@@ -81,6 +85,8 @@ public abstract class TableRdf {
 
 			fop.flush();
 			fop.close();
+
+			System.out.println(name + " ended!");
 
 		} catch (IOException e) {
 			e.printStackTrace();
