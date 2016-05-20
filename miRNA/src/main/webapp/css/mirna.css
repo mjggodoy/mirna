@@ -140,6 +140,15 @@ body {
     transition: delay 0.1s;
 }
 
+.image{
+
+	float:left;
+	margin-right:10px; 
+	margin-bottom:10px;
+	
+}
+
+
 .card__action-bar {
 	border-top: 1px solid #E0E0E0;
 	padding: 0 8px;
@@ -286,3 +295,9 @@ a:hover, a:focus {
 dl.dl-horizontal dl dt {
 	clear: inherit !important;
 }
+
+
+.
+
+
+
