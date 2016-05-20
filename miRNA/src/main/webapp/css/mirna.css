@@ -47,6 +47,8 @@ body {
 	margin-bottom: 20px;
 }
 
+
+
 .card {
     will-change: transform;
     margin-bottom: 8px;
@@ -139,6 +141,15 @@ body {
     -webkit-transition: delay 0.1s;
     transition: delay 0.1s;
 }
+
+.image{
+
+	float:left;
+	margin-right:10px; 
+	margin-bottom:10px;
+	
+}
+
 
 .card__action-bar {
 	border-top: 1px solid #E0E0E0;
@@ -286,3 +297,15 @@ a:hover, a:focus {
 dl.dl-horizontal dl dt {
 	clear: inherit !important;
 }
+
+
+.row2{
+	
+margin-left: 120px;
+margin-right: -100px;
+	
+	
+}
+
+
+
