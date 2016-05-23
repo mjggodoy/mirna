@@ -113,11 +113,7 @@ body {
 /* 	background: -ms-linear-gradient(45deg, #EB6909 0%, #EB6909 37%, hsl(25, 73%, 76%) 100%); */
 /* 	background: linear-gradient(45deg, #EB6909 0%, #EB6909 37%, hsl(25, 73%, 76%) 100%); */
 /* 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#EB6909', endColorstr='hsl(25, 73%, 76%)', GradientType=1 ); */
-	
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+
     font-size: 18px;
 	color: white;
     margin: 0;
@@ -137,10 +133,6 @@ body {
 }
 
 .card__text {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
     font-size: 14px;
     display: block;
     padding: 16px;
