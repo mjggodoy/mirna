@@ -43,6 +43,18 @@ body {
 	padding-top: 70px;
 }
 
+.affix .navbar-brand {
+    padding: 10px;
+}
+
+.affix-top .navbar-brand {
+    display: none;
+}
+
+.affix .navbar-brand img{
+    height: 26px;
+}
+
 .main-container {
 	margin-bottom: 20px;
 }
