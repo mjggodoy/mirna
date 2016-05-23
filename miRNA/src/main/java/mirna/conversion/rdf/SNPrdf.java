@@ -15,9 +15,7 @@ import org.apache.jena.riot.RDFFormat;
 
 import java.io.OutputStream;
 
-/**
- * Created by Esteban on 18/05/2016.
- */
+
 public class SNPrdf extends TableRdf {
 
 	//	protected String ns = "http://khaos.uma.es/imirna/";
