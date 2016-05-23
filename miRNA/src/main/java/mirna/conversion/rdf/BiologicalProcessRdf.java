@@ -6,7 +6,6 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.vocabulary.RDF;
 import com.hp.hpl.jena.vocabulary.VCARD;
 import mirna.integration.beans.BiologicalProcess;
-import mirna.integration.beans.Disease;
 import mirna.integration.beans.ModelClass;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFFormat;
@@ -52,6 +51,14 @@ public class BiologicalProcessRdf extends TableRdf {
 	@Override
 	protected String getName() {
 		return "BiologicalProcess";
+	}
+	
+	
+	public static void main(String[] args) {
+		
+		BiologicalProcessRdf bprdf = new BiologicalProcessRdf();
+		bprdf.execute();
+		
 	}
 
 }
