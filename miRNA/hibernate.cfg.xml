@@ -24,6 +24,7 @@
  
   <!-- mapping file, we can use Bean annotations too -->
   <mapping class="mirna.integration.beans.MiRna" />
+  <mapping class="mirna.integration.beans.MiRNA2" />
   <mapping class="mirna.integration.beans.Sequence" />
   <mapping class="mirna.integration.beans.Disease" />
   <mapping class="mirna.integration.beans.ExpressionData" />
