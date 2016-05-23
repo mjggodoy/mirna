@@ -29,7 +29,11 @@ public class ExpressionDataRdf extends TableRdf {
 
 		Resource subject =
 				model.createResource(resourcePrefix+"expressionData"+expressionData.getPk());
-		subject.addProperty(RDF.type, className);
+		
+		Resource complexClass = model.createResource(className);
+		subject.addProperty(RDF.type, complexClass);
+		
+		
 //		if (disease.getName()!=null)
 //			subject.addProperty(
 //					VCARD.ADRPROPERTIES.getModel().createProperty(ns+"name"),
