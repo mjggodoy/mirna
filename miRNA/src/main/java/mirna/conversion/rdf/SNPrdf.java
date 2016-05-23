@@ -8,6 +8,7 @@ import com.hp.hpl.jena.vocabulary.VCARD;
 
 import mirna.integration.beans.SNP;
 import mirna.integration.beans.ModelClass;
+import mirna.integration.utils.HibernateUtil;
 
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFFormat;
@@ -33,7 +34,11 @@ public class SNPrdf extends TableRdf {
 		
 		Resource subject =
 				model.createResource(resourcePrefix+"SNP"+snp.getPk());
-		subject.addProperty(RDF.type, className);
+		
+		Resource snpClass = model.createResource(className);
+		subject.addProperty(RDF.type, snpClass);
+
+		
 		if (snp.getSnp_id() !=null)
 			subject.addProperty(
 					VCARD.ADRPROPERTIES.getModel().createProperty(ns+"id"),
@@ -82,6 +87,8 @@ public class SNPrdf extends TableRdf {
 		
 		SNPrdf snprdf = new SNPrdf();
 		snprdf.execute();
+		HibernateUtil.closeSessionFactory();
+
 	
 	}*/
 
