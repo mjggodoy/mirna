@@ -7,7 +7,7 @@ import java.util.Properties;
 /**
  * Created by Esteban on 23/05/2016.
  */
-public class MeteSecuencias {
+public class InsertMirbaseHairpinSeqs {
 
 	private String dbUrl;
 	private String dbUser;
@@ -15,7 +15,7 @@ public class MeteSecuencias {
 
 	private Connection con = null;
 
-	public MeteSecuencias() throws IOException {
+	public InsertMirbaseHairpinSeqs() throws IOException {
 		Properties props = new Properties();
 		props.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("MiRna-mysql.properties"));
 		this.dbUrl = props.getProperty("url");
@@ -130,7 +130,7 @@ public class MeteSecuencias {
 	}
 
 	public static void main(String[] args) throws Exception {
-		MeteSecuencias x = new MeteSecuencias();
+		InsertMirbaseHairpinSeqs x = new InsertMirbaseHairpinSeqs();
 		x.execute();
 	}
 
