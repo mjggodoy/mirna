@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
-public class MirbaseMirnaExtraInfo {
+public class MirbaseMirnaExtraInfo2 {
 	
 	private String dbUrl;
 	private String dbUser;
@@ -17,7 +17,7 @@ public class MirbaseMirnaExtraInfo {
 	
 	private Connection con1 = null;
 	
-	public MirbaseMirnaExtraInfo() throws IOException {
+	public MirbaseMirnaExtraInfo2() throws IOException {
 		Properties props = new Properties();
 		props.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("MiRna-mysql.properties"));
 		this.dbUrl = props.getProperty("url");
@@ -35,7 +35,8 @@ public class MirbaseMirnaExtraInfo {
 			con1 = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			
 			stmt = con1.createStatement();
-			String query = "select * from mirbase.mirna";
+			String query = "select * from mirbase.mirna2wikipedia a, mirbase.wikipedia b, mirna.mirna2 c"
+						+ " where b.auto_id = a.auto_wikipedia and a.auto_mirna = c.mirbase_pk;";
 			
 
 			System.out.println("STARTING: " + query);
@@ -48,16 +49,21 @@ public class MirbaseMirnaExtraInfo {
 			
 			while (rs.next() && limit!=0) {
 				
-				String acc = rs.getString("mirna_acc");
-				String description = rs.getString("description");
-				String comment = rs.getString("comment");
+				System.out.println("get wp_summary");
+				String wp_summary = rs.getString("wp_summary");
+				System.out.println("get title");
+				String title = rs.getString("title");
+				System.out.println("get accession_number");
+				String acc = rs.getString("accession_number");
 				
+				System.out.println("get pk");
 				int mirnaPk = getPk(acc);
 				
-				if (mirnaPk!=-1) inserta(nullify(description), nullify(comment), mirnaPk);
+				if (mirnaPk!=-1) update(nullify(wp_summary), nullify(title), mirnaPk);
 				
 				limit--;
 				counter++;
+				System.out.println(counter);
 				if (counter % 100 == 0) System.out.println(counter);
 			}
 			
@@ -74,6 +80,7 @@ public class MirbaseMirnaExtraInfo {
 	
 	private int getPk(String acc) throws Exception {
 		
+
 		Statement stmt = null;
 		ResultSet rs = null;
 		
@@ -112,26 +119,32 @@ public class MirbaseMirnaExtraInfo {
 		
 	}
 	
-	private void inserta(String description, String comment, int mirnaPk) throws SQLException {
+	private void update(String wp_summary, String title, int mirnaPk) throws SQLException {
 		
-		String query = "insert into mirna.mirna_mirbase_info (description, comment, mirna_pk) "
-				+ "values(?, ?, ?)";
 			
-		PreparedStatement stmt = null;
-		
+		Statement stmt = null;
+	
 		try {
-		
-			stmt = con1.prepareStatement(query);
-			stmt.setString(1, description);
-			stmt.setString(2, comment);
-			stmt.setInt(3, mirnaPk);
-			stmt.execute();
-		
+			
+				System.out.println("updating");				
+				PreparedStatement ps = con1.prepareStatement(
+						"update mirna.mirna_mirbase_info SET wp_description=?, wp_title=? where " +
+						"mirna_pk=?");
+				 ps.setString(1,wp_summary);
+				 ps.setString(2,title);
+				 ps.setInt(3,mirnaPk);
+				 ps.executeUpdate();
+				 ps.close();
+				
+				
+			
+			
 		} catch (SQLException e) {
 			throw e;
 		} finally {
 			if (stmt!=null) stmt.close();
-		}
+		}			
+		
 			
 	}
 	
@@ -143,8 +156,7 @@ public class MirbaseMirnaExtraInfo {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		
-		MirbaseMirnaExtraInfo x = new MirbaseMirnaExtraInfo();
+		MirbaseMirnaExtraInfo2 x = new MirbaseMirnaExtraInfo2();
 		x.execute();
 	}
 
