@@ -3,14 +3,7 @@ package mirna.api.model;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -26,13 +19,20 @@ public class Hairpin extends MiRna {
 	@OneToMany
 	@JoinColumn(name="mirna_pk")
 	private Set<MirbaseMirnaInfo> mirbaseInfo;
-	
+
+	@OneToOne(mappedBy="miRNA")
+	private Sequence sequence;
+
 	public List<MiRna> getMatures() {
 		return matures;
 	}
 	
 	public Set<MirbaseMirnaInfo> getMirbaseInfo() {
 		return mirbaseInfo;
+	}
+
+	public Sequence getSequence() {
+		return sequence;
 	}
 
 }

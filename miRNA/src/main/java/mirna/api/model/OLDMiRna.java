@@ -38,7 +38,7 @@ public class OLDMiRna extends ModelClass {
 	@JoinTable(name="mirna_has_sequence", schema="mirna",
 		joinColumns={@JoinColumn(name="mirna_pk")},
 		inverseJoinColumns={@JoinColumn(name="sequence_pk")})
-	private List<Sequence> sequence;
+	private List<OLDSequence> sequence;
 	
 	@ManyToMany
 	@JoinTable(name="mirna_has_pubmed_document", schema="mirna",
@@ -86,7 +86,7 @@ public class OLDMiRna extends ModelClass {
 		return interaction_data;
 	}
 
-	public List<Sequence> getSequence() {
+	public List<OLDSequence> getSequence() {
 		return sequence;
 	}
 	
