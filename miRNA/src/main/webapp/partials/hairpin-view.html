@@ -28,15 +28,19 @@
 							<span data-ng-if="info.comment">
 								<strong>Comment:</strong> {{info.comment}}<br/>
 							</span>
+							<span data-ng-if="info.wp_title">
+								<strong>Community annotation: </strong>
+								This data has been taken from <a data-ng-if=info.wp_title href="http://en.wikipedia.org/wiki/Main_Page">Wikipedia</a> entry entitled <a data-ng-if=info.wp_title href="http://en.wikipedia.org/wiki/{{info.wp_title}}">{{info.wp_title}}.</a><br/>
+								{{info.wp_description}}
+							</span>
 						</div>
 					</div>
 					
 					<div class="col-sm-12">
 					<div class="card__action-bar">
-						<strong><b>MIRBASE</b> link to {{mirna.accessionNumber}}:</strong>
 						<a data-ng-if="mirna.accessionNumber" class="card__button" target="_BLANK"
 								href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={{mirna.accessionNumber}}">
-							http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={{mirna.accessionNumber}}</a>
+							MIRBASE link to {{mirna.accessionNumber}}</a>
 					</div>
 					</div>
 				</div>
