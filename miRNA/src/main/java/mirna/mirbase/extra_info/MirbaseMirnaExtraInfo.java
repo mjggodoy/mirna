@@ -29,6 +29,7 @@ public class MirbaseMirnaExtraInfo {
 		
 		Statement stmt = null;
 		ResultSet rs = null;
+		ResultSet rs2 = null;
 		
 		try {
 			
@@ -36,10 +37,15 @@ public class MirbaseMirnaExtraInfo {
 			
 			stmt = con1.createStatement();
 			String query = "select * from mirbase.mirna";
+			String query2 = "select * from mirbase.mirna2wikipedia a, mirbase.wikipedia b, mirna.mirna2 c "
+					+ "where b.auto_id = a.auto_wikipedia and a.auto_mirna = c.mirbase_pk;";
+
 			System.out.println("STARTING: " + query);
+			System.out.println("STARTING: " + query2);
 			
 			// execute the query, and get a java resultset
 			rs = stmt.executeQuery(query);
+			rs2 = stmt.executeQuery(query2);
 			
 			int limit = -1;
 			int counter = 0;
@@ -58,11 +64,28 @@ public class MirbaseMirnaExtraInfo {
 				counter++;
 				if (counter % 100 == 0) System.out.println(counter);
 			}
+			
+				
+			while (rs2.next() && limit!=0) {
+				
+				
+				String community_annotation = rs2.getString("wp_summary");
+				String acc = rs2.getString("accession_number");
+				
+				int mirnaPk = getPk(acc);
+				
+				if (mirnaPk!=-1) inserta2(nullify(community_annotation), mirnaPk);
+				
+				limit--;
+				counter++;
+				if (counter % 100 == 0) System.out.println(counter);
+			}
 				
 		} catch (SQLException e) {
 			throw e;
 		} finally {
 			if (rs!=null) rs.close();
+			if (rs2!=null) rs2.close();
 			if (stmt!=null) stmt.close();
 			if (con1!=null) con1.close();
 		}
@@ -120,7 +143,28 @@ public class MirbaseMirnaExtraInfo {
 			stmt = con1.prepareStatement(query);
 			stmt.setString(1, description);
 			stmt.setString(2, comment);
-			stmt.setInt(3, mirnaPk);
+			stmt.setInt(4, mirnaPk);
+			stmt.execute();
+		
+		} catch (SQLException e) {
+			throw e;
+		} finally {
+			if (stmt!=null) stmt.close();
+		}
+			
+	}
+	
+	private void inserta2(String community_annotation, int mirnaPk) throws SQLException {
+		
+		String query = "insert into mirna.mirna_mirbase_info (community_annotation, mirna_pk) "
+				+ "values(?, ?, ?)";
+			
+		PreparedStatement stmt = null;
+		
+		try {
+		
+			stmt = con1.prepareStatement(query);
+			stmt.setString(3, community_annotation);
 			stmt.execute();
 		
 		} catch (SQLException e) {
