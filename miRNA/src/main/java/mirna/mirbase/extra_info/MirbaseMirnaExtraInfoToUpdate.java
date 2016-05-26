@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
-public class MirbaseMirnaExtraInfo2 {
+public class MirbaseMirnaExtraInfoToUpdate {
 	
 	private String dbUrl;
 	private String dbUser;
@@ -17,7 +17,7 @@ public class MirbaseMirnaExtraInfo2 {
 	
 	private Connection con1 = null;
 	
-	public MirbaseMirnaExtraInfo2() throws IOException {
+	public MirbaseMirnaExtraInfoToUpdate() throws IOException {
 		Properties props = new Properties();
 		props.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("MiRna-mysql.properties"));
 		this.dbUrl = props.getProperty("url");
@@ -156,7 +156,7 @@ public class MirbaseMirnaExtraInfo2 {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		MirbaseMirnaExtraInfo2 x = new MirbaseMirnaExtraInfo2();
+		MirbaseMirnaExtraInfoToUpdate x = new MirbaseMirnaExtraInfoToUpdate();
 		x.execute();
 	}
 
