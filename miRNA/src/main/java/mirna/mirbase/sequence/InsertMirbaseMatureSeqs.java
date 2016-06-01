@@ -39,7 +39,7 @@ public class InsertMirbaseMatureSeqs {
 
 			stmt = con.createStatement();
 
-			String query = "select * from mirna.mirna2 where mirbase_pk is not NULL and type='mature'";
+			String query = "select * from mirna.hairpin2mature";
 			System.out.println("STARTING: " + query);
 
 			// execute the query, and get a java resultset
@@ -50,15 +50,14 @@ public class InsertMirbaseMatureSeqs {
 			while (rs.next() && limit!=0) {
 
 				//String acc = rs.getString("mirna_acc");
-				int pk = rs.getInt("pk");
-				int mirbasePk = rs.getInt("mirbase_pk");
-				FromTo sequence = getSequence(mirbasePk);
+				int hairpinPk = rs.getInt("hairpin_pk");
+				int maturePk = rs.getInt("mature_pk");
+				int autoMirna = getMirbasePk(hairpinPk);
+				int autoMature = getMirbasePk(maturePk);
+				FromTo sequence = getSequence(autoMirna, autoMature);
 				System.out.println(sequence.from + " - " + sequence.to);
-				System.out.println(pk);
 
-
-				// HACER COSITAS
-				inserta(sequence.from, sequence.to, pk);
+				update(sequence.from, sequence.to, hairpinPk, maturePk);
 
 				limit--;
 			}
@@ -72,19 +71,18 @@ public class InsertMirbaseMatureSeqs {
 		}
 	}
 
-	private FromTo getSequence(int pk) throws Exception {
+	private int getMirbasePk(int pk) throws Exception  {
 
 		Statement stmt = null;
 		ResultSet rs = null;
 
-		FromTo res = null;
+		int res = -1;
 
 		try {
 
 			stmt = con.createStatement();
 
-			String query = "select * from mirbase.mirna_pre_mature where auto_mature="+pk;
-
+			String query = "select * from mirna.mirna2 where pk="+pk;
 
 			// execute the query, and get a java resultset
 			rs = stmt.executeQuery(query);
@@ -92,9 +90,7 @@ public class InsertMirbaseMatureSeqs {
 			int counter = 0;
 
 			while (rs.next()) {
-				res = new FromTo();
-				res.from = rs.getInt("mature_from");
-				res.to = rs.getInt("mature_to");
+				res = rs.getInt("mirbase_pk");
 				counter++;
 			}
 
@@ -113,10 +109,51 @@ public class InsertMirbaseMatureSeqs {
 
 	}
 
-	private void inserta(int from, int to, int mirnaPk) throws SQLException {
+	private FromTo getSequence(int hairpinPk, int maturePk) throws Exception {
 
-		String query = "insert into mirna.sequence_mature (from_idx, to_idx, mirna_pk) "
-				+ "values(?, ?, ?)";
+		Statement stmt = null;
+		ResultSet rs = null;
+
+		FromTo res = null;
+
+		try {
+
+			stmt = con.createStatement();
+
+			String query = "select * from mirbase.mirna_pre_mature where auto_mature="
+					+maturePk+" and auto_mirna="+hairpinPk;
+
+			// execute the query, and get a java resultset
+			rs = stmt.executeQuery(query);
+
+			int counter = 0;
+
+			while (rs.next()) {
+				res = new FromTo();
+				res.from = rs.getInt("mature_from");
+				res.to = rs.getInt("mature_to");
+				counter++;
+			}
+
+			if (counter>1) {
+				throw new Exception(counter+" pks encontrados para "+maturePk+" y "+hairpinPk);
+			}
+
+		} catch (SQLException e) {
+			throw e;
+		} finally {
+			if (rs!=null) rs.close();
+			if (stmt!=null) stmt.close();
+		}
+
+		return res;
+
+	}
+
+	private void update(int from, int to, int hairpinPk, int maturePk) throws SQLException {
+
+		String query = "update mirna.hairpin2mature set from_idx=?, to_idx=? "
+				+ "where hairpin_pk=? and mature_pk=?";
 
 		PreparedStatement stmt = null;
 
@@ -125,7 +162,8 @@ public class InsertMirbaseMatureSeqs {
 			stmt = con.prepareStatement(query);
 			stmt.setInt(1, from);
 			stmt.setInt(2, to);
-			stmt.setInt(3, mirnaPk);
+			stmt.setInt(3, hairpinPk);
+			stmt.setInt(4, maturePk);
 			stmt.execute();
 
 		} catch (SQLException e) {
