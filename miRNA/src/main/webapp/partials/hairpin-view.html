@@ -95,7 +95,8 @@
 				</div>
 			</div>
 
-			<div data-ng-include="'partials/snippet/card_pubmed_documents.html'"></div>
+			<div data-ng-if="pubmed_documents.pubmed_document.length>0" data-ng-include="'partials/snippet/card_pubmed_documents.html'"></div>
+			
 			<div data-ng-include="'partials/snippet/card_expression_datas.html'"></div>
 
 		</div>
