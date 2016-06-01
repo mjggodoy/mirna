@@ -33,7 +33,6 @@ public class BiologicalProcess extends ModelClass {
 	})
 	private Set<MiRna> mirnas;
 	
-	
 	@ManyToMany
 	@JoinTable(
 			name="interaction_data_has_biological_process",

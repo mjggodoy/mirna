@@ -10,8 +10,8 @@ import javax.persistence.MappedSuperclass;
 public class ModelClass {
 	
 	@Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name="pk", nullable=false, unique=true, length=11)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="pk", nullable=false, unique=true, length=11)
 	protected Integer pk;
 	
 	public ModelClass() {}
