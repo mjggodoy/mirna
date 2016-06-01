@@ -72,6 +72,9 @@
 								<div data-ng-if="mirnaDatabaseLink.dbId == 'ASRP'">Link: <a href="http://www.aspr.danforthcenter.org">{{mirnaDatabaseLink.dbLink}}</a></div>
 								<div data-ng-if="mirnaDatabaseLink.dbId == 'MGI'">Link: <a href="http://www.informatics.jax.org/marker/MGI:{{mirnaDatabaseLink.dbLink}}">{{mirnaDatabaseLink.dbLink}}</a></div>
 								<div data-ng-if="mirnaDatabaseLink.dbId == 'MIRTE'">Link: <a href="http://www.russelllab.org/nob/miRNA/{{mirnaDatabaseLink.dbLink}}_top.xls">{{mirnaDatabaseLink.dbLink}}</a></div>
+								<div data-ng-if="mirnaDatabaseLink.dbId == 'MIR'">Link: <a href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={{mirnaDatabaseLink.dbLink}}">{{mirnaDatabaseLink.dbLink}}</a></div>
+								<div data-ng-if="mirnaDatabaseLink.dbId == 'TARGETS:MIRTE'">Link: <a href="http://www.russelllab.org/nob/miRNA/{{mirnaDatabaseLink.dbLink}}_top100.xls">{{mirnaDatabaseLink.dbLink}}</a></div>
+								<div data-ng-if="mirnaDatabaseLink.dbId == 'TARGETS:PICTAR-FLY'">Link: <a href="http://pictar.mdc-berlin.de/cgi-bin/PicTar_fly.cgi?species=fly&amp;action=Search%20for%20targets%20of%20a%20miRNA&amp;name2={{mirnaDatabaseLink.dbLink}}">{{mirnaDatabaseLink.dbLink}}</a></div>
 							</li>
 						</ul>
 					</div>
