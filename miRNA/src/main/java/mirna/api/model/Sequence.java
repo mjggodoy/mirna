@@ -13,10 +13,6 @@ public class Sequence extends ModelClass {
 	@Column(name = "gc_proportion", nullable = true, length = 10)
 	private String gcProportion;
 
-	@OneToOne
-	@JoinColumn(name="mirna_pk")
-	private MiRna miRNA;
-
 	public Sequence() { }
 
 	public String getSequence() {
