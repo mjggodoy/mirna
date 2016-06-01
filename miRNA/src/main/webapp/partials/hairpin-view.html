@@ -62,10 +62,13 @@
 					<div class="card__text">
 						<ul>
 							<li data-ng-repeat="mirnaDatabaseLink in mirna.mirnaDatabaseLink">
-								<strong>Database id: </strong>{{mirnaDatabaseLink.dbId}}<br/><strong>Link: </strong><a>{{mirnaDatabaseLink.dbLink}}</a>
+								<strong>Database id: </strong>{{mirnaDatabaseLink.dbId}}<br/>
+								<div data-ng-if="mirnaDatabaseLink.dbId == 'HGNC'">Link: <a href="http://www.genenames.org/cgi-bin/gene_symbol_report?q=data/hgnc_data.php&hgnc_id=HGNC:{{mirnaDatabaseLink.dbLink}}">{{mirnaDatabaseLink.dbLink}}</a></div>
+								<div data-ng-if="mirnaDatabaseLink.dbId == 'ENTREZGENE'">Link: <a href="http://www.ncbi.nlm.nih.gov/gene/{{mirnaDatabaseLink.dbLink}}">{{mirnaDatabaseLink.dbLink}}</a></div>
+								<div data-ng-if="mirnaDatabaseLink.dbId == 'RFAM'">Link: <a href="http://rfam.sanger.ac.uk/family/{{mirnaDatabaseLink.dbLink}}">{{mirnaDatabaseLink.dbLink}}</a></div>
+								<div data-ng-if="mirnaDatabaseLink.dbId == 'TARGETS:PICTAR-VERT'">Link: <a href="http://pictar.mdc-berlin.de/cgi-bin/PicTar_vertebrate.cgi?action=Search%20for%20targets%20of%20a%20miRNA&amp;name2={{mirnaDatabaseLink.dbLink}}">{{mirnaDatabaseLink.dbLink}}</a></div>
 							</li>
 						</ul>
-		
 					</div>
 				</div>
 			</div>
