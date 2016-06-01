@@ -81,6 +81,7 @@
 				</div>
 			</div>
 			
+			
 
 			<div class="col-sm-12">
 				<div class="card">
@@ -95,9 +96,12 @@
 				</div>
 			</div>
 
-			<div data-ng-if="pubmed_documents.pubmed_document.length>0" data-ng-include="'partials/snippet/card_pubmed_documents.html'"></div>
 			
-			<div data-ng-include="'partials/snippet/card_expression_datas.html'"></div>
+			<div data-ng-if="mirna.pubmed_documents.pubmed_document.length>0" data-ng-include="'partials/snippet/card_pubmed_documents.html'"></div>
+		
+			<div data-ng-if="expression_datas.expression_data.length>0" data-ng-include="'partials/snippet/card_expression_datas.html'"></div>
+			
+			
 
 		</div>
 
