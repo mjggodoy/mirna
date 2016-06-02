@@ -53,15 +53,14 @@
 					<div class="card card__title">Hairpins</div>
 					<div class="card__text">
 						<ul>
-							<li data-ng-repeat="hairpin in mirna.hairpins">
-								<a data-ui-sref="viewHairpin({id: hairpin.pk})">{{hairpin.id}}</a>
+							<li data-ng-repeat="o in mirna.hairpins">
+								<a data-ui-sref="viewHairpin({id: o.hairpin.pk})">{{o.hairpin.id}}</a>
 							</li>
 						</ul>
 					</div>
 				</div>
 			</div>
 			
-
 			<div data-ng-include="'partials/snippet/card_pubmed_documents.html'"></div>
 			<div data-ng-include="'partials/snippet/card_expression_datas.html'"></div>
 
