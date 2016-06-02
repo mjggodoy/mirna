@@ -2,7 +2,6 @@ package mirna.api.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Set;
 
 @Entity
 @Table(name = "hairpin2mature", schema = "mirna")
@@ -22,27 +21,12 @@ public class MiRnaFromTo implements Serializable {
 	@Column(name = "to_idx", nullable=true)
 	private int toIdx;
 
-	@ManyToOne
-	@JoinColumn(name="mature_pk")
-	private MiRna matureX;
-
-	@ManyToOne
-	@JoinColumn(name="hairpin_pk")
-	private MiRna hairpinX;
-
-	public int getFromIdx() {
-		return fromIdx;
-	}
-
-	public int getToIdx() {
+	public int getTo() {
 		return toIdx;
 	}
 
-	public MiRna getMatureX() {
-		return matureX;
+	public int getFrom() {
+		return fromIdx;
 	}
 
-	public MiRna getHairpinX() {
-		return hairpinX;
-	}
 }
