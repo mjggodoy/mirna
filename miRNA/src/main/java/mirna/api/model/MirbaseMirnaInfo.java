@@ -17,6 +17,12 @@ public class MirbaseMirnaInfo extends ModelClass {
 	@Column(name = "comment", nullable = true)
 	private String comment;
 	
+	@Column(name = "wp_title", nullable = true)
+	private String wp_title;
+	
+	@Column(name = "wp_description", nullable = true)
+	private String wp_description;
+	
 	public MirbaseMirnaInfo() { }
 	
 	public String getDescription() {
@@ -25,6 +31,14 @@ public class MirbaseMirnaInfo extends ModelClass {
 	
 	public String getComment() {
 		return comment;
+	}
+
+	public String getWp_title() {
+		return wp_title;
+	}
+
+	public String getWp_description() {
+		return wp_description;
 	}
 
 }

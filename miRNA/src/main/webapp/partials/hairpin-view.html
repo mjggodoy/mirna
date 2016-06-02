@@ -28,15 +28,60 @@
 							<span data-ng-if="info.comment">
 								<strong>Comment:</strong> {{info.comment}}<br/>
 							</span>
+							<span data-ng-if="info.wp_title">
+								<strong>Community annotation: </strong>
+								This data has been taken from <a data-ng-if=info.wp_title href="http://en.wikipedia.org/wiki/Main_Page">Wikipedia</a> entry entitled <a data-ng-if=info.wp_title href="http://en.wikipedia.org/wiki/{{info.wp_title}}">{{info.wp_title}}.</a><br/>
+								{{info.wp_description}}
+							</span>
 						</div>
 					</div>
+					
+					<div class="col-sm-12">
 					<div class="card__action-bar">
+					<strong>External link:</strong>
 						<a data-ng-if="mirna.accessionNumber" class="card__button" target="_BLANK"
 								href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={{mirna.accessionNumber}}">
 							MIRBASE</a>
 					</div>
+					</div>
 				</div>
 			</div>
+			
+			<div class="col-sm-12">
+				<div class="card">
+					<div class="card card__title">Sequence</div>
+					<div class="card__text">
+						{{mirna.sequence.sequence}}
+					</div>
+				</div>
+			</div>
+			
+			<div class="col-sm-12">
+				<div class="card">
+					<div class="card card__title">Database links</div>
+					<div class="card__text">
+						<ul>
+							<li data-ng-repeat="mirnaDatabaseLink in mirna.mirnaDatabaseLink">
+								<strong>Database id: </strong>{{mirnaDatabaseLink.dbId}}<br/>
+								<div data-ng-if="mirnaDatabaseLink.dbId == 'HGNC'">Link: <a href="http://www.genenames.org/cgi-bin/gene_symbol_report?q=data/hgnc_data.php&hgnc_id=HGNC:{{mirnaDatabaseLink.dbLink}}">{{mirnaDatabaseLink.dbLink}}</a></div>
+								<div data-ng-if="mirnaDatabaseLink.dbId == 'ENTREZGENE'">Link: <a href="http://www.ncbi.nlm.nih.gov/gene/{{mirnaDatabaseLink.dbLink}}">{{mirnaDatabaseLink.dbLink}}</a></div>
+								<div data-ng-if="mirnaDatabaseLink.dbId == 'RFAM'">Link: <a href="http://rfam.sanger.ac.uk/family/{{mirnaDatabaseLink.dbLink}}">{{mirnaDatabaseLink.dbLink}}</a></div>
+								<div data-ng-if="mirnaDatabaseLink.dbId == 'TARGETS:PICTAR-VERT'">Link: <a href="http://pictar.mdc-berlin.de/cgi-bin/PicTar_vertebrate.cgi?action=Search%20for%20targets%20of%20a%20miRNA&amp;name2={{mirnaDatabaseLink.dbLink}}">{{mirnaDatabaseLink.dbLink}}</a></div>
+								<div data-ng-if="mirnaDatabaseLink.dbId == 'EMBL'">Link: <a href="http://srs.ebi.ac.uk/srsbin/cgi-bin/wgetz?-noSession+-e+[EMBLRELEASE-ACC:{{mirnaDatabaseLink.dbLink}}]">{{mirnaDatabaseLink.dbLink}}</a></div>
+								<div data-ng-if="mirnaDatabaseLink.dbId == 'WORMBASE'">Link: <a href="http://www.wormbase.org/search/sequence/{{mirnaDatabaseLink.dbLink}}]">{{mirnaDatabaseLink.dbLink}}</a></div>
+								<div data-ng-if="mirnaDatabaseLink.dbId == 'ASRP'">Link: <a href="http://www.aspr.danforthcenter.org">{{mirnaDatabaseLink.dbLink}}</a></div>
+								<div data-ng-if="mirnaDatabaseLink.dbId == 'MGI'">Link: <a href="http://www.informatics.jax.org/marker/MGI:{{mirnaDatabaseLink.dbLink}}">{{mirnaDatabaseLink.dbLink}}</a></div>
+								<div data-ng-if="mirnaDatabaseLink.dbId == 'MIRTE'">Link: <a href="http://www.russelllab.org/nob/miRNA/{{mirnaDatabaseLink.dbLink}}_top.xls">{{mirnaDatabaseLink.dbLink}}</a></div>
+								<div data-ng-if="mirnaDatabaseLink.dbId == 'MIR'">Link: <a href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={{mirnaDatabaseLink.dbLink}}">{{mirnaDatabaseLink.dbLink}}</a></div>
+								<div data-ng-if="mirnaDatabaseLink.dbId == 'TARGETS:MIRTE'">Link: <a href="http://www.russelllab.org/nob/miRNA/{{mirnaDatabaseLink.dbLink}}_top100.xls">{{mirnaDatabaseLink.dbLink}}</a></div>
+								<div data-ng-if="mirnaDatabaseLink.dbId == 'TARGETS:PICTAR-FLY'">Link: <a href="http://pictar.mdc-berlin.de/cgi-bin/PicTar_fly.cgi?species=fly&amp;action=Search%20for%20targets%20of%20a%20miRNA&amp;name2={{mirnaDatabaseLink.dbLink}}">{{mirnaDatabaseLink.dbLink}}</a></div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			
+			
 
 			<div class="col-sm-12">
 				<div class="card">
@@ -51,8 +96,12 @@
 				</div>
 			</div>
 
-			<div data-ng-include="'partials/snippet/card_pubmed_documents.html'"></div>
-			<div data-ng-include="'partials/snippet/card_expression_datas.html'"></div>
+			
+			<div data-ng-if="mirna.pubmed_documents.pubmed_document.length>0" data-ng-include="'partials/snippet/card_pubmed_documents.html'"></div>
+		
+			<div data-ng-if="expression_datas.expression_data.length>0" data-ng-include="'partials/snippet/card_expression_datas.html'"></div>
+			
+			
 
 		</div>
 

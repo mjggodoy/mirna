@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
-public class MirbaseMirnaExtraInfo {
+public class MirbaseMirnaExtraInfoDbLinks {
 	
 	private String dbUrl;
 	private String dbUser;
@@ -17,7 +17,7 @@ public class MirbaseMirnaExtraInfo {
 	
 	private Connection con1 = null;
 	
-	public MirbaseMirnaExtraInfo() throws IOException {
+	public MirbaseMirnaExtraInfoDbLinks() throws IOException {
 		Properties props = new Properties();
 		props.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("MiRna-mysql.properties"));
 		this.dbUrl = props.getProperty("url");
@@ -35,8 +35,10 @@ public class MirbaseMirnaExtraInfo {
 			con1 = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 			
 			stmt = con1.createStatement();
-			String query = "select * from mirbase.mirna";
 			
+			System.out.println("Querying...");
+			String query = "select * from mirbase.mirna_database_links a, mirbase.mirna b "
+					+ "where a.auto_mirna = b.auto_mirna;";
 
 			System.out.println("STARTING: " + query);
 			
@@ -48,13 +50,16 @@ public class MirbaseMirnaExtraInfo {
 			
 			while (rs.next() && limit!=0) {
 				
-				String acc = rs.getString("mirna_acc");
-				String description = rs.getString("description");
-				String comment = rs.getString("comment");
+				System.out.println("Getting from mirbase...");
+				String dbId = rs.getString("db_id");
+				String dbLink = rs.getString("db_link");
+				String dbSecondary = rs.getString("db_secondary");
+				String mirnaAcc = rs.getString("mirna_acc");
+
 				
-				int mirnaPk = getPk(acc);
+				int mirnaPk = getPk(mirnaAcc);
 				
-				if (mirnaPk!=-1) inserta(nullify(description), nullify(comment), mirnaPk);
+				if (mirnaPk!=-1 && dbSecondary !=null) inserta(nullify(dbId), nullify(dbLink), nullify(dbSecondary), mirnaPk);
 				
 				limit--;
 				counter++;
@@ -112,19 +117,21 @@ public class MirbaseMirnaExtraInfo {
 		
 	}
 	
-	private void inserta(String description, String comment, int mirnaPk) throws SQLException {
+	private void inserta(String dbId, String dbLink, String dbSecondary, int mirnaPk) throws SQLException {
 		
-		String query = "insert into mirna.mirna_mirbase_info (description, comment, mirna_pk) "
-				+ "values(?, ?, ?)";
+		System.out.println("Inserting in mirna_mirbase_database_links table");
+		String query = "insert into mirna.mirna_mirbase_database_links (db_id, db_link, db_secondary, mirna_pk) "
+				+ "values(?, ?, ?, ?)";
 			
 		PreparedStatement stmt = null;
 		
 		try {
 		
 			stmt = con1.prepareStatement(query);
-			stmt.setString(1, description);
-			stmt.setString(2, comment);
-			stmt.setInt(3, mirnaPk);
+			stmt.setString(1, dbId);
+			stmt.setString(2, dbLink);
+			stmt.setString(3, dbSecondary);
+			stmt.setInt(4, mirnaPk);
 			stmt.execute();
 		
 		} catch (SQLException e) {
@@ -144,7 +151,7 @@ public class MirbaseMirnaExtraInfo {
 	
 	public static void main(String[] args) throws Exception {
 		
-		MirbaseMirnaExtraInfo x = new MirbaseMirnaExtraInfo();
+		MirbaseMirnaExtraInfoDbLinks x = new MirbaseMirnaExtraInfoDbLinks();
 		x.execute();
 	}
 

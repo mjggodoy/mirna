@@ -19,7 +19,7 @@ public abstract class TableRdf {
 
 	protected String ns = "http://khaos.uma.es/imirna/";
 	protected String resourcePrefix = ns + "resource/";
-	protected String folder = "C:/temp/imirna/";
+	protected String folder = "/Users/mariajesus/Desktop/";
 
 	protected abstract void processBean(ModelClass modelClass, OutputStream out);
 

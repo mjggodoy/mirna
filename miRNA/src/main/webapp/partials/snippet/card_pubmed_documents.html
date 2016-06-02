@@ -1,9 +1,11 @@
-<div class="col-sm-12" data-ng-if="pubmed_documents">
+<div class="col-sm-12" data-ng-if="mirna.pubmed_documents">
 	<div class="card">
-		<div class="card card__title">Pubmed Documents</div>
+		<div class="card card__title" data-ng-if="card_title">{{card_title}}</div>	
+		<div class="card card__title" data-ng-if="!card_title">Pubmed documents</div>		
+			
 		<div class="card__text">
 			<div data-ng-include="'partials/snippet/card_pubmed_document.html'"
-				data-ng-repeat="pubmed_document in pubmed_documents.pubmed_document">
+				data-ng-repeat="pubmed_document in mirna.pubmed_documents.pubmed_document">
 			</div>
 		</div>
 		
