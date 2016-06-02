@@ -80,28 +80,23 @@
 					</div>
 				</div>
 			</div>
-			
-			
 
 			<div class="col-sm-12">
 				<div class="card">
 					<div class="card card__title">Matures</div>
 					<div class="card__text">
 						<ul>
-							<li data-ng-repeat="mature in mirna.matures">
-								<a data-ui-sref="viewMature({id: mature.pk})">{{mature.id}}</a>
+							<li data-ng-repeat="o in mirna.matures">
+								<a data-ui-sref="viewMature({id: o.mature.pk})">{{o.mature.id}}</a>
 							</li>
 						</ul>
 					</div>
 				</div>
 			</div>
-
 			
 			<div data-ng-if="mirna.pubmed_documents.pubmed_document.length>0" data-ng-include="'partials/snippet/card_pubmed_documents.html'"></div>
 		
 			<div data-ng-if="expression_datas.expression_data.length>0" data-ng-include="'partials/snippet/card_expression_datas.html'"></div>
-			
-			
 
 		</div>
 

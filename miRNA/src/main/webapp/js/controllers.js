@@ -61,15 +61,6 @@ module.controller('MirnaViewController',
 		function(response) {
 			$scope.mirna = response ? response : {};
 			if ($scope.mirna) {
-				if (complementary) {
-					Object.getLink({
-						id : $stateParams.id,
-						link : complementary
-					},
-					function(response) {
-						$scope.mirna[complementary] = response ? response[complementary] : {};
-					});
-				}
 				$scope.mirna.pubmed_documents = {};
 				$scope.mirna.pubmed_documents.pageSize = 10;
 				$scope.mirna.pubmed_documents.search = {
