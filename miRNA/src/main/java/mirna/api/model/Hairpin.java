@@ -23,6 +23,7 @@ public class Hairpin extends MiRna {
 	@OneToMany
 	@JoinColumn(name="mirna_pk")
 	private Set<MirbaseMirnaInfo> mirbaseInfo;
+	
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@PrimaryKeyJoinColumn

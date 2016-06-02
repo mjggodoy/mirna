@@ -11,6 +11,8 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -34,6 +36,8 @@ public class MiRna extends ModelClass {
 	@Column(name = "mirbase_pk", nullable = true)
 	private Integer mirBasePk;
 	
+	
+	
 	@ManyToMany
 	@JoinTable(
 			name="mirna_has_pubmed_document2",
@@ -49,6 +53,10 @@ public class MiRna extends ModelClass {
 	
 	@ManyToMany(mappedBy="mirnas")
 	private Set<BiologicalProcess> biologicalProcess;
+	
+	@OneToMany
+	@JoinColumn(name="mirna_pk")
+	private Set<MirnaDatabaseLink> mirnaDatabaseLink;	
 	
 	
 	//@ManyToMany(mappedBy = "mirnas")
@@ -86,6 +94,12 @@ public class MiRna extends ModelClass {
 	public Set<BiologicalProcess> getBiologicalProcess() {
 		return biologicalProcess;
 	}
+
+	public Set<MirnaDatabaseLink> getMirnaDatabaseLink() {
+		return mirnaDatabaseLink;
+	}
+
+
 	
 	
 
