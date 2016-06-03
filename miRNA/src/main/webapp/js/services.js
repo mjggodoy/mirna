@@ -153,4 +153,15 @@ module.factory('Util', function () {
 	};
 }); 
 
+//An Util service
+module.factory('Util', function () {
+	return {
+		subString: function(str, indexF, indexT) {
+			if (str) {
+				return str.substring(indexF,indexT);
+			}
+		}
+	};
+}); 
+
 
