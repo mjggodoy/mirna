@@ -1,5 +1,42 @@
 <div class="row">
-	<div class="col-md-8">
+
+	<div class="col-md-4 col-md-push-8">
+
+		<div class="card card-info">
+			<div class="card card__title">Release</div>
+			<div class="card__text">
+				miRNA counter: 26534<br/>
+				Version: 1.0
+			</div>
+		</div>
+
+		<div class="card card-info">
+			<div class="card card__title">Try me</div>
+			<div class="card__text">
+				<form class="" data-ng-submit="quickSearch()">
+					<div class="form-group">
+						<label for="try-me">miRNA</label>
+						<div class="input-group">
+							<input type="text" class="form-control" id="try-me" data-ng-model="quickSearchText">
+							<span class="input-group-btn">
+								<button type="submit" class="btn btn-primary">Go</button>
+							</span>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<div class="card card-info">
+			<div class="card card__title">Download</div>
+			<div class="card__text">
+				<button type="button" class="btn btn-primary btn-lg btn-block">Download</button>
+			</div>
+		</div>
+
+	</div>
+
+	<div class="col-md-8 col-md-pull-4">
 		<div class="card">
 			<div class="card card__title">Latest News</div>
 			<div class="card__text">
@@ -29,35 +66,5 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-md-4">
-		<div class="panel panel-info">
-			<div class="panel-heading">Release</div>
-			<div class="panel-body">
-				miRNA counter: 26534<br/>
-				Version: 1.0
-			</div>
-		</div>
-		<div class="panel panel-info">
-			<div class="panel-heading">Try me</div>
-			<div class="panel-body">
-				<form class="" data-ng-submit="quickSearch()">
-					<div class="form-group">
-						<label for="try-me">miRNA</label>
-						<div class="input-group">
-							<input type="text" class="form-control" id="try-me" data-ng-model="quickSearchText">
-							<span class="input-group-btn">
-								<button type="submit" class="btn btn-primary">Go</button>
-							</span>
-						</div>
-					</div>
-				</form>
-			</div>
-		</div>
-		<div class="panel panel-info">
-			<div class="panel-heading">Downloads</div>
-			<div class="panel-body">
-				<button type="button" class="btn btn-primary btn-lg btn-block">Download</button>
-			</div>
-		</div>
-	</div>
+
 </div>
