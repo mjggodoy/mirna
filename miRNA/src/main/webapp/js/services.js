@@ -149,19 +149,57 @@ module.factory('Util', function () {
 			if (str) {
 				return str.charAt(0).toUpperCase() + str.slice(1);
 			}
-		}
-	};
-}); 
-
-//An Util service
-module.factory('Util', function () {
-	return {
+		},
 		subString: function(str, indexF, indexT) {
 			if (str) {
 				return str.substring(indexF,indexT);
 			}
+		},
+		duplicate: function(str) {
+			
+			var ar = new Set();
+			ar.add(str);
+			console.log("set " + ar);
+			console.log("size " + ar.size);
+				
+				return ar.entries();
+
+		},
+		
+		getMatureSeqs: function(hairpins) {
+			
+			var res = {};
+						
+			console.log("Starting...");
+			//console.log(hairpins);
+			
+			for (i in hairpins) {
+				var hairpin = hairpins[i].hairpin;	
+				var seq = hairpin.sequence.sequence;
+				var indexF = hairpins[i].from;
+				var indexT = hairpins[i].to;
+				var matureSeq = seq.substring(indexF, indexT);
+				var id = hairpins[i].hairpin.id;
+				
+				console.log(res[matureSeq]);
+				console.log(res[matureSeq] == undefined);
+
+				
+				if(res[matureSeq] == undefined) {
+					res[matureSeq] =  id;
+				} else {
+					res[matureSeq] = res[matureSeq] + ", " + id;
+				}
+			}		
+
+			console.log(res);
+			return res;
 		}
 	};
 }); 
+
+
+
+
 
 

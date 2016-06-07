@@ -53,10 +53,12 @@
 					<div class="card card__title">Sequence</div>
 					<div class="card__text">
 					<ul>
-							<li class=sequence data-ng-repeat="o in mirna.hairpins">
-							{{Util.subString(o.hairpin.sequence.sequence, o.from, o.to)}}
-							</li>
+					
+						<li class="sequence" data-ng-repeat="(key, value) in Util.getMatureSeqs(mirna.hairpins)">
+							{{key}} ({{value}})
+						</li>
 					</ul>
+				
 					</div>
 				</div>
 			</div>
