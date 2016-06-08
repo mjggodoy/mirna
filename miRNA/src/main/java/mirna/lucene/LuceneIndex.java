@@ -82,10 +82,10 @@ public class LuceneIndex {
 
 	public LuceneResult search(String input, int pageSize, int page) {
 
-		int maxResults = 100;
 		LuceneResult result = null;
-
-		System.out.println("Searching: "+input);
+		page++;
+//		System.out.println("Searching: "+input);
+		int maxResults = page*pageSize;
 
 		try {
 
@@ -105,18 +105,17 @@ public class LuceneIndex {
 			ScoreDoc[] hits = results.scoreDocs;
 
 			int numTotalHits = results.totalHits;
-			System.out.println(numTotalHits + " total matching documents");
+//			System.out.println(numTotalHits + " total matching documents");
 
 			for (int i=1; i<=hits.length; i++) {
-
 				if ( (i > (pageSize*(page-1))) && (i <= page*pageSize) ) {
 					Document doc = searcher.doc(hits[i-1].doc);
-					System.out.println(i+": "+doc.get("name") + " : " + hits[i-1].score);
+//					System.out.println(i+": "+doc.get("name") + " : " + hits[i-1].score);
 					elements.add(new LuceneElement(doc.get("name"), doc.get("type")));
 				}
 			}
 
-			result = new LuceneResult(elements, hits.length);
+			result = new LuceneResult(elements, numTotalHits);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -127,9 +126,9 @@ public class LuceneIndex {
 
 	public static void main(String[] args) {
 		LuceneIndex luceneIndex = new LuceneIndex();
-		//luceneIndex.execute();
-		//luceneIndex.search("hsa");
-		//luceneIndex.search("7a");
+//		luceneIndex.execute();
+//		luceneIndex.search("hsa");
+//		luceneIndex.search("7a");
 		luceneIndex.search("hsa let 7a", 5, 3);
 	}
 

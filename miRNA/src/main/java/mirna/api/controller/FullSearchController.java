@@ -21,8 +21,8 @@ public class FullSearchController {
 		int page = pageable.getPageNumber();
 		int pageSize =  pageable.getPageSize();
 
-		System.out.println("ESTOY EN MI SEARCH... YAHOO!!!!");
-		System.out.println("Busco a "+term);
+//		System.out.println("ESTOY EN MI SEARCH... YAHOO!!!!");
+//		System.out.println("Busco a "+term);
 		LuceneIndex luceneIndex = new LuceneIndex();
 		LuceneResult result = luceneIndex.search(term, pageSize, page);
 
