@@ -55,7 +55,7 @@
 					<ul>
 					
 						<li class="sequence" data-ng-repeat="o in mirna.hairpins">
-							{{o.hairpin.id}}: <span>{{Util.subHairpin1(o.hairpin.sequence.sequence, o.from)}} <span class="sequence1">{{Util.subMature(o.hairpin.sequence.sequence, o.from, o.to)}}</span>{{Util.subHairpin2(o.hairpin.sequence.sequence, o.to)}}</span>
+							<strong>{{o.hairpin.id}}: </strong><span>{{Util.subHairpin1(o.hairpin.sequence.sequence, o.from)}} <span class="sequence1">{{Util.subMature(o.hairpin.sequence.sequence, o.from, o.to)}}</span> {{Util.subHairpin2(o.hairpin.sequence.sequence, o.to)}}</span>
 						</li>
 					</ul>
 				
