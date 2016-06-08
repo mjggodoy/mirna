@@ -47,6 +47,21 @@
 					</div>
 				</div>
 			</div>
+			
+			<div class="col-sm-12">
+				<div class="card">
+					<div class="card card__title">Sequence</div>
+					<div class="card__text">
+					<ul>
+					
+						<li class="sequence" data-ng-repeat="o in mirna.hairpins">
+							{{o.hairpin.id}}: <span>{{Util.subHairpin1(o.hairpin.sequence.sequence, o.from)}} <span class="sequence1">{{Util.subMature(o.hairpin.sequence.sequence, o.from, o.to)}}</span>{{Util.subHairpin2(o.hairpin.sequence.sequence, o.to)}}</span>
+						</li>
+					</ul>
+				
+					</div>
+				</div>
+			</div>
 	
 			<div class="col-sm-12">
 				<div class="card">
@@ -61,8 +76,8 @@
 				</div>
 			</div>
 			
-			<div data-ng-include="'partials/snippet/card_pubmed_documents.html'"></div>
-			<div data-ng-include="'partials/snippet/card_expression_datas.html'"></div>
+			<div data-ng-if="mirna.pubmed_documents.pubmed_document.length>0" data-ng-include="'partials/snippet/card_pubmed_documents.html'"></div>
+			<div data-ng-if="expression_datas.expression_data.length>0" data-ng-include="'partials/snippet/card_expression_datas.html'"></div>
 
 		</div>
 

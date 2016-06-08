@@ -149,8 +149,31 @@ module.factory('Util', function () {
 			if (str) {
 				return str.charAt(0).toUpperCase() + str.slice(1);
 			}
+		},
+		subHairpin1: function(str, indexF) {
+			if (str) {
+				return  str.substring(0, indexF);
+			}
+		},
+		
+		subMature: function(str, indexF, indexT) {
+			if (str) {
+				return str.substring(indexF,indexT);
+			}
+		},
+		
+		subHairpin2: function(str, indexT) {
+			if (str) {
+				return str.substring(indexT);
+			}
 		}
+		
+		
 	};
 }); 
+
+
+
+
 
 

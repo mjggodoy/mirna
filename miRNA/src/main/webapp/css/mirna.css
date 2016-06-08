@@ -298,6 +298,17 @@ dl.dl-horizontal dl dt {
 	clear: inherit !important;
 }
 
+.sequence{
+
+word-break: break-word;	
+}
+
+.sequence1{
+
+color:rgb(16, 103, 173);
+	
+}
+
 
 
 
