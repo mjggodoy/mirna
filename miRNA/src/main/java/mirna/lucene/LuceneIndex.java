@@ -1,8 +1,9 @@
 package mirna.lucene;
 
+import mirna.lucene.model.LuceneElement;
+import mirna.lucene.model.LuceneResult;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.ar.ArabicAnalyzer;
-import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -25,6 +26,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Esteban on 06/06/2016.
@@ -73,13 +76,20 @@ public class LuceneIndex {
 		}
 	}
 
-	public void search(String input) {
+	public LuceneResult search(String input) {
+		return search(input, 10, 1);
+	}
 
-		System.out.println("Seaching: "+input);
+	public LuceneResult search(String input, int pageSize, int page) {
 
-		int hitsPerPage = 10;
+		int maxResults = 100;
+		LuceneResult result = null;
+
+		System.out.println("Searching: "+input);
 
 		try {
+
+			List<LuceneElement> elements = new ArrayList<>();
 
 			Directory dir = FSDirectory.open(Paths.get(indexPath));
 
@@ -91,21 +101,28 @@ public class LuceneIndex {
 
 			Query query = parser.parse(input);
 
-			// Collect enough docs to show 5 pages
-			TopDocs results = searcher.search(query, 5 * hitsPerPage);
+			TopDocs results = searcher.search(query, maxResults);
 			ScoreDoc[] hits = results.scoreDocs;
 
 			int numTotalHits = results.totalHits;
 			System.out.println(numTotalHits + " total matching documents");
 
-			for (int i=0; i<hits.length; i++) {
-				Document doc = searcher.doc(hits[i].doc);
-				System.out.println((i+1)+": "+doc.get("name"));
+			for (int i=1; i<=hits.length; i++) {
+
+				if ( (i > (pageSize*(page-1))) && (i <= page*pageSize) ) {
+					Document doc = searcher.doc(hits[i-1].doc);
+					System.out.println(i+": "+doc.get("name") + " : " + hits[i-1].score);
+					elements.add(new LuceneElement(doc.get("name"), doc.get("type")));
+				}
 			}
+
+			result = new LuceneResult(elements, hits.length);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		return result;
 	}
 
 	public static void main(String[] args) {
@@ -113,7 +130,7 @@ public class LuceneIndex {
 		//luceneIndex.execute();
 		//luceneIndex.search("hsa");
 		//luceneIndex.search("7a");
-		luceneIndex.search("hsa let 7a");
+		luceneIndex.search("hsa let 7a", 5, 3);
 	}
 
 }

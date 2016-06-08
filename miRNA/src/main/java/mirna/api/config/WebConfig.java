@@ -1,6 +1,7 @@
 package mirna.api.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -11,7 +12,7 @@ import org.springframework.web.servlet.mvc.WebContentInterceptor;
 
 @Configuration
 @EnableWebMvc
-//@ComponentScan(basePackages = "es.uma.khaos.pabs.controller")
+@ComponentScan(basePackages = "mirna.api.controller")
 public class WebConfig extends WebMvcConfigurerAdapter {
 
 //  @Bean
