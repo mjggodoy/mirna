@@ -35,6 +35,7 @@ public class ChangeTypeMatureHairpinFromOldMirna {
 		
 		Statement stmt = null;
 		ResultSet rs = null;
+		List<String> res = new ArrayList<String>();
 
 
 		try {
@@ -56,12 +57,13 @@ public class ChangeTypeMatureHairpinFromOldMirna {
 				
 
 				int pk = rs.getInt("pk"); // pk del mirna2.
-				List<String> res = comprobarMature(pk);
+				res = comprobarMature(pk);
 				
 				for(String pk_new : res){
 					
 					int pk_method = Integer.valueOf(pk_new);
-					System.out.println(pk_method);
+					System.out.println("pk_method" + pk_method);
+					
 					//update(pk_method);
 					count++;
 					System.out.println(count);
@@ -69,6 +71,7 @@ public class ChangeTypeMatureHairpinFromOldMirna {
 				}
 				
 			}
+			
 
 		} catch (SQLException e) {
 			throw e;
@@ -93,7 +96,7 @@ public class ChangeTypeMatureHairpinFromOldMirna {
 		stmt = con.createStatement();
 
 		String query = "select * from mirna.mirna2 a, mirna.mirna_pk_translation b, mirna.mirna_has_mature c "
-				+ "where a.pk ="+ pk +" and a.mirbase_pk is null and a.pk = b.new_pk and b.old_pk = c.mature_pk";
+				+ "where a.pk ="+ pk +" and a.pk = b.new_pk and b.old_pk = c.mature_pk";
 		
 		rs = stmt.executeQuery(query);
 		
@@ -102,7 +105,7 @@ public class ChangeTypeMatureHairpinFromOldMirna {
 			
 			int new_pk = rs.getInt("new_pk");
 			res.add(Integer.toString(new_pk));
-
+			System.out.println("new_pk "+ new_pk);
 			
 		}
 		
@@ -128,14 +131,11 @@ public class ChangeTypeMatureHairpinFromOldMirna {
 			
 				System.out.println("updating");				
 				PreparedStatement ps = con.prepareStatement(
-						"update mirna.mirna2 SET type = mature where " +
-						"mirna_pk=?");
-				 ps.setInt(3,mirnaPk);
+						"update mirna.mirna2 SET type = 'mature' where pk=?");
+				 ps.setInt(1,mirnaPk);
 				 ps.executeUpdate();
 				 ps.close();
 				
-				
-			
 			
 		} catch (SQLException e) {
 			throw e;
