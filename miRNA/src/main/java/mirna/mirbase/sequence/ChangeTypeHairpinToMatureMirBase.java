@@ -44,7 +44,9 @@ public class ChangeTypeHairpinToMatureMirBase {
 
 			stmt = con.createStatement();
 
-			String query = "select * from mirna.mirna2 where mirbase_pk is null and id like '%-5p';";
+			String query = "select * from mirna.mirna2 where mirbase_pk is null and id like '%-3p';";
+			//String query = "select * from mirna.mirna2 where mirbase_pk is null and id like '%-5p';";
+
 			System.out.println("STARTING: " + query);
 
 			rs = stmt.executeQuery(query);
