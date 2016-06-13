@@ -35,7 +35,7 @@ public class ChangeTypeMatureHairpinFromOldMirna {
 		
 		Statement stmt = null;
 		ResultSet rs = null;
-		List<String> res = new ArrayList<String>();
+		boolean res;		
 
 
 		try {
@@ -59,12 +59,9 @@ public class ChangeTypeMatureHairpinFromOldMirna {
 				int pk = rs.getInt("pk"); // pk del mirna2.
 				res = comprobarMature(pk);
 				
-				for(String pk_new : res){
+				if(res){
 					
-					int pk_method = Integer.valueOf(pk_new);
-					System.out.println("pk_method" + pk_method);
-					
-					//update(pk_method);
+					update(pk);
 					count++;
 					System.out.println(count);
 					
@@ -83,12 +80,11 @@ public class ChangeTypeMatureHairpinFromOldMirna {
 	}
 	
 	
-	private List<String> comprobarMature(int pk) throws SQLException{
+	private boolean comprobarMature(int pk) throws SQLException{
 		
 		
 		Statement stmt = null;
 		ResultSet rs = null;
-		List<String> res = new ArrayList<String>();
 
 		
 		try{
@@ -103,9 +99,7 @@ public class ChangeTypeMatureHairpinFromOldMirna {
 		
 		while(rs.next()){
 			
-			int new_pk = rs.getInt("new_pk");
-			res.add(Integer.toString(new_pk));
-			System.out.println("new_pk "+ new_pk);
+			return true;
 			
 		}
 		
@@ -118,7 +112,7 @@ public class ChangeTypeMatureHairpinFromOldMirna {
 		}
 
 		
-		return res;
+		return false;
 	}
 	
 	
