@@ -1,0 +1,60 @@
+<div class="row">
+
+	<div class="col-sm-12">
+
+		<ol class="breadcrumb">
+			<li><a data-ui-sref="home">Home</a></li>
+			<li class="active">Global Search</li>
+		</ol>
+
+		<div class="card-container">
+
+			<div class="col-sm-12">
+				<h1>Global Search</h1>
+				<div data-ng-if="search.searchFields" style="margin-bottom: 20px">You searched for: <b>{{search.searchFields[0].value}}</b></div>
+			</div>
+
+			<div class="col-sm-12">
+				<div class="card">
+					<div class="card card__title">Results</div>
+					<div class="card__text">
+
+						<div data-ng-include="'partials/snippet/loading_animation.html'"
+						     data-ng-if="!global">
+						</div>
+
+						<table class="table table-hover" data-ng-if="global">
+							<thead>
+								<tr>
+									<th>Name</th>
+									<th>Type</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr data-ng-repeat="o in global">
+									<td>
+										<!--<a data-ui-sref="viewMature({id:o.pk})" data-ng-if="o.type=='mature'">{{o.id}}</a>-->
+										<!--<a data-ui-sref="viewHairpin({id:o.pk})" data-ng-if="o.type=='hairpin'">{{o.id}}</a>-->
+										<!--<a data-ui-sref="viewDeadMirna({id:o.pk})" data-ng-if="o.type=='dead'">{{o.id}}</a>-->
+										{{o.name}}
+									</td>
+									<td>{{o.type}}</td>
+								</tr>
+							</tbody>
+						</table>
+
+					</div>
+
+					<div data-ng-include="'partials/snippet/card_pager_footer.html'"
+					     data-ng-if="global"
+					     onload="e=$parent;element='global';">
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+</div>
+

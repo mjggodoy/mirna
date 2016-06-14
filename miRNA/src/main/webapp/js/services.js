@@ -142,6 +142,11 @@ module.factory('Target', function(AbstractFactory) {
 	return extended;
 });
 
+module.factory('Global', function(AbstractFactory) {
+	var extended = new AbstractFactory('global');
+	return extended;
+});
+
 //An Util service
 module.factory('Util', function () {
 	return {
