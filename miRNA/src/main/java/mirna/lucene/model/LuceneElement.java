@@ -1,7 +1,5 @@
 package mirna.lucene.model;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
 /**
  * Created by Esteban on 06/06/2016.
  */
