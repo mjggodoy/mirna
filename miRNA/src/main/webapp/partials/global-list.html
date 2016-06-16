@@ -23,7 +23,9 @@
 						     data-ng-if="!global">
 						</div>
 
-						<table class="table table-hover" data-ng-if="global">
+						<div data-ng-if="global && global.length==0">No results found!</div>
+
+						<table class="table table-hover" data-ng-if="global && global.length>0">
 							<thead>
 								<tr>
 									<th>Name</th>
@@ -33,10 +35,17 @@
 							<tbody>
 								<tr data-ng-repeat="o in global">
 									<td>
-										<!--<a data-ui-sref="viewMature({id:o.pk})" data-ng-if="o.type=='mature'">{{o.id}}</a>-->
-										<!--<a data-ui-sref="viewHairpin({id:o.pk})" data-ng-if="o.type=='hairpin'">{{o.id}}</a>-->
-										<!--<a data-ui-sref="viewDeadMirna({id:o.pk})" data-ng-if="o.type=='dead'">{{o.id}}</a>-->
-										{{o.name}}
+										<a data-ui-sref="viewMature({id:o.pk})" data-ng-if="o.type=='MiRNA (mature)'">{{o.name}}</a>
+										<a data-ui-sref="viewHairpin({id:o.pk})" data-ng-if="o.type=='MiRNA (hairpin)'">{{o.name}}</a>
+										<a data-ui-sref="viewDeadMirna({id:o.pk})" data-ng-if="o.type=='MiRNA (dead)'">{{o.name}}</a>
+										<a data-ui-sref="viewPhenotype({id:o.pk})" data-ng-if="o.type=='Phenotype'">{{o.name}}</a>
+										<a data-ui-sref="viewBiologicalProcess({id:o.pk})" data-ng-if="o.type=='Biological Process'">{{o.name}}</a>
+										<a data-ui-sref="viewEnvironmentalFactor({id:o.pk})" data-ng-if="o.type=='Environmental Factor'">{{o.name}}</a>
+										<a data-ui-sref="viewProtein({id:o.pk})" data-ng-if="o.type=='Protein'">{{o.name}}</a>
+										<a data-ui-sref="viewPubmedDocument({id:o.pk})" data-ng-if="o.type=='Pubmed Document'">{{o.name}}</a>
+										<a data-ui-sref="viewSNP({id:o.pk})" data-ng-if="o.type=='SNP'">{{o.name}}</a>
+										<a data-ui-sref="viewTranscript({id:o.pk})" data-ng-if="o.type=='Transcript'">{{o.name}}</a>
+										<a data-ui-sref="viewGene({id:o.pk})" data-ng-if="o.type=='Gene'">{{o.name}}</a>
 									</td>
 									<td>{{o.type}}</td>
 								</tr>

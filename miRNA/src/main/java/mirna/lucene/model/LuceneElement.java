@@ -5,14 +5,24 @@ package mirna.lucene.model;
  */
 public class LuceneElement {
 
+	private int pk;
 	private String name;
 	private String type;
 
 	public LuceneElement() {}
 
-	public LuceneElement(String name, String type) {
+	public LuceneElement(int pk, String name, String type) {
+		this.pk = pk;
 		this.name = name;
 		this.type = type;
+	}
+
+	public int getPk() {
+		return pk;
+	}
+
+	public void setPk(int pk) {
+		this.pk = pk;
 	}
 
 	public String getName() {
