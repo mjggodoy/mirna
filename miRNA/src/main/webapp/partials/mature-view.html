@@ -55,16 +55,21 @@
 					<ul>
 					
 						<li class="sequence" data-ng-repeat="o in mirna.hairpins">
-							<strong>{{o.hairpin.id}}: </strong><span>{{Util.subHairpin1(o.hairpin.sequence.sequence, o.from)}} <span class="sequence1">{{Util.subMature(o.hairpin.sequence.sequence, o.from, o.to)}}</span> {{Util.subHairpin2(o.hairpin.sequence.sequence, o.to)}}</span>
+							<strong>{{o.hairpin.id}}: </strong><span>{{Util.subHairpin1(o.hairpin.sequence.sequence, o.from)}}<span class="sequence1">{{Util.subMature(o.hairpin.sequence.sequence, o.from, o.to)}}</span>{{Util.subHairpin2(o.hairpin.sequence.sequence, o.to)}}</span>
 						</li>
+						
+						<li class="mature" data-ng-repeat="o in mirna.sequence">
+							<span>{{Util.capitalizeEverything(o.sequence)}}</span>
+						</li>
+						
 					</ul>
 				
 					</div>
 				</div>
 			</div>
 	
-			<div class="col-sm-12">
-				<div class="card">
+			<div data-ng-if= "mirna.hairpins.hairpin != null" class="col-sm-12" >
+				<div  class="card" >
 					<div class="card card__title">Hairpins</div>
 					<div class="card__text">
 						<ul>

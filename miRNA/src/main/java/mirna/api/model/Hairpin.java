@@ -20,7 +20,7 @@ public class Hairpin extends MiRna {
 
 	@OneToMany
 	@JoinColumn(name="mirna_pk")
-	private Set<Sequence> sequence;
+	private Set<SequenceHairpin> sequence;
 
 	public Set<MatureFromTo> getMatures() {
 		return matures;
@@ -30,7 +30,7 @@ public class Hairpin extends MiRna {
 		return mirbaseInfo;
 	}
 
-	public Set<Sequence> getSequence() {
+	public Set<SequenceHairpin> getSequence() {
 		return sequence;
 	}
 

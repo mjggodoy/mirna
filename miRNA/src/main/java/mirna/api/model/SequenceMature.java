@@ -3,9 +3,9 @@ package mirna.api.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "sequence_hairpin", schema="mirna")
+@Table(name = "sequence_mature", schema="mirna")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public class Sequence extends ModelClass {
+public class SequenceMature extends ModelClass {
 
 	@Column(name = "sequence", nullable = false)
 	private String sequence;
@@ -13,7 +13,7 @@ public class Sequence extends ModelClass {
 	@Column(name = "gc_proportion", nullable = true, length = 10)
 	private String gcProportion;
 
-	public Sequence() { }
+	public SequenceMature() { }
 
 	public String getSequence() {
 		return sequence;
