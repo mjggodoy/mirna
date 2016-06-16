@@ -1,20 +1,18 @@
 package mirna.mirbase.sequence;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.*;
 import java.util.Properties;
 
 /**
  * Created by Esteban on 23/05/2016.
  */
-public class InsertMirnaHairpinSequencefromOldmirna {
+public class InsertMatureSeqsfromOtherDatabases {
+
+	private class FromTo {
+		public int from;
+		public int to;
+	}
 
 	private String dbUrl;
 	private String dbUser;
@@ -22,7 +20,7 @@ public class InsertMirnaHairpinSequencefromOldmirna {
 
 	private Connection con = null;
 
-	public InsertMirnaHairpinSequencefromOldmirna() throws IOException {
+	public InsertMatureSeqsfromOtherDatabases() throws IOException {
 		Properties props = new Properties();
 		props.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("MiRna-mysql.properties"));
 		this.dbUrl = props.getProperty("url");
@@ -32,10 +30,8 @@ public class InsertMirnaHairpinSequencefromOldmirna {
 
 	public void execute() throws Exception {
 
-		
 		Statement stmt = null;
 		ResultSet rs = null;
-
 
 		try {
 
@@ -43,44 +39,25 @@ public class InsertMirnaHairpinSequencefromOldmirna {
 
 			stmt = con.createStatement();
 
-			String query = "select * from mirna.mirna2 a where a.mirbase_pk is null;";
+			String query = "select * from mirna.hairpin_has_sequence a, mirna.sequence b, mirna.mirna c "
+					+ "where c.pk = a.hairpin_pk and a.sequence_pk = b.pk";
 			System.out.println("STARTING: " + query);
 
 			// execute the query, and get a java resultset
 			rs = stmt.executeQuery(query);
 
-
 			int limit = -1;
 
 			while (rs.next() && limit!=0) {
-				
 
-				int pk = rs.getInt("pk"); // pk del mirna2.
-				List<String> list = getSequence(pk);
-				//System.out.println(list.get(0) + list.size());
-				
-				if(list.size() == 1){
-					
-					System.out.println("It's ok");
-					
-				} else if (list.size() == 0) {
-					
-					//System.out.println("Nothing!");
-					
-				}else{
-					
-					System.err.println("Something is wrong");
-					
-					for (String seq: list) {
-						System.out.println(seq);
-					}
-					
-					throw new Exception(list.size()+" secuencias para pk="+pk);
-					
-			}
-							
-				
-				
+				int pk = rs.getInt("pk");
+				String sequence = rs.getString("sequence");
+				String gc_proportion = rs.getString("gc_proportion");
+				String length = rs.getString("length");
+				int pk_mirna2 = getNewPkfromMirna2(pk);
+				System.out.println("pk: "+ pk +" pk_mirna2: " + pk_mirna2 + " sequence: " + sequence + " gc_proportion: " +gc_proportion + " length: " + length );
+				inserta(pk_mirna2, sequence, gc_proportion,length);
+
 				limit--;
 			}
 
@@ -92,25 +69,19 @@ public class InsertMirnaHairpinSequencefromOldmirna {
 			if (con!=null) con.close();
 		}
 	}
-	
-	
-	
 
-	private List<String> getSequence(int pk) throws Exception {
+	private int getNewPkfromMirna2(int pk) throws Exception  {
 
 		Statement stmt = null;
 		ResultSet rs = null;
-		String sequence = null;
-		
-		List<String> res = new ArrayList<String>();
 
+		int res = -1;
 
 		try {
 
 			stmt = con.createStatement();
 
-			String query = "select * from mirna.mirna_pk_translation b, mirna.mirna_has_sequence c, mirna.sequence_mirna_backup d "
-					+ "where "+ pk +"= b.new_pk and b.old_pk = c.mirna_pk and c.sequence_pk = d.pk";
+			String query = "select * from mirna.mirna_pk_translation a where a.old_pk="+pk;
 
 			// execute the query, and get a java resultset
 			rs = stmt.executeQuery(query);
@@ -118,38 +89,45 @@ public class InsertMirnaHairpinSequencefromOldmirna {
 			int counter = 0;
 
 			while (rs.next()) {
-
-				sequence = rs.getString("sequence");
+				
+				res = rs.getInt("new_pk");
 				counter++;
-				res.add(sequence);
-
+				System.out.println("Number of new pks: " + counter);
+				
+				/*if(counter > 1){
+					
+					throw new Exception(" pk= "+res);
+				}*/
+				
 			}
-			
-			
 
+			
 		} catch (SQLException e) {
 			throw e;
 		} finally {
 			if (rs!=null) rs.close();
 			if (stmt!=null) stmt.close();
 		}
-		return res;
 
+		return res;
 
 	}
 
-	private void inserta(String sequence, int mirnaPk) throws SQLException {
+	
+	private void inserta(int pk_mirna2, String sequence, String gc_proportion, String length) throws SQLException {
 
-		String query = "insert into mirna.sequence_hairpin (sequence, mirna_pk) "
-				+ "values(?, ?)";
+		String query = "insert into mirna.sequence_mature (pk, sequence, gc_proportion, length) "
+				+ "values(?, ?, ?, ?)";
 
 		PreparedStatement stmt = null;
 
 		try {
 
 			stmt = con.prepareStatement(query);
-			stmt.setString(1, sequence);
-			stmt.setInt(2, mirnaPk);
+			stmt.setInt(1, pk_mirna2);
+			stmt.setString(2, sequence);
+			stmt.setString(3, gc_proportion);
+			stmt.setString(4, length);
 			stmt.execute();
 
 		} catch (SQLException e) {
@@ -160,8 +138,9 @@ public class InsertMirnaHairpinSequencefromOldmirna {
 
 	}
 
+
 	public static void main(String[] args) throws Exception {
-		InsertMirnaHairpinSequencefromOldmirna x = new InsertMirnaHairpinSequencefromOldmirna();
+		InsertMatureSeqsfromOtherDatabases x = new InsertMatureSeqsfromOtherDatabases();
 		x.execute();
 	}
 
