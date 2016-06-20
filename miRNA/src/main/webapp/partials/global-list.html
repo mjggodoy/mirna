@@ -4,13 +4,14 @@
 
 		<ol class="breadcrumb">
 			<li><a data-ui-sref="home">Home</a></li>
-			<li class="active">Global Search</li>
+			<li><a data-ui-sref="search">Search</a></li>
+			<li class="active">{{search.searchFields[0].value}}</li>
 		</ol>
 
 		<div class="card-container">
 
 			<div class="col-sm-12">
-				<h1>Global Search</h1>
+				<h2>Global Search</h2>
 				<div data-ng-if="search.searchFields" style="margin-bottom: 20px">You searched for: <b>{{search.searchFields[0].value}}</b></div>
 			</div>
 

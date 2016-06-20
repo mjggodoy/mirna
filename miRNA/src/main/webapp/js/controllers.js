@@ -938,6 +938,14 @@ module.controller('HomeController', function($scope, $state) {
 });
 
 module.controller('SearchController', function($scope, $state) {
+
+	$scope.mainSearch = function() {
+		if ($scope.mainSearchText) {
+			$state.go('globalSearch', {
+				term : $scope.mainSearchText
+			});
+		}
+	};
 	
 	$scope.search_opt = 'mirna';
 	$scope.search_opt_mirna = 'mirnaId';

@@ -6,13 +6,28 @@
 			<li class="active">Search</li>
 		</ol>
 
-		<div class="card-container">
+		<div class="card">
+			<div class="card__text">
 
-			<div class="col-sm-12">
-				<h1>Search</h1>
+				<form role="form" class="search-centered"  data-ng-submit="mainSearch()">
+					<h2 style="margin-bottom: 20px;">Search everything</h2>
+					<div class="input-group">
+						<input type="search" placeholder="search" class="form-control" data-ng-model="mainSearchText">
+            <span class="input-group-btn">
+	            <button type="submit" class="btn btn-primary">
+								<span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search
+							</button>
+            </span>
+					</div>
+				</form>
+
 			</div>
+		</div>
 
-			<div class="col-sm-12">
+		<div class="card">
+			<div class="card__text">
+
+				<h3>Advanced search</h3>
 
 				<form class="form-inline">
 					<div class="form-group">
