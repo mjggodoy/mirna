@@ -27,6 +27,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -34,16 +36,29 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Created by Esteban on 06/06/2016.
  */
 public class LuceneIndex {
 
-	private final String indexPath;
+	private String indexPath;
 
 	public LuceneIndex() {
-		indexPath = "C:/temp/mirna";
+		Properties props = new Properties();
+		try {
+			props.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("imirna.properties"));
+			indexPath = props.getProperty("imirna.lucene.index_folder");
+			if (indexPath==null || indexPath.isEmpty()) {
+				indexPath = System.getProperty("java.io.tmpdir")+"/imirna-index";
+				File indexFolder = new File(indexPath);
+				indexFolder.mkdirs();
+			}
+			System.out.println("INDEX PATH = "+indexPath);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 //	@Autowired
@@ -314,6 +329,8 @@ public class LuceneIndex {
 			List<LuceneElement> elements = new ArrayList<>();
 
 			Directory dir = FSDirectory.open(Paths.get(indexPath));
+
+			if (!DirectoryReader.indexExists(dir)) create();
 
 			IndexReader reader = DirectoryReader.open(dir);
 			IndexSearcher searcher = new IndexSearcher(reader);
