@@ -7,7 +7,12 @@ import java.util.Properties;
 /**
  * Created by Esteban on 23/05/2016.
  */
-public class InsertHairpinSequencesFromOtherDatabases2 {
+public class InsertMatureSeqsfromOtherDatabases2 {
+
+	private class FromTo {
+		public int from;
+		public int to;
+	}
 
 	private String dbUrl;
 	private String dbUser;
@@ -15,7 +20,7 @@ public class InsertHairpinSequencesFromOtherDatabases2 {
 
 	private Connection con = null;
 
-	public InsertHairpinSequencesFromOtherDatabases2() throws IOException {
+	public InsertMatureSeqsfromOtherDatabases2() throws IOException {
 		Properties props = new Properties();
 		props.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("MiRna-mysql.properties"));
 		this.dbUrl = props.getProperty("url");
@@ -34,8 +39,8 @@ public class InsertHairpinSequencesFromOtherDatabases2 {
 
 			stmt = con.createStatement();
 
-			String query = "select * from mirna.mirna2 a, mirna.mirna_pk_translation b, mirna_old.mirna_has_hairpin c, mirna_old.hairpin_has_sequence d, mirna_old.sequence e "
-					+ "where  a.mirbase_pk is null and a.type = 'hairpin' and a.pk = b.new_pk and b.old_pk = c.mirna_pk and c.hairpin_pk = d.hairpin_pk and d.sequence_pk = e.pk ;";
+			String query = "select * from mirna.mirna2 a, mirna.mirna_pk_translation b, mirna_old.mirna_has_mature c, mirna_old.mature_has_sequence d, mirna_old.sequence e "
+					+ "where  a.mirbase_pk is null and a.type = 'mature' and a.pk = b.new_pk and b.old_pk = c.mirna_pk and c.mature_pk = d.mature_pk and d.sequence_pk = e.pk ;";
 			System.out.println("STARTING: " + query);
 
 			// execute the query, and get a java resultset
@@ -48,12 +53,14 @@ public class InsertHairpinSequencesFromOtherDatabases2 {
 
 				int pk = rs.getInt("pk");
 				String sequence = rs.getString("sequence");
-				System.out.println("pk: " + pk + " " + "sequence: " + sequence + "Count: "+ count);
-				inserta(sequence, pk);
+				System.out.println("pk: " + pk + " " + "sequence: " + sequence + " Count: "+ count);
+				inserta(pk, sequence);
 				count ++;
 				limit--;
 			}
 
+			System.out.println(count);
+			
 		} catch (SQLException e) {
 			throw e;
 		} finally {
@@ -65,13 +72,9 @@ public class InsertHairpinSequencesFromOtherDatabases2 {
 
 	
 	
-	
+	private void inserta(int pk_mirna, String sequence) throws SQLException {
 
-	private void inserta(String sequence, int mirnaPk) throws SQLException {
-		
-		System.out.println("Inserting...");
-
-		String query = "insert into mirna.sequence_hairpin (sequence, mirna_pk) "
+		String query = "insert into mirna.sequence_mature (mirna_pk, sequence) "
 				+ "values(?, ?)";
 
 		PreparedStatement stmt = null;
@@ -79,8 +82,8 @@ public class InsertHairpinSequencesFromOtherDatabases2 {
 		try {
 
 			stmt = con.prepareStatement(query);
-			stmt.setString(1, sequence);
-			stmt.setInt(2, mirnaPk);
+			stmt.setInt(1, pk_mirna);
+			stmt.setString(2, sequence);
 			stmt.execute();
 
 		} catch (SQLException e) {
@@ -91,8 +94,9 @@ public class InsertHairpinSequencesFromOtherDatabases2 {
 
 	}
 
+
 	public static void main(String[] args) throws Exception {
-		InsertHairpinSequencesFromOtherDatabases2 x = new InsertHairpinSequencesFromOtherDatabases2();
+		InsertMatureSeqsfromOtherDatabases2 x = new InsertMatureSeqsfromOtherDatabases2();
 		x.execute();
 	}
 

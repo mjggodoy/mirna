@@ -7,12 +7,7 @@ import java.util.Properties;
 /**
  * Created by Esteban on 23/05/2016.
  */
-public class InsertMatureSeqsfromOtherDatabases {
-
-	private class FromTo {
-		public int from;
-		public int to;
-	}
+public class InsertMirbaseMatureSeqs2 {
 
 	private String dbUrl;
 	private String dbUser;
@@ -20,7 +15,7 @@ public class InsertMatureSeqsfromOtherDatabases {
 
 	private Connection con = null;
 
-	public InsertMatureSeqsfromOtherDatabases() throws IOException {
+	public InsertMirbaseMatureSeqs2() throws IOException {
 		Properties props = new Properties();
 		props.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("MiRna-mysql.properties"));
 		this.dbUrl = props.getProperty("url");
@@ -39,8 +34,7 @@ public class InsertMatureSeqsfromOtherDatabases {
 
 			stmt = con.createStatement();
 
-			String query = "select * from mirna.hairpin_has_sequence a, mirna.sequence b, mirna.mirna c "
-					+ "where c.pk = a.hairpin_pk and a.sequence_pk = b.pk";
+			String query = "select * from mirna.mirna2 where mirbase_pk is not NULL and type='mature'";
 			System.out.println("STARTING: " + query);
 
 			// execute the query, and get a java resultset
@@ -50,13 +44,20 @@ public class InsertMatureSeqsfromOtherDatabases {
 
 			while (rs.next() && limit!=0) {
 
+				//String acc = rs.getString("mirna_acc");
 				int pk = rs.getInt("pk");
-				String sequence = rs.getString("sequence");
-				String gc_proportion = rs.getString("gc_proportion");
-				String length = rs.getString("length");
-				int pk_mirna2 = getNewPkfromMirna2(pk);
-				System.out.println("pk: "+ pk +" pk_mirna2: " + pk_mirna2 + " sequence: " + sequence + " gc_proportion: " +gc_proportion + " length: " + length );
-				inserta(pk_mirna2, sequence, gc_proportion,length);
+				Integer mirbasePk = rs.getInt("mirbase_pk");
+				
+				if(mirbasePk != null){
+				
+				String sequence = getSequence(mirbasePk);
+				System.out.println(sequence);
+				System.out.println(pk);
+				
+					if(sequence != null){
+						inserta(sequence, pk);
+					}
+				}
 
 				limit--;
 			}
@@ -70,18 +71,19 @@ public class InsertMatureSeqsfromOtherDatabases {
 		}
 	}
 
-	private int getNewPkfromMirna2(int pk) throws Exception  {
+	private String getSequence(int pk) throws Exception {
 
 		Statement stmt = null;
 		ResultSet rs = null;
 
-		int res = -1;
+		String res = null;
 
 		try {
 
 			stmt = con.createStatement();
 
-			String query = "select * from mirna.mirna_pk_translation a where a.old_pk="+pk;
+			String query = "select * from mirbase.mirna_mature where auto_mature="+pk;
+
 
 			// execute the query, and get a java resultset
 			rs = stmt.executeQuery(query);
@@ -89,19 +91,16 @@ public class InsertMatureSeqsfromOtherDatabases {
 			int counter = 0;
 
 			while (rs.next()) {
-				
-				res = rs.getInt("new_pk");
+
+				res = rs.getString("sequence");
 				counter++;
-				System.out.println("Number of new pks: " + counter);
-				
-				/*if(counter > 1){
-					
-					throw new Exception(" pk= "+res);
-				}*/
 				
 			}
 
-			
+			if (counter>1) {
+				throw new Exception(counter+" pks encontrados para "+pk);
+			}
+
 		} catch (SQLException e) {
 			throw e;
 		} finally {
@@ -113,21 +112,18 @@ public class InsertMatureSeqsfromOtherDatabases {
 
 	}
 
-	
-	private void inserta(int pk_mirna2, String sequence, String gc_proportion, String length) throws SQLException {
+	private void inserta(String sequence, int mirnaPk) throws SQLException {
 
-		String query = "insert into mirna.sequence_mature (pk, sequence, gc_proportion, length) "
-				+ "values(?, ?, ?, ?)";
+		String query = "insert into mirna.sequence_mature (sequence, mirna_pk) "
+				+ "values(?, ?)";
 
 		PreparedStatement stmt = null;
 
 		try {
 
 			stmt = con.prepareStatement(query);
-			stmt.setInt(1, pk_mirna2);
-			stmt.setString(2, sequence);
-			stmt.setString(3, gc_proportion);
-			stmt.setString(4, length);
+			stmt.setString(1, sequence);
+			stmt.setInt(2, mirnaPk);
 			stmt.execute();
 
 		} catch (SQLException e) {
@@ -138,9 +134,8 @@ public class InsertMatureSeqsfromOtherDatabases {
 
 	}
 
-
 	public static void main(String[] args) throws Exception {
-		InsertMatureSeqsfromOtherDatabases x = new InsertMatureSeqsfromOtherDatabases();
+		InsertMirbaseMatureSeqs2 x = new InsertMirbaseMatureSeqs2();
 		x.execute();
 	}
 
