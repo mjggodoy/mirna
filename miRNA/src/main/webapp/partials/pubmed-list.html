@@ -4,7 +4,12 @@
 
 		<ol class="breadcrumb">
 			<li><a data-ui-sref="home">Home</a></li>
-			<li class="active">Pubmed document</li>
+
+			<li data-ng-if="$state.current.name=='searchByPubmedDocumentId'"><a data-ui-sref="listPubmedDocument">Pubmed document</a></li>
+			<li data-ng-if="$state.current.name=='searchByPubmedDocumentId'"><a data-ui-sref="search">Search</a></li>
+			<li class="active" data-ng-if="$state.current.name=='searchByPubmedDocumentId'">{{search.searchFields[0].key}} : {{search.searchFields[0].value}}</li>
+
+			<li class="active" data-ng-if="$state.current.name=='listPubmedDocument'">Pubmed document</li>
 		</ol>
 
 		<div class="card-container">

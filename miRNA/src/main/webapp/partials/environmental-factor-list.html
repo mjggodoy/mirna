@@ -4,18 +4,22 @@
 
 		<ol class="breadcrumb">
 			<li><a data-ui-sref="home">Home</a></li>
-			<li class="active">Environment Factor</li>
+			<li data-ng-if="$state.current.name=='searchByEnvironmentalFactorName'"><a data-ui-sref="listEnvironmentalFactor">Environmental Factor</a></li>
+			<li data-ng-if="$state.current.name=='searchByEnvironmentalFactorName'"><a data-ui-sref="search">Search</a></li>
+			<li class="active" data-ng-if="$state.current.name=='searchByEnvironmentalFactorName'">{{search.searchFields[0].key}} : {{search.searchFields[0].value}}</li>
+
+			<li class="active" data-ng-if="$state.current.name=='listEnvironmentalFactor'">Environmental Factor</li>
 		</ol>
 
 		<div class="card-container">
 
 			<div class="col-sm-12">
-				<h1>Environment Factor list</h1>
+				<h1>Environmental Factor list</h1>
 			</div>
 
 			<div class="col-sm-12">
 				<div class="card">
-					<div class="card card__title">Environment Factor</div>
+					<div class="card card__title">Environmental Factor</div>
 					<div class="card__text">
 
 						<div data-ng-include="'partials/snippet/loading_animation.html'"
