@@ -5,14 +5,10 @@ import java.sql.*;
 import java.util.Properties;
 
 /**
- * Created by Esteban on 23/05/2016.
+ * Created by Maria on 23/05/2016.
  */
 public class InsertMatureSeqsfromOtherDatabases2 {
 
-	private class FromTo {
-		public int from;
-		public int to;
-	}
 
 	private String dbUrl;
 	private String dbUser;
