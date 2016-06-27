@@ -417,7 +417,7 @@ public class RellenaMirna {
 		
 		try {
 			
-			// si no est· metido
+			// si no est√° metido
 			
 			String query = "select * from mirna.mirna2 where id=? and accession_number=? "
 					+ "and mature=? and dead=?";
@@ -516,7 +516,7 @@ public class RellenaMirna {
 			}
 			
 		} catch (MySQLIntegrityConstraintViolationException e) {
-			System.err.println("Se intentÛ meter a: id="+id+", acc="+acc+", preId="+preId+", mature="+mature+", dead="+dead+", mirbasePk="+mirbasePk);
+			System.err.println("Se intent√≥ meter a: id="+id+", acc="+acc+", preId="+preId+", mature="+mature+", dead="+dead+", mirbasePk="+mirbasePk);
 			throw e;	
 		} catch (SQLException e) {
 			throw e;
