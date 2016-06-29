@@ -70,7 +70,7 @@ public class InsertionOfHairpinSequencesFromPlantDatabase {
 						updateMirna(list.get(0).pk, name, list.get(0).name);
 					}
 						
-				inserta(seq, pk);
+				inserta(seq, list.get(0).pk);
 					// METER SECUENCIA seq EN HAIRPIN_SEQUENCE RELACIONADA CON PK = list.get(0).pk
 					
 					
@@ -79,52 +79,6 @@ public class InsertionOfHairpinSequencesFromPlantDatabase {
 					throw new Exception("Encontrados "+list.size()+" para "+specie+"-"+mirna_id+" ("+pk+")");
 				}
 				
-				
-//				if(findDatabase(new_name) + findDatabase(new_name2) + findDatabase2(new_name3) + findDatabase2(new_name4) + findDatabase2(new_name5) == 1){
-//						
-//					throw new Exception("Insertar: ");
-//				
-//				}else{
-//					
-//					/*StringTokenizer st = new StringTokenizer(new_name, "-");
-//
-//					
-//					while(st.hasMoreTokens()) {
-//	
-//						String name_specie = st.nextToken();
-//						System.out.println(name_specie);
-//						String name_stem_loop = st.nextToken();
-//						System.out.println(name_stem_loop);
-//
-//						List<QueryResult> qr = getSequence(name_stem_loop);
-//						
-//						for (QueryResult result : qr) {
-//						
-//							
-//							String sequence = result.sequence;
-//							
-//							
-//							if(findSequenceMirbase(sequence)){
-//								
-//								System.out.println("No hacer nada");
-//								
-//							}else{
-//								
-//								//System.out.println("Insertar: " + pk + "sequence: " + sequence);	
-//								throw new Exception(" sequence: " + sequence);
-//								//inserta(sequence, pk);
-//							}
-//							
-//						}
-//						   
-//					}
-//					
-//				}
-//				
-//			*/
-//				limit--;
-//				//}
-//				}
 			}
 
 		} catch (SQLException e) {
@@ -208,7 +162,7 @@ public class InsertionOfHairpinSequencesFromPlantDatabase {
 								
 				String type = rs.getString("type");
 				int mirbasePk = rs.getInt("mirbase_pk");
-				if (mirbasePk!=0) fromMirbase = true;
+				if (mirbasePk!=0) fromMirbase = true; //comprueba que sea de mirbase
 				if ("dead".equals(type)) fromMirbase = true;
 				
 				if (fromMirbase) {
@@ -288,45 +242,6 @@ public class InsertionOfHairpinSequencesFromPlantDatabase {
 
 	}
 
-	private int findDatabase2(String mirna) throws Exception {
-
-		Statement stmt = null;
-		ResultSet rs = null;
-
-		String res = null;
-		int counter= 0;
-
-		try {
-
-			stmt = con.createStatement();
-
-			String query = "select * from mirna.mirna2 where previous_id='"+ mirna +"' and mirbase_pk is null;";
-
-
-			// execute the query, and get a java resultset
-			rs = stmt.executeQuery(query);
-
-
-			while (rs.next()) {
-
-				//return true;
-				counter++;
-				
-			}
-
-			
-		} catch (SQLException e) {
-			throw e;
-		} finally {
-			if (rs!=null) rs.close();
-			if (stmt!=null) stmt.close();
-		}
-
-		//return (counter==1);
-		return counter;
-
-	}
-	
 	
 	private void inserta(String sequence, int mirna_pk) throws SQLException {
 
@@ -334,6 +249,8 @@ public class InsertionOfHairpinSequencesFromPlantDatabase {
 				+ "values(?, ?)";
 
 		PreparedStatement stmt = null;
+		
+		int counter = 0;
 
 		try {
 
@@ -341,6 +258,8 @@ public class InsertionOfHairpinSequencesFromPlantDatabase {
 			stmt.setString(1, sequence);
 			stmt.setInt(2, mirna_pk);
 			stmt.execute();
+			counter++;
+			System.out.println(counter);
 
 		} catch (SQLException e) {
 			throw e;
@@ -350,73 +269,6 @@ public class InsertionOfHairpinSequencesFromPlantDatabase {
 
 	}
 	
-	private List<QueryResult> getSequence(String new_name) throws SQLException {
-		
-		Statement stmt = null;
-		ResultSet rs = null;
-		List<QueryResult> res = new ArrayList<>();
-		
-		try {
-
-			stmt = con.createStatement();
-			String query = "select * from mirna_raw.plant_mirna_stem_loop where mirna_id='" + new_name + "'";			
-			rs = stmt.executeQuery(query);
-			
-			int limit = -1;
-			
-			while (rs.next() && limit!=0) {
-				
-				QueryResult q = new QueryResult();
-				q.mirna_id = rs.getString("mirna_id");
-				q.sequence = rs.getString("sequence");
-				res.add(q);
-			}
-			
-		} catch (SQLException e) {
-			throw e;
-		} finally {
-			if (stmt!=null) stmt.close();
-		}
-		
-		return res;
-		
-	}
-	
-	
-	private boolean findSequenceMirbase(String sequence_plant) throws Exception {
-
-		Statement stmt = null;
-		ResultSet rs = null;
-
-
-		try {
-
-			stmt = con.createStatement();
-
-			String query = "select * from mirna.sequence_hairpin where sequence ='" + sequence_plant+"'";
-
-			// execute the query, and get a java resultset
-			rs = stmt.executeQuery(query);
-
-			//int counter = 0;
-
-			while (rs.next()) {
-
-				return true;
-				
-			}
-
-			
-		} catch (SQLException e) {
-			throw e;
-		} finally {
-			if (rs!=null) rs.close();
-			if (stmt!=null) stmt.close();
-		}
-
-		return false;
-
-	}
 	
 	
 	private class MirnaResult {
@@ -424,13 +276,6 @@ public class InsertionOfHairpinSequencesFromPlantDatabase {
 		String name;
 	}
 
-	private class QueryResult {
-		
-		int pk;
-		String mirna_id;
-		String sequence;
-	
-	}
 	
 
 	public static void main(String[] args) throws Exception {
