@@ -176,18 +176,27 @@ public class ArreglaMirnaPkTranslation {
 				}
 				boolean res = false;
 
-
 				if (matures==1 && (hairpins==0 || hairpins==1)) {
-					//ACTUALIZAR MATURE
+					// UPDATE MATURE (arm)
+					QueryResult mature = mirnas.get(0);
+					if (!mature.type.equals("mature")) mature = mirnas.get(1);
+					setArmToMature(mature.pk, arm);
 					res = true;
 				} else  if ((matures == 0) && (hairpins==0)) {
 					// ALL OK
 					res = true;
-
 				} else if ((matures>0) && (hairpins==0)) {
-					res = searchArmInMatures(mirnas, arm);
+					// UPDATE MATURE (arm)
+					QueryResult mature = searchArmInMatures(mirnas, arm);
+					setArmToMature(mature.pk, arm);
+					res = (mature!=null);
+					// QUITAR INFO DEL OTRO MATURE?
 				} else if ((matures==0) && (hairpins==1)) {
-					res = searchArmInMatures(getMatures(mirnas.get(0).pk), arm);
+					// UPDATE MATURE (arm)
+					QueryResult mature = searchArmInMatures(getMatures(mirnas.get(0).pk), arm);
+					setArmToMature(mature.pk, arm);
+					res = (mature!=null);
+					// ENLAZAR CON MATURE
 				}
 
 				if (!res) {
@@ -204,6 +213,27 @@ public class ArreglaMirnaPkTranslation {
 		}
 	}
 
+	private void insertInTranslationTable(int oldPk, int newPk) throws SQLException {
+		String query = "insert into mirna.mirna_pk_translation (old_pk, new_pk) VALUES (?, ?)";
+		PreparedStatement stmt = null;
+
+		try {
+			stmt = con.prepareStatement(query);
+			stmt.setInt(1, oldPk);
+			stmt.setInt(2, newPk);
+			stmt.execute();
+		} catch (SQLException e) {
+			throw e;
+		} finally {
+			if (stmt!=null) stmt.close();
+		}
+
+	}
+
+//	private void deleteFromTranslationTable() {
+//
+//	}
+
 	private List<QueryResult> getTranslatedMirnas(int oldPk) throws SQLException {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -211,8 +241,6 @@ public class ArreglaMirnaPkTranslation {
 		List<QueryResult> res = new ArrayList<>();
 
 		try {
-
-			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 
 			String query = "select a.pk, a.id, a.type from mirna.mirna2 a, mirna.mirna_pk_translation b where a.pk=b.new_pk and b.old_pk=? and a.mirbase_pk is not null";
 
@@ -237,7 +265,6 @@ public class ArreglaMirnaPkTranslation {
 		} finally {
 			if (rs!=null) rs.close();
 			if (stmt!=null) stmt.close();
-			if (con!=null) con.close();
 		}
 
 		return res;
@@ -251,8 +278,6 @@ public class ArreglaMirnaPkTranslation {
 		List<QueryResult> res = new ArrayList<>();
 
 		try {
-
-			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 
 			String query = "select c.* from mirna.hairpin2mature b, mirna.mirna2 c where b.hairpin_pk=? and b.mature_pk=c.pk;";
 
@@ -277,21 +302,23 @@ public class ArreglaMirnaPkTranslation {
 		} finally {
 			if (rs!=null) rs.close();
 			if (stmt!=null) stmt.close();
-			if (con!=null) con.close();
 		}
 
 		return res;
 
 	}
 
-	private boolean searchArmInMatures(List<QueryResult> matures, String arm) {
+	private QueryResult searchArmInMatures(List<QueryResult> matures, String arm) {
+		QueryResult res = null;
 		int counter=0;
 		for (QueryResult m : matures) {
 			if (m.id.contains(arm)) {
 				counter++;
+				res = m;
 			}
 		}
-		return counter==1;
+		if (counter!=1) res = null;
+		return res;
 	}
 
 	private class QueryResult {
@@ -306,6 +333,5 @@ public class ArreglaMirnaPkTranslation {
 		//x.setArmsNotMirbase();
 		x.recorreMirnaConArmNotNull();
 	}
-
 
 }
