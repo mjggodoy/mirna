@@ -20,9 +20,8 @@
 					<h2 class="card card__title">Information</h2>
 					<p class="card__text">
 						<strong>ID:</strong> {{pubmed_document.id}}<br/>
-						<span data-ng-if="pubmed_document.description"><strong>Description:</strong> {{pubmed_document.description}}<br/></span>
-						<span data-ng-if="pubmed_document.resource"><strong>Resource:</strong> <a
-							data-ng-href={{pubmed_document.resource}} target="_blank">{{pubmed_document.resource}}</a></span>
+						<span data-ng-if="pubmed_document.title"><strong>Title:</strong> {{pubmed_document.title}}<br/></span>
+						<span data-ng-if="pubmed_document.authors"><strong>Authors:</strong> {{pubmed_document.authors}}<br/></span>
 					</p>
 					<div class="card__action-bar">
 						<a class="card__button" href="http://www.ncbi.nlm.nih.gov/pubmed/{{pubmed_document.id}}" target="_BLANK">PUBMED</a>

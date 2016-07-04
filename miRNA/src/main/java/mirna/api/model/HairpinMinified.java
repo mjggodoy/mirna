@@ -1,18 +1,20 @@
 package mirna.api.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "mirna2", schema = "mirna")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class HairpinMinified extends MiRnaMinified {
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@PrimaryKeyJoinColumn
-	private Sequence sequence;
+	@OneToMany
+	@JoinColumn(name="mirna_pk")
+	private List<SequenceHairpin> sequences;
 
-	public Sequence getSequence() {
-		return sequence;
+	public SequenceHairpin getSequence() {
+		if (sequences.size()>0) return sequences.get(0);
+		else return null;
 	}
 
 }

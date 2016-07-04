@@ -155,6 +155,11 @@ module.factory('Util', function () {
 				return str.charAt(0).toUpperCase() + str.slice(1);
 			}
 		},
+		capitalizeEverything: function(str) {
+			if (str) {
+				return str.toUpperCase();
+			}
+		},
 		subHairpin1: function(str, indexF) {
 			if (str) {
 				return  str.substring(0, indexF);

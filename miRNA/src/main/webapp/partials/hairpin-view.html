@@ -50,8 +50,14 @@
 			<div class="col-sm-12">
 				<div class="card">
 					<div class="card card__title">Sequence</div>
-					<div class="card__text">
-							<div class=sequence><p>{{mirna.sequence.sequence}}</p></div>
+					<div class="card__text" class=sequence>
+					
+						<ul>
+							<li data-ng-repeat="o in mirna.sequences">
+								{{o.sequence}}
+							</li>
+						</ul>
+					
 					</div>
 				</div>
 			</div>

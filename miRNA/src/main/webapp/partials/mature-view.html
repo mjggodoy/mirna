@@ -18,9 +18,9 @@
 				<div class="card">
 					<div class="card card__title">Information</div>
 					<div class="card__text">
-						<strong>Id:</strong> {{mirna.id}}<br/>
-						<strong>Accession number:</strong> {{mirna.accessionNumber}}<br/>
-						<strong>Previous ids:</strong> {{mirna.previousId}}<br/>
+						<span data-ng-if="mirna.id"><strong>ID:</strong> {{mirna.id}}<br/></span>
+						<span data-ng-if="mirna.accessionNumber"><strong>Accession number:</strong> {{mirna.accessionNumber}}<br/></span>
+						<span data-ng-if="mirna.previousId"><strong>Previous ids:</strong> {{mirna.previousId}}<br/></span>
 						<div data-ng-repeat="info in mirna.mirbaseInfo">
 							<span data-ng-if="info.evidence">
 								<strong>Evidence:</strong> {{info.evidence}}<br/>
@@ -39,10 +39,10 @@
 					
 					<div class="col-sm-12">
 					<div class="card__action-bar">
-						<strong><b>MIRBASE</b> link to {{mirna.accessionNumber}}:</strong>
+						<span data-ng-if="mirna.accessionNumber"><strong><b>MIRBASE</b> link to {{mirna.accessionNumber}}:</strong></span>
 						<a data-ng-if="mirna.accessionNumber" class="card__button" target="_BLANK"
-								href="http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={{mirna.accessionNumber}}">
-							http://www.mirbase.org/cgi-bin/mirna_entry.pl?acc={{mirna.accessionNumber}}</a>
+								href="http://www.mirbase.org/cgi-bin/mature.pl?mature_acc={{mirna.accessionNumber}}">
+							{{mirna.accessionNumber}}</a>
 					</div>
 					</div>
 				</div>
@@ -55,16 +55,21 @@
 					<ul>
 					
 						<li class="sequence" data-ng-repeat="o in mirna.hairpins">
-							<strong>{{o.hairpin.id}}: </strong><span>{{Util.subHairpin1(o.hairpin.sequence.sequence, o.from)}} <span class="sequence1">{{Util.subMature(o.hairpin.sequence.sequence, o.from, o.to)}}</span> {{Util.subHairpin2(o.hairpin.sequence.sequence, o.to)}}</span>
+							<strong>{{o.hairpin.id}}: </strong><span>{{Util.subHairpin1(o.hairpin.sequence.sequence, o.from)}}<span class="sequence1">{{Util.subMature(o.hairpin.sequence.sequence, o.from, o.to)}}</span>{{Util.subHairpin2(o.hairpin.sequence.sequence, o.to)}}</span>
 						</li>
+						
+						<li class="mature" data-ng-repeat="o in mirna.sequence">
+							<span>{{Util.capitalizeEverything(o.sequence)}}</span>
+						</li>
+						
 					</ul>
 				
 					</div>
 				</div>
 			</div>
 	
-			<div class="col-sm-12">
-				<div class="card">
+			<div data-ng-if= "mirna.hairpins != null" class="col-sm-12" >
+				<div  class="card" >
 					<div class="card card__title">Hairpins</div>
 					<div class="card__text">
 						<ul>
