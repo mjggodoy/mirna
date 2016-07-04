@@ -25,12 +25,6 @@ public class PubmedDocument extends ModelClass {
 	@Column(name = "authors", nullable = true)
 	private String authors;
 	
-	@Column(name = "description", nullable = true, length = 1000, unique = true)
-	private String description;
-	
-	@Column(name = "resource", nullable = true, length = 300, unique = true)
-	private String resource;
-	
 	@ManyToMany
 	@JoinTable(
 			name="snp_has_pubmed_document",
@@ -61,14 +55,6 @@ public class PubmedDocument extends ModelClass {
 
 	public String getAuthors() {
 		return authors;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public String getResource() {
-		return resource;
 	}
 	
 	public Set<MiRna> getMirnas() {
