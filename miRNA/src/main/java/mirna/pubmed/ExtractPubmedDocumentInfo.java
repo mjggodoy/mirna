@@ -119,34 +119,63 @@ public class ExtractPubmedDocumentInfo {
 		return pdi;
 	}
 
-	public void readInfoFromFile() throws IOException {
+	public void readInfoFromFile() throws IOException, SQLException {
 
-		int maxTitleSize = 0;
-		int maxAuthorsSize = 0;
+		try {
 
-		BufferedReader br = new BufferedReader(new FileReader(fileName));
-		String line;
-		while ((line=br.readLine())!=null) {
+			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 
-			String[] tokens = StringUtils.splitPreserveAllTokens(line, "\t");
+			int maxTitleSize = 0;
+			int maxAuthorsSize = 0;
 
-			String counter = tokens[0];
-			String id = tokens[1];
-			String title = tokens[2];
-			String authors = tokens[3];
+			BufferedReader br = new BufferedReader(new FileReader(fileName));
+			String line;
+			while ((line=br.readLine())!=null) {
 
-			if (maxTitleSize < title.length()) maxTitleSize = title.length();
-			if (maxAuthorsSize < authors.length()) maxAuthorsSize = authors.length();
+				String[] tokens = StringUtils.splitPreserveAllTokens(line, "\t");
 
-			System.out.println(counter);
+				String counter = tokens[0];
+				int id = Integer.valueOf(tokens[1]);
+				String title = tokens[2];
+				String authors = tokens[3];
 
+				if (maxTitleSize < title.length()) maxTitleSize = title.length();
+				if (maxAuthorsSize < authors.length()) maxAuthorsSize = authors.length();
+
+				System.out.println(counter);
+
+				if (!"ERROR".equals(title)) updatePubmedDocumentInfo(title, authors, id);
+
+			}
+
+			System.out.println("MAX TITLE SIZE = "+maxTitleSize);
+			System.out.println("MAX AUTHORS SIZE = "+maxAuthorsSize);
+
+			br.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (con!=null) con.close();
 		}
 
-		System.out.println("MAX TITLE SIZE = "+maxTitleSize);
-		System.out.println("MAX AUTHORS SIZE = "+maxAuthorsSize);
+	}
 
-		br.close();
+	private void updatePubmedDocumentInfo(String title, String authors, int id) throws SQLException {
+		String query = "update mirna.pubmed_document set title=?, authors=? where id=?";
+		PreparedStatement stmt = null;
 
+		try {
+			stmt = con.prepareStatement(query);
+			stmt.setString(1, title);
+			stmt.setString(2, authors);
+			stmt.setInt(3, id);
+			stmt.execute();
+		} catch (SQLException e) {
+			throw e;
+		} finally {
+			if (stmt!=null) stmt.close();
+		}
 	}
 
 	private class PubmedDocInfo {
