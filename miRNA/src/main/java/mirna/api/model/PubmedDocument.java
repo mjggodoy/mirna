@@ -11,8 +11,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-
-
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "pubmed_document", schema = "mirna")
@@ -20,6 +18,12 @@ public class PubmedDocument extends ModelClass {
 	
 	@Column(name = "id", nullable = true, length = 10, unique = true)
 	private String id;
+
+	@Column(name = "title", nullable = true)
+	private String title;
+
+	@Column(name = "authors", nullable = true)
+	private String authors;
 	
 	@Column(name = "description", nullable = true, length = 1000, unique = true)
 	private String description;
@@ -38,9 +42,7 @@ public class PubmedDocument extends ModelClass {
 					@JoinColumn(name="snp_pk")
 			})
 	private Set<SNP> snps;
-	
-	
-	
+
 	@ManyToMany(mappedBy = "pubmedDocuments")
 	private Set<MiRna> mirnas;
 	
@@ -51,6 +53,14 @@ public class PubmedDocument extends ModelClass {
 	
 	public String getId() {
 		return id;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public String getAuthors() {
+		return authors;
 	}
 
 	public String getDescription() {
