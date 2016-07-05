@@ -22,6 +22,10 @@ public class Mature extends MiRna {
 	@JoinColumn(name="mirna_pk")
 	private Set<MirbaseMatureInfo> mirbaseInfo;
 	
+	@OneToMany
+	@JoinColumn(name="mirna_pk")
+	private Set<SequenceMature> sequence;
+	
 	public Set<MirbaseMatureInfo> getMirbaseInfo() {
 		return mirbaseInfo;
 	}
@@ -29,5 +33,11 @@ public class Mature extends MiRna {
 	public Set<HairpinFromTo> getHairpins() {
 		return hairpins;
 	}
+
+	public Set<SequenceMature> getSequence() {
+		return sequence;
+	}
+	
+	
 
 }

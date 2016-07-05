@@ -9,9 +9,9 @@ public class HairpinMinified extends MiRnaMinified {
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@PrimaryKeyJoinColumn
-	private Sequence sequence;
+	private SequenceHairpin sequence;
 
-	public Sequence getSequence() {
+	public SequenceHairpin getSequence() {
 		return sequence;
 	}
 
