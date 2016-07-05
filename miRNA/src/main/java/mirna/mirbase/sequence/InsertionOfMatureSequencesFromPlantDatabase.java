@@ -8,7 +8,7 @@ import java.util.Properties;
 import java.util.StringTokenizer;
 
 
-public class InsertionOfHairpinSequencesFromPlantDatabase {
+public class InsertionOfMatureSequencesFromPlantDatabase {
 
 	private String dbUrl;
 	private String dbUser;
@@ -16,7 +16,7 @@ public class InsertionOfHairpinSequencesFromPlantDatabase {
 
 	private Connection con = null;
 
-	public InsertionOfHairpinSequencesFromPlantDatabase() throws IOException {
+	public InsertionOfMatureSequencesFromPlantDatabase() throws IOException {
 		Properties props = new Properties();
 		props.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("MiRna-mysql.properties"));
 		this.dbUrl = props.getProperty("url");
@@ -35,7 +35,7 @@ public class InsertionOfHairpinSequencesFromPlantDatabase {
 
 			stmt = con.createStatement();
 
-			String query = "select * from mirna_raw.plant_mirna_stem_loop;";
+			String query = "select * from mirna_raw.plant_mirna_mature_mirna;";
 			System.out.println("STARTING: " + query);
 
 			rs = stmt.executeQuery(query);
@@ -60,25 +60,34 @@ public class InsertionOfHairpinSequencesFromPlantDatabase {
 				}
 				
 				if (list==null) {
+					System.out.println("No hacemos nada");
 					// NO HACEMOS NADA (MIRBASE)
 				} else if (list.size()==0) {
+					
+					System.out.println("Inserta mature en mirna.mirna2");
+
 					//INSERTAR NUEVO HAIRPIN(name);
 					insertMirna(name);
 				} else if (list.size()==1) {
 					//ACTUALIZAR NOMBRE(name)
 					if (!name.equals(list.get(0).name)) {
 						updateMirna(list.get(0).pk, name, list.get(0).name);
+						System.out.println("update mature");
+
 					}
 						
+					
+				System.out.println("Inserta mature en mirna.sequence_mature");
+
 				inserta(seq, list.get(0).pk);
 					// METER SECUENCIA seq EN HAIRPIN_SEQUENCE RELACIONADA CON PK = list.get(0).pk
-					
-					
+	
+	
 					
 				} else {
 					throw new Exception("Encontrados "+list.size()+" para "+specie+"-"+mirna_id+" ("+pk+")");
 				}
-				
+					
 			}
 
 		} catch (SQLException e) {
@@ -126,7 +135,7 @@ public class InsertionOfHairpinSequencesFromPlantDatabase {
 
 			stmt = con.prepareStatement(query);
 			stmt.setString(1, name);
-			stmt.setString(2, "hairpin");
+			stmt.setString(2, "mature");
 			stmt.setString(3, "");
 			stmt.setString(4, "");
 			stmt.execute();
@@ -162,7 +171,7 @@ public class InsertionOfHairpinSequencesFromPlantDatabase {
 								
 				String type = rs.getString("type");
 				int mirbasePk = rs.getInt("mirbase_pk");
-				if (mirbasePk!=0) fromMirbase = true; //comprueba que sea de mirbase
+				if (mirbasePk!=0) fromMirbase = true;
 				if ("dead".equals(type)) fromMirbase = true;
 				
 				if (fromMirbase) {
@@ -170,7 +179,7 @@ public class InsertionOfHairpinSequencesFromPlantDatabase {
 				}
 
 				//return true;
-				if ("hairpin".equals(type)) {
+				if ("mature".equals(type)) {
 					MirnaResult mr = new MirnaResult();
 					mr.pk = rs.getInt("pk");
 					mr.name = rs.getString("id");
@@ -186,7 +195,7 @@ public class InsertionOfHairpinSequencesFromPlantDatabase {
 			if (stmt!=null) stmt.close();
 		}
 
-		if (fromMirbase) resList = null;
+		if (fromMirbase) resList = null; //Est‡n incluidos en mirbase ya. La list es null.
 		return resList;
 
 	}
@@ -221,7 +230,8 @@ public class InsertionOfHairpinSequencesFromPlantDatabase {
 				}
 
 				//return true;
-				if ("hairpin".equals(type)) {
+				if ("mature".equals(type)) {
+					
 					MirnaResult mr = new MirnaResult();
 					mr.pk = rs.getInt("pk");
 					mr.name = rs.getString("id");
@@ -245,12 +255,10 @@ public class InsertionOfHairpinSequencesFromPlantDatabase {
 	
 	private void inserta(String sequence, int mirna_pk) throws SQLException {
 
-		String query = "insert into mirna.sequence_hairpin (sequence, mirna_pk) "
+		String query = "insert into mirna.sequence_mature (sequence, mirna_pk) "
 				+ "values(?, ?)";
 
 		PreparedStatement stmt = null;
-		
-		int counter = 0;
 
 		try {
 
@@ -258,8 +266,6 @@ public class InsertionOfHairpinSequencesFromPlantDatabase {
 			stmt.setString(1, sequence);
 			stmt.setInt(2, mirna_pk);
 			stmt.execute();
-			counter++;
-			System.out.println(counter);
 
 		} catch (SQLException e) {
 			throw e;
@@ -271,16 +277,18 @@ public class InsertionOfHairpinSequencesFromPlantDatabase {
 	
 	
 	
+	
 	private class MirnaResult {
 		int pk;
 		String name;
 	}
 
 	
+	
 
 	public static void main(String[] args) throws Exception {
 		
-		//InsertionOfHairpinSequencesFromPlantDatabase plants = new InsertionOfHairpinSequencesFromPlantDatabase();
+		//InsertionOfMatureSequencesFromPlantDatabase plants = new InsertionOfMatureSequencesFromPlantDatabase();
 		//plants.execute();
 		
 		

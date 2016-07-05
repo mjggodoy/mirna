@@ -55,7 +55,7 @@ public class InsertMirbaseMatureSeqs2 {
 				System.out.println(pk);
 				
 					if(sequence != null){
-						inserta(sequence, pk);
+						//inserta(sequence, pk);
 					}
 				}
 
