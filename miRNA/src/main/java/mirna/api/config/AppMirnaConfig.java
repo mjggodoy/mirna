@@ -27,7 +27,7 @@ import mirna.ssh.CTestDriver;
         transactionManagerRef = "mirnaTransactionManager",
 		basePackages = { "mirna.api.repo" })
 @ComponentScan(basePackages = "mirna", excludeFilters = {
-		@ComponentScan.Filter(value = Controller.class, type = FilterType.ANNOTATION),
+		//@ComponentScan.Filter(value = Controller.class, type = FilterType.ANNOTATION),
 		@ComponentScan.Filter(value = Configuration.class, type = FilterType.ANNOTATION) })
 public class AppMirnaConfig extends RepositoryRestMvcConfiguration {
 

@@ -4,7 +4,11 @@
 
 		<ol class="breadcrumb">
 			<li><a data-ui-sref="home">Home</a></li>
+
 			<li data-ng-if="$state.current.name!='listMirna'"><a data-ui-sref="listMirna">miRNA</a></li>
+			<li data-ng-if="$state.current.name!='listMirna'"><a data-ui-sref="search">Search</a></li>
+			<li class="active" data-ng-if="$state.current.name!='listMirna'">{{search.searchFields[0].key}} : {{search.searchFields[0].value}}</li>
+
 			<li class="active" data-ng-if="$state.current.name=='listMirna'">miRNA</li>
 			<li class="active" data-ng-if="$state.current.name=='listMature'">Mature</li>
 			<li class="active" data-ng-if="$state.current.name=='listHairpin'">Hairpin</li>

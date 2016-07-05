@@ -138,6 +138,10 @@ angular.module('mirna').config(function($stateProvider, $locationProvider) {
 		url: '/search',
 		templateUrl: 'partials/search.html',
 		controller: 'SearchController'
+	}).state('globalSearch', { //results state 1
+		url: '/global_search?term',
+		templateUrl: 'partials/global-list.html',
+		controller: 'GlobalSearchController'
 	}).state('searchById', { //results state 1
 		url: '/search/id/:id',
 		templateUrl: 'partials/mirna-list.html',

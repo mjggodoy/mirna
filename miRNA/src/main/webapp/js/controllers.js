@@ -904,6 +904,23 @@ module.controller('SearchByTranscriptIdController',
 	}
 );
 
+module.controller('GlobalSearchController',
+	function($scope, $controller, $stateParams, Global) {
+		$scope.search = {
+			searchFunction : "all",
+			searchFields : [ {
+				key : "term",
+				value : $stateParams.term
+			} ]
+		};
+		angular.extend(this, $controller('PagedListController', {
+			$scope : $scope,
+			Object : Global,
+			elements : 'global'
+		}));
+	}
+);
+
 
 /****************************************
  * Main pages controllers
@@ -913,14 +930,22 @@ module.controller('HomeController', function($scope, $state) {
 	$scope.quickSearchText = 'hsa-let-7a';
 	$scope.quickSearch = function() {
 		if ($scope.quickSearchText) {
-			$state.go('searchById', {
-				id : $scope.quickSearchText
+			$state.go('globalSearch', {
+				term : $scope.quickSearchText
 			});
 		}
 	};
 });
 
 module.controller('SearchController', function($scope, $state) {
+
+	$scope.mainSearch = function() {
+		if ($scope.mainSearchText) {
+			$state.go('globalSearch', {
+				term : $scope.mainSearchText
+			});
+		}
+	};
 	
 	$scope.search_opt = 'mirna';
 	$scope.search_opt_mirna = 'mirnaId';

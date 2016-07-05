@@ -4,7 +4,12 @@
 
 		<ol class="breadcrumb">
 			<li><a data-ui-sref="home">Home</a></li>
-			<li class="active">Phenotype</li>
+
+			<li data-ng-if="$state.current.name=='searchByPhenotypeName'"><a data-ui-sref="listPhenotype">Phenotype</a></li>
+			<li data-ng-if="$state.current.name=='searchByPhenotypeName'"><a data-ui-sref="search">Search</a></li>
+			<li class="active" data-ng-if="$state.current.name=='searchByPhenotypeName'">{{search.searchFields[0].key}} : {{search.searchFields[0].value}}</li>
+
+			<li class="active" data-ng-if="$state.current.name=='listPhenotype'">Phenotype</li>
 		</ol>
 
 		<div class="card-container">
